@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res/vn.haipn.togopart"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/splash_background"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:orientation="vertical" >
+
+        <vn.haipn.togopart.gallery.FontableTextView
+            android:id="@+id/textView1"
+            style="@style/TextAppearance.Search.Black"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/search_decription"
+            app:font="alternate-gothic-no3.ttf" />
+
+        <vn.haipn.togopart.gallery.FontableEditText
+            android:id="@+id/editText1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10" >
+
+            <requestFocus />
+        </vn.haipn.togopart.gallery.FontableEditText>
+
+        <vn.haipn.togopart.gallery.FontableTextView
+            android:id="@+id/textView2"
+            style="@style/TextAppearance.Search.Black"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/search_posted_by"
+            app:font="alternate-gothic-no3.ttf" />
+
+        <vn.haipn.togopart.gallery.FontableEditText
+            android:id="@+id/editText2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10" />
+
+        <vn.haipn.togopart.gallery.FontableTextView
+            android:id="@+id/textView3"
+            style="@style/TextAppearance.Search.Black"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/search_size"
+            app:font="alternate-gothic-no3.ttf" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="5" >
+
+            <Spinner
+                android:id="@+id/spinner1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="2" />
+
+            <vn.haipn.togopart.gallery.FontableTextView
+                android:id="@+id/textView4"
+                style="@style/TextAppearance.Search.Orange"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:text="@string/or"
+                 />
+
+            <vn.haipn.togopart.gallery.FontableEditText
+                android:id="@+id/editText3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ems="10"
+                android:inputType="numberSigned" />
+
+            <Spinner
+                android:id="@+id/spinner2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.5" />
+        </LinearLayout>
+
+        <vn.haipn.togopart.gallery.FontableTextView
+            android:id="@+id/textView5"
+            style="@style/TextAppearance.Search.Black"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/search_budget"
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="6" >
+
+            <vn.haipn.togopart.gallery.FontableTextView
+                style="@style/TextAppearance.Search.Orange"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/search_from"
+                 />
+
+            <vn.haipn.togopart.gallery.FontableEditText
+                android:id="@+id/edt_from"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:inputType="numberSigned" />
+
+            <vn.haipn.togopart.gallery.FontableTextView
+                style="@style/TextAppearance.Search.Orange"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/search_to"
+                />
+
+            <vn.haipn.togopart.gallery.FontableEditText
+                android:id="@+id/edt_to"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:inputType="numberSigned" />
+        </LinearLayout>
+
+        <vn.haipn.togopart.gallery.FontableTextView
+            android:id="@+id/textView6"
+            style="@style/TextAppearance.Search.Black"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/search_category"
+             />
+
+        <Spinner
+            android:id="@+id/spinner3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <vn.haipn.togopart.gallery.FontableTextView
+            android:id="@+id/textView7"
+            style="@style/TextAppearance.Search.Black"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/search_marketplace" />
+
+        <Spinner
+            android:id="@+id/spinner4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <vn.haipn.togopart.gallery.FontableTextView
+            android:id="@+id/textView8"
+            style="@style/TextAppearance.Search.Black"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/search_type" />
+
+        <Spinner
+            android:id="@+id/spinner5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:orientation="vertical" >
+
+        <vn.haipn.togopart.gallery.FontableButton
+            android:id="@+id/btn_search"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/search" />
+    </LinearLayout>
+
+</LinearLayout>

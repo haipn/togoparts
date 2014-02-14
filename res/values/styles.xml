@@ -1,4 +1,5 @@
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res/vn.haipn.togopart" >
 
     <!--
         Base application theme, dependent on API level. This theme is replaced
@@ -15,6 +16,16 @@
     <!-- Application theme. -->
     <style name="AppTheme" parent="AppBaseTheme">
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+    </style>
+
+    <style name="TextAppearance.Search.Black" parent="android:TextAppearance.Small.Inverse">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+
+    <style name="TextAppearance.Search.Orange" parent="android:TextAppearance.Small.Inverse">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/orange</item>
     </style>
 
 </resources>

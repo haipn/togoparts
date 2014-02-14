@@ -99,7 +99,7 @@ public class MainActivity extends ActionBarActivity  implements ActionBar.TabLis
                 default:
                     // The other sections of the app are dummy placeholders.
                     
-                    return new Search();
+                    return new SearchFragment();
             }
         }
 

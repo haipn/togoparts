@@ -199,7 +199,8 @@ public class ScaleMovieView extends ImageView {
 						}
 						RectF r = new RectF();
 						mMatrix.mapRect(r);
-						float right = r.left + getWidthSize()
+						// getWidthSize
+						float right = r.left + getWidth()
 								* mValues[Matrix.MSCALE_X];
 						if (right < mKeyTranslateX + mKeyWidth) {
 							mValues[Matrix.MTRANS_X] += mKeyTranslateX
@@ -210,7 +211,7 @@ public class ScaleMovieView extends ImageView {
 							mValues[Matrix.MTRANS_Y] = mKeyTranslateY;
 							change = true;
 						}
-						float bottom = r.top + getHeightSize()
+						float bottom = r.top + getHeight()
 								* mValues[Matrix.MSCALE_Y];
 						if (bottom < mKeyHeight + mKeyTranslateY) {
 							mValues[Matrix.MTRANS_Y] += mKeyHeight
@@ -235,7 +236,7 @@ public class ScaleMovieView extends ImageView {
 				mMatrix.mapRect(r);
 				if (dx < 0) {
 					// move to left
-					float right = r.left + getWidthSize()
+					float right = r.left + getWidth()
 							* mValues[Matrix.MSCALE_X];
 					if (right <= mWidth) {
 						// enabled ViewPager Touch event
@@ -279,7 +280,7 @@ public class ScaleMovieView extends ImageView {
 						}
 					}
 				} else if (dy < 0) {
-					float bottom = r.top + getHeightSize()
+					float bottom = r.top + getHeight()
 							* mValues[Matrix.MSCALE_Y];
 					if (bottom < mHeight) {
 						dy = 0;
@@ -374,7 +375,7 @@ public class ScaleMovieView extends ImageView {
 	public void setSize(int width, int height, int widthView, int heightView) {
 		int rw = width;
 		int rh = height;
-		int sample = Utils.calculateSampleSize(width, height);
+		int sample = calculateSampleSize(width, height, widthView, heightView);
 		if (sample > 1) {
 			rw = width / sample;
 			rh = height / sample;
@@ -398,7 +399,20 @@ public class ScaleMovieView extends ImageView {
 		mMatrix.setValues(mValues);
 		setImageMatrix(mMatrix);
 		invalidate();
-		setSize(rw, rh);
+		//TODO: setSIze
+//		setSize(rw, rh);
+	}
+	public static int calculateSampleSize(int width, int height, int wView, int hView) {
+		int scale = 1;
+		while (true) {
+			if (width / 2 < wView
+					|| height / 2 < hView)
+				break;
+			width /= 2;
+			height /= 2;
+			scale *= 2;
+		}
+		return scale;
 	}
 
 	private void animate(float first, float target, final Type type,
