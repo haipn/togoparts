@@ -19,5 +19,6 @@
     <string name="search_marketplace">Marketplace Category:</string>
     <string name="search_type">Type:</string>
     <string name="search">Search</string>
-
+	<string name="splash_slogan">Singapore\'s Fastest Growing Bicycle Site</string>
+	<string name="splash_website">www.togoparts.com</string>
 </resources>
