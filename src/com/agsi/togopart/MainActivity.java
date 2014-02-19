@@ -1,4 +1,4 @@
-package vn.haipn.togopart;
+package com.agsi.togopart;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -25,9 +25,11 @@ public class MainActivity extends ActionBarActivity  implements ActionBar.TabLis
 		actionBar = getSupportActionBar();
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 		actionBar.setDisplayShowTitleEnabled(true);
-
+		
+		
 	    mViewPager = (ViewPager) findViewById(R.id.pager);
         mViewPager.setAdapter(mAppSectionsPagerAdapter);
+        mViewPager.setOffscreenPageLimit(4);
         mViewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {
@@ -44,7 +46,7 @@ public class MainActivity extends ActionBarActivity  implements ActionBar.TabLis
             // listener for when this tab is selected.
             actionBar.addTab(
                     actionBar.newTab()
-                            .setText(mAppSectionsPagerAdapter.getPageTitle(i))
+                            .setIcon(mAppSectionsPagerAdapter.getIcon(i))
                             .setTabListener(this));
         }
 	    if (savedInstanceState != null) {
@@ -61,11 +63,34 @@ public class MainActivity extends ActionBarActivity  implements ActionBar.TabLis
 
 	@Override
     public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
+		
     }
 
     @Override
     public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
         // When the given tab is selected, switch to the corresponding page in the ViewPager.
+    	for (int i = 0; i < actionBar.getTabCount(); i++) {
+			actionBar.getTabAt(i).setIcon(mAppSectionsPagerAdapter.getIcon(i));
+			if (tab.equals(actionBar.getTabAt(i))) {
+				switch (i) {
+				case 0:
+					tab.setIcon(R.drawable.home_hover);
+					break;
+				case 1:
+					tab.setIcon(R.drawable.marketplace_hover);
+					break;
+				case 2:
+					tab.setIcon(R.drawable.shortlisted_hover);
+					break;
+				case 3:
+					tab.setIcon(R.drawable.search_hover);
+					break;
+				default:
+					break;
+				}
+			}
+		}
+    	
         mViewPager.setCurrentItem(tab.getPosition());
     }
 
@@ -89,16 +114,12 @@ public class MainActivity extends ActionBarActivity  implements ActionBar.TabLis
             switch (i) {
             
                 case 0:
-                    // The first section of the app is the most interesting -- it offers
-                    // a launchpad into the other demonstrations in this example application.
-                    return new MainFragment();
+                    return new HomeFragment();
                 case 1:
                 	return new MarketPlaceFragment();
                 case 2:
                 	return new ShortlistedAds();
                 default:
-                    // The other sections of the app are dummy placeholders.
-                    
                     return new SearchFragment();
             }
         }
@@ -107,21 +128,17 @@ public class MainActivity extends ActionBarActivity  implements ActionBar.TabLis
         public int getCount() {
             return 4;
         }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
+        
+        public int getIcon(int position) {
         	switch (position) {
             case 0:
-                // The first section of the app is the most interesting -- it offers
-                // a launchpad into the other demonstrations in this example application.
-                return mContext.getString(R.string.tab_main);
+                return R.drawable.home;
             case 1:
-            	return mContext.getString(R.string.tab_marketplace);
+            	return R.drawable.marketplace;
             case 2:
-            	return mContext.getString(R.string.tab_shortlist_ads);
+            	return R.drawable.shortlisted;
             default:
-                // The other sections of the app are dummy placeholders.
-                return mContext.getString(R.string.tab_search);
+                return R.drawable.search;
         }
         }
     }

@@ -1,4 +1,4 @@
-package vn.haipn.togopart.gallery;
+package com.agsi.togopart.gallery;
 
 import android.content.Context;
 import android.content.res.TypedArray;

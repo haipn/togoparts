@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <com.agsi.togopart.gallery.FontableTextView
+        android:id="@+id/fontableTextView1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="FontableTextView" />
+
+    <com.agsi.togopart.gallery.FontableTextView
+        android:id="@+id/tvTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/top_header_bg"
+        android:gravity="center_vertical|left"
+        android:paddingLeft="20dp"
+        android:text="FontableTextView"
+        android:textColor="@android:color/white"
+        android:textSize="25sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/top_header_background" >
+
+        <com.agsi.togopart.gallery.FontableTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:text="@string/time"
+            android:textColor="@android:color/black" />
+
+        <com.agsi.togopart.gallery.FontableTextView
+            android:id="@+id/fontableTextView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:text="@string/status"
+            android:textColor="@android:color/black" />
+
+        <com.agsi.togopart.gallery.FontableTextView
+            android:id="@+id/fontableTextView4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="2"
+            android:text="@string/description"
+            android:textColor="@android:color/black" />
+
+        <com.agsi.togopart.gallery.FontableTextView
+            android:id="@+id/fontableTextView5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:text="@string/price"
+            android:textColor="@android:color/black" />
+
+        <com.agsi.togopart.gallery.FontableTextView
+            android:id="@+id/fontableTextView6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:text="@string/postedby"
+            android:textColor="@android:color/black" />
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/lvAds"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+    </ListView>
+
+</LinearLayout>

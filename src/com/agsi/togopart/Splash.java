@@ -1,4 +1,4 @@
-package vn.haipn.togopart;
+package com.agsi.togopart;
 
 import java.net.URL;
 

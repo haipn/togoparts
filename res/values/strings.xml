@@ -21,4 +21,9 @@
     <string name="search">Search</string>
 	<string name="splash_slogan">Singapore\'s Fastest Growing Bicycle Site</string>
 	<string name="splash_website">www.togoparts.com</string>
+	<string name="time">TIME</string>
+	<string name="status">STATUS</string>
+	<string name="description">DESCRIPTION</string>
+	<string name="price">PRICE</string>
+	<string name="postedby">POSTED BY</string>
 </resources>

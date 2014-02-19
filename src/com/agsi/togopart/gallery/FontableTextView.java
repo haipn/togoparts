@@ -1,6 +1,7 @@
-package vn.haipn.togopart.gallery;
+package com.agsi.togopart.gallery;
 
-import vn.haipn.togopart.R;
+import com.agsi.togopart.R;
+
 import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.TextView;

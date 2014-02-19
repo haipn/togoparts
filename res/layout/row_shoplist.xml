@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <vn.haipn.togopart.gallery.FontableTextView
+    <com.agsi.togopart.gallery.FontableTextView
         android:id="@+id/fontableTextView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -26,13 +26,13 @@
             android:layout_weight="1"
             android:orientation="vertical" >
 
-            <vn.haipn.togopart.gallery.FontableTextView
+            <com.agsi.togopart.gallery.FontableTextView
                 android:id="@+id/fontableTextView2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="FontableTextView" />
 
-            <vn.haipn.togopart.gallery.FontableTextView
+            <com.agsi.togopart.gallery.FontableTextView
                 android:id="@+id/fontableTextView3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -51,14 +51,14 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp" >
 
-        <vn.haipn.togopart.gallery.FontableButton
+        <com.agsi.togopart.gallery.FontableButton
             android:id="@+id/fontableButton1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="FontableButton" />
 
-        <vn.haipn.togopart.gallery.FontableButton
+        <com.agsi.togopart.gallery.FontableButton
             android:id="@+id/fontableButton2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

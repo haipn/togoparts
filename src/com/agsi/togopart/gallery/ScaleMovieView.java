@@ -1,4 +1,4 @@
-package vn.haipn.togopart.gallery;
+package com.agsi.togopart.gallery;
 
 import java.util.Vector;
 
