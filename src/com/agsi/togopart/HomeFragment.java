@@ -1,67 +1,134 @@
 package com.agsi.togopart;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.List;
+
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.text.Html;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.BaseAdapter;
+import android.widget.GridView;
+import android.widget.ImageView;
 
 import com.agsi.togopart.app.Const;
 import com.agsi.togopart.app.MyVolley;
 import com.agsi.togopart.gallery.FontableTextView;
 import com.agsi.togopart.json.Ads;
 import com.agsi.togopart.json.GsonRequest;
-import com.agsi.togopart.json.ListCategories;
-import com.agsi.togopart.json.ListCategories.Cat;
 import com.agsi.togopart.json.MpListLatestAds;
+import com.android.volley.Request.Method;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.Request.Method;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.ImageScaleType;
+import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 
-import android.content.Context;
-import android.content.res.ColorStateList;
-import android.graphics.Color;
-import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.TextView;
-
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment_Main {
+	private static final String SAVED_BUNDLE_TAG = "saved bundle";
+	protected ImageLoader imageLoader = ImageLoader.getInstance();
+	DisplayImageOptions options;
 	FontableTextView mTvTitle;
-	ListView mLvAds;
+	// ListView mLvAds;
+	GridView mGvAds;
+	protected ArrayList<Ads> mListAds;
+	protected String mTitle;
+	private LastestAdsAdapter mAdsAdapter;
+	private HeaderView headerView;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.home_fragment, container,
 				false);
-		mTvTitle = (FontableTextView) rootView.findViewById(R.id.tvTitle);
-		mLvAds = (ListView) rootView.findViewById(R.id.lvAds);
 
+		mTvTitle = (FontableTextView) rootView.findViewById(R.id.tvTitle);
+		mGvAds = (GridView) rootView.findViewById(R.id.gvAds);
+		mAdsAdapter = new LastestAdsAdapter(getActivity(), mListAds);
+		mGvAds.setAdapter(mAdsAdapter);
+		mGvAds.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+					long arg3) {
+				Fragment fragment = new DetailFragment();
+				Bundle bundle = new Bundle();
+				bundle.putString(Const.ADS_ID, mListAds.get(arg2).getAdsId());
+				fragment.setArguments(bundle);
+				addFragment(fragment, true, FragmentTransaction.TRANSIT_NONE);
+			}
+		});
+		mTvTitle.setText(mTitle);
+		Log.d("haipn", "on create view");
 		return rootView;
 	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
+		setRetainInstance(true);
+		Log.d("haipn", "on create");
+		mListAds = new ArrayList<Ads>();
 		RequestQueue queue = MyVolley.getRequestQueue();
 		GsonRequest<MpListLatestAds> myReq = new GsonRequest<MpListLatestAds>(
 				Method.GET, Const.URL_LIST_LASTEST_ADS, MpListLatestAds.class,
 				createMyReqSuccessListener(), createMyReqErrorListener());
-
 		queue.add(myReq);
+		createHeader();
+		options = new DisplayImageOptions.Builder()
+				.resetViewBeforeLoading(true).cacheOnDisc(true)
+				.imageScaleType(ImageScaleType.EXACTLY)
+				.bitmapConfig(Bitmap.Config.RGB_565).considerExifParams(true)
+				.displayer(new FadeInBitmapDisplayer(300)).build();
 		super.onCreate(savedInstanceState);
+	}
+
+	private void createHeader() {
+		headerView = (HeaderView) getActivity();
+		headerView.setLeftButton(View.INVISIBLE);
+		headerView.setRightButton(View.VISIBLE, new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				TabsActivityMain tab = (TabsActivityMain) getActivity()
+						.getParent();
+				tab.getTabHost().setCurrentTab(3);
+			}
+		});
+	}
+
+	@Override
+	public void onStart() {
+		Log.d("haipn", "on start");
+		super.onStart();
+	}
+
+	@Override
+	public void onResume() {
+		Log.d("haipn", "on resume");
+		super.onResume();
 	}
 
 	private Response.Listener<MpListLatestAds> createMyReqSuccessListener() {
 		return new Response.Listener<MpListLatestAds>() {
 			@Override
 			public void onResponse(MpListLatestAds response) {
-				LastestAdsAdapter adapter = new LastestAdsAdapter(getActivity(), 0, response.mAds);
-				mLvAds.setAdapter(adapter);
+				mListAds.addAll(response.mAds);
+				// mAdsAdapter = new LastestAdsAdapter(getActivity(), mListAds);
+				// mLvAds.setAdapter(mAdsAdapter);
+				mAdsAdapter.notifyDataSetChanged();
+				mTitle = response.mTitle;
+				mTvTitle.setText(response.mTitle);
+
 			}
 		};
 	}
@@ -70,60 +137,82 @@ public class HomeFragment extends Fragment {
 		return new Response.ErrorListener() {
 			@Override
 			public void onErrorResponse(VolleyError error) {
-				// TODO: show dialog error
+				Log.d("haipn", "home error");
+
 			}
 		};
 	}
 
-	private class LastestAdsAdapter extends ArrayAdapter<Ads> {
+	private class LastestAdsAdapter extends BaseAdapter {
 
 		private class ViewHolder {
+			public ImageView image;
 			public FontableTextView tvTime;
-			public FontableTextView tvStatus;
-			public FontableTextView tvDes;
+			public FontableTextView tvTitle;
 			public FontableTextView tvPrice;
 			public FontableTextView tvPostedBy;
 		}
 
 		ArrayList<Ads> listAds;
-		
-		public LastestAdsAdapter(Context context, int text, ArrayList<Ads> cars) {
-			super(context, 0, cars);
+		Context mContext;
+
+		public LastestAdsAdapter(Context context, ArrayList<Ads> cars) {
+			super();
 			listAds = cars;
+			mContext = context;
+		}
+
+		public void setList(ArrayList<Ads> mListAds) {
+			listAds = mListAds;
 		}
 
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
-			View view = convertView;
 			final ViewHolder holder;
 			if (convertView == null) {
-				view = getActivity().getLayoutInflater().inflate(
-						R.layout.row_home, null);
+				convertView = getActivity().getLayoutInflater().inflate(
+						R.layout.item_grid_home, null);
 				holder = new ViewHolder();
-				holder.tvTime = (FontableTextView) view
-						.findViewById(R.id.tvTime);
-				holder.tvStatus = (FontableTextView) view
-						.findViewById(R.id.tvStatus);
-				holder.tvPrice = (FontableTextView) view
+				holder.tvTime = (FontableTextView) convertView
+						.findViewById(R.id.tvTimePost);
+				holder.tvPrice = (FontableTextView) convertView
 						.findViewById(R.id.tvPrice);
-				holder.tvDes = (FontableTextView) view
-						.findViewById(R.id.tvDescription);
-				holder.tvPostedBy = (FontableTextView) view
-						.findViewById(R.id.tvPostedBy);
-
-				view.setTag(holder);
+				holder.tvTitle = (FontableTextView) convertView
+						.findViewById(R.id.tvTitle);
+				holder.tvPostedBy = (FontableTextView) convertView
+						.findViewById(R.id.tvPostBy);
+				holder.image = (ImageView) convertView.findViewById(R.id.image);
+				convertView.setTag(holder);
 			} else {
-				holder = (ViewHolder) view.getTag();
+				holder = (ViewHolder) convertView.getTag();
 			}
-
-			Ads ads = listAds.get(position);
+			Ads ads = getItem(position);
 			holder.tvTime.setText(ads.getTimeposted());
-			holder.tvStatus.setText(ads.getTranstype());
-			holder.tvDes.setText(ads.getTitle());
+			if (ads.getTitle() != null)
+				holder.tvTitle.setText(Html.fromHtml(ads.getTitle()));
 			holder.tvPrice.setText(ads.getPrice());
 			holder.tvPostedBy.setText(ads.getPostedby());
+			imageLoader.displayImage(ads.getPicture(), holder.image, options);
+			return convertView;
+		}
 
-			return view;
+		@Override
+		public int getCount() {
+			// TODO Auto-generated method stub
+			return listAds.size();
+		}
+
+		@Override
+		public Ads getItem(int arg0) {
+			// TODO Auto-generated method stub
+			return listAds.get(arg0);
+		}
+
+		@Override
+		public long getItemId(int arg0) {
+			// TODO Auto-generated method stub
+			return arg0;
 		}
 	}
+
 }

@@ -6,14 +6,14 @@ import com.google.gson.annotations.SerializedName;
 
 public class Group {
 	@SerializedName("gid")
-	String mGroupId;
+	public String mGroupId;
 	
 	@SerializedName("title")
-	String mTitle;
+	public String mTitle;
 	
 	@SerializedName("total_ads")
-	String mTotalAds;
+	public String mTotalAds;
 	
 	@SerializedName("categories")
-	ArrayList<Category> mCategories;
+	public ArrayList<Category> mCategories;
 }

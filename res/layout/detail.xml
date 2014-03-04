@@ -1,89 +1,451 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical" >
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
-
-        <com.agsi.togopart.gallery.FontableTextView
-            android:id="@+id/tv_name"
-            android:layout_width="0dp"
-            android:gravity="center"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@drawable/orange"
-            android:padding="13dp"
-            android:text="FontableTextView"
-            android:textColor="@android:color/white"
-            android:textSize="25sp" />
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:background="@drawable/gray"
-            android:orientation="vertical"
-            android:padding="7dp" >
-
-            <com.agsi.togopart.gallery.FontableTextView
-                android:id="@+id/fontableTextView3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="SGD 350"
-                android:textColor="@android:color/white"
-                android:textSize="20sp" />
-
-            <com.agsi.togopart.gallery.FontableTextView
-                android:id="@+id/fontableTextView2"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:gravity="right"
-                android:text="Firm"
-                android:textColor="@android:color/white"
-                android:textSize="16sp" />
-        </LinearLayout>
-    </LinearLayout>
+    android:layout_height="match_parent" >
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
         android:orientation="vertical" >
-
-        <ImageView
-            android:id="@+id/imageView1"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:src="@drawable/logo" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp" >
+            android:layout_height="wrap_content" >
 
-            <com.agsi.togopart.gallery.FontableButton
-                android:id="@+id/fontableButton1"
+            <com.agsi.togopart.gallery.FontableTextView
+                android:id="@+id/tvTitle"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/orange"
+                android:gravity="center"
+                android:padding="13dp"
+                android:text="FontableTextView"
+                android:textColor="@android:color/white"
+                android:textSize="25sp" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="@drawable/gray"
+                android:orientation="vertical"
+                android:padding="7dp" >
+
+                <com.agsi.togopart.gallery.FontableTextView
+                    android:id="@+id/tvPrice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:textColor="@android:color/white"
+                    android:textSize="20sp" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal" >
+
+                    <com.agsi.togopart.gallery.FontableTextView
+                        android:id="@+id/tvPriceDiff"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="right"
+                        android:paddingRight="5dp"
+                        android:text="Firm"
+                        android:textColor="@android:color/white"
+                        android:textSize="14sp" />
+
+                    <com.agsi.togopart.gallery.FontableTextView
+                        android:id="@+id/tvFirm"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="right"
+                        android:text="Firm"
+                        android:textColor="@android:color/white"
+                        android:textSize="14sp" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            android:layout_margin="4dp"
+            android:orientation="vertical" >
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <com.agsi.togopart.gallery.FontableTextView
+                    android:id="@+id/btnAddShortList"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:background="@drawable/textview_selector"
+                    android:drawableLeft="@drawable/shortlist_ad_small_button"
+                    android:gravity="center"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:text="@string/btn_add_shortlist"
+                    android:textColor="@android:color/white"
+                    android:textSize="15sp" />
+
+                <com.agsi.togopart.gallery.FontableTextView
+                    android:id="@+id/btnShare"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:background="@drawable/textview_selector"
+                    android:drawableLeft="@drawable/share_small_button"
+                    android:gravity="center"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:text="@string/btn_share"
+                    android:textColor="@android:color/white"
+                    android:textSize="15sp" />
+            </RelativeLayout>
+
+            <android.support.v4.view.ViewPager
+                android:id="@+id/pager"
+                android:layout_width="wrap_content"
+                android:layout_height="200dp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@drawable/gray" >
+            </View>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <com.agsi.togopart.gallery.FontableTextView
+                    android:id="@+id/tvSpecial"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_margin="5dp"
+                    android:background="@color/orange"
+                    android:paddingBottom="5dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:paddingTop="5dp"
+                    android:text="CLEARSE"
+                    android:textColor="@android:color/white" />
+
+                <com.agsi.togopart.gallery.FontableTextView
+                    android:id="@+id/tvListinglabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_margin="5dp"
+                    android:layout_toRightOf="@+id/tvSpecial"
+                    android:background="@color/dark_blue"
+                    android:paddingBottom="5dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:paddingTop="5dp"
+                    android:text="NEW ITEM"
+                    android:textColor="@android:color/white" />
+
+                <com.agsi.togopart.gallery.FontableTextView
+                    android:id="@+id/tvPriority"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_margin="5dp"
+                    android:layout_toRightOf="@+id/tvListinglabel"
+                    android:background="@color/yellow"
+                    android:paddingBottom="5dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:paddingTop="5dp"
+                    android:text="PRIORITY"
+                    android:textColor="@android:color/black" />
+
+                <com.agsi.togopart.gallery.FontableTextView
+                    android:id="@+id/tvAdTypes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_margin="5dp"
+                    android:background="@color/light_green"
+                    android:paddingBottom="5dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:paddingTop="5dp"
+                    android:text="For Sale"
+                    android:textColor="@android:color/white" />
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="top" >
+
+                <com.agsi.togopart.gallery.FontableTextView
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:gravity="left"
+                    android:text="@string/label_description"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                <com.agsi.togopart.gallery.FontableTextView
+                    android:id="@+id/tvDescription"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_weight="1"
+                    android:maxLines="80"
+                    android:singleLine="false"
+                    android:text="Medium Text"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="top" >
+
+                <com.agsi.togopart.gallery.FontableTextView
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:gravity="left"
+                    android:text="@string/label_size"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                <com.agsi.togopart.gallery.FontableTextView
+                    android:id="@+id/tvSize"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Medium Text"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="top" >
+
+                <com.agsi.togopart.gallery.FontableTextView
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:gravity="left"
+                    android:text="@string/label_posted_by"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical" >
+
+                    <com.agsi.togopart.gallery.FontableTextView
+                        android:id="@+id/tvPostebyAndPostTime"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Medium Text"
+                        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                    <com.agsi.togopart.gallery.FontableTextView
+                        android:id="@+id/btnAllPostedBy"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/btn_click"
+                        android:paddingBottom="5dp"
+                        android:paddingLeft="10dp"
+                        android:gravity="center"
+                        android:paddingRight="10dp"
+                        android:paddingTop="5dp"
+                        android:text="@string/label_all_postby"
+                        android:textColor="@android:color/white" />
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/imvShopLogo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="top" >
+
+                <com.agsi.togopart.gallery.FontableTextView
+                    android:id="@+id/tvShopOrContact"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:gravity="left"
+                    android:text="@string/label_size"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                <com.agsi.togopart.gallery.FontableTextView
+                    android:id="@+id/tvNameContact"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_weight="1"
+                    android:text="Medium Text"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical" >
+
+                <com.agsi.togopart.gallery.FontableTextView
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:gravity="left"
+                    android:text="@string/label_contact_no"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                <com.agsi.togopart.gallery.FontableTextView
+                    android:id="@+id/tvContactNo"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Medium Text"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical" >
+
+                <com.agsi.togopart.gallery.FontableTextView
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:gravity="left"
+                    android:text="@string/lable_address"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                <com.agsi.togopart.gallery.FontableTextView
+                    android:id="@+id/tvAddress"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Medium Text"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical" >
+
+                <com.agsi.togopart.gallery.FontableTextView
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:gravity="left"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" >
+
+                    <TextView
+                        android:id="@+id/tvViewCount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableLeft="@drawable/views"
+                        android:drawablePadding="5dp"
+                        android:paddingRight="10dp"
+                        android:text="Small Text"
+                        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                    <TextView
+                        android:id="@+id/tvMailCount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableLeft="@drawable/small_comments_icon"
+                        android:drawablePadding="5dp"
+                        android:text="Small Text"
+                        android:textAppearance="?android:attr/textAppearanceMedium" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@drawable/gray" >
+            </View>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:orientation="horizontal"
+                android:weightSum="6" >
+
+                <TextView
+                    android:id="@+id/tvSMS"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:drawableLeft="@drawable/sms_icon"
+                    android:textColorHighlight="@color/orange"
+                    android:drawablePadding="5dp"
+                    android:text="SMS"
+                    android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                <TextView
+                    android:id="@+id/tvCall"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textColorHighlight="@color/orange"
+                    android:layout_weight="2"
+                    android:drawableLeft="@drawable/call_icons"
+                    android:drawablePadding="5dp"
+                    android:text="CALL"
+                    android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                <TextView
+                    android:id="@+id/tvEmail"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:drawableLeft="@drawable/email_icon"
+                    android:drawablePadding="5dp"
+                    android:text="EMAIL"
+                    android:textAppearance="?android:attr/textAppearanceLarge" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@drawable/gray" >
+            </View>
+
+            <com.agsi.togopart.gallery.FontableTextView
+                android:id="@+id/textView1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="FontableButton" />
+                android:layout_margin="5dp"
+                android:textColor="@color/orange"
+                android:text="@string/label_relate"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
 
-            <com.agsi.togopart.gallery.FontableButton
-                android:id="@+id/fontableButton2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="FontableButton" />
+            <com.agsi.togopart.gallery.HorizontalListView
+                android:id="@+id/hlvRelate"
+                android:layout_width="fill_parent"
+                android:layout_height="150dp" >
+            </com.agsi.togopart.gallery.HorizontalListView>
         </LinearLayout>
     </LinearLayout>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@drawable/gray" >
-    </View>
-
-</LinearLayout>
+</ScrollView>

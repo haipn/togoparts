@@ -2,44 +2,55 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal" >
+    android:descendantFocusability="blocksDescendants"
+    android:orientation="horizontal"
+    android:padding="10dp" >
 
     <LinearLayout
         android:layout_width="0dip"
-        android:layout_weight="1"
         android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:layout_weight="1"
         android:orientation="vertical" >
 
         <com.agsi.togopart.gallery.FontableTextView
-            android:id="@+id/fontableTextView1"
+            android:id="@+id/tvTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="FontableTextView" />
+            android:text="osa;f"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/orange" />
 
         <com.agsi.togopart.gallery.FontableTextView
-            android:id="@+id/fontableTextView2"
+            android:id="@+id/tvDescription"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="FontableTextView" />
+            android:text="FontableTextView"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical" >
 
         <com.agsi.togopart.gallery.FontableTextView
-            android:id="@+id/fontableTextView3"
+            android:id="@+id/tvCount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="FontableTextView" />
+            android:text="FontableTextView"
+            android:textSize="25sp" />
 
-        <com.agsi.togopart.gallery.FontableButton
+        <com.agsi.togopart.gallery.FontableTextView
             android:id="@+id/fontableButton1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="FontableButton" />
-
+            android:background="@drawable/btn_click"
+            android:gravity="center"
+            android:padding="7dp"
+            android:text="@string/label_add_post"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@android:color/white" />
     </LinearLayout>
 
 </LinearLayout>

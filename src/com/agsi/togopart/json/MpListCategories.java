@@ -6,5 +6,5 @@ import com.google.gson.annotations.SerializedName;
 
 public class MpListCategories {
 	@SerializedName("grouplist")
-	ArrayList<Group> mGroupList;
+	public ArrayList<Group> mGroupList;
 }

@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName;
 
 public class MpListLatestAds {
 	@SerializedName("title")
-	String mTitle;
+	public String mTitle;
 	
 	@SerializedName("ads")
 	public ArrayList<Ads> mAds;

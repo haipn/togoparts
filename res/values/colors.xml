@@ -3,5 +3,9 @@
 
     <color name="splash_background">#e6e6e6</color>
     <color name="orange">#f4871e</color>
-
+	<color name="red">#ff2529</color>
+	<color name="green">#0e9900</color>
+	<color name="dark_blue">#00578d</color>
+	<color name="yellow">#fec516</color>
+	<color name="light_green">#0ebf01</color>
 </resources>

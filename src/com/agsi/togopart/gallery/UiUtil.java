@@ -1,20 +1,16 @@
 package com.agsi.togopart.gallery;
 
+import java.lang.ref.SoftReference;
+import java.util.Hashtable;
+
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.graphics.Typeface;
 import android.text.TextUtils;
-import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.TextView;
-
-import java.lang.ref.SoftReference;
-import java.lang.ref.WeakReference;
-import java.util.Hashtable;
 
 public class UiUtil {
 

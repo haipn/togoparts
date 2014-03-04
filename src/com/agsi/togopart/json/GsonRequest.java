@@ -1,7 +1,8 @@
 package com.agsi.togopart.json;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonSyntaxException;
+import java.io.UnsupportedEncodingException;
+
+import android.util.Log;
 
 import com.android.volley.NetworkResponse;
 import com.android.volley.ParseError;
@@ -10,8 +11,8 @@ import com.android.volley.Response;
 import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
 import com.android.volley.toolbox.HttpHeaderParser;
-
-import java.io.UnsupportedEncodingException;
+import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 
 
 public class GsonRequest<T> extends Request<T> {
@@ -57,9 +58,12 @@ public class GsonRequest<T> extends Request<T> {
             String json = new String(response.data, HttpHeaderParser.parseCharset(response.headers));
             return Response.success(mGson.fromJson(json, mClazz),
                                     HttpHeaderParser.parseCacheHeaders(response));
+            
         } catch (UnsupportedEncodingException e) {
+        	e.printStackTrace();
             return Response.error(new ParseError(e));
         } catch (JsonSyntaxException e) {
+        	e.printStackTrace();
             return Response.error(new ParseError(e));
         }
     }

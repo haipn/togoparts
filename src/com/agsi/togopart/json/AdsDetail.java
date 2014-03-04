@@ -5,71 +5,73 @@ import java.util.ArrayList;
 import com.google.gson.annotations.SerializedName;
 
 public class AdsDetail {
-	class Picture {
-		String s;
-		String l;
-	}
-
+	
 	@SerializedName("title")
-	String mTitle;
+	public String mTitle;
 
 	@SerializedName("price")
-	String mPrice;
+	public String mPrice;
 	
 	@SerializedName("price_percent_diff")
-	String mPricePercentDiff;
+	public String mPricePercentDiff;
 	
 	@SerializedName("firm_neg")
-	String mFirmNeg;
+	public String mFirmNeg;
 	
 	@SerializedName("canonical_url")
-	String mCanonicalUrl;
+	public String mCanonicalUrl;
 	
 	@SerializedName("picture")
-	ArrayList<Picture> mPictures;
+	public ArrayList<Picture> mPictures;
 	
 	@SerializedName("adstatus")
-	String mAdStatus;
+	public String mAdStatus;
 	
 	@SerializedName("aid")
-	String mAdid;
+	public String mAdid;
 	
-	@SerializedName("userid")
-	String mUserId;
-	
-	@SerializedName("transtype")
-	String mTranstype;
+	@SerializedName("adtype")
+	public String mAdType;
 	
 	@SerializedName("size")
-	String mSize;
+	public String mSize;
 	
 	@SerializedName("description")
-	String mDescription;
+	public String mDescription;
 	
 	@SerializedName("dateposted")
-	String mDateposted;
-	
-	@SerializedName("contactperson")
-	String mContactPerson;
+	public String mDateposted;
 	
 	@SerializedName("ad_views")
-	String mAdViews;
+	public String mAdViews;
 	
 	@SerializedName("msg_sent")
-	String mMsgSent;
+	public String mMsgSent;
 	
 	@SerializedName("listinglabel")
-	String mListingLabel;
+	public String mListingLabel;
 	
 	@SerializedName("special")
-	String mSpecial;
+	public Special mSpecial;
 	
 	@SerializedName("postedby_details")
-	User mPostedByDetails;
+	public User mPostedByDetails;
 	
 	@SerializedName("contact_details")
-	Contact mContactDetails;
+	public Contact mContactDetails;
 	
 	@SerializedName("related_ads")
-	ArrayList<Ads> mRelatedAds;
+	public ArrayList<Ads> mRelatedAds;
+	
+	public class Picture {
+		public String s;
+		public String l;
+	}
+
+	public class Special {
+		public String text;
+		public String bgcolor;
+		public String textcolor;
+	}
+	 
 }

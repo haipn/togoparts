@@ -1,7 +1,5 @@
 package com.agsi.togopart;
 
-import java.net.URL;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -23,7 +21,7 @@ public class Splash extends Activity {
 		}
 
 		protected void onPostExecute(Integer result) {
-			startActivity(new Intent(Splash.this, MainActivity.class));
+			startActivity(new Intent(Splash.this, TabsActivityMain.class));
 			finish();
 		}
 

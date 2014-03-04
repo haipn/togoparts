@@ -4,15 +4,24 @@ import com.google.gson.annotations.SerializedName;
 
 public class Contact {
 	
-	@SerializedName("contactperson")
-	String mContactPerson;
+	@SerializedName("shop_logo")
+	public String mShopLogo;
 	
-	@SerializedName("contactno")
-	String mContactNumber;
-	
-	@SerializedName("location")
-	String mContactLocation;
 	
 	@SerializedName("contact_email")
-	String mContactEmail;
+	public String mContactEmail;
+	
+	@SerializedName("contact")
+	public Labelvalue mContact;
+	
+	@SerializedName("location")
+	public Labelvalue mLocation;
+
+	@SerializedName("contactno")
+	public Labelvalue mContactNo;
+	
+	public class Labelvalue {
+		public String label;
+		public String value;
+	}
 }

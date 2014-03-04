@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="8dp"
+    android:background="@drawable/item_click"
+    android:orientation="vertical" >
+
+    <com.agsi.togopart.gallery.FontableTextView
+        android:id="@+id/tvTitle"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:ellipsize="marquee"
+        android:maxLines="2"
+        android:minLines="2"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="FontableTextView" />
+
+    <ImageView
+        android:id="@+id/image"
+        android:scaleType="centerCrop"
+        android:layout_width="160dp"
+        android:layout_height="160dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <com.agsi.togopart.gallery.FontableTextView
+            android:id="@+id/tvPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="FontableTextView"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_weight="1"
+            android:gravity="right"
+            android:orientation="vertical" >
+
+            <com.agsi.togopart.gallery.FontableTextView
+                android:id="@+id/tvTimePost"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:drawablePadding="8dp"
+                android:drawableRight="@drawable/clock"
+                android:gravity="right|center_vertical"
+                android:text="FontableTextView" />
+
+            <com.agsi.togopart.gallery.FontableTextView
+                android:id="@+id/tvPostBy"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:drawablePadding="8dp"
+                android:drawableRight="@drawable/user_icon"
+                android:gravity="right"
+                android:text="FontableTextView" />
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

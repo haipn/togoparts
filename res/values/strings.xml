@@ -26,4 +26,20 @@
 	<string name="description">DESCRIPTION</string>
 	<string name="price">PRICE</string>
 	<string name="postedby">POSTED BY</string>
+	<string name="btn_add_shortlist">SHORTLIST AD</string>
+	<string name="remove_shortlist">REMOVE SHORTLIST</string>
+	<string name="btn_share">SHARE</string>
+	<string name="label_description">Description</string>
+	<string name="label_size">Size</string>
+	<string name="label_posted_by">Posted by</string>
+	<string name="label_all_postby">Search all Ads by %s</string>
+	<string name="label_contact_no">Contact No</string>
+	<string name="lable_address">Address</string>
+	<string name="label_relate">Related Products</string>
+	<string name="label_browse_all_ads">Browse All Ads</string>
+	<string name="label_add_post">+ Post an ad</string>
+	<string name="hint_keyword">Search</string>
+	<string name="marketplace">MARKETPLACE</string>
+	<string name="search_result">SEARCH RESULT</string>
+	<string name="filter_title">FILTER</string>
 </resources>

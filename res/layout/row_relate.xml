@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:padding="2dp"
+    android:descendantFocusability="blocksDescendants"
+    android:orientation="vertical" >
+
+    <ImageView
+        android:id="@+id/image"
+        android:layout_width="100dp"
+        android:layout_height="100dp" />
+
+    <com.agsi.togopart.gallery.FontableTextView
+        android:id="@+id/tvTitle"
+        android:singleLine="false"
+        android:text="'ajf;ladskjf;sakjf;saklfjsalkfj;aslkjf;sajfkl;asjf;lksajf;lksajf;kjs"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+</LinearLayout>

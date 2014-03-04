@@ -3,21 +3,21 @@ package com.agsi.togopart.json;
 import com.google.gson.annotations.SerializedName;
 
 public class Category {
-	class Parameter {
-		String adtype;
+	public class Parameter {
+		public String adtype;
 	}
 	@SerializedName("cid")
-	String mCategoryId;
+	public String mCategoryId;
 	
 	@SerializedName("title")
-	String mTitle;
+	public String mTitle;
 	
 	@SerializedName("description")
-	String mDescription;
+	public 	String mDescription;
 	
 	@SerializedName("total_ads")
-	String mTotalAds;
+	public String mTotalAds;
 	
 	@SerializedName("parameters")
-	Parameter mParameters;
+	public Parameter mParameters;
 }

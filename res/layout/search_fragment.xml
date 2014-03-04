@@ -1,186 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:layout_margin="10dp"
+    android:orientation="vertical" >
+
+    <com.agsi.togopart.gallery.FontableEditText
+        android:id="@+id/edtKeyword"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:imeOptions="actionSearch"
+        android:hint="@string/hint_keyword"
+        android:singleLine="true" >
+
+        <requestFocus />
+    </com.agsi.togopart.gallery.FontableEditText>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/splash_background"
         android:orientation="vertical" >
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:orientation="vertical" >
-
-            <com.agsi.togopart.gallery.FontableTextView
-                android:id="@+id/textView1"
-                style="@style/TextAppearance.Search.Black"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/search_decription" />
-
-            <com.agsi.togopart.gallery.FontableEditText
-                android:id="@+id/edtKeyword"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:singleLine="true" >
-
-                <requestFocus />
-            </com.agsi.togopart.gallery.FontableEditText>
-
-            <com.agsi.togopart.gallery.FontableTextView
-                android:id="@+id/textView2"
-                style="@style/TextAppearance.Search.Black"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/search_posted_by" />
-
-            <com.agsi.togopart.gallery.FontableEditText
-                android:id="@+id/edtPostedBy"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:singleLine="true" />
-
-            <com.agsi.togopart.gallery.FontableTextView
-                android:id="@+id/textView3"
-                style="@style/TextAppearance.Search.Black"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/search_size" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:weightSum="5" >
-
-                <Spinner
-                    android:id="@+id/spnSize"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2" />
-
-                <com.agsi.togopart.gallery.FontableTextView
-                    android:id="@+id/textView4"
-                    style="@style/TextAppearance.Search.Orange"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.5"
-                    android:text="@string/or" />
-
-                <com.agsi.togopart.gallery.FontableEditText
-                    android:id="@+id/edtValue"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:ems="10"
-                    android:inputType="numberSigned"
-                    android:singleLine="true" />
-
-                <Spinner
-                    android:id="@+id/spnUnit"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1.5" />
-            </LinearLayout>
-
-            <com.agsi.togopart.gallery.FontableTextView
-                android:id="@+id/textView5"
-                style="@style/TextAppearance.Search.Black"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/search_budget" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:weightSum="6" >
-
-                <com.agsi.togopart.gallery.FontableTextView
-                    style="@style/TextAppearance.Search.Orange"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/search_from" />
-
-                <com.agsi.togopart.gallery.FontableEditText
-                    android:id="@+id/edtFrom"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="3"
-                    android:inputType="numberSigned" />
-
-                <com.agsi.togopart.gallery.FontableTextView
-                    style="@style/TextAppearance.Search.Orange"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/search_to" />
-
-                <com.agsi.togopart.gallery.FontableEditText
-                    android:id="@+id/edtTo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="3"
-                    android:inputType="numberSigned" />
-            </LinearLayout>
-
-            <com.agsi.togopart.gallery.FontableTextView
-                android:id="@+id/textView6"
-                style="@style/TextAppearance.Search.Black"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/search_category" />
-
-            <Spinner
-                android:id="@+id/spnCategory"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-            <com.agsi.togopart.gallery.FontableTextView
-                android:id="@+id/textView7"
-                style="@style/TextAppearance.Search.Black"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/search_marketplace" />
-
-            <Spinner
-                android:id="@+id/spnCatId"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-            <com.agsi.togopart.gallery.FontableTextView
-                android:id="@+id/textView8"
-                style="@style/TextAppearance.Search.Black"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/search_type" />
-
-            <Spinner
-                android:id="@+id/spnType"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
-
-        <View
+        <com.agsi.togopart.gallery.FontableButton
+            android:id="@+id/btnSearch"
+            android:background="@drawable/btn_click"
             android:layout_width="fill_parent"
-            android:layout_height="1dp"
-            android:background="@android:color/darker_gray" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
+            android:textColor="@android:color/white"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:orientation="vertical" >
-
-            <com.agsi.togopart.gallery.FontableButton
-                android:id="@+id/btnSearch"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/search" />
-        </LinearLayout>
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/search" />
     </LinearLayout>
 
-</ScrollView>
+</LinearLayout>
