@@ -14,7 +14,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TabHost;
+import android.widget.TabHost.OnTabChangeListener;
 
+import com.agsi.togopart.app.Const;
 import com.google.ads.Ad;
 import com.google.ads.AdListener;
 import com.google.ads.AdRequest;
@@ -23,215 +25,221 @@ import com.google.ads.AdSize;
 import com.google.ads.doubleclick.DfpAdView;
 
 @SuppressWarnings("deprecation")
-public class TabsActivityMain extends TabActivity implements AdListener
-{
+public class TabsActivityMain extends TabActivity implements AdListener {
 	private DfpAdView dfpAdView;
 	RelativeLayout rlAdMain;
 	boolean isAdShown = false;
+	TabHost tabHost;
 
 	@Override
-	public void onCreate(Bundle savedInstanceState)
-	{
+	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.tabs_activity_main);
-		
-//		String android_id = Secure.getString(getApplicationContext().getContentResolver(),
-//                Secure.ANDROID_ID); 
-//
-//        ads:testDevices="4c1aaf1e7e9ea04a"
-		final TabHost tabHost = getTabHost();
+
+		// String android_id =
+		// Secure.getString(getApplicationContext().getContentResolver(),
+		// Secure.ANDROID_ID);
+		//
+		// ads:testDevices="4c1aaf1e7e9ea04a"
+		tabHost = getTabHost();
 		TabHost.TabSpec spec;
 		Intent intent;
-		
-//		try
-//		{
-//			tabHost.getTabWidget().setDividerDrawable(R.drawable.footer_divider);
-//		}
-//		catch (Exception e)
-//		{
-//			
-//		}
-		
+
+		// try
+		// {
+		// tabHost.getTabWidget().setDividerDrawable(R.drawable.footer_divider);
+		// }
+		// catch (Exception e)
+		// {
+		//
+		// }
+
 		intent = new Intent().setClass(this, FSActivity_Home.class);
-		spec = tabHost.newTabSpec("1").setIndicator(null,getResources().getDrawable(R.drawable.tab_home)).setContent(intent);
+		spec = tabHost
+				.newTabSpec("1")
+				.setIndicator(null,
+						getResources().getDrawable(R.drawable.tab_home))
+				.setContent(intent);
 		tabHost.addTab(spec);
 
 		intent = new Intent().setClass(this, FSActivity_MarketPlace.class);
-		spec = tabHost.newTabSpec("2").setIndicator(null,getResources().getDrawable(R.drawable.tab_marketplace)).setContent(intent);
+		spec = tabHost
+				.newTabSpec("2")
+				.setIndicator(null,
+						getResources().getDrawable(R.drawable.tab_marketplace))
+				.setContent(intent);
 		tabHost.addTab(spec);
 
 		intent = new Intent().setClass(this, FSActivity_ShortList.class);
-		spec = tabHost.newTabSpec("3").setIndicator(null,getResources().getDrawable(R.drawable.tab_shortlist)).setContent(intent);
+		spec = tabHost
+				.newTabSpec("3")
+				.setIndicator(null,
+						getResources().getDrawable(R.drawable.tab_shortlist))
+				.setContent(intent);
 		tabHost.addTab(spec);
 
 		intent = new Intent().setClass(this, FSActivity_Search.class);
-		spec = tabHost.newTabSpec("4").setIndicator(null,getResources().getDrawable(R.drawable.tab_search)).setContent(intent);
+		spec = tabHost
+				.newTabSpec("4")
+				.setIndicator(null,
+						getResources().getDrawable(R.drawable.tab_search))
+				.setContent(intent);
 		tabHost.addTab(spec);
 		
 		getTabWidget().setStripEnabled(false);
-		
-//		tabHost.setOnTabChangedListener(new OnTabChangeListener()
-//		{
-//			@Override
-//			public void onTabChanged(String tabId)
-//			{
-//				Globals.isAppExitable = false;
-//			}
-//		});
+
+		tabHost.setOnTabChangedListener(new OnTabChangeListener() {
+			@Override
+			public void onTabChanged(String tabId) {
+				Log.d("haipn", "tabid:" + tabId);
+				if (tabId.equals("1")) {
+					Log.d("haipn", "true");
+					Const.isAppExitable = true;
+				} else {
+					Log.d("haipn", "false");
+					Const.isAppExitable = false;
+				}
+
+			}
+		});
 		// Create the interstitial
-//	    interstitial = new DfpInterstitialAd(this, "/78685291/Android320x480");
-////		interstitial = new DfpInterstitialAd(this, "/78685291/Android640x960");
-//
-//	    // Create ad request
-//	    AdRequest adRequest = new AdRequest();
-//	    
-//	    DfpExtras extras = new DfpExtras();
-//		extras.addExtra("screenWidth", getScreenWidthInDp());
-//		extras.addExtra("screenHeight", getScreenHeightInDp());
-//		adRequest.setNetworkExtras(extras);
-//	    // Begin loading your interstitial
-//	    interstitial.loadAd(adRequest);
-//
-//	    // Set Ad Listener to use the callbacks below
-//	    interstitial.setAdListener(this);
-		
-		rlAdMain = (RelativeLayout)findViewById(R.id.rl_main_adview);
-		
-//		dfpAdView = (DfpAdView)findViewById(R.id.adView);
-		if(getScreenWidthInDp() >= 540)
-		{
-			dfpAdView = new DfpAdView(this, new AdSize(540, 810), "/78685291/Android540x810");
-		}
-		else if(getScreenWidthInDp() >= 360)
-		{
-			dfpAdView = new DfpAdView(this, new AdSize(360, 540), "/78685291/Android360x540");
-		}
-		else
-		{
-			dfpAdView = new DfpAdView(this, new AdSize(320, 480), "/78685291/Android320x480");
-		}
-		
-		
+		// interstitial = new DfpInterstitialAd(this,
+		// "/78685291/Android320x480");
+		// // interstitial = new DfpInterstitialAd(this,
+		// "/78685291/Android640x960");
+		//
+		// // Create ad request
+		// AdRequest adRequest = new AdRequest();
+		//
+		// DfpExtras extras = new DfpExtras();
+		// extras.addExtra("screenWidth", getScreenWidthInDp());
+		// extras.addExtra("screenHeight", getScreenHeightInDp());
+		// adRequest.setNetworkExtras(extras);
+		// // Begin loading your interstitial
+		// interstitial.loadAd(adRequest);
+		//
+		// // Set Ad Listener to use the callbacks below
+		// interstitial.setAdListener(this);
+
+		rlAdMain = (RelativeLayout) findViewById(R.id.rl_main_adview);
+
+		dfpAdView = new DfpAdView(this, new AdSize(320, 480),
+				"/4689451/Android320x480");
+
 		AdRequest adRequest = new AdRequest();
 
-		LinearLayout llAdContainer = (LinearLayout)findViewById(R.id.ll_ad_container);
+		LinearLayout llAdContainer = (LinearLayout) findViewById(R.id.ll_ad_container);
 		llAdContainer.addView(dfpAdView);
-		
-		ImageView ivCloseAd = (ImageView)findViewById(R.id.iv_ad_close);
-		ivCloseAd.setOnClickListener(new OnClickListener()
-		{
+
+		ImageView ivCloseAd = (ImageView) findViewById(R.id.iv_ad_close);
+		ivCloseAd.setOnClickListener(new OnClickListener() {
 			@Override
-			public void onClick(View v)
-			{
+			public void onClick(View v) {
 				hideAd();
 			}
 		});
-		
+
 		dfpAdView.loadAd(adRequest);
 		dfpAdView.setAdListener(this);
-		
-		int i = getScreenWidthInDp();
-		Log.e("Screen Width", String.valueOf(i));
-	  }
-	
-	private int getScreenWidthInDp()
-	{
+		if (getIntent().getStringExtra(Const.TAG_NAME) == null)
+			tabHost.setCurrentTabByTag("1");
+		else {
+			tabHost.setCurrentTabByTag(getIntent().getStringExtra(
+					Const.TAG_NAME));
+			hideAd();
+		}
+	}
+
+	private int getScreenWidthInDp() {
 		DisplayMetrics dm = this.getResources().getDisplayMetrics();
 		return (int) (dm.widthPixels / dm.density);
 	}
 
-	private int getScreenHeightInDp()
-	{
+	private int getScreenHeightInDp() {
 		DisplayMetrics dm = this.getResources().getDisplayMetrics();
 		return (int) (dm.heightPixels / dm.density);
 	}
-	
-	  @Override
-	  public void onReceiveAd(Ad ad) 
-	  {
-		  Log.e("Ad DFP", "onReceiveAd");
-		  showAd();
-	  }
 
-	
 	@Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) 
-	{
-        if (keyCode == KeyEvent.KEYCODE_BACK) 
-        {
-        	if(isAdShown)
-        	{
-        		hideAd();
-        		return false;
-        	}
-//        	else
-//        	{
-//        		if(Globals.isAppExitable)
-//            	{	showAlert();
-//            		return false;
-//            	}
-//        	}
-        }
-        return super.onKeyDown(keyCode, event);
-    }
-	
-	private void showAd()
-	{
+	public void onReceiveAd(Ad ad) {
+		Log.e("Ad DFP", "onReceiveAd");
+		showAd();
+	}
+
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		Log.d("haipn", "onKey down");
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
+			Log.d("haipn", "key back");
+			if (isAdShown) {
+				Log.d("haipn", "showadd");
+				hideAd();
+				return false;
+			} else {
+				Log.d("haipn", "hide ad");
+				if (Const.isAppExitable) {
+					Log.d("haipn", "is exit abble");
+					showAlert();
+					return false;
+				} else {
+					Log.d("haipn", "not exit abble");
+					tabHost.setCurrentTabByTag("1");
+					Const.isAppExitable = true;
+					return false;
+				}
+			}
+		}
+		return super.onKeyDown(keyCode, event);
+	}
+
+	private void showAd() {
 		rlAdMain.setVisibility(View.VISIBLE);
 		isAdShown = true;
 	}
-	
-	private void hideAd()
-	{
+
+	private void hideAd() {
 		rlAdMain.setVisibility(View.GONE);
 		dfpAdView.stopLoading();
 		isAdShown = false;
 	}
-	
-	private void showAlert()
-	{
+
+	private void showAlert() {
 		new AlertDialog.Builder(this)
-        .setTitle("Confirm Quit")
-        .setMessage("You really want to quit?")
-        .setPositiveButton("Yes", new DialogInterface.OnClickListener() 
-        {
+				.setTitle("Confirm Quit")
+				.setMessage("You really want to quit?")
+				.setPositiveButton("Yes",
+						new DialogInterface.OnClickListener() {
 
-            @Override
-            public void onClick(DialogInterface dialog, int which) 
-            {
-            	finish();
-            }
+							@Override
+							public void onClick(DialogInterface dialog,
+									int which) {
+								finish();
+							}
 
-        })
-        .setNegativeButton("No", null)
-        .show();
+						}).setNegativeButton("No", null).show();
 	}
 
 	@Override
-	public void onDismissScreen(Ad arg0)
-	{
+	public void onDismissScreen(Ad arg0) {
 		// TODO Auto-generated method stub
 		Log.e("Ad DFP", "onDismissScreen");
 	}
 
 	@Override
-	public void onFailedToReceiveAd(Ad arg0, ErrorCode arg1)
-	{
+	public void onFailedToReceiveAd(Ad arg0, ErrorCode arg1) {
 		// TODO Auto-generated method stub
 		Log.e("Ad DFP", "onFailedToReceiveAd");
 	}
 
 	@Override
-	public void onLeaveApplication(Ad arg0)
-	{
+	public void onLeaveApplication(Ad arg0) {
 		// TODO Auto-generated method stub
 		Log.e("Ad DFP", "onLeaveApplication");
 		hideAd();
 	}
 
 	@Override
-	public void onPresentScreen(Ad arg0)
-	{
+	public void onPresentScreen(Ad arg0) {
 		// TODO Auto-generated method stub
 		Log.e("Ad DFP", "onPresentScreen");
 	}

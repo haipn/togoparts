@@ -1,14 +1,7 @@
 package com.agsi.togopart;
 
-import android.app.Activity;
-import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 public class Fragment_Main extends Fragment {
 	protected void addFragment(Fragment fragment, boolean addToBackStack,

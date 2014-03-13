@@ -64,19 +64,6 @@
                 android:text="TextView" />
 
             <com.agsi.togopart.gallery.FontableTextView
-                android:id="@+id/tvPriority"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="1dp"
-                android:layout_weight="0.25"
-                android:background="@color/yellow"
-                android:gravity="center"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:text="Priority"
-                android:textColor="@android:color/black" />
-
-            <com.agsi.togopart.gallery.FontableTextView
                 android:id="@+id/tvNewItem"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

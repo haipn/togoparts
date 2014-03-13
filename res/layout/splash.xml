@@ -1,36 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ads="http://schemas.android.com/apk/lib/com.google.ads"
     android:layout_width="match_parent"
-    android:orientation="vertical"
+    android:layout_height="match_parent"
     android:background="@drawable/splash_screen_bg"
-    android:layout_height="match_parent" >
+    android:orientation="vertical" >
 
-    
+    <com.google.ads.doubleclick.DfpAdView
+        android:id="@+id/adView"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        ads:adSize="BANNER"
+        ads:adUnitId="/4689451/Android320x480"
+        ads:loadAdOnCreate="true"
+        android:background="@android:color/white" />
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_gravity="center_vertical|center_horizontal"
-        android:layout_height="0dip"
-        android:layout_weight="1"
-        android:src="@drawable/splash_screen_logo" >
-    </ImageView>
-	<com.agsi.togopart.gallery.FontableTextView
-        android:id="@+id/tv_slogan"
-        android:textSize="20sp"
-        android:layout_width="fill_parent"
-        android:layout_gravity="center_horizontal"
-        android:gravity="center"
-        android:paddingBottom="5dp"
-        android:layout_height="wrap_content"
-        android:text="@string/splash_slogan" />
-	<com.agsi.togopart.gallery.FontableTextView
-        android:id="@+id/tv_website"
-        android:textSize="25sp"
-        android:textColor="@color/orange"
-        android:layout_width="fill_parent"
-        android:layout_gravity="center_horizontal"
-        android:gravity="center"
-        android:layout_height="wrap_content"
-        android:paddingBottom="20dp"
-        android:text="@string/splash_website" />
-</LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="0dip"
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:layout_weight="1"
+            android:src="@drawable/splash_screen_logo" >
+        </ImageView>
+
+        <com.agsi.togopart.gallery.FontableTextView
+            android:id="@+id/tv_slogan"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center"
+            android:paddingBottom="5dp"
+            android:text="@string/splash_slogan"
+            android:textSize="20sp" />
+
+        <com.agsi.togopart.gallery.FontableTextView
+            android:id="@+id/tv_website"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center"
+            android:paddingBottom="20dp"
+            android:text="@string/splash_website"
+            android:textColor="@color/orange"
+            android:textSize="25sp" />
+    </LinearLayout>
+
+</FrameLayout>

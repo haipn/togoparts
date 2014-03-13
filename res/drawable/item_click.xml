@@ -7,6 +7,6 @@
     <item android:drawable="@drawable/orange" android:state_selected="true"/>
 
     <!-- When not selected, use white -->
-    <item android:drawable="@drawable/light_gray"/>
+    <item android:drawable="@android:color/white"/>
 
 </selector>

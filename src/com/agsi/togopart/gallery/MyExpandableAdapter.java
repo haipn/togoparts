@@ -7,10 +7,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
-import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
 
@@ -24,19 +22,17 @@ public class MyExpandableAdapter extends BaseExpandableListAdapter {
 	private LayoutInflater inflater;
 	private Context _context;
 	private List<Group> _listDataHeader; // header titles
-	private ClickViewAll mViewAll;
 	// child data in format of header title, child title
 
-	public MyExpandableAdapter(Context context, List<Group> listDataHeader, ClickViewAll viewAll) {
+	public MyExpandableAdapter(Context context, List<Group> listDataHeader) {
 		this._context = context;
 		this._listDataHeader = listDataHeader;
 		inflater = ((Activity) _context).getLayoutInflater();
-		mViewAll = viewAll;
 	}
 
 	private class ViewHolder {
 		public TextView tvTitleGroup;
-		public TextView btnBrowseAllAds;
+//		public TextView btnBrowseAllAds;
 		public TextView tvTitleChild;
 		public TextView tvNoAds;
 		public TextView tvDescription;
@@ -76,8 +72,8 @@ public class MyExpandableAdapter extends BaseExpandableListAdapter {
 		if (convertView == null) {
 			convertView = inflater.inflate(R.layout.row_group, null);
 			holder = new ViewHolder();
-			holder.btnBrowseAllAds = (TextView) convertView
-					.findViewById(R.id.btnViewAll);
+//			holder.btnBrowseAllAds = (TextView) convertView
+//					.findViewById(R.id.btnViewAll);
 			holder.tvTitleGroup = (TextView) convertView
 					.findViewById(R.id.tvTitle);
 
@@ -87,18 +83,18 @@ public class MyExpandableAdapter extends BaseExpandableListAdapter {
 		}
 		
 		final Group group = getGroup(groupPosition);
-		if (group.mGroupId == null) {
-			holder.btnBrowseAllAds.setVisibility(View.GONE);
-		} else {
-			holder.btnBrowseAllAds.setVisibility(View.VISIBLE);
-		}
-		holder.btnBrowseAllAds.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-				mViewAll.onViewAllClick(group.mGroupId);
-			}
-		});
+//		if (group.mGroupId == null) {
+//			holder.btnBrowseAllAds.setVisibility(View.GONE);
+//		} else {
+//			holder.btnBrowseAllAds.setVisibility(View.VISIBLE);
+//		}
+//		convertView.setOnClickListener(new OnClickListener() {
+//
+//			@Override
+//			public void onClick(View arg0) {
+//				mViewAll.onViewAllClick(group.mGroupId);
+//			}
+//		});
 		holder.tvTitleGroup.setText(group.mTitle);
 		ExpandableListView eLV = (ExpandableListView) parent;
 		eLV.expandGroup(groupPosition);

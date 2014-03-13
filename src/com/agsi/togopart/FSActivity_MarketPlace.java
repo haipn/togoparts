@@ -2,8 +2,8 @@ package com.agsi.togopart;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
+import android.view.KeyEvent;
 
 public class FSActivity_MarketPlace extends Activity_Main
 {
@@ -29,18 +29,18 @@ public class FSActivity_MarketPlace extends Activity_Main
 		ft.commit();
 	}
 	
-//	@Override
-//    public boolean onKeyDown(int keyCode, KeyEvent event) 
-//	{
-//        if (keyCode == KeyEvent.KEYCODE_BACK) 
-//        {
-//        	if(Globals.isAppExitable)
+	@Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) 
+	{
+        if (keyCode == KeyEvent.KEYCODE_BACK) 
+        {
+//        	if(Const.isAppExitable)
 //        	{	
-//        		return false;
+        		return false;
 //        	}
 //        	else
 //        		return super.onKeyDown(keyCode, event);
-//        }
-//        return super.onKeyDown(keyCode, event);
-//    }
+        }
+        return super.onKeyDown(keyCode, event);
+    }
 }

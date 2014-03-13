@@ -17,6 +17,6 @@
         android:text="'ajf;ladskjf;sakjf;saklfjsalkfj;aslkjf;sajfkl;asjf;lksajf;lksajf;kjs"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:textSize="15sp" />
 
 </LinearLayout>

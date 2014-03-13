@@ -1,35 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ads="http://schemas.android.com/apk/lib/com.google.ads"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="10dp"
     android:orientation="vertical" >
 
-    <com.agsi.togopart.gallery.FontableEditText
-        android:id="@+id/edtKeyword"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:imeOptions="actionSearch"
-        android:hint="@string/hint_keyword"
-        android:singleLine="true" >
-
-        <requestFocus />
-    </com.agsi.togopart.gallery.FontableEditText>
-
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical" >
+        android:orientation="vertical"
+        android:layout_height="0dp"
+        android:layout_weight="1" >
 
-        <com.agsi.togopart.gallery.FontableButton
-            android:id="@+id/btnSearch"
-            android:background="@drawable/btn_click"
+        <com.agsi.togopart.gallery.FontableEditText
+            android:id="@+id/edtKeyword"
             android:layout_width="fill_parent"
-            android:textColor="@android:color/white"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/search" />
+            android:ems="10"
+            android:hint="@string/hint_keyword"
+            android:imeOptions="actionSearch"
+            android:singleLine="true" >
+
+            <requestFocus />
+        </com.agsi.togopart.gallery.FontableEditText>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <com.agsi.togopart.gallery.FontableButton
+                android:id="@+id/btnSearch"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_click"
+                android:text="@string/search"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="@android:color/white" />
+        </LinearLayout>
     </LinearLayout>
+
+    <com.google.ads.doubleclick.DfpAdView
+        android:id="@+id/adView"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        ads:adSize="BANNER"
+        ads:adUnitId="/4689451/Android320x50"
+        ads:loadAdOnCreate="true"
+        android:background="@android:color/white" />
 
 </LinearLayout>

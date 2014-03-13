@@ -1,6 +1,5 @@
 package com.agsi.togopart.gallery;
 
-import java.io.File;
 import java.util.ArrayList;
 
 import android.content.Context;
@@ -11,18 +10,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.agsi.togopart.R;
-import com.agsi.togopart.json.SearchResult;
 import com.agsi.togopart.json.SearchResult.AdsResult;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
-import com.nostra13.universalimageloader.utils.StorageUtils;
 
 public class SearchResultAdapter extends BaseAdapter {
 
@@ -108,20 +104,33 @@ public class SearchResultAdapter extends BaseAdapter {
 		holder.dateAndPostedBy.setText(ads.dateposted + "/Posted by "
 				+ ads.postedby);
 		holder.mailCount.setText(ads.msg_sent);
-		holder.newItem.setText(ads.listinglabel);
+		if (ads.listinglabel != null && !ads.listinglabel.isEmpty()) {
+			holder.newItem.setText(ads.listinglabel);
+			holder.newItem.setVisibility(View.VISIBLE);
+
+		} else {
+			holder.newItem.setVisibility(View.INVISIBLE);
+		}
+
 		holder.price.setText(ads.price);
 		// holder.priority.setText()
-		try {
+		if (ads.special != null && ads.special.textcolor != null) {
 			holder.special.setText(ads.special.text);
 			holder.special
 					.setTextColor(Color.parseColor(ads.special.textcolor));
 			holder.special.setBackgroundColor(Color
 					.parseColor(ads.special.bgcolor));
-		} catch (NullPointerException e) {
-			Log.d("haipn","null pointer in color special");
+			holder.special.setVisibility(View.VISIBLE);
+		} else {
+			holder.special.setVisibility(View.GONE);
 		}
-
-		holder.status.setText(ads.adstatus);
+		if (ads.adstatus != null && ads.adstatus.equalsIgnoreCase("sold")) {
+			holder.status.setText("Sold");
+			holder.status.setTextColor(mContext.getResources().getColor(
+					R.color.red));
+		} else {
+			holder.status.setText(ads.adstatus);
+		}
 		holder.viewCount.setText(ads.ad_views);
 		return convertView;
 	}

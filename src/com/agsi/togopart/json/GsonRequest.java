@@ -2,8 +2,6 @@ package com.agsi.togopart.json;
 
 import java.io.UnsupportedEncodingException;
 
-import android.util.Log;
-
 import com.android.volley.NetworkResponse;
 import com.android.volley.ParseError;
 import com.android.volley.Request;
@@ -26,7 +24,7 @@ public class GsonRequest<T> extends Request<T> {
                        Class<T> clazz,
                        Listener<T> listener,
                        ErrorListener errorListener) {
-        super(Method.GET, url, errorListener);
+        super(method, url, errorListener);
         this.mClazz = clazz;
         this.mListener = listener;
         mGson = new Gson();
@@ -39,7 +37,7 @@ public class GsonRequest<T> extends Request<T> {
                        Listener<T> listener,
                        ErrorListener errorListener,
                        Gson gson) {
-        super(Method.GET, url, errorListener);
+        super(method, url, errorListener);
         this.mClazz = clazz;
         this.mListener = listener;
         mGson = gson;

@@ -3,9 +3,9 @@ package com.agsi.togopart;
 import java.util.ArrayList;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.text.Html;
 import android.util.Log;
@@ -20,6 +20,7 @@ import android.widget.GridView;
 import android.widget.ImageView;
 
 import com.agsi.togopart.app.Const;
+import com.agsi.togopart.app.ErrorDialog;
 import com.agsi.togopart.app.MyVolley;
 import com.agsi.togopart.gallery.FontableTextView;
 import com.agsi.togopart.json.Ads;
@@ -61,11 +62,9 @@ public class HomeFragment extends Fragment_Main {
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long arg3) {
-				Fragment fragment = new DetailFragment();
-				Bundle bundle = new Bundle();
-				bundle.putString(Const.ADS_ID, mListAds.get(arg2).getAdsId());
-				fragment.setArguments(bundle);
-				addFragment(fragment, true, FragmentTransaction.TRANSIT_NONE);
+				Intent i = new Intent(getActivity(), DetailActivity.class);
+				i.putExtra(Const.ADS_ID, mListAds.get(arg2).getAdsId());
+				startActivity(i);
 			}
 		});
 		mTvTitle.setText(mTitle);
@@ -104,6 +103,7 @@ public class HomeFragment extends Fragment_Main {
 				tab.getTabHost().setCurrentTab(3);
 			}
 		});
+		headerView.setProgressVisible(View.VISIBLE);
 	}
 
 	@Override
@@ -114,8 +114,8 @@ public class HomeFragment extends Fragment_Main {
 
 	@Override
 	public void onResume() {
-		Log.d("haipn", "on resume");
 		super.onResume();
+		Const.isAppExitable = true;
 	}
 
 	private Response.Listener<MpListLatestAds> createMyReqSuccessListener() {
@@ -128,6 +128,7 @@ public class HomeFragment extends Fragment_Main {
 				mAdsAdapter.notifyDataSetChanged();
 				mTitle = response.mTitle;
 				mTvTitle.setText(response.mTitle);
+				headerView.setProgressVisible(View.INVISIBLE);
 
 			}
 		};
@@ -138,7 +139,10 @@ public class HomeFragment extends Fragment_Main {
 			@Override
 			public void onErrorResponse(VolleyError error) {
 				Log.d("haipn", "home error");
-
+				FragmentTransaction ft = getActivity()
+						.getSupportFragmentManager().beginTransaction();
+				ErrorDialog newFragment = new ErrorDialog();
+				newFragment.show(ft, "error dialog");
 			}
 		};
 	}

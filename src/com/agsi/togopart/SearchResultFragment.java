@@ -10,8 +10,8 @@ import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
@@ -172,7 +172,7 @@ public class SearchResultFragment extends Fragment_Main {
 		String to = mQueryBundle.getString(FilterActivity.TO);
 		if (to == null)
 			to = "";
-		String category = mQueryBundle.getString(FilterActivity.CATEGORY);
+		String category = mQueryBundle.getString(FilterActivity.ADSTATUS);
 		if (category == null)
 			category = "";
 		String market = mQueryBundle.getString(FilterActivity.MARKETPLACE_CATEGORY);
@@ -181,7 +181,7 @@ public class SearchResultFragment extends Fragment_Main {
 		String type = mQueryBundle.getString(FilterActivity.TYPE);
 		if (type == null)
 			type = "";
-		mQuery = String.format(Const.URL_LIST_SEARCH_ADS, mKeyword, 
+		mQuery = String.format(Const.URL_LIST_SEARCH, mKeyword, 
 				postBy, 
 				size, 
 				value,

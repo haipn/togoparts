@@ -2,11 +2,11 @@ package com.agsi.togopart;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 public class Activity_Main extends FragmentActivity implements HeaderView {
@@ -15,6 +15,7 @@ public class Activity_Main extends FragmentActivity implements HeaderView {
 	ImageButton mBtnRight;
 	ImageView mIvLogo;
 	TextView mTvTitle;
+	ProgressBar mProgress;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -23,6 +24,7 @@ public class Activity_Main extends FragmentActivity implements HeaderView {
 		mBtnRight = (ImageButton) findViewById(R.id.btnSearch);
 		mIvLogo = (ImageView) findViewById(R.id.logo);
 		mTvTitle = (TextView) findViewById(R.id.title);
+		mProgress = (ProgressBar) findViewById(R.id.progress);
 		mBtnLeft.setOnClickListener(new OnClickListener() {
 			
 			@Override
@@ -57,5 +59,9 @@ public class Activity_Main extends FragmentActivity implements HeaderView {
 		mTvTitle.setVisibility(visible);
 		mTvTitle.setText(text);
 		
+	}
+	@Override
+	public void setProgressVisible(int visible) {
+		mProgress.setVisibility(visible);
 	}
 }

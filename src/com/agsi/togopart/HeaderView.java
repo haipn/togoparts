@@ -7,4 +7,5 @@ public interface HeaderView {
 	public void setRightButton(int visible, View.OnClickListener click);
 	public void setLogoVisible(int  visible);
 	public void setTitleVisible(int visible, String text);
+	public void setProgressVisible(int visible);
 }

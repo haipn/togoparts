@@ -2,9 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="8dp"
     android:background="@drawable/item_click"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:padding="8dp" >
 
     <com.agsi.togopart.gallery.FontableTextView
         android:id="@+id/tvTitle"
@@ -13,16 +13,16 @@
         android:ellipsize="marquee"
         android:maxLines="2"
         android:minLines="2"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="FontableTextView" />
+        android:text="FontableTextView"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <ImageView
         android:id="@+id/image"
-        android:scaleType="centerCrop"
         android:layout_width="160dp"
         android:layout_height="160dp"
+        android:layout_marginBottom="5dp"
         android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp" />
+        android:scaleType="centerCrop" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -50,7 +50,7 @@
                 android:drawablePadding="8dp"
                 android:drawableRight="@drawable/clock"
                 android:gravity="right|center_vertical"
-                android:text="FontableTextView" />
+                android:singleLine="true" />
 
             <com.agsi.togopart.gallery.FontableTextView
                 android:id="@+id/tvPostBy"
@@ -59,7 +59,7 @@
                 android:drawablePadding="8dp"
                 android:drawableRight="@drawable/user_icon"
                 android:gravity="right"
-                android:text="FontableTextView" />
+                android:singleLine="true" />
         </LinearLayout>
     </LinearLayout>
 

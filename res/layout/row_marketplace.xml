@@ -43,6 +43,7 @@
 
         <com.agsi.togopart.gallery.FontableTextView
             android:id="@+id/fontableButton1"
+            android:visibility="invisible"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/btn_click"

@@ -1,159 +1,263 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ads="http://schemas.android.com/apk/lib/com.google.ads"
     android:layout_width="match_parent"
-    android:orientation="vertical"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
 
     <include
+        android:id="@+id/header"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/header"
         layout="@layout/new_actionbar" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="fill_parent"
-        android:background="@color/splash_background"
-        android:orientation="vertical" >
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" >
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
+            android:background="@color/splash_background"
             android:orientation="vertical" >
 
-            <com.agsi.togopart.gallery.FontableTextView
-                android:id="@+id/textView2"
-                style="@style/TextAppearance.Search.Black"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/search_posted_by" />
-
-            <com.agsi.togopart.gallery.FontableEditText
-                android:id="@+id/edtPostedBy"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:singleLine="true" />
-
-            <com.agsi.togopart.gallery.FontableTextView
-                android:id="@+id/textView3"
-                style="@style/TextAppearance.Search.Black"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/search_size" />
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:weightSum="5" >
-
-                <Spinner
-                    android:id="@+id/spnSize"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2" />
+                android:layout_margin="10dp"
+                android:orientation="vertical" >
 
                 <com.agsi.togopart.gallery.FontableTextView
-                    android:id="@+id/textView4"
-                    style="@style/TextAppearance.Search.Orange"
+                    android:id="@+id/textView2"
+                    style="@style/TextAppearance.Search.Black"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.5"
-                    android:text="@string/or" />
+                    android:text="@string/search_sort_by" />
+
+                <RadioGroup
+                    android:id="@+id/group"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:focusable="true"
+                    android:paddingLeft="20dp" >
+
+                    <RadioButton
+                        android:id="@+id/rbSort1"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:button="@null"
+                        android:drawableRight="@drawable/btn_check"
+                        android:focusable="true"
+                        android:gravity="left|center_vertical"
+                        android:text="@string/sort_by_1" >
+                    </RadioButton>
+
+                    <RadioButton
+                        android:id="@+id/rbSort2"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:button="@null"
+                        android:drawableRight="@drawable/btn_check"
+                        android:gravity="left|center_vertical"
+                        android:text="@string/sort_by_2" />
+
+                    <RadioButton
+                        android:id="@+id/rbSort3"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:button="@null"
+                        android:drawableRight="@drawable/btn_check"
+                        android:gravity="left|center_vertical"
+                        android:text="@string/sort_by_3" />
+
+                    <RadioButton
+                        android:id="@+id/rbSort4"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:button="@null"
+                        android:drawableRight="@drawable/btn_check"
+                        android:gravity="left|center_vertical"
+                        android:text="@string/sort_by_4" />
+                </RadioGroup>
+
+                <com.agsi.togopart.gallery.FontableTextView
+                    android:id="@+id/textView5"
+                    style="@style/TextAppearance.Search.Black"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/search_budget" />
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical" >
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" >
+
+                        <com.agsi.togopart.gallery.FontableTextView
+                            style="@style/TextAppearance.Search.Orange"
+                            android:layout_width="wrap_content"
+                            android:layout_height="fill_parent"
+                            android:gravity="center_vertical"
+                            android:text="@string/search_from" />
+
+                        <com.agsi.togopart.gallery.FontableEditText
+                            android:id="@+id/edtFrom"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:inputType="numberSigned"
+                            android:singleLine="true" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" >
+
+                        <com.agsi.togopart.gallery.FontableTextView
+                            style="@style/TextAppearance.Search.Orange"
+                            android:layout_width="wrap_content"
+                            android:layout_height="fill_parent"
+                            android:gravity="center_vertical"
+                            android:text="@string/search_to" />
+
+                        <com.agsi.togopart.gallery.FontableEditText
+                            android:id="@+id/edtTo"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:inputType="numberSigned"
+                            android:singleLine="true" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <com.agsi.togopart.gallery.FontableTextView
+                    android:id="@+id/textView3"
+                    style="@style/TextAppearance.Search.Black"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/search_size" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:weightSum="5" >
+
+                    <Spinner
+                        android:id="@+id/spnSize"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2" />
+
+                    <com.agsi.togopart.gallery.FontableTextView
+                        android:id="@+id/textView4"
+                        style="@style/TextAppearance.Search.Orange"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
+                        android:text="@string/or" />
+
+                    <com.agsi.togopart.gallery.FontableEditText
+                        android:id="@+id/edtValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:inputType="numberSigned"
+                        android:singleLine="true" />
+
+                    <Spinner
+                        android:id="@+id/spnUnit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.5" />
+                </LinearLayout>
+
+                <com.agsi.togopart.gallery.FontableTextView
+                    android:id="@+id/textView8"
+                    style="@style/TextAppearance.Search.Black"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/search_type" />
+
+                <Spinner
+                    android:id="@+id/spnType"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <com.agsi.togopart.gallery.FontableTextView
+                    android:id="@+id/textView6"
+                    style="@style/TextAppearance.Search.Black"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/search_ad_status" />
+
+                <Spinner
+                    android:id="@+id/spnAdStatus"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <com.agsi.togopart.gallery.FontableTextView
+                    android:id="@+id/textView7"
+                    style="@style/TextAppearance.Search.Black"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/search_marketplace" />
+
+                <Spinner
+                    android:id="@+id/spnCatId"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <com.agsi.togopart.gallery.FontableTextView
+                    android:id="@+id/textView7"
+                    style="@style/TextAppearance.Search.Black"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/search_bikeshop" />
+
+                <Spinner
+                    android:id="@+id/spnShop"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <com.agsi.togopart.gallery.FontableTextView
+                    android:id="@+id/textView2"
+                    style="@style/TextAppearance.Search.Black"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/search_posted_by" />
 
                 <com.agsi.togopart.gallery.FontableEditText
-                    android:id="@+id/edtValue"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/edtPostedBy"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:ems="10"
-                    android:inputType="numberSigned"
                     android:singleLine="true" />
 
-                <Spinner
-                    android:id="@+id/spnUnit"
-                    android:layout_width="wrap_content"
+                <Button
+                    android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1.5" />
+                    android:background="@drawable/btn_click"
+                    android:text="@string/btn_reset_filter"
+                    android:textColor="@android:color/white"
+                    android:textSize="30sp" />
             </LinearLayout>
-
-            <com.agsi.togopart.gallery.FontableTextView
-                android:id="@+id/textView5"
-                style="@style/TextAppearance.Search.Black"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/search_budget" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:weightSum="6" >
-
-                <com.agsi.togopart.gallery.FontableTextView
-                    style="@style/TextAppearance.Search.Orange"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/search_from" />
-
-                <com.agsi.togopart.gallery.FontableEditText
-                    android:id="@+id/edtFrom"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="3"
-                    android:inputType="numberSigned" />
-
-                <com.agsi.togopart.gallery.FontableTextView
-                    style="@style/TextAppearance.Search.Orange"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/search_to" />
-
-                <com.agsi.togopart.gallery.FontableEditText
-                    android:id="@+id/edtTo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="3"
-                    android:inputType="numberSigned" />
-            </LinearLayout>
-
-            <com.agsi.togopart.gallery.FontableTextView
-                android:id="@+id/textView6"
-                style="@style/TextAppearance.Search.Black"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/search_category" />
-
-            <Spinner
-                android:id="@+id/spnCategory"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-            <com.agsi.togopart.gallery.FontableTextView
-                android:id="@+id/textView7"
-                style="@style/TextAppearance.Search.Black"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/search_marketplace" />
-
-            <Spinner
-                android:id="@+id/spnCatId"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-            <com.agsi.togopart.gallery.FontableTextView
-                android:id="@+id/textView8"
-                style="@style/TextAppearance.Search.Black"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/search_type" />
-
-            <Spinner
-                android:id="@+id/spnType"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
         </LinearLayout>
+    </ScrollView>
 
-    </LinearLayout>
+    <com.google.ads.doubleclick.DfpAdView
+        android:id="@+id/adView"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        ads:adSize="SMART_BANNER"
+        ads:adUnitId="/4689451/Android320x50"
+        ads:loadAdOnCreate="true"
+        android:background="@android:color/white" />
 
 </LinearLayout>

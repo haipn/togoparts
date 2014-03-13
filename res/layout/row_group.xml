@@ -18,14 +18,14 @@
         android:textColor="@android:color/white"
         android:textSize="25sp" />
 
-    <com.agsi.togopart.gallery.FontableTextView
-        android:id="@+id/btnViewAll"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/btn_click"
-        android:gravity="center"
-        android:padding="10dp"
-        android:text="@string/label_browse_all_ads"
-        android:textColor="@android:color/white" />
+<!--     <com.agsi.togopart.gallery.FontableTextView -->
+<!--         android:id="@+id/btnViewAll" -->
+<!--         android:layout_width="wrap_content" -->
+<!--         android:layout_height="wrap_content" -->
+<!--         android:background="@drawable/btn_click" -->
+<!--         android:gravity="center" -->
+<!--         android:padding="10dp" -->
+<!--         android:text="@string/label_browse_all_ads" -->
+<!--         android:textColor="@android:color/white" /> -->
 
 </LinearLayout>

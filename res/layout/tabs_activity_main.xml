@@ -1,62 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TabHost
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<TabHost xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:ads="http://schemas.android.com/apk/lib/com.google.ads"
     android:id="@android:id/tabhost"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@android:color/white">
+    android:background="@android:color/white" >
+
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:orientation="vertical"
-        android:padding="0dp">
+        android:padding="0dp" >
+
         <FrameLayout
             android:id="@android:id/tabcontent"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:padding="0dp"/>
+            android:padding="0dp" />
+
         <TabWidget
             android:id="@android:id/tabs"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_weight="0"
-            android:padding="0dp"/>
+            android:padding="0dp" />
     </LinearLayout>
-    <RelativeLayout 
+
+    <RelativeLayout
         android:id="@+id/rl_main_adview"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:background="@android:color/white"
-        android:visibility="gone">
-        <LinearLayout 
+        android:visibility="visible" >
+
+        <LinearLayout
             android:id="@+id/ll_ad_container"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
             android:gravity="center"
-            android:orientation="vertical"
-            android:layout_centerInParent="true">
-            
+            android:orientation="vertical" >
         </LinearLayout>
-        <ImageView 
+
+        <ImageView
             android:id="@+id/iv_ad_close"
+            android:src="@android:drawable/ic_delete"
             android:layout_width="35dp"
             android:layout_height="35dp"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
-            android:layout_margin="10dp"
-            />
+            android:layout_margin="10dp" />
     </RelativeLayout>
-<!--     <com.google.ads.doubleclick.DfpAdView
-	    	android:id="@+id/adView"
-	    	android:layout_width="fill_parent"
-	    	android:layout_height="fill_parent"
-	    	ads:adSize="360x540"
-	   	 	ads:adUnitId="/78685291/Android360x540"
-	    	ads:loadAdOnCreate="false"
-	    	android:background="@android:color/white"
-	    	android:visibility="gone"
-	    	/>
-	    	--> 
+
+<!--     <com.google.ads.doubleclick.InterstitialAd -->
+<!--         android:id="@+id/adView" -->
+<!--         android:layout_width="fill_parent" -->
+<!--         android:layout_height="fill_parent" -->
+<!--         ads:adUnitId="/4689451/Android320x480" -->
+<!--         ads:loadAdOnCreate="false" -->
+<!--         android:background="@android:color/white" /> -->
+
 </TabHost>

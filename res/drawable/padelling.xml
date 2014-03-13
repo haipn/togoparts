@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animation-list xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/selected"
+    android:oneshot="false" >
+
+    <item
+        android:drawable="@drawable/padelling1"
+        android:duration="30"/>
+    <item
+        android:drawable="@drawable/padelling2"
+        android:duration="30"/>
+    <item
+        android:drawable="@drawable/padelling3"
+        android:duration="30"/>
+    <item
+        android:drawable="@drawable/padelling4"
+        android:duration="30"/>
+    <item
+        android:drawable="@drawable/padelling5"
+        android:duration="30"/>
+    <item
+        android:drawable="@drawable/padelling6"
+        android:duration="30"/>
+    <item
+        android:drawable="@drawable/padelling7"
+        android:duration="30"/>
+    <item
+        android:drawable="@drawable/padelling8"
+        android:duration="30"/>
+    <item
+        android:drawable="@drawable/padelling9"
+        android:duration="30"/>
+
+</animation-list>
