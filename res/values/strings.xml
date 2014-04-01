@@ -27,14 +27,14 @@
     <string name="search">Search</string>
     <string name="splash_slogan">Singapore\'s Most Addictive Bicycle Marketplace</string>
     <string name="splash_website">www.togoparts.com</string>
-    <string name="time">TIME</string>
-    <string name="status">STATUS</string>
-    <string name="description">DESCRIPTION</string>
-    <string name="price">PRICE</string>
-    <string name="postedby">POSTED BY</string>
-    <string name="btn_add_shortlist">SHORTLIST AD</string>
-    <string name="remove_shortlist">REMOVE SHORTLIST</string>
-    <string name="btn_share">SHARE</string>
+    <string name="time">Time</string>
+    <string name="status">Status</string>
+    <string name="description">Description</string>
+    <string name="price">Price</string>
+    <string name="postedby">Posted by</string>
+    <string name="btn_add_shortlist">Shortlist Ad</string>
+    <string name="remove_shortlist">Remove Shortlist</string>
+    <string name="btn_share">Share</string>
     <string name="label_description">Description</string>
     <string name="label_size">Size</string>
     <string name="label_posted_by">Posted by</string>
@@ -45,11 +45,15 @@
     <string name="label_browse_all_ads">Browse All Ads</string>
     <string name="label_add_post">+ Post an ad</string>
     <string name="hint_keyword">Search</string>
-    <string name="marketplace">MARKETPLACE</string>
-    <string name="search_result">SEARCH RESULT</string>
-    <string name="filter_title">FILTER</string>
-    <string name="shortlist">SHORTLIST ADS</string>
-    <string name="title_ad_detail">AD DETAILS</string>
-    <string name="btn_reset_filter">Reset Filter</string>
-
+    <string name="marketplace">Marketplace</string>
+    <string name="search_result">Search Result</string>
+    <string name="filter_title">Filter</string>
+    <string name="shortlist">Shortlisted Ads</string>
+    <string name="title_ad_detail">Ad Details</string>
+    <string name="btn_reset_filter">Reset</string>
+    <string name="itemdeleted">Item deleted</string>
+    <string name="taptoundo">Tap to undo</string>
+    <string name="no_result_found">No result found</string>
+    <string name="no_shortlist">No shortlisted ads</string>
+	<string name="apply_filer">Apply Filter</string>
 </resources>

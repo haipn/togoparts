@@ -4,5 +4,7 @@
          Customize dimensions originally defined in res/values/dimens.xml (such as
          screen margins) for sw600dp devices (e.g. 7" tablets) here.
     -->
-
+    <dimen name="image_thumb">150dp</dimen>
+	<dimen name="image_home">300dp</dimen>
+	<dimen name="image_slide">400dp</dimen>
 </resources>

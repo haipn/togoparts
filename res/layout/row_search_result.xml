@@ -10,16 +10,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
 
-        <com.agsi.togopart.gallery.FontableTextView
+        <sg.togoparts.gallery.FontableTextView
             android:id="@+id/tvTitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="TextView"
+            android:paddingBottom="10dp"
+            android:text="sajfhk;ljsakfjsafjsakfjsa;kfasklnvkasnkfjhksja;flsjf;lkjsaf;kljsaf;kasj;fljsakfjsaklfjas;kljfkasjf"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@android:color/black" />
 
-        <com.agsi.togopart.gallery.FontableTextView
+        <sg.togoparts.gallery.FontableTextView
             android:id="@+id/tvPrice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -34,8 +35,8 @@
 
         <ImageView
             android:id="@+id/image"
-            android:layout_width="100dp"
-            android:layout_height="100dp" />
+            android:layout_width="@dimen/image_thumb"
+            android:layout_height="@dimen/image_thumb" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -43,7 +44,7 @@
             android:orientation="vertical"
             android:paddingLeft="10dp" >
 
-            <com.agsi.togopart.gallery.FontableTextView
+            <sg.togoparts.gallery.FontableTextView
                 android:id="@+id/tvViewCount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -53,7 +54,7 @@
                 android:gravity="center_vertical"
                 android:text="TextView" />
 
-            <com.agsi.togopart.gallery.FontableTextView
+            <sg.togoparts.gallery.FontableTextView
                 android:id="@+id/tvMailCount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -63,7 +64,17 @@
                 android:gravity="center_vertical"
                 android:text="TextView" />
 
-            <com.agsi.togopart.gallery.FontableTextView
+            <sg.togoparts.gallery.FontableTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="1dp"
+                android:layout_weight="0.25"
+                android:drawableLeft="@drawable/small_comments_icon"
+                android:gravity="center_vertical"
+                android:text="TextView"
+                android:visibility="invisible" />
+
+            <sg.togoparts.gallery.FontableTextView
                 android:id="@+id/tvNewItem"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -89,7 +100,7 @@
                 android:layout_weight="0.25"
                 android:gravity="center_vertical" >
 
-                <com.agsi.togopart.gallery.FontableTextView
+                <sg.togoparts.gallery.FontableTextView
                     android:id="@+id/tvSpecial"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -99,7 +110,7 @@
                     android:paddingRight="10dp"
                     android:text="TextView" />
 
-                <com.agsi.togopart.gallery.FontableTextView
+                <sg.togoparts.gallery.FontableTextView
                     android:id="@+id/tvFirm"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -116,7 +127,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0.25" >
 
-                <com.agsi.togopart.gallery.FontableTextView
+                <sg.togoparts.gallery.FontableTextView
                     android:id="@+id/tvStatus"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -133,14 +144,15 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0.25" >
 
-                <com.agsi.togopart.gallery.FontableTextView
+                <sg.togoparts.gallery.FontableTextView
                     android:id="@+id/tvDateAndPostedBy"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:gravity="center"
-                    android:text="TextView" />
+                    android:gravity="right"
+                    android:lines="2"
+                    android:text="TextView\nsfdsf&apos;sfsaftext view " />
             </RelativeLayout>
 
             <RelativeLayout
@@ -152,6 +164,7 @@
                     android:id="@+id/ibCompanyLogo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:scaleType="centerInside"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true" />
             </RelativeLayout>

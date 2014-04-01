@@ -3,7 +3,9 @@
     xmlns:ads="http://schemas.android.com/apk/lib/com.google.ads"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="10dp"
+    android:layout_marginTop="10dp"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
     android:orientation="vertical" >
 
     <LinearLayout
@@ -12,7 +14,7 @@
         android:layout_height="0dp"
         android:layout_weight="1" >
 
-        <com.agsi.togopart.gallery.FontableEditText
+        <sg.togoparts.gallery.FontableEditText
             android:id="@+id/edtKeyword"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -22,14 +24,14 @@
             android:singleLine="true" >
 
             <requestFocus />
-        </com.agsi.togopart.gallery.FontableEditText>
+        </sg.togoparts.gallery.FontableEditText>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical" >
 
-            <com.agsi.togopart.gallery.FontableButton
+            <sg.togoparts.gallery.FontableButton
                 android:id="@+id/btnSearch"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"

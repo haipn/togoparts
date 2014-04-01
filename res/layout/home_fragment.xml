@@ -24,7 +24,7 @@
 
         <!--  -->
 
-        <com.agsi.togopart.gallery.FontableTextView
+        <sg.togoparts.gallery.FontableTextView
             android:id="@+id/tvTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -135,7 +135,7 @@
     <!-- android:focusable="false" > -->
     <!-- </ListView> -->
 
-    <GridView
+    <com.handmark.pulltorefresh.library.PullToRefreshGridView
         android:id="@+id/gvAds"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -144,6 +144,6 @@
         android:listSelector="@color/orange"
         android:numColumns="2"
         android:verticalSpacing="4dp" >
-    </GridView>
+    </com.handmark.pulltorefresh.library.PullToRefreshGridView>
 
 </LinearLayout>

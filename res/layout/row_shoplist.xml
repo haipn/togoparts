@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <com.agsi.togopart.gallery.FontableTextView
+    <sg.togoparts.gallery.FontableTextView
         android:id="@+id/fontableTextView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -25,13 +25,13 @@
             android:layout_weight="1"
             android:orientation="vertical" >
 
-            <com.agsi.togopart.gallery.FontableTextView
+            <sg.togoparts.gallery.FontableTextView
                 android:id="@+id/fontableTextView2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="FontableTextView" />
 
-            <com.agsi.togopart.gallery.FontableTextView
+            <sg.togoparts.gallery.FontableTextView
                 android:id="@+id/fontableTextView3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -49,14 +49,14 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp" >
 
-        <com.agsi.togopart.gallery.FontableButton
+        <sg.togoparts.gallery.FontableButton
             android:id="@+id/fontableButton1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="FontableButton" />
 
-        <com.agsi.togopart.gallery.FontableButton
+        <sg.togoparts.gallery.FontableButton
             android:id="@+id/fontableButton2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

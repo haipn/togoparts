@@ -5,12 +5,29 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <ListView
-        android:id="@+id/lvSearchResult"
+    <LinearLayout
         android:layout_width="fill_parent"
+        android:orientation="vertical"
         android:layout_height="0dp"
         android:layout_weight="1" >
-    </ListView>
+
+        <ListView
+            android:id="@+id/lvSearchResult"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" >
+        </ListView>
+
+        <sg.togoparts.gallery.FontableTextView
+            android:id="@+id/tvNoResult"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="8dp"
+            android:gravity="center"
+            android:text="@string/no_shortlist"
+            android:textSize="20sp"
+            android:visibility="gone" />
+    </LinearLayout>
 
     <com.google.ads.doubleclick.DfpAdView
         android:id="@+id/adView"

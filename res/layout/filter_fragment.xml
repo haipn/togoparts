@@ -28,7 +28,7 @@
                 android:layout_margin="10dp"
                 android:orientation="vertical" >
 
-                <com.agsi.togopart.gallery.FontableTextView
+                <sg.togoparts.gallery.FontableTextView
                     android:id="@+id/textView2"
                     style="@style/TextAppearance.Search.Black"
                     android:layout_width="wrap_content"
@@ -82,7 +82,7 @@
                         android:text="@string/sort_by_4" />
                 </RadioGroup>
 
-                <com.agsi.togopart.gallery.FontableTextView
+                <sg.togoparts.gallery.FontableTextView
                     android:id="@+id/textView5"
                     style="@style/TextAppearance.Search.Black"
                     android:layout_width="wrap_content"
@@ -99,14 +99,14 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1" >
 
-                        <com.agsi.togopart.gallery.FontableTextView
+                        <sg.togoparts.gallery.FontableTextView
                             style="@style/TextAppearance.Search.Orange"
                             android:layout_width="wrap_content"
                             android:layout_height="fill_parent"
                             android:gravity="center_vertical"
                             android:text="@string/search_from" />
 
-                        <com.agsi.togopart.gallery.FontableEditText
+                        <sg.togoparts.gallery.FontableEditText
                             android:id="@+id/edtFrom"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
@@ -120,14 +120,14 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1" >
 
-                        <com.agsi.togopart.gallery.FontableTextView
+                        <sg.togoparts.gallery.FontableTextView
                             style="@style/TextAppearance.Search.Orange"
                             android:layout_width="wrap_content"
                             android:layout_height="fill_parent"
                             android:gravity="center_vertical"
                             android:text="@string/search_to" />
 
-                        <com.agsi.togopart.gallery.FontableEditText
+                        <sg.togoparts.gallery.FontableEditText
                             android:id="@+id/edtTo"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
@@ -137,7 +137,7 @@
                     </LinearLayout>
                 </LinearLayout>
 
-                <com.agsi.togopart.gallery.FontableTextView
+                <sg.togoparts.gallery.FontableTextView
                     android:id="@+id/textView3"
                     style="@style/TextAppearance.Search.Black"
                     android:layout_width="wrap_content"
@@ -155,7 +155,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="2" />
 
-                    <com.agsi.togopart.gallery.FontableTextView
+                    <sg.togoparts.gallery.FontableTextView
                         android:id="@+id/textView4"
                         style="@style/TextAppearance.Search.Orange"
                         android:layout_width="wrap_content"
@@ -163,7 +163,7 @@
                         android:layout_weight="0.5"
                         android:text="@string/or" />
 
-                    <com.agsi.togopart.gallery.FontableEditText
+                    <sg.togoparts.gallery.FontableEditText
                         android:id="@+id/edtValue"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -178,7 +178,7 @@
                         android:layout_weight="1.5" />
                 </LinearLayout>
 
-                <com.agsi.togopart.gallery.FontableTextView
+                <sg.togoparts.gallery.FontableTextView
                     android:id="@+id/textView8"
                     style="@style/TextAppearance.Search.Black"
                     android:layout_width="wrap_content"
@@ -190,7 +190,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
-                <com.agsi.togopart.gallery.FontableTextView
+                <sg.togoparts.gallery.FontableTextView
                     android:id="@+id/textView6"
                     style="@style/TextAppearance.Search.Black"
                     android:layout_width="wrap_content"
@@ -202,7 +202,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
-                <com.agsi.togopart.gallery.FontableTextView
+                <sg.togoparts.gallery.FontableTextView
                     android:id="@+id/textView7"
                     style="@style/TextAppearance.Search.Black"
                     android:layout_width="wrap_content"
@@ -214,7 +214,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
-                <com.agsi.togopart.gallery.FontableTextView
+                <sg.togoparts.gallery.FontableTextView
                     android:id="@+id/textView7"
                     style="@style/TextAppearance.Search.Black"
                     android:layout_width="wrap_content"
@@ -226,27 +226,49 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
-                <com.agsi.togopart.gallery.FontableTextView
+                <sg.togoparts.gallery.FontableTextView
                     android:id="@+id/textView2"
                     style="@style/TextAppearance.Search.Black"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/search_posted_by" />
 
-                <com.agsi.togopart.gallery.FontableEditText
+                <sg.togoparts.gallery.FontableEditText
                     android:id="@+id/edtPostedBy"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
                     android:singleLine="true" />
 
-                <Button
+                <LinearLayout
                     android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/btn_click"
-                    android:text="@string/btn_reset_filter"
-                    android:textColor="@android:color/white"
-                    android:textSize="30sp" />
+                    android:paddingTop="10dp"
+                    android:paddingBottom="15dp"
+                    android:layout_height="wrap_content" >
+
+                    <Button
+                        android:id="@+id/btnReset"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/btn_click"
+                        android:padding="-10dp"
+                        android:text="@string/btn_reset_filter"
+                        android:textColor="@android:color/white"
+                        android:textSize="20sp " />
+
+                    <Button
+                        android:id="@+id/btnApplyFilter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:background="@drawable/btn_click"
+                        android:padding="-10dp"
+                        android:text="@string/apply_filer"
+                        android:textColor="@android:color/white"
+                        android:textSize="20sp" />
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
