@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ads="http://schemas.android.com/apk/lib/com.google.ads"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <include
+        android:id="@+id/header"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        layout="@layout/new_actionbar" />
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/splash_background"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:orientation="vertical" >
+
+                <sg.togoparts.gallery.FontableTextView
+                    android:id="@+id/textView2"
+                    style="@style/TextAppearance.Search.Black"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/search_sort_by" />
+
+                <RadioGroup
+                    android:id="@+id/group"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:focusable="true"
+                    android:paddingLeft="20dp" >
+
+                    <RadioButton
+                        android:id="@+id/rbSort1"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:button="@null"
+                        android:drawableRight="@drawable/btn_check"
+                        android:focusable="true"
+                        android:gravity="left|center_vertical"
+                        android:text="@string/sort_bikeshop_1" >
+                    </RadioButton>
+
+                    <RadioButton
+                        android:id="@+id/rbSort2"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:button="@null"
+                        android:drawableRight="@drawable/btn_check"
+                        android:gravity="left|center_vertical"
+                        android:text="@string/sort_bikeshop_2" />
+
+                    <RadioButton
+                        android:id="@+id/rbSort3"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:button="@null"
+                        android:drawableRight="@drawable/btn_check"
+                        android:gravity="left|center_vertical"
+                        android:text="@string/sort_bikeshop_3" />
+
+                    <RadioButton
+                        android:id="@+id/rbSort4"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:button="@null"
+                        android:drawableRight="@drawable/btn_check"
+                        android:gravity="left|center_vertical"
+                        android:text="@string/sort_bikeshop_4" />
+                </RadioGroup>
+
+                <sg.togoparts.gallery.FontableTextView
+                    android:id="@+id/textView2"
+                    style="@style/TextAppearance.Search.Black"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/filter_bikeshop" />
+
+                <sg.togoparts.gallery.FontableEditText
+                    android:id="@+id/edtBikeShop"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp"
+                    android:hint="@string/hint_bikeshop"
+                    android:singleLine="true" />
+
+                <sg.togoparts.gallery.FontableTextView
+                    style="@style/TextAppearance.Search.Black"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/filter_area" />
+
+                <Spinner
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp"
+                    android:id="@+id/spnArea"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="15dp"
+                    android:paddingTop="10dp" >
+
+                    <CheckBox
+                        android:id="@+id/cbOpenNow"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/filter_opennow" />
+
+                    <CheckBox
+                        android:id="@+id/cbMechanic"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/filter_mechanic" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="15dp"
+                    android:paddingTop="10dp" >
+
+                    <Button
+                        android:id="@+id/btnReset"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/btn_click"
+                        android:padding="-10dp"
+                        android:text="@string/btn_reset_filter"
+                        android:textColor="@android:color/white"
+                        android:textSize="20sp " />
+
+                    <Button
+                        android:id="@+id/btnApplyFilter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:background="@drawable/btn_click"
+                        android:padding="-10dp"
+                        android:text="@string/apply_filer"
+                        android:textColor="@android:color/white"
+                        android:textSize="20sp" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+    <com.google.ads.doubleclick.DfpAdView
+        android:id="@+id/adView"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        ads:adSize="SMART_BANNER"
+        ads:adUnitId="/4689451/Android320x50"
+        ads:loadAdOnCreate="true"
+        android:background="@android:color/white" />
+
+</LinearLayout>

@@ -22,6 +22,7 @@ public class Activity_Main extends FragmentActivity implements HeaderView {
 	ImageView mIvLogo;
 	TextView mTvTitle;
 	ProgressBar mProgress;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -32,7 +33,7 @@ public class Activity_Main extends FragmentActivity implements HeaderView {
 		mTvTitle = (TextView) findViewById(R.id.title);
 		mProgress = (ProgressBar) findViewById(R.id.progress);
 		mBtnLeft.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 				Intent i = new Intent(Activity_Main.this,
@@ -46,19 +47,20 @@ public class Activity_Main extends FragmentActivity implements HeaderView {
 		// add initial fragment, do not add to back stack, no transition
 		// animation
 	}
-	
+
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
-			Log.d("haipn", "key down on main");
+		Log.d("haipn", "key down on main");
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
-//			Log.d("haipn" , "home key back");
-//			if (Const.isAppExitable) {
-				return false;
-//			} else
-//				return super.onKeyDown(keyCode, event);
+			// Log.d("haipn" , "home key back");
+			// if (Const.isAppExitable) {
+			return false;
+			// } else
+			// return super.onKeyDown(keyCode, event);
 		}
 		return super.onKeyDown(keyCode, event);
 	}
+
 	@Override
 	public void setLeftButton(int visible) {
 		mBtnLeft.setVisibility(visible);
@@ -73,16 +75,16 @@ public class Activity_Main extends FragmentActivity implements HeaderView {
 	@Override
 	public void setLogoVisible(int visible) {
 		mIvLogo.setVisibility(visible);
-		
-		
+
 	}
 
 	@Override
 	public void setTitleVisible(int visible, String text) {
 		mTvTitle.setVisibility(visible);
 		mTvTitle.setText(text);
-		
+
 	}
+
 	@Override
 	public void setProgressVisible(int visible) {
 		mProgress.setVisibility(visible);

@@ -14,6 +14,12 @@
     <string name="sort_by_2">Price: Highest</string>
     <string name="sort_by_3">Posted: Newest</string>
     <string name="sort_by_4">Posted: Oldest</string>
+    
+    <string name="sort_bikeshop_1">Nearest to Furthest</string>
+    <string name="sort_bikeshop_2">Furthest to Nearest</string>
+    <string name="sort_bikeshop_3">A to Z</string>
+    <string name="sort_bikeshop_4">Z to A</string>
+    
     <string name="search_decription">Product Description:</string>
     <string name="search_posted_by">Posted by:</string>
     <string name="search_size">Size:</string>
@@ -47,7 +53,9 @@
     <string name="hint_keyword">Search</string>
     <string name="marketplace">Marketplace</string>
     <string name="search_result">Search Result</string>
+    <string name="bikeshop_title">Singapore Bikeshop List</string>
     <string name="filter_title">Filter</string>
+    <string name="filter_bikeshop_title">Bikeshop Filter</string>
     <string name="shortlist">Shortlisted Ads</string>
     <string name="title_ad_detail">Ad Details</string>
     <string name="btn_reset_filter">Reset</string>
@@ -56,4 +64,11 @@
     <string name="no_result_found">No result found</string>
     <string name="no_shortlist">No shortlisted ads</string>
 	<string name="apply_filer">Apply Filter</string>
+	<string name="new_item">New Item Ads (%s)</string>
+	<string name="promos">Promos (%s)</string>
+	<string name="filter_bikeshop">Bikeshop Name</string>
+	<string name="hint_bikeshop">Shop Name…</string>
+	<string name="filter_area">Area</string>
+	<string name="filter_opennow">Open Now</string>
+	<string name="filter_mechanic">Mechanic Services</string>
 </resources>

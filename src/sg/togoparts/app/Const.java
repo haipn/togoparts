@@ -26,6 +26,7 @@ public class Const {
 	public static String URL_LIST_SEARCH = "http://www.togoparts.com/iphone_ws/mp_list_ads.php?source=android&%s";
 	public static String URL_SHORTLIST = "http://www.togoparts.com/iphone_ws/mp_shortlist_ads.php?source=android&aid=%s";
 	public static String URL_CONTACT_LOG = "http://www.togoparts.com/iphone_ws/contact_log.php?source=android&id=%s&fktype=%s&category=%s";
+	public static String URL_BIKE_SHOP = "http://www.togoparts.com/iphone_ws/bs_listings.php?shopsearch=%s&country=%s&area=%s&open=%s&mechanic=%s&lat=%s&long=%s&sortby=%s";
 	public static boolean isAppExitable = false;
 
 	/**

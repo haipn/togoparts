@@ -82,15 +82,32 @@ public class TabsActivityMain extends TabActivity implements AdListener {
 						getResources().getDrawable(R.drawable.tab_shortlist))
 				.setContent(intent);
 		tabHost.addTab(spec);
-
-		intent = new Intent().setClass(this, FSActivity_Search.class);
+		
+		
+		intent = new Intent().setClass(this, FSActivity_BikeShop.class);
+		Bundle b = new Bundle();
+		b.putString(FilterBikeShop.AREA, "");
+		b.putString(FilterBikeShop.BIKESHOP_NAME, "");
+		b.putString(FilterBikeShop.SORT_BY,"3");
+		b.putBoolean(FilterBikeShop.MECHANIC, true);
+		b.putBoolean(FilterBikeShop.OPENNOW, true);
+		intent.putExtras(new Bundle());
 		spec = tabHost
 				.newTabSpec("4")
+				.setIndicator(null,
+						getResources().getDrawable(R.drawable.tab_shortlist))
+				.setContent(intent);
+		tabHost.addTab(spec);
+		
+		intent = new Intent().setClass(this, FSActivity_Search.class);
+		spec = tabHost
+				.newTabSpec("5")
 				.setIndicator(null,
 						getResources().getDrawable(R.drawable.tab_search))
 				.setContent(intent);
 		tabHost.addTab(spec);
-
+		
+		
 		getTabWidget().setStripEnabled(false);
 
 		tabHost.setOnTabChangedListener(new OnTabChangeListener() {
