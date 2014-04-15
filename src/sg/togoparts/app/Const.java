@@ -15,6 +15,11 @@ public class Const {
 	public static final String BUNDLE_QUERY = "bundle query";
 	public static final String TAG_NAME = "tag name";
 	public static final String TITLE = "title";
+	public static final String SHOP_ID = "shop id";
+	public static final String URL_BIKESHOP_DETAIL = "http://www.togoparts.com/iphone_ws/bs_details.php?source=android&sid=%s&lat=%s&long=%s";
+	public static final String LATITUDE = "latitude";
+	public static final String LONGITUDE = "longitude";
+	
 	public static String URL_LIST_LASTEST_ADS = "http://www.togoparts.com/iphone_ws/mp_list_latest_ads.php?source=android";
 	public static String URL_LIST_CATEGORY = "http://www.togoparts.com/iphone_ws/mp_list_categories.php?source=android";
 	public static String URL_LIST_SEARCH_PARAM = "searchtext=%s"
@@ -23,10 +28,11 @@ public class Const {
 			+ "&sid=%s" + "&sort=%s";
 	public static String URL_SEARCH_CATEGORY = "http://www.togoparts.com/iphone_ws/mp_search_variables.php?source=android";
 	public static String URL_ADS_DETAIL = "http://www.togoparts.com/iphone_ws/mp_ad_details.php?source=android&aid=%s";
-	public static String URL_LIST_SEARCH = "http://www.togoparts.com/iphone_ws/mp_list_ads.php?source=android&%s";
+	public static String URL_LIST_SEARCH = "http://www.togoparts.com/iphone_ws/mp_list_ads.php?v=1.1&source=android&%s";
 	public static String URL_SHORTLIST = "http://www.togoparts.com/iphone_ws/mp_shortlist_ads.php?source=android&aid=%s";
 	public static String URL_CONTACT_LOG = "http://www.togoparts.com/iphone_ws/contact_log.php?source=android&id=%s&fktype=%s&category=%s";
-	public static String URL_BIKE_SHOP = "http://www.togoparts.com/iphone_ws/bs_listings.php?shopsearch=%s&country=%s&area=%s&open=%s&mechanic=%s&lat=%s&long=%s&sortby=%s";
+	public static String URL_BIKE_SHOP = "http://www.togoparts.com/iphone_ws/bs_listings.php?source=android&shopsearch=%s&country=%s&area=%s&open=%s&mechanic=%s&lat=%s&long=%s&sortby=%s";
+	public static String URL_ABOUT = "http://www.togoparts.com/iphone_ws/about-us.php?source=android";
 	public static boolean isAppExitable = false;
 
 	/**

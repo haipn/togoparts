@@ -1,0 +1,540 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ads="http://schemas.android.com/apk/lib/com.google.ads"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <LinearLayout
+        android:id="@+id/llMain"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="gone" >
+
+        <include
+            android:id="@+id/header"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            layout="@layout/new_actionbar" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/label_open"
+                android:layout_margin="4dp"
+                android:orientation="vertical" >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="bottom"
+                    android:gravity="bottom" >
+
+                    <LinearLayout
+                        android:id="@+id/llOpen"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom"
+                        android:layout_margin="3dp"
+                        android:layout_weight="0.33"
+                        android:background="@color/green"
+                        android:orientation="vertical"
+                        android:padding="4dp" >
+
+                        <sg.togoparts.gallery.FontableTextView
+                            android:id="@+id/tvOpenLabel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@android:color/white" />
+
+                        <sg.togoparts.gallery.FontableTextView
+                            android:id="@+id/tvRemark"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="marquee"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:textColor="@android:color/white" />
+                    </LinearLayout>
+
+                    <sg.togoparts.gallery.FontableTextView
+                        android:id="@+id/tvDistance"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="3dp"
+                        android:layout_weight="0.33"
+                        android:background="@color/magenta"
+                        android:gravity="left"
+                        android:padding="4dp"
+                        android:text="sg.togoparts.gallery.FontableTextView"
+                        android:textColor="@android:color/white"
+                        android:textSize="15sp" />
+
+                    <sg.togoparts.gallery.FontableTextView
+                        android:id="@+id/tvLocation"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="3dp"
+                        android:layout_weight="0.3"
+                        android:background="@drawable/btn_click"
+                        android:drawableLeft="@drawable/location_large_icon"
+                        android:drawablePadding="5dp"
+                        android:gravity="left|center_vertical"
+                        android:padding="4dp"
+                        android:text="@string/location"
+                        android:textColor="@android:color/white"
+                        android:textSize="20sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_margin="4dp"
+                    android:orientation="vertical" >
+
+                    <RelativeLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content" >
+
+                        <android.support.v4.view.ViewPager
+                            android:id="@+id/pager"
+                            android:layout_width="fill_parent"
+                            android:layout_height="@dimen/image_slide" />
+
+                        <ImageButton
+                            android:id="@+id/btnRight"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:background="@drawable/btn_slide_right" />
+
+                        <ImageButton
+                            android:id="@+id/btnLeft"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:layout_centerVertical="true"
+                            android:background="@drawable/btn_slide_left" />
+                    </RelativeLayout>
+
+                    <LinearLayout
+                        android:id="@+id/llContact"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:orientation="horizontal"
+                        android:weightSum="6" >
+
+                        <sg.togoparts.gallery.FontableTextView
+                            android:id="@+id/tvSMS"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="3"
+                            android:drawableLeft="@drawable/sms_icon"
+                            android:drawablePadding="5dp"
+                            android:text="SMS"
+                            android:textAppearance="?android:attr/textAppearanceLarge"
+                            android:textColorHighlight="@color/orange" />
+
+                        <sg.togoparts.gallery.FontableTextView
+                            android:id="@+id/tvCall"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="3"
+                            android:drawableLeft="@drawable/call_icons"
+                            android:drawablePadding="5dp"
+                            android:text="CALL"
+                            android:textAppearance="?android:attr/textAppearanceLarge"
+                            android:textColorHighlight="@color/orange" />
+
+                        <!-- <sg.togoparts.gallery.FontableTextView -->
+                        <!-- android:id="@+id/tvEmail" -->
+                        <!-- android:layout_width="fill_parent" -->
+                        <!-- android:layout_height="wrap_content" -->
+                        <!-- android:layout_weight="2" -->
+                        <!-- android:drawableLeft="@drawable/email_icon" -->
+                        <!-- android:drawablePadding="5dp" -->
+                        <!-- android:text="EMAIL" -->
+                        <!-- android:textAppearance="?android:attr/textAppearanceLarge" /> -->
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0.5dp"
+                        android:background="@drawable/gray"
+                        android:paddingTop="7dp" >
+                    </View>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="top"
+                        android:paddingTop="5dp" >
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:paddingRight="5dp" >
+
+                            <LinearLayout
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="top|left"
+                                android:paddingBottom="5dp"
+                                android:paddingLeft="0dp"
+                                android:paddingRight="5dp"
+                                android:paddingTop="5dp" >
+
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:paddingRight="5dp"
+                                    android:src="@drawable/address_icon" />
+
+                                <sg.togoparts.gallery.FontableTextView
+                                    android:id="@+id/tvAddress"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="top"
+                                    android:layout_weight="1"
+                                    android:gravity="top|left"
+                                    android:text="Medium Text" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="top|left"
+                                android:paddingBottom="5dp"
+                                android:paddingRight="5dp"
+                                android:paddingTop="5dp" >
+
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:paddingRight="5dp"
+                                    android:src="@drawable/timing_icon" />
+
+                                <sg.togoparts.gallery.FontableTextView
+                                    android:id="@+id/tvOpenHours"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="top|left"
+                                    android:gravity="top|left" />
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <ImageView
+                            android:id="@+id/imvShopLogo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="fill_parent"
+                            android:scaleType="fitCenter"
+                            android:src="@drawable/banner" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="top|left"
+                        android:paddingBottom="5dp"
+                        android:paddingRight="5dp"
+                        android:paddingTop="5dp" >
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingRight="5dp"
+                            android:src="@drawable/tel_icon" />
+
+                        <sg.togoparts.gallery.FontableTextView
+                            android:id="@+id/tvTelephone"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="left|top"
+                            android:text="@string/label_size" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/llMobile"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="top|left"
+                        android:paddingBottom="5dp"
+                        android:paddingRight="5dp"
+                        android:paddingTop="5dp" >
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingRight="5dp"
+                            android:src="@drawable/mobile_icon" />
+
+                        <sg.togoparts.gallery.FontableTextView
+                            android:id="@+id/tvMobile"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="left|top"
+                            android:text="Medium Text" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/llFax"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="top|left"
+                        android:paddingBottom="5dp"
+                        android:paddingRight="5dp"
+                        android:paddingTop="5dp" >
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingRight="5dp"
+                            android:src="@drawable/fax_icon" />
+
+                        <sg.togoparts.gallery.FontableTextView
+                            android:id="@+id/tvFax"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="left|top"
+                            android:text="Medium Text" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/llEmail"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="top|left"
+                        android:paddingBottom="5dp"
+                        android:paddingRight="5dp"
+                        android:paddingTop="5dp" >
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingRight="5dp"
+                            android:src="@drawable/email_bikeshop_icon" />
+
+                        <sg.togoparts.gallery.FontableTextView
+                            android:id="@+id/tvEmail"
+                            android:linksClickable="true"
+                            android:autoLink="email"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="left|top"
+                            android:text="Medium Text" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/llWeb"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="top|left"
+                        android:paddingBottom="5dp"
+                        android:paddingRight="5dp"
+                        android:paddingTop="5dp" >
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingRight="5dp"
+                            android:src="@drawable/website_icon" />
+
+                        <sg.togoparts.gallery.FontableTextView
+                            android:id="@+id/tvWebsite"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:autoLink="web"
+                            android:gravity="left|top"
+                            android:linksClickable="true"
+                            android:text="Medium Text" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="top|left"
+                        android:paddingBottom="5dp"
+                        android:paddingRight="5dp"
+                        android:paddingTop="5dp" >
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingRight="5dp"
+                            android:src="@drawable/availability_icon" />
+
+                        <sg.togoparts.gallery.FontableTextView
+                            android:id="@+id/tvBikesAvai"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="left|top"
+                            android:text="Medium Text" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="top|left"
+                        android:paddingBottom="5dp"
+                        android:paddingRight="5dp"
+                        android:paddingTop="5dp" >
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingRight="5dp"
+                            android:src="@drawable/mechanic_service_icon" />
+
+                        <sg.togoparts.gallery.FontableTextView
+                            android:id="@+id/tvMechanic"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="left|top"
+                            android:text="Medium Text" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="top|left"
+                        android:paddingBottom="5dp"
+                        android:paddingRight="5dp"
+                        android:paddingTop="5dp" >
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingRight="5dp"
+                            android:src="@drawable/delivery_icon" />
+
+                        <sg.togoparts.gallery.FontableTextView
+                            android:id="@+id/tvDelivery"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="left|top"
+                            android:text="Medium Text" />
+                    </LinearLayout>
+
+                    <View
+                        android:id="@+id/separate"
+                        android:layout_width="match_parent"
+                        android:layout_height="0.3dp"
+                        android:background="@drawable/gray" >
+                    </View>
+
+                    <sg.togoparts.gallery.FontableTextView
+                        android:id="@+id/tvBrands"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="left|top"
+                        android:text="@string/label_brand"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="@color/orange" />
+
+                    <sg.togoparts.app.NewGridView
+                        android:id="@+id/gvBrands"
+                        android:layout_width="match_parent"
+                        android:layout_height="200dp"
+                        android:horizontalSpacing="10dp"
+                        android:numColumns="3"
+                        android:stretchMode="columnWidth"
+                        android:verticalSpacing="10dp" />
+
+                    <sg.togoparts.gallery.FontableTextView
+                        android:id="@+id/tvBrandRetailed"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="left|top"
+                        android:paddingBottom="5dp"
+                        android:paddingTop="5dp"
+                        android:text="@string/label_brand"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="@android:color/black" />
+
+                    <View
+                        android:id="@+id/separate"
+                        android:layout_width="match_parent"
+                        android:layout_height="0.3dp"
+                        android:background="@drawable/gray" >
+                    </View>
+
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingBottom="10dp"
+                        android:paddingTop="5dp" >
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.5"
+                            android:orientation="vertical"
+                            android:paddingRight="5dp" >
+
+                            <ImageView
+                                android:id="@+id/ivPromos"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content" />
+
+                            <sg.togoparts.gallery.FontableTextView
+                                android:id="@+id/tvPromos"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/btn_click"
+                                android:padding="10dp"
+                                android:textAppearance="?android:attr/textAppearanceMediumInverse" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.5"
+                            android:orientation="vertical" >
+
+                            <ImageView
+                                android:id="@+id/ivNewItems"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+
+                            <sg.togoparts.gallery.FontableTextView
+                                android:id="@+id/tvNewItems"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/btn_click"
+                                android:padding="10dp"
+                                android:textAppearance="?android:attr/textAppearanceMediumInverse" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
+
+        <com.google.ads.doubleclick.DfpAdView
+            android:id="@+id/adView"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            ads:adSize="SMART_BANNER"
+            ads:adUnitId="/4689451/Android320x50"
+            ads:loadAdOnCreate="true"
+            android:background="@android:color/white" >
+        </com.google.ads.doubleclick.DfpAdView>
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/loading"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingLeft="60dp"
+        android:paddingRight="60dp"
+        android:src="@drawable/padelling"
+        android:visibility="visible" />
+
+</FrameLayout>

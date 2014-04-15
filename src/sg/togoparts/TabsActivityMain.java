@@ -95,15 +95,15 @@ public class TabsActivityMain extends TabActivity implements AdListener {
 		spec = tabHost
 				.newTabSpec("4")
 				.setIndicator(null,
-						getResources().getDrawable(R.drawable.tab_shortlist))
+						getResources().getDrawable(R.drawable.tab_bikeshop))
 				.setContent(intent);
 		tabHost.addTab(spec);
 		
-		intent = new Intent().setClass(this, FSActivity_Search.class);
+		intent = new Intent().setClass(this, MoreActivity.class);
 		spec = tabHost
 				.newTabSpec("5")
 				.setIndicator(null,
-						getResources().getDrawable(R.drawable.tab_search))
+						getResources().getDrawable(R.drawable.tab_more))
 				.setContent(intent);
 		tabHost.addTab(spec);
 		
@@ -127,9 +127,12 @@ public class TabsActivityMain extends TabActivity implements AdListener {
 					else if (tabId.equals("3")) {
 						tracker.set(Fields.SCREEN_NAME,
 								"Marketplace Shortlisted Ads");
-					} else {
+					} else if (tabId.equals("4")){
 						tracker.set(Fields.SCREEN_NAME,
 								"Marketplace Search Form");
+					} else {
+						Intent intent = new Intent().setClass(TabsActivityMain.this, MoreActivity.class);
+						startActivity(intent);
 					}
 					Const.isAppExitable = false;
 				}

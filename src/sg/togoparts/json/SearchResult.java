@@ -3,6 +3,7 @@ package sg.togoparts.json;
 import java.util.ArrayList;
 
 import sg.togoparts.json.AdsDetail.Special;
+import sg.togoparts.json.BikeShop.PinAd;
 
 
 public class SearchResult {
@@ -13,6 +14,7 @@ public class SearchResult {
 	public String title;
 	public ArrayList<AdsResult> ads;
 	public PageDetails page_details;
+	
 	public class AdsResult {
 		public String aid;
 		public String title;
@@ -27,6 +29,7 @@ public class SearchResult {
 		public Special special;
 		public String postedby;
 		public MerchantDetails merchant_details;
+		public PinAd pinad;
 	}
 	public class MerchantDetails {
 		public String shop_name;

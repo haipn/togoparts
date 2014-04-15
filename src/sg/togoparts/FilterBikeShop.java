@@ -154,7 +154,8 @@ public class FilterBikeShop extends FragmentActivity {
 			}
 		});
 		setListValues();
-		initSpinner();
+		if (getIntent() != null)
+			initSpinner();
 	}
 
 	@Override
@@ -242,10 +243,10 @@ public class FilterBikeShop extends FragmentActivity {
 		adtArea.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		mSpnArea.setAdapter(adtArea);
 		mSpnArea.setSelection(d);
-		
+
 		mCbMechanic.setChecked(b.getBoolean(MECHANIC));
 		mCbOpenNow.setChecked(b.getBoolean(OPENNOW));
-		
+
 		mSort = b.getString(SORT_BY);
 		if (mSort.equals("0")) {
 			mGroupSort.check(R.id.rbSort1);

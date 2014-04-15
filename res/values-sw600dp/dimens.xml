@@ -7,4 +7,6 @@
     <dimen name="image_thumb">150dp</dimen>
 	<dimen name="image_home">300dp</dimen>
 	<dimen name="image_slide">400dp</dimen>
+	<dimen name="label_open">70dp</dimen>
+	<dimen name="brand_dist">150dp</dimen>
 </resources>

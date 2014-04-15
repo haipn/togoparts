@@ -71,4 +71,8 @@
 	<string name="filter_area">Area</string>
 	<string name="filter_opennow">Open Now</string>
 	<string name="filter_mechanic">Mechanic Services</string>
+	<string name="label_brand">Brands Distributed by %s</string>
+	<string name="location">Location</string>
+	<string name="view_promos">See All (%s) Promos</string>
+	<string name="view_new_item">See All (%s) New Item Ads</string>
 </resources>

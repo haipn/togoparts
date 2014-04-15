@@ -17,6 +17,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AbsListView;
@@ -39,7 +40,8 @@ import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 
-public class FSActivity_BikeShop extends FragmentActivity implements LocationResult{
+public class FSActivity_BikeShop extends FragmentActivity implements
+		LocationResult {
 
 	public static final String PAGE_ID = "&page_id=";
 
@@ -64,6 +66,7 @@ public class FSActivity_BikeShop extends FragmentActivity implements LocationRes
 	Intent mIntent;
 	String mLat = "0.0";
 	String mLong = "0.0";
+
 	protected void loadMore() {
 
 		mPageId++;
@@ -79,10 +82,22 @@ public class FSActivity_BikeShop extends FragmentActivity implements LocationRes
 	}
 
 	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
+			// if (Const.isAppExitable) {
+			return false;
+			// } else
+			// return super.onKeyDown(keyCode, event);
+		}
+		return super.onKeyDown(keyCode, event);
+	}
+
+	@Override
 	public void onResume() {
 		AdView adview = (AdView) findViewById(R.id.adView);
-		AdRequest re = new AdRequest();
-		adview.loadAd(re);
+		adview.setVisibility(View.GONE);
+		// AdRequest re = new AdRequest();
+		// adview.loadAd(re);
 		super.onResume();
 	}
 
@@ -113,12 +128,17 @@ public class FSActivity_BikeShop extends FragmentActivity implements LocationRes
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long arg3) {
-				// Intent i = new Intent(FSActivity_BikeShop.this,
-				// DetailActivity.class);
-				// Log.d("haipn", "item:" + arg2);
-				// i.putExtra(Const.ADS_ID, mResult.get(arg2 - 1).aid);
-				// Log.d("haipn", "id:" + mResult.get(arg2 - 1).aid);
-				// startActivity(i);
+				if (mResult.get(arg2 - 1).sid == null) {
+					
+				} else {
+					Intent i = new Intent(FSActivity_BikeShop.this,
+							BikeShopDetail.class);
+					i.putExtra(Const.SHOP_ID, mResult.get(arg2 - 1).sid);
+					Log.d("haipn", "shop id:" + mResult.get(arg2 - 1).sid);
+					i.putExtra(Const.LATITUDE, mLat);
+					i.putExtra(Const.LONGITUDE, mLong);
+					startActivity(i);
+				}
 			}
 		});
 		mLvResult.setOnScrollListener(new OnScrollListener() {
@@ -150,7 +170,7 @@ public class FSActivity_BikeShop extends FragmentActivity implements LocationRes
 		mResult = new ArrayList<BikeShop>();
 		mAdapter = new BikeShopAdapter(this, mResult);
 		mLvResult.setAdapter(mAdapter);
-		
+
 		createHeader();
 		MyLocation myLocation = new MyLocation();
 		myLocation.getLocation(this, this);
@@ -211,15 +231,15 @@ public class FSActivity_BikeShop extends FragmentActivity implements LocationRes
 		String open;
 		if (opennow) {
 			open = "on";
-		
+
 		} else {
 			open = "";
 		}
-		
-		String mechanicStr ;
+
+		String mechanicStr;
 		if (mechanic) {
 			mechanicStr = "on";
-		
+
 		} else {
 			mechanicStr = "";
 		}
@@ -241,7 +261,7 @@ public class FSActivity_BikeShop extends FragmentActivity implements LocationRes
 		mIvLogo.setVisibility(View.GONE);
 		mTvTitle = (TextView) findViewById(R.id.title);
 		mTvTitle.setVisibility(View.VISIBLE);
-		
+
 		mBtnLeft.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -314,7 +334,9 @@ public class FSActivity_BikeShop extends FragmentActivity implements LocationRes
 
 	@Override
 	public void gotLocation(Location location) {
-		Log.d("haipn", "lat:" + location.getLatitude() + " \nlong:" + location.getLongitude());
+		Log.d("haipn",
+				"lat:" + location.getLatitude() + " \nlong:"
+						+ location.getLongitude());
 		mLat = String.valueOf(location.getLatitude());
 		mLong = String.valueOf(location.getLongitude());
 		searchResult(mIntent);
