@@ -1,5 +1,6 @@
 package sg.togoparts;
 
+import sg.togoparts.app.Const;
 import android.app.AlertDialog;
 import android.app.TabActivity;
 import android.content.DialogInterface;
@@ -15,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TabHost;
 import android.widget.TabHost.OnTabChangeListener;
+import android.widget.TabHost.TabContentFactory;
 
 import com.google.ads.Ad;
 import com.google.ads.AdListener;
@@ -26,8 +28,6 @@ import com.google.analytics.tracking.android.Fields;
 import com.google.analytics.tracking.android.GoogleAnalytics;
 import com.google.analytics.tracking.android.MapBuilder;
 import com.google.analytics.tracking.android.Tracker;
-import sg.togoparts.R;
-import sg.togoparts.app.Const;
 
 @SuppressWarnings("deprecation")
 public class TabsActivityMain extends TabActivity implements AdListener {
@@ -85,13 +85,17 @@ public class TabsActivityMain extends TabActivity implements AdListener {
 		
 		
 		intent = new Intent().setClass(this, FSActivity_BikeShop.class);
-		Bundle b = new Bundle();
-		b.putString(FilterBikeShop.AREA, "");
-		b.putString(FilterBikeShop.BIKESHOP_NAME, "");
-		b.putString(FilterBikeShop.SORT_BY,"3");
-		b.putBoolean(FilterBikeShop.MECHANIC, true);
-		b.putBoolean(FilterBikeShop.OPENNOW, true);
-		intent.putExtras(new Bundle());
+		Bundle b = getIntent().getExtras();
+		if (b == null) {
+			b = new Bundle();
+			b.putString(FilterBikeShop.AREA, "");
+			b.putString(FilterBikeShop.BIKESHOP_NAME, "");
+			b.putString(FilterBikeShop.SORT_BY,"2");
+			b.putBoolean(FilterBikeShop.MECHANIC, true);
+			b.putBoolean(FilterBikeShop.OPENNOW, true);
+		}
+		
+		intent.putExtras(b);
 		spec = tabHost
 				.newTabSpec("4")
 				.setIndicator(null,
@@ -129,10 +133,9 @@ public class TabsActivityMain extends TabActivity implements AdListener {
 								"Marketplace Shortlisted Ads");
 					} else if (tabId.equals("4")){
 						tracker.set(Fields.SCREEN_NAME,
-								"Marketplace Search Form");
+								"Bikeshop List");
 					} else {
-						Intent intent = new Intent().setClass(TabsActivityMain.this, MoreActivity.class);
-						startActivity(intent);
+						
 					}
 					Const.isAppExitable = false;
 				}

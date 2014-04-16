@@ -309,9 +309,7 @@ public class DetailActivity extends FragmentActivity implements
 			@Override
 			public void onClick(View v) {
 				Intent i = new Intent(DetailActivity.this,
-						TabsActivityMain.class);
-				i.putExtra(Const.TAG_NAME, "4");
-				i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+						FSActivity_Search.class);
 				startActivity(i);
 				finish();
 			}

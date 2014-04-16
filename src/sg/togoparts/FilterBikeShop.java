@@ -87,6 +87,7 @@ public class FilterBikeShop extends FragmentActivity {
 	Button mBtnReset;
 	Button mBtnApplyFilter;
 	private String mSort;
+	private boolean onResult;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -145,17 +146,33 @@ public class FilterBikeShop extends FragmentActivity {
 
 			@Override
 			public void onClick(View arg0) {
-				mEdtShopName.setText("");
-
-				mSpnArea.setSelection(0);
-
-				mSort = "2";
-				mGroupSort.check(R.id.rbSort3);
+				resetData();
 			}
 		});
 		setListValues();
-		if (getIntent() != null)
+		onResult = getIntent().getExtras() != null;
+		if (onResult)
 			initSpinner();
+		else {
+			ArrayAdapter<String> adtArea = new ArrayAdapter<String>(this,
+					R.layout.spinner_text);
+			adtArea.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+			Iterator itCatId = listArea.entrySet().iterator();
+			while (itCatId.hasNext()) {
+				Map.Entry pairs = (Map.Entry) itCatId.next();
+				adtArea.add((String) pairs.getKey());
+			}
+			mSpnArea.setAdapter(adtArea);
+		}
+	}
+
+	protected void resetData() {
+		mEdtShopName.setText("");
+
+		mSpnArea.setSelection(0);
+
+		mSort = "2";
+		mGroupSort.check(R.id.rbSort3);
 	}
 
 	@Override
@@ -202,10 +219,17 @@ public class FilterBikeShop extends FragmentActivity {
 		bundle.putBoolean(MECHANIC, mCbMechanic.isChecked());
 		bundle.putBoolean(OPENNOW, mCbOpenNow.isChecked());
 		bundle.putString(SORT_BY, mSort);
-
-		Intent i = getIntent();
-		i.putExtras(bundle);
-		setResult(RESULT_OK, i);
+		if (onResult) {
+			Intent i = getIntent();
+			i.putExtras(bundle);
+			setResult(RESULT_OK, i);
+		} else {
+			Intent i = new Intent(FilterBikeShop.this, TabsActivityMain.class);
+			i.putExtra(Const.TAG_NAME, "4");
+			i.putExtras(bundle);
+			i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			startActivity(i);
+		}
 		finish();
 	}
 
@@ -252,10 +276,10 @@ public class FilterBikeShop extends FragmentActivity {
 			mGroupSort.check(R.id.rbSort1);
 		} else if (mSort.equals("1")) {
 			mGroupSort.check(R.id.rbSort2);
-		} else if (mSort.equals("3")) {
-			mGroupSort.check(R.id.rbSort4);
-		} else
+		} else if (mSort.equals("2")) {
 			mGroupSort.check(R.id.rbSort3);
+		} else
+			mGroupSort.check(R.id.rbSort4);
 	}
 
 }

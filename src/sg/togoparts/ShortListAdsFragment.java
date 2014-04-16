@@ -124,9 +124,12 @@ public class ShortListAdsFragment extends Fragment_Main implements
 
 			@Override
 			public void onClick(View v) {
-				TabsActivityMain tab = (TabsActivityMain) getActivity()
-						.getParent();
-				tab.getTabHost().setCurrentTab(3);
+//				TabsActivityMain tab = (TabsActivityMain) getActivity()
+//						.getParent();
+//				tab.getTabHost().setCurrentTab(3);
+				Intent i = new Intent(getActivity(),
+						FSActivity_Search.class);
+				startActivity(i);
 			}
 		});
 

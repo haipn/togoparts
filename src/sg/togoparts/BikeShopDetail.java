@@ -34,6 +34,7 @@ import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.android.volley.Request.Method;
@@ -63,6 +64,8 @@ public class BikeShopDetail extends FragmentActivity implements
 	TextView mTvSMS;
 	TextView mTvCall;
 
+	ScrollView mScrollView;
+	LinearLayout mLlNotPaying;
 	TextView mTvAddress;
 	TextView mTvTiming;
 	TextView mTvTel;
@@ -81,6 +84,9 @@ public class BikeShopDetail extends FragmentActivity implements
 	TextView mTvNewItems;
 	ImageView mIvPromos;
 	ImageView mIvNewItems;
+
+	TextView mTvAddrestNotPaying;
+	TextView mTvTelephoneNotPaying;
 	private ImageView mIvLoading;
 	private LinearLayout mLlMain;
 	private String mShopId;
@@ -113,6 +119,8 @@ public class BikeShopDetail extends FragmentActivity implements
 		options = new DisplayImageOptions.Builder()
 				.resetViewBeforeLoading(true).cacheOnDisc(true)
 				.imageScaleType(ImageScaleType.EXACTLY_STRETCHED)
+				.showImageForEmptyUri(R.drawable.nophoto)
+				.showImageOnFail(R.drawable.nophoto)
 				.bitmapConfig(Bitmap.Config.RGB_565).considerExifParams(true)
 				.displayer(new FadeInBitmapDisplayer(300)).build();
 
@@ -130,7 +138,8 @@ public class BikeShopDetail extends FragmentActivity implements
 
 	private void initInterface() {
 
-		createHeader();
+		mScrollView = (ScrollView) findViewById(R.id.scrollView);
+		mLlNotPaying = (LinearLayout) findViewById(R.id.llNotPaying);
 		mLlOpen = (LinearLayout) findViewById(R.id.llOpen);
 		mTvOpenLabel = (TextView) findViewById(R.id.tvOpenLabel);
 		mTvRemark = (TextView) findViewById(R.id.tvRemark);
@@ -163,6 +172,8 @@ public class BikeShopDetail extends FragmentActivity implements
 		mIvPromos = (ImageView) findViewById(R.id.ivPromos);
 		mIvNewItems = (ImageView) findViewById(R.id.ivNewItems);
 
+		mTvAddrestNotPaying = (TextView) findViewById(R.id.tvAddressNotPaying);
+		mTvTelephoneNotPaying = (TextView) findViewById(R.id.tvTelephoneNotPaying);
 	}
 
 	protected void fillData(final ShopDetail res) {
@@ -233,10 +244,24 @@ public class BikeShopDetail extends FragmentActivity implements
 		}
 
 		imageLoader.displayImage(res.shoplogo, mIvShopLogo, options);
+		if (res.telephone != null && !res.telephone.isEmpty()) {
+			mTvTel.setText(res.telephone);
+			findViewById(R.id.llTel).setVisibility(View.VISIBLE);
+		} else
+			findViewById(R.id.llTel).setVisibility(View.GONE);
+		if (res.forpaidonly.mobile != null && !res.forpaidonly.mobile.isEmpty()) {
+			mTvMobile.setText(res.forpaidonly.mobile);
+			findViewById(R.id.llMobile).setVisibility(View.VISIBLE);
+		} else {
+			findViewById(R.id.llMobile).setVisibility(View.GONE);
+		}
+		if (res.forpaidonly.fax != null && !res.forpaidonly.fax.isEmpty()) {
+			mTvFax.setText(res.forpaidonly.fax);
+			findViewById(R.id.llFax).setVisibility(View.VISIBLE);
+		} else {
+			findViewById(R.id.llFax).setVisibility(View.GONE);
+		}
 
-		mTvTel.setText(res.telephone);
-		mTvMobile.setText(res.forpaidonly.mobile);
-		mTvFax.setText(res.forpaidonly.fax);
 		mTvEmail.setText(res.forpaidonly.email);
 		mTvWebsite.setText(res.forpaidonly.website);
 		mTvAvai.setText(res.forpaidonly.bikes_avail);
@@ -251,7 +276,41 @@ public class BikeShopDetail extends FragmentActivity implements
 				res.forpaidonly.promo_cnt));
 		mTvNewItems.setText(getString(R.string.view_new_item,
 				res.forpaidonly.new_item_cnt));
+		mTvPromos.setOnClickListener(new OnClickListener() {
 
+			@Override
+			public void onClick(View v) {
+				Intent i = new Intent(BikeShopDetail.this,
+						ListPromosActivity.class);
+				i.putExtra(Const.SHOP_ID, res.sid);
+				startActivity(i);
+			}
+		});
+		mIvPromos.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				Intent i = new Intent(BikeShopDetail.this,
+						ListPromosActivity.class);
+				i.putExtra(Const.SHOP_ID, res.sid);
+				startActivity(i);
+			}
+		});
+
+		mTvNewItems.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				gotoAllAds(res);
+			}
+		});
+		mIvNewItems.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				gotoAllAds(res);
+			}
+		});
 		mGvBrandsDist.setExpanded(true);
 		if (res.forpaidonly.brands_dist != null) {
 			mGvBrandsDist.setAdapter(new ImageAdapter(this,
@@ -308,7 +367,7 @@ public class BikeShopDetail extends FragmentActivity implements
 					smsIntent.setType("vnd.android-dir/mms-sms");
 					smsIntent.putExtra("address", actualNo.get(0));
 					startActivity(smsIntent);
-//					postSMSLog();
+					// postSMSLog();
 				}
 			}
 		});
@@ -336,12 +395,21 @@ public class BikeShopDetail extends FragmentActivity implements
 					Intent callIntent = new Intent(Intent.ACTION_CALL);
 					callIntent.setData(Uri.parse("tel:" + actualNo.get(0)));
 					startActivity(callIntent);
-//					postCallLog();
+					// postCallLog();
 				}
 			}
 		});
 
 		startAnimation();
+	}
+
+	protected void gotoAllAds(ShopDetail detail) {
+		Intent i = new Intent(BikeShopDetail.this, SearchResultActivity.class);
+		Bundle bundle = new Bundle();
+		bundle.putString(FilterActivity.SHOP_NAME, detail.sid);
+		i.putExtras(bundle);
+		i.putExtra(Const.TITLE, "All Ads by " + detail.shopname);
+		startActivity(i);
 	}
 
 	private String unescape(String description) {
@@ -421,11 +489,12 @@ public class BikeShopDetail extends FragmentActivity implements
 	}
 
 	private void createHeader() {
-		mBtnBack = (ImageButton) findViewById(R.id.btnBack);
-		findViewById(R.id.btnSearch).setVisibility(View.GONE);
-		findViewById(R.id.logo).setVisibility(View.GONE);
+		View header = findViewById(R.id.header);
+		mBtnBack = (ImageButton) header.findViewById(R.id.btnBack);
+		header.findViewById(R.id.btnSearch).setVisibility(View.GONE);
+		header.findViewById(R.id.logo).setVisibility(View.GONE);
 
-		mTvTitleHeader = (TextView) findViewById(R.id.title);
+		mTvTitleHeader = (TextView) header.findViewById(R.id.title);
 		mTvTitleHeader.setVisibility(View.VISIBLE);
 		mTvTitleHeader.setText(R.string.title_ad_detail);
 		mBtnBack.setOnClickListener(new OnClickListener() {
@@ -444,9 +513,82 @@ public class BikeShopDetail extends FragmentActivity implements
 			public void onResponse(ShopDetail response) {
 				Log.d("haipn", "sussecc");
 				initInterface();
-				fillData(response);
+				if (response.forpaidonly != null
+						&& response.forpaidonly.openlabel != null) {
+					createHeader();
+					fillData(response);
+				} else {
+					createHeaderNotPaying();
+					fillDataNotPaying(response);
+				}
 			}
 		};
+	}
+
+	protected void createHeaderNotPaying() {
+		View header = findViewById(R.id.header2);
+		mBtnBack = (ImageButton) header.findViewById(R.id.btnBack);
+		header.findViewById(R.id.btnSearch).setVisibility(View.GONE);
+		header.findViewById(R.id.logo).setVisibility(View.GONE);
+
+		mTvTitleHeader = (TextView) header.findViewById(R.id.title);
+		mTvTitleHeader.setVisibility(View.VISIBLE);
+		mTvTitleHeader.setText(R.string.title_ad_detail);
+		mBtnBack.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				setResult(RESULT_CANCELED);
+				onBackPressed();
+			}
+		});
+	}
+
+	protected void fillDataNotPaying(ShopDetail response) {
+		mTvTitleHeader.setText(response.shopname);
+		mTvAddrestNotPaying.setText(response.address);
+		mTvTelephoneNotPaying.setText(response.telephone);
+		startAnimationNotPaying();
+	}
+
+	private void startAnimationNotPaying() {
+		Animation in = AnimationUtils
+				.loadAnimation(this, R.anim.slide_right_in);
+		Animation out = AnimationUtils.loadAnimation(this,
+				R.anim.slide_left_out);
+		in.setAnimationListener(new AnimationListener() {
+
+			@Override
+			public void onAnimationStart(Animation animation) {
+			}
+
+			@Override
+			public void onAnimationRepeat(Animation animation) {
+			}
+
+			@Override
+			public void onAnimationEnd(Animation animation) {
+				mLlNotPaying.setVisibility(View.VISIBLE);
+
+			}
+		});
+		out.setAnimationListener(new AnimationListener() {
+
+			@Override
+			public void onAnimationStart(Animation animation) {
+			}
+
+			@Override
+			public void onAnimationRepeat(Animation animation) {
+			}
+
+			@Override
+			public void onAnimationEnd(Animation animation) {
+				mIvLoading.setVisibility(View.GONE);
+			}
+		});
+		mLlNotPaying.startAnimation(in);
+		mIvLoading.startAnimation(out);
 	}
 
 	private Response.ErrorListener createMyReqErrorListener() {
@@ -514,7 +656,7 @@ public class BikeShopDetail extends FragmentActivity implements
 				Intent callIntent = new Intent(Intent.ACTION_CALL);
 				callIntent.setData(Uri.parse("tel:" + address));
 				startActivity(callIntent);
-//				postCallLog();
+				// postCallLog();
 			}
 		} else {
 			if (address != null && !address.isEmpty()) {
@@ -522,7 +664,7 @@ public class BikeShopDetail extends FragmentActivity implements
 				smsIntent.setType("vnd.android-dir/mms-sms");
 				smsIntent.putExtra("address", address);
 				startActivity(smsIntent);
-//				postSMSLog();
+				// postSMSLog();
 			}
 		}
 	}

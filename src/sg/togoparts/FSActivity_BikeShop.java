@@ -11,6 +11,7 @@ import sg.togoparts.gallery.BikeShopAdapter;
 import sg.togoparts.json.BikeShop;
 import sg.togoparts.json.GsonRequest;
 import sg.togoparts.json.ListBikeShop;
+import android.app.TabActivity;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
@@ -221,7 +222,7 @@ public class FSActivity_BikeShop extends FragmentActivity implements
 		String type = mQueryBundle.getString(FilterBikeShop.AREA);
 		if (type == null) {
 			type = "";
-			mQueryBundle.putString(FilterBikeShop.BIKESHOP_NAME, "");
+			mQueryBundle.putString(FilterBikeShop.AREA, "");
 		}
 
 		boolean opennow = mQueryBundle
@@ -266,7 +267,8 @@ public class FSActivity_BikeShop extends FragmentActivity implements
 
 			@Override
 			public void onClick(View v) {
-				onBackPressed();
+				TabActivity tabs = (TabActivity) getParent();
+				tabs.getTabHost().setCurrentTabByTag("1");
 			}
 		});
 		mBtnRight.setBackgroundResource(R.drawable.btn_filter);
@@ -293,7 +295,6 @@ public class FSActivity_BikeShop extends FragmentActivity implements
 		return new Response.Listener<ListBikeShop>() {
 			@Override
 			public void onResponse(ListBikeShop response) {
-				Log.d("haipn", "respse: " + response.bikeshoplist.size());
 				if (response.bikeshoplist == null
 						|| response.bikeshoplist.size() == 0) {
 					mLvResult.setVisibility(View.GONE);

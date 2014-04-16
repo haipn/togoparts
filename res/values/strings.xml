@@ -64,6 +64,7 @@
     <string name="no_result_found">No result found</string>
     <string name="no_shortlist">No shortlisted ads</string>
 	<string name="apply_filer">Apply Filter</string>
+	<string name="apply">Apply</string>
 	<string name="new_item">New Item Ads (%s)</string>
 	<string name="promos">Promos (%s)</string>
 	<string name="filter_bikeshop">Bikeshop Name</string>
@@ -75,4 +76,9 @@
 	<string name="location">Location</string>
 	<string name="view_promos">See All (%s) Promos</string>
 	<string name="view_new_item">See All (%s) New Item Ads</string>
+	<string name="marketplace_search">Marketplace Search</string>
+	<string name="bikeshop_promos">Bikeshop Promos</string>
+	<string name="bikeshop_search">Bikeshop Search</string>
+	<string name="about">About Togoparts</string>
+	<string name="more">More</string>
 </resources>

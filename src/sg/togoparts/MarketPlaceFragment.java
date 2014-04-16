@@ -140,9 +140,12 @@ public class MarketPlaceFragment extends Fragment_Main implements ClickViewAll {
 
 			@Override
 			public void onClick(View v) {
-				TabsActivityMain tab = (TabsActivityMain) getActivity()
-						.getParent();
-				tab.getTabHost().setCurrentTab(3);
+//				TabsActivityMain tab = (TabsActivityMain) getActivity()
+//						.getParent();
+//				tab.getTabHost().setCurrentTab(3);
+				Intent i = new Intent(getActivity(),
+						FSActivity_Search.class);
+				startActivity(i);
 			}
 		});
 		headerView.setLogoVisible(View.GONE);

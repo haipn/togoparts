@@ -1,5 +1,6 @@
 package sg.togoparts;
 
+import android.app.TabActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -36,12 +37,8 @@ public class Activity_Main extends FragmentActivity implements HeaderView {
 
 			@Override
 			public void onClick(View v) {
-				Intent i = new Intent(Activity_Main.this,
-						TabsActivityMain.class);
-				i.putExtra(Const.TAG_NAME, "1");
-				i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-				startActivity(i);
-				finish();
+				TabActivity tabs = (TabActivity) getParent();
+				tabs.getTabHost().setCurrentTabByTag("1");
 			}
 		});
 		// add initial fragment, do not add to back stack, no transition
@@ -63,7 +60,12 @@ public class Activity_Main extends FragmentActivity implements HeaderView {
 
 	@Override
 	public void setLeftButton(int visible) {
-		mBtnLeft.setVisibility(visible);
+		try {
+			mBtnLeft.setVisibility(visible);
+		} catch (NullPointerException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	@Override

@@ -3,6 +3,7 @@
     xmlns:ads="http://schemas.android.com/apk/lib/com.google.ads"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/splash_background"
     android:orientation="vertical" >
 
     <include
@@ -19,7 +20,6 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/splash_background"
             android:orientation="vertical" >
 
             <LinearLayout
@@ -94,9 +94,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
+                    android:hint="@string/hint_bikeshop"
                     android:paddingBottom="10dp"
                     android:paddingTop="10dp"
-                    android:hint="@string/hint_bikeshop"
                     android:singleLine="true" />
 
                 <sg.togoparts.gallery.FontableTextView
@@ -106,11 +106,11 @@
                     android:text="@string/filter_area" />
 
                 <Spinner
-                    android:paddingBottom="10dp"
-                    android:paddingTop="10dp"
                     android:id="@+id/spnArea"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp" />
 
                 <LinearLayout
                     android:layout_width="fill_parent"
@@ -130,7 +130,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/filter_mechanic" />
-
                 </LinearLayout>
 
                 <LinearLayout
@@ -145,7 +144,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginRight="10dp"
                         android:layout_weight="1"
-                        android:background="@drawable/btn_click"
+                        android:background="@drawable/btn_reset"
                         android:padding="-10dp"
                         android:text="@string/btn_reset_filter"
                         android:textColor="@android:color/white"
@@ -155,10 +154,10 @@
                         android:id="@+id/btnApplyFilter"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="2"
+                        android:layout_weight="1"
                         android:background="@drawable/btn_click"
                         android:padding="-10dp"
-                        android:text="@string/apply_filer"
+                        android:text="@string/apply"
                         android:textColor="@android:color/white"
                         android:textSize="20sp" />
                 </LinearLayout>
