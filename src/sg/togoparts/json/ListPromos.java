@@ -3,6 +3,7 @@ package sg.togoparts.json;
 import java.util.ArrayList;
 
 public class ListPromos {
+	public String scrtitle;
 	public ArrayList<Promos> list_promos;
 
 	public class Promos {

@@ -68,7 +68,7 @@ public class SearchFragment extends Fragment_Main {
 		headerView = (HeaderView) getActivity();
 		headerView.setLeftButton(View.VISIBLE);
 		headerView.setLogoVisible(View.GONE);
-		headerView.setTitleVisible(View.VISIBLE, getString(R.string.search));
+		headerView.setTitleVisible(View.VISIBLE, getString(R.string.marketplace_search));
 		headerView.setRightButton(View.GONE, new OnClickListener() {
 
 			@Override

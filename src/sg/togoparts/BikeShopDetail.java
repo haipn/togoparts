@@ -4,17 +4,21 @@ import java.util.ArrayList;
 
 import sg.togoparts.app.Const;
 import sg.togoparts.app.ErrorDialog;
+import sg.togoparts.app.MyLocation.LocationResult;
+import sg.togoparts.app.MyLocation;
 import sg.togoparts.app.MyVolley;
 import sg.togoparts.app.NewGridView;
 import sg.togoparts.app.SMSDialog;
 import sg.togoparts.app.SMSDialog.AlertPositiveListener;
 import sg.togoparts.gallery.ImagePagerAdapter;
+import sg.togoparts.json.BikeShop.Brand;
 import sg.togoparts.json.GsonRequest;
 import sg.togoparts.json.ShopDetail;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.AnimationDrawable;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -30,7 +34,6 @@ import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
 import android.widget.BaseAdapter;
-import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -43,10 +46,12 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.FailReason;
+import com.nostra13.universalimageloader.core.assist.ImageLoadingListener;
 import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 
-public class BikeShopDetail extends FragmentActivity implements
+public class BikeShopDetail extends FragmentActivity implements LocationResult,
 		AlertPositiveListener {
 
 	protected static final int TYPE_SMS = 0;
@@ -93,8 +98,8 @@ public class BikeShopDetail extends FragmentActivity implements
 	private DisplayImageOptions options;
 	private ImageButton mBtnBack;
 	private TextView mTvTitleHeader;
-	private Object mLatitude;
-	private Object mLongitude;
+	private String mLatitude;
+	private String mLongitude;
 	private ArrayList<String> actualNo;
 	protected String[] listNumber;
 	protected int mTypeDialog;
@@ -114,8 +119,10 @@ public class BikeShopDetail extends FragmentActivity implements
 		// Start the animation (looped playback by default).
 		frameAnimation.start();
 		mShopId = getIntent().getStringExtra(Const.SHOP_ID);
+
 		mLatitude = getIntent().getStringExtra(Const.LATITUDE);
 		mLongitude = getIntent().getStringExtra(Const.LONGITUDE);
+
 		options = new DisplayImageOptions.Builder()
 				.resetViewBeforeLoading(true).cacheOnDisc(true)
 				.imageScaleType(ImageScaleType.EXACTLY_STRETCHED)
@@ -123,11 +130,23 @@ public class BikeShopDetail extends FragmentActivity implements
 				.showImageOnFail(R.drawable.nophoto)
 				.bitmapConfig(Bitmap.Config.RGB_565).considerExifParams(true)
 				.displayer(new FadeInBitmapDisplayer(300)).build();
+		if (mLatitude != null && !mLatitude.isEmpty()) {
+			requestBikeShopDetail();
+		} else {
+			MyLocation myLocation = new MyLocation();
+			if (!myLocation.getLocation(this, this)) {
+				mLatitude = "";
+				mLongitude = "";
+				requestBikeShopDetail();
+			}
+		}
+	}
 
+	private void requestBikeShopDetail() {
 		RequestQueue queue = MyVolley.getRequestQueue();
-		GsonRequest<ShopDetail> myReq = new GsonRequest<ShopDetail>(Method.GET,
-				String.format(Const.URL_BIKESHOP_DETAIL, mShopId, mLatitude,
-						mLongitude), ShopDetail.class,
+		GsonRequest<ShopDetail> myReq = new GsonRequest<ShopDetail>(
+				Method.GET, String.format(Const.URL_BIKESHOP_DETAIL,
+						mShopId, mLatitude, mLongitude), ShopDetail.class,
 				createMyReqSuccessListener(), createMyReqErrorListener());
 		queue.add(myReq);
 		Log.d("haipn",
@@ -188,7 +207,8 @@ public class BikeShopDetail extends FragmentActivity implements
 		mTvOpenLabel.setText(res.forpaidonly.openlabel);
 		mTvRemark.setText(res.forpaidonly.remarks);
 		mTvDistance.setText(res.distance);
-		mTvLocation.setOnClickListener(new OnClickListener() {
+
+		findViewById(R.id.llLocation).setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
@@ -200,8 +220,10 @@ public class BikeShopDetail extends FragmentActivity implements
 			}
 		});
 		ArrayList<String> images = new ArrayList<String>();
-		for (String picture : res.shopphotos) {
-			images.add(picture);
+		if (res.shopphotos != null) {
+			for (String picture : res.shopphotos) {
+				images.add(picture);
+			}
 		}
 		ImagePagerAdapter adapter = new ImagePagerAdapter(images, this);
 		mPager.setAdapter(adapter);
@@ -262,11 +284,41 @@ public class BikeShopDetail extends FragmentActivity implements
 			findViewById(R.id.llFax).setVisibility(View.GONE);
 		}
 
-		mTvEmail.setText(res.forpaidonly.email);
-		mTvWebsite.setText(res.forpaidonly.website);
-		mTvAvai.setText(res.forpaidonly.bikes_avail);
-		mTvMechanic.setText(res.forpaidonly.mechanic_svcs);
-		mTvDelivery.setText(res.forpaidonly.delivery);
+		if (res.forpaidonly.email != null && !res.forpaidonly.email.isEmpty()) {
+			mTvEmail.setText(res.forpaidonly.email);
+			findViewById(R.id.llEmail).setVisibility(View.VISIBLE);
+		} else {
+			findViewById(R.id.llEmail).setVisibility(View.GONE);
+		}
+		if (res.forpaidonly.website != null
+				&& !res.forpaidonly.website.isEmpty()) {
+			mTvWebsite.setText(res.forpaidonly.website);
+			findViewById(R.id.llWeb).setVisibility(View.VISIBLE);
+		} else {
+			findViewById(R.id.llWeb).setVisibility(View.GONE);
+		}
+		if (res.forpaidonly.bikes_avail != null
+				&& !res.forpaidonly.bikes_avail.isEmpty()) {
+			mTvAvai.setText(res.forpaidonly.bikes_avail);
+			findViewById(R.id.llBikeAvai).setVisibility(View.VISIBLE);
+		} else {
+			findViewById(R.id.llBikeAvai).setVisibility(View.GONE);
+		}
+		if (res.forpaidonly.mechanic_svcs != null
+				&& !res.forpaidonly.mechanic_svcs.isEmpty()) {
+			mTvMechanic.setText(res.forpaidonly.mechanic_svcs);
+			findViewById(R.id.llBikeAvai).setVisibility(View.VISIBLE);
+		} else {
+			findViewById(R.id.llBikeAvai).setVisibility(View.GONE);
+		}
+		if (res.forpaidonly.delivery != null
+				&& !res.forpaidonly.delivery.isEmpty()) {
+			mTvDelivery.setText(res.forpaidonly.delivery);
+			findViewById(R.id.llDelivery).setVisibility(View.VISIBLE);
+		} else {
+			findViewById(R.id.llDelivery).setVisibility(View.GONE);
+		}
+
 		mTvBrands.setText(getString(R.string.label_brand, res.shopname));
 		mTvBrandRetailed.setText(res.forpaidonly.brands_retailed);
 		imageLoader.displayImage(res.forpaidonly.promo, mIvPromos, options);
@@ -276,10 +328,23 @@ public class BikeShopDetail extends FragmentActivity implements
 				res.forpaidonly.promo_cnt));
 		mTvNewItems.setText(getString(R.string.view_new_item,
 				res.forpaidonly.new_item_cnt));
+		if (checkVisiblePromos(res)) {
+			findViewById(R.id.llPromos).setVisibility(View.VISIBLE);
+		} else {
+			findViewById(R.id.llPromos).setVisibility(View.GONE);
+		}
+
+		if (checkVisibleNewItems(res)) {
+			findViewById(R.id.llNewItems).setVisibility(View.VISIBLE);
+		} else {
+			findViewById(R.id.llNewItems).setVisibility(View.GONE);
+		}
+
 		mTvPromos.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
+
 				Intent i = new Intent(BikeShopDetail.this,
 						ListPromosActivity.class);
 				i.putExtra(Const.SHOP_ID, res.sid);
@@ -290,6 +355,7 @@ public class BikeShopDetail extends FragmentActivity implements
 
 			@Override
 			public void onClick(View v) {
+
 				Intent i = new Intent(BikeShopDetail.this,
 						ListPromosActivity.class);
 				i.putExtra(Const.SHOP_ID, res.sid);
@@ -312,7 +378,8 @@ public class BikeShopDetail extends FragmentActivity implements
 			}
 		});
 		mGvBrandsDist.setExpanded(true);
-		if (res.forpaidonly.brands_dist != null) {
+		if (res.forpaidonly.brands_dist != null
+				&& !res.forpaidonly.brands_dist.isEmpty()) {
 			mGvBrandsDist.setAdapter(new ImageAdapter(this,
 					res.forpaidonly.brands_dist));
 			mTvBrands.setVisibility(View.VISIBLE);
@@ -403,7 +470,54 @@ public class BikeShopDetail extends FragmentActivity implements
 		startAnimation();
 	}
 
+	private boolean checkVisiblePromos(ShopDetail shop) {
+		int count = 0;
+		try {
+			count = Integer.valueOf(shop.forpaidonly.promo_cnt);
+		} catch (NumberFormatException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		} catch (NullPointerException e) {
+			e.printStackTrace();
+			return false;
+		}
+		if (count == 0)
+			return false;
+		return true;
+	}
+
+	private boolean checkVisibleNewItems(ShopDetail shop) {
+		int count = 0;
+		try {
+			count = Integer.valueOf(shop.forpaidonly.new_item_cnt);
+		} catch (NumberFormatException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		} catch (NullPointerException e) {
+			e.printStackTrace();
+			return false;
+		}
+		if (count == 0)
+			return false;
+		return true;
+	}
+
 	protected void gotoAllAds(ShopDetail detail) {
+		int count = 0;
+		try {
+			count = Integer.valueOf(detail.forpaidonly.new_item_cnt);
+		} catch (NumberFormatException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return;
+		} catch (NullPointerException e) {
+			e.printStackTrace();
+			return;
+		}
+		if (count == 0)
+			return;
 		Intent i = new Intent(BikeShopDetail.this, SearchResultActivity.class);
 		Bundle bundle = new Bundle();
 		bundle.putString(FilterActivity.SHOP_NAME, detail.sid);
@@ -606,9 +720,9 @@ public class BikeShopDetail extends FragmentActivity implements
 
 	public class ImageAdapter extends BaseAdapter {
 		private Context mContext;
-		private ArrayList<String> mListImages;
+		private ArrayList<Brand> mListImages;
 
-		public ImageAdapter(Context c, ArrayList<String> images) {
+		public ImageAdapter(Context c, ArrayList<Brand> images) {
 			mContext = c;
 			mListImages = images;
 		}
@@ -617,7 +731,7 @@ public class BikeShopDetail extends FragmentActivity implements
 			return mListImages.size();
 		}
 
-		public String getItem(int position) {
+		public Brand getItem(int position) {
 			return mListImages.get(position);
 		}
 
@@ -627,6 +741,7 @@ public class BikeShopDetail extends FragmentActivity implements
 
 		class ViewHolder {
 			public ImageView logo;
+			public TextView brand;
 		}
 
 		// create a new ImageView for each item referenced by the Adapter
@@ -638,11 +753,49 @@ public class BikeShopDetail extends FragmentActivity implements
 						R.layout.row_bandist, null);
 				holder = new ViewHolder();
 				holder.logo = (ImageView) convertView.findViewById(R.id.ivLogo);
+				holder.brand = (TextView) convertView
+						.findViewById(R.id.tvBrand);
 				convertView.setTag(holder);
 			} else {
 				holder = (ViewHolder) convertView.getTag();
 			}
-			imageLoader.displayImage(getItem(position), holder.logo, options);
+			Brand br = getItem(position);
+			holder.brand.setText(br.name);
+			if (br.img != null && !br.img.isEmpty()) {
+				holder.logo.setVisibility(View.VISIBLE);
+				holder.brand.setVisibility(View.GONE);
+				imageLoader.displayImage(br.img, holder.logo, options,
+						new ImageLoadingListener() {
+
+							@Override
+							public void onLoadingStarted(String arg0, View arg1) {
+							}
+
+							@Override
+							public void onLoadingFailed(String arg0, View arg1,
+									FailReason arg2) {
+								holder.logo.setVisibility(View.GONE);
+								holder.brand.setVisibility(View.VISIBLE);
+							}
+
+							@Override
+							public void onLoadingComplete(String arg0,
+									View arg1, Bitmap arg2) {
+								holder.logo.setVisibility(View.VISIBLE);
+								holder.brand.setVisibility(View.GONE);
+							}
+
+							@Override
+							public void onLoadingCancelled(String arg0,
+									View arg1) {
+								holder.logo.setVisibility(View.GONE);
+								holder.brand.setVisibility(View.VISIBLE);
+							}
+						});
+			} else {
+				holder.logo.setVisibility(View.GONE);
+				holder.brand.setVisibility(View.VISIBLE);
+			}
 			return convertView;
 		}
 	}
@@ -667,5 +820,21 @@ public class BikeShopDetail extends FragmentActivity implements
 				// postSMSLog();
 			}
 		}
+	}
+
+	@Override
+	public void gotLocation(Location location) {
+		mLatitude = String.valueOf(location.getLatitude());
+		mLongitude = String.valueOf(location.getLongitude());
+		RequestQueue queue = MyVolley.getRequestQueue();
+		GsonRequest<ShopDetail> myReq = new GsonRequest<ShopDetail>(Method.GET,
+				String.format(Const.URL_BIKESHOP_DETAIL, mShopId, mLatitude,
+						mLongitude), ShopDetail.class,
+				createMyReqSuccessListener(), createMyReqErrorListener());
+		queue.add(myReq);
+		Log.d("haipn",
+				"request:"
+						+ String.format(Const.URL_BIKESHOP_DETAIL, mShopId,
+								mLatitude, mLongitude));
 	}
 }

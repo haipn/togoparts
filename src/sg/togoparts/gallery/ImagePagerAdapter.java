@@ -30,7 +30,10 @@ public class ImagePagerAdapter extends PagerAdapter {
 	private DisplayImageOptions options;
 
 	public ImagePagerAdapter(ArrayList<String> images, Context context) {
-		this.images = images;
+		if (images == null)
+			this.images = new ArrayList<String>();
+		else
+			this.images = images;
 		mContext = context;
 		inflater = LayoutInflater.from(mContext);
 		options = new DisplayImageOptions.Builder()

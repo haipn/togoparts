@@ -34,7 +34,7 @@ public class BikeShop {
 		public String bikes_avail;
 		public String mechanic_svcs;
 		public String delivery;
-		public ArrayList<String> brands_dist;
+		public ArrayList<Brand> brands_dist;
 		public String brands_retailed;
 		public String new_item;
 		public ArrayList<String> actualno;
@@ -42,5 +42,10 @@ public class BikeShop {
 		public String new_item_cnt;
 		public String promo;
 		public String promo_cnt;
+	}
+
+	public class Brand {
+		public String name;
+		public String img;
 	}
 }

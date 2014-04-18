@@ -27,6 +27,7 @@ public class ListPromosActivity extends FragmentActivity {
 	PromosAdapter mAdapter;
 	ArrayList<Promos> mListPromos;
 	String mShopId;
+	private TextView mTitle;
 
 	@Override
 	protected void onCreate(Bundle arg0) {
@@ -53,6 +54,7 @@ public class ListPromosActivity extends FragmentActivity {
 				mListPromos = response.list_promos;
 				mAdapter = new PromosAdapter(ListPromosActivity.this, mListPromos);
 				mLvPromos.setAdapter(mAdapter);
+				mTitle.setText(response.scrtitle);
 			}
 		};
 	}
@@ -62,7 +64,7 @@ public class ListPromosActivity extends FragmentActivity {
 		findViewById(R.id.btnSearch).setVisibility(View.GONE);
 		findViewById(R.id.logo).setVisibility(View.GONE);
 
-		TextView mTitle = (TextView) findViewById(R.id.title);
+		mTitle = (TextView) findViewById(R.id.title);
 		mTitle.setVisibility(View.VISIBLE);
 		mTitle.setText(R.string.bikeshop_promos);
 		findViewById(R.id.progress).setVisibility(View.VISIBLE);

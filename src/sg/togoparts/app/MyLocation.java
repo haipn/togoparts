@@ -51,6 +51,31 @@ public class MyLocation {
 		return true;
 	}
 
+	public boolean isSupportLocation(Context context) {
+		if (lm == null)
+			lm = (LocationManager) context
+					.getSystemService(Context.LOCATION_SERVICE);
+
+		// exceptions will be thrown if provider is not permitted.
+		try {
+			gps_enabled = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		try {
+			network_enabled = lm
+					.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+
+		// don't start listeners if no provider is enabled
+		if (!gps_enabled && !network_enabled)
+			return false;
+		else
+			return true;
+	}
+
 	LocationListener locationListenerGps = new LocationListener() {
 		public void onLocationChanged(Location location) {
 			timer1.cancel();

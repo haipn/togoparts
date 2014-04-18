@@ -42,7 +42,7 @@ import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 
 public class FSActivity_BikeShop extends FragmentActivity implements
-		LocationResult {
+		LocationResult, BikeShopAdapter.ButtonClickListener {
 
 	public static final String PAGE_ID = "&page_id=";
 
@@ -130,7 +130,7 @@ public class FSActivity_BikeShop extends FragmentActivity implements
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long arg3) {
 				if (mResult.get(arg2 - 1).sid == null) {
-					
+
 				} else {
 					Intent i = new Intent(FSActivity_BikeShop.this,
 							BikeShopDetail.class);
@@ -169,12 +169,16 @@ public class FSActivity_BikeShop extends FragmentActivity implements
 		mTvNoResult = (TextView) findViewById(R.id.tvNoResult);
 		mIntent = getIntent();
 		mResult = new ArrayList<BikeShop>();
-		mAdapter = new BikeShopAdapter(this, mResult);
+		mAdapter = new BikeShopAdapter(this, mResult, this);
 		mLvResult.setAdapter(mAdapter);
 
 		createHeader();
 		MyLocation myLocation = new MyLocation();
-		myLocation.getLocation(this, this);
+		if (!myLocation.getLocation(this, this)) {
+			mLat = "";
+			mLong = "";
+			searchResult(mIntent);
+		}
 	}
 
 	private void searchResult(Intent i) {
@@ -341,6 +345,26 @@ public class FSActivity_BikeShop extends FragmentActivity implements
 		mLat = String.valueOf(location.getLatitude());
 		mLong = String.valueOf(location.getLongitude());
 		searchResult(mIntent);
+	}
+
+	@Override
+	public void onNewItemsClick(BikeShop shop) {
+
+		Intent i = new Intent(FSActivity_BikeShop.this,
+				SearchResultActivity.class);
+		Bundle bundle = new Bundle();
+		bundle.putString(FilterActivity.SHOP_NAME, shop.sid);
+		i.putExtras(bundle);
+		i.putExtra(Const.TITLE, "All Ads by " + shop.shopname);
+		startActivity(i);
+	}
+
+	@Override
+	public void onPromosClick(BikeShop shop) {
+		Intent i = new Intent(FSActivity_BikeShop.this,
+				ListPromosActivity.class);
+		i.putExtra(Const.SHOP_ID, shop.sid);
+		startActivity(i);
 	}
 
 }

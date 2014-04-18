@@ -8,10 +8,9 @@ import sg.togoparts.json.BikeShop.PinAd;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.hardware.Camera.Size;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
@@ -23,6 +22,8 @@ import com.google.ads.AdSize;
 import com.google.ads.doubleclick.DfpAdView;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.FailReason;
+import com.nostra13.universalimageloader.core.assist.ImageLoadingListener;
 import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 
@@ -32,15 +33,21 @@ public class BikeShopAdapter extends BaseAdapter {
 	ArrayList<BikeShop> mListResult;
 	protected ImageLoader imageLoader = ImageLoader.getInstance();
 	DisplayImageOptions options;
-
-	public BikeShopAdapter(Context context, ArrayList<BikeShop> result) {
+	private ButtonClickListener mBtListener;
+	
+	public interface ButtonClickListener {
+		public void onNewItemsClick(BikeShop shop);
+		public void onPromosClick(BikeShop shop);
+	}
+	
+	public BikeShopAdapter(Context context, ArrayList<BikeShop> result, ButtonClickListener btListener) {
 		super();
+		mBtListener = btListener;
 		mContext = context;
 		mListResult = result;
 		options = new DisplayImageOptions.Builder()
 				.resetViewBeforeLoading(true).cacheOnDisc(true)
-				.showImageOnFail(R.drawable.nophoto)
-				.showImageForEmptyUri(R.drawable.nophoto).cacheInMemory(true)
+				.cacheInMemory(true)
 				.imageScaleType(ImageScaleType.EXACTLY)
 				.bitmapConfig(Bitmap.Config.RGB_565).considerExifParams(true)
 				.displayer(new FadeInBitmapDisplayer(300)).build();
@@ -94,11 +101,10 @@ public class BikeShopAdapter extends BaseAdapter {
 			holder = (ViewHolder) convertView.getTag();
 		}
 
-		BikeShop shop = getItem(position);
+		final BikeShop shop = getItem(position);
 		if (shop.pinad == null) { // bikeshop normal
 			holder.main.setVisibility(View.VISIBLE);
 			holder.adView.setVisibility(View.GONE);
-			Log.d("haipn", "position: " + position);
 			if (shop.forpaidonly == null || shop.forpaidonly.promos == null) {
 				holder.promos.setVisibility(View.GONE);
 				holder.distance.setVisibility(View.GONE);
@@ -108,27 +114,126 @@ public class BikeShopAdapter extends BaseAdapter {
 				holder.newItem.setVisibility(View.GONE);
 			} else {
 				holder.promos.setVisibility(View.VISIBLE);
+				holder.promos.setOnClickListener(new OnClickListener() {
+					
+					@Override
+					public void onClick(View v) {
+						int count ;
+						try {
+							count = Integer.valueOf(shop.forpaidonly.promos);
+						} catch (NumberFormatException e) {
+							e.printStackTrace();
+							return;
+						} catch (NullPointerException e) {
+							e.printStackTrace();
+							return;
+						} 
+						if (count == 0)
+							return;
+						mBtListener.onPromosClick(shop);
+					}
+				});
 				holder.distance.setVisibility(View.VISIBLE);
 				holder.logo.setVisibility(View.VISIBLE);
 				holder.photo.setVisibility(View.VISIBLE);
 				holder.llOpen.setVisibility(View.VISIBLE);
 				holder.newItem.setVisibility(View.VISIBLE);
+				holder.newItem.setOnClickListener(new OnClickListener() {
+					
+					@Override
+					public void onClick(View v) {
+						int count ;
+						try {
+							count = Integer.valueOf(shop.forpaidonly.new_item_ads);
+						} catch (NumberFormatException e) {
+							e.printStackTrace();
+							return;
+						} catch (NullPointerException e) {
+							e.printStackTrace();
+							return;
+						} 
+						if (count == 0)
+							return;
+						mBtListener.onNewItemsClick(shop);
+					}
+				});
 
 				holder.promos.setText(mContext.getString(R.string.promos,
 						shop.forpaidonly.promos));
 				holder.distance.setText(shop.distance);
-				Object tag = holder.logo.getTag();
-				if (tag == null || !tag.equals(shop.shoplogo)) {
-					imageLoader.displayImage(shop.shoplogo, holder.logo,
-							options);
-					holder.logo.setTag(shop.shoplogo);
+				if (shop.shoplogo != null && !shop.shoplogo.isEmpty()) {
+					holder.logo.setVisibility(View.VISIBLE);
+					Object tag = holder.logo.getTag();
+					if (tag == null || !tag.equals(shop.shoplogo)) {
+						imageLoader.displayImage(shop.shoplogo, holder.logo,
+								options, new ImageLoadingListener() {
+
+									@Override
+									public void onLoadingStarted(String arg0,
+											View arg1) {
+									}
+
+									@Override
+									public void onLoadingFailed(String arg0,
+											View arg1, FailReason arg2) {
+										holder.logo.setVisibility(View.GONE);
+									}
+
+									@Override
+									public void onLoadingComplete(String arg0,
+											View arg1, Bitmap arg2) {
+										holder.logo.setVisibility(View.VISIBLE);
+									}
+
+									@Override
+									public void onLoadingCancelled(String arg0,
+											View arg1) {
+										holder.logo.setVisibility(View.GONE);
+									}
+								});
+						holder.logo.setTag(shop.shoplogo);
+					}
+				} else {
+					holder.logo.setVisibility(View.GONE);
 				}
-				Object tagPhoto = holder.photo.getTag();
-				if (tagPhoto == null
-						|| !tagPhoto.equals(shop.forpaidonly.shopphoto)) {
-					imageLoader.displayImage(shop.forpaidonly.shopphoto,
-							holder.photo, options);
-					holder.photo.setTag(shop.forpaidonly.shopphoto);
+				
+				if (shop.forpaidonly.shopphoto != null && !shop.forpaidonly.shopphoto.isEmpty()) {
+					holder.photo.setVisibility(View.VISIBLE);
+					Object tagPhoto = holder.photo.getTag();
+					if (tagPhoto == null
+							|| !tagPhoto.equals(shop.forpaidonly.shopphoto)) {
+						imageLoader.displayImage(shop.forpaidonly.shopphoto,
+								holder.photo, options,
+								new ImageLoadingListener() {
+
+									@Override
+									public void onLoadingStarted(String arg0,
+											View arg1) {
+									}
+
+									@Override
+									public void onLoadingFailed(String arg0,
+											View arg1, FailReason arg2) {
+										holder.photo.setVisibility(View.GONE);
+									}
+
+									@Override
+									public void onLoadingComplete(String arg0,
+											View arg1, Bitmap arg2) {
+										holder.photo
+												.setVisibility(View.VISIBLE);
+									}
+
+									@Override
+									public void onLoadingCancelled(String arg0,
+											View arg1) {
+										holder.photo.setVisibility(View.GONE);
+									}
+								});
+						holder.photo.setTag(shop.forpaidonly.shopphoto);
+					}
+				} else {
+					holder.photo.setVisibility(View.GONE);
 				}
 				holder.openLabel.setText(shop.forpaidonly.openlabel);
 
@@ -137,9 +242,14 @@ public class BikeShopAdapter extends BaseAdapter {
 					if (shop.forpaidonly.openlabel.contains("OPEN")) {
 						holder.llOpen.setBackgroundColor(mContext
 								.getResources().getColor(R.color.green));
+						holder.openLabel.setTextColor(mContext.getResources().getColor(android.R.color.white));
+						holder.remark.setTextColor(mContext.getResources().getColor(android.R.color.white));
+						
 					} else {
 						holder.llOpen.setBackgroundColor(mContext
-								.getResources().getColor(R.color.red));
+								.getResources().getColor(R.color.closed_shop));
+						holder.openLabel.setTextColor(mContext.getResources().getColor(android.R.color.black));
+						holder.remark.setTextColor(mContext.getResources().getColor(android.R.color.black));
 					}
 					holder.llOpen.setVisibility(View.VISIBLE);
 				} else

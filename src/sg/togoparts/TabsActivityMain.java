@@ -90,9 +90,9 @@ public class TabsActivityMain extends TabActivity implements AdListener {
 			b = new Bundle();
 			b.putString(FilterBikeShop.AREA, "");
 			b.putString(FilterBikeShop.BIKESHOP_NAME, "");
-			b.putString(FilterBikeShop.SORT_BY,"2");
-			b.putBoolean(FilterBikeShop.MECHANIC, true);
-			b.putBoolean(FilterBikeShop.OPENNOW, true);
+			b.putString(FilterBikeShop.SORT_BY,"0");
+			b.putBoolean(FilterBikeShop.MECHANIC, false);
+			b.putBoolean(FilterBikeShop.OPENNOW, false);
 		}
 		
 		intent.putExtras(b);

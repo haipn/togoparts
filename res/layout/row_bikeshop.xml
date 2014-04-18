@@ -54,6 +54,8 @@
                     android:id="@+id/tvDistance"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/location_icon"
+                    android:drawablePadding="5dp"
                     android:text="FontableTextView" />
             </LinearLayout>
 
@@ -66,17 +68,19 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
+            android:layout_height="40dp" >
 
             <LinearLayout
                 android:id="@+id/llOpen"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="fill_parent"
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
                 android:background="@color/green"
-                android:gravity="bottom"
-                android:padding="6dp" >
+                android:gravity="center_vertical|left"
+                android:orientation="vertical"
+                android:paddingLeft="6dp"
+                android:paddingRight="6dp" >
 
                 <sg.togoparts.gallery.FontableTextView
                     android:id="@+id/tvOpenLabel"
@@ -97,24 +101,28 @@
             <sg.togoparts.gallery.FontableTextView
                 android:id="@+id/tvNewItem"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="fill_parent"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="4dp"
                 android:layout_toLeftOf="@+id/tvPromos"
-                android:background="@color/orange"
+                android:background="@drawable/btn_click"
+                android:gravity="center"
                 android:padding="6dp"
                 android:text="TextView"
+                android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textColor="@android:color/white" />
 
             <sg.togoparts.gallery.FontableTextView
                 android:id="@+id/tvPromos"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="fill_parent"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:background="@color/orange"
+                android:background="@drawable/btn_click"
+                android:gravity="center"
                 android:padding="6dp"
                 android:text="TextView"
+                android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textColor="@android:color/white" />
         </RelativeLayout>
     </LinearLayout>

@@ -8,6 +8,7 @@ import java.util.Map;
 
 import sg.togoparts.app.Const;
 import sg.togoparts.app.ErrorDialog;
+import sg.togoparts.app.MyLocation;
 import sg.togoparts.app.MyVolley;
 import sg.togoparts.json.GsonRequest;
 import sg.togoparts.json.ListCategories;
@@ -88,6 +89,7 @@ public class FilterBikeShop extends FragmentActivity {
 	Button mBtnApplyFilter;
 	private String mSort;
 	private boolean onResult;
+	private MyLocation mLoc;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -125,9 +127,15 @@ public class FilterBikeShop extends FragmentActivity {
 				Log.d("haipn", "msort = " + mSort);
 			}
 		});
-		mGroupSort.check(R.id.rbSort3);
-		mSort = "2";
+		mLoc = new MyLocation();
 
+		if (!mLoc.isSupportLocation(this)) {
+			mGroupSort.check(R.id.rbSort3);
+			mSort = "2";
+		} else {
+			mGroupSort.check(R.id.rbSort1);
+			mSort = "0";
+		}
 		mEdtShopName = (EditText) findViewById(R.id.edtBikeShop);
 		mSpnArea = (Spinner) findViewById(R.id.spnArea);
 		mCbMechanic = (CheckBox) findViewById(R.id.cbMechanic);
@@ -171,8 +179,15 @@ public class FilterBikeShop extends FragmentActivity {
 
 		mSpnArea.setSelection(0);
 
-		mSort = "2";
-		mGroupSort.check(R.id.rbSort3);
+		mLoc = new MyLocation();
+
+		if (!mLoc.isSupportLocation(this)) {
+			mGroupSort.check(R.id.rbSort3);
+			mSort = "2";
+		} else {
+			mGroupSort.check(R.id.rbSort1);
+			mSort = "0";
+		}
 	}
 
 	@Override
@@ -272,14 +287,22 @@ public class FilterBikeShop extends FragmentActivity {
 		mCbOpenNow.setChecked(b.getBoolean(OPENNOW));
 
 		mSort = b.getString(SORT_BY);
-		if (mSort.equals("0")) {
-			mGroupSort.check(R.id.rbSort1);
-		} else if (mSort.equals("1")) {
-			mGroupSort.check(R.id.rbSort2);
-		} else if (mSort.equals("2")) {
-			mGroupSort.check(R.id.rbSort3);
-		} else
-			mGroupSort.check(R.id.rbSort4);
+		if (mLoc.isSupportLocation(this)) {
+			if (mSort.equals("0")) {
+				mGroupSort.check(R.id.rbSort1);
+			} else if (mSort.equals("1")) {
+				mGroupSort.check(R.id.rbSort2);
+			} else if (mSort.equals("2")) {
+				mGroupSort.check(R.id.rbSort3);
+			} else
+				mGroupSort.check(R.id.rbSort4);
+		} else {
+			if (mSort.equals("0") || mSort.equals("1") || mSort.equals("2")) {
+				mGroupSort.check(R.id.rbSort3);
+			} else {
+				mGroupSort.check(R.id.rbSort4);
+			}
+		}
 	}
 
 }

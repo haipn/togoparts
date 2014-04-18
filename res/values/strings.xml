@@ -55,7 +55,7 @@
     <string name="search_result">Search Result</string>
     <string name="bikeshop_title">Singapore Bikeshop List</string>
     <string name="filter_title">Filter</string>
-    <string name="filter_bikeshop_title">Bikeshop Filter</string>
+    <string name="filter_bikeshop_title">Bikeshop Search</string>
     <string name="shortlist">Shortlisted Ads</string>
     <string name="title_ad_detail">Ad Details</string>
     <string name="btn_reset_filter">Reset</string>
@@ -68,14 +68,14 @@
 	<string name="new_item">New Item Ads (%s)</string>
 	<string name="promos">Promos (%s)</string>
 	<string name="filter_bikeshop">Bikeshop Name</string>
-	<string name="hint_bikeshop">Shop Name…</string>
+	<string name="hint_bikeshop">Shop Name</string>
 	<string name="filter_area">Area</string>
 	<string name="filter_opennow">Open Now</string>
 	<string name="filter_mechanic">Mechanic Services</string>
 	<string name="label_brand">Brands Distributed by %s</string>
 	<string name="location">Location</string>
-	<string name="view_promos">See All (%s) Promos</string>
-	<string name="view_new_item">See All (%s) New Item Ads</string>
+	<string name="view_promos">Promos (%s)</string>
+	<string name="view_new_item">New Item Ads(%s)</string>
 	<string name="marketplace_search">Marketplace Search</string>
 	<string name="bikeshop_promos">Bikeshop Promos</string>
 	<string name="bikeshop_search">Bikeshop Search</string>

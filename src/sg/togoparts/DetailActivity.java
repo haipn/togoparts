@@ -521,14 +521,42 @@ public class DetailActivity extends FragmentActivity implements
 			}
 		});
 		imageLoader.displayImage(res.mContactDetails.mShopLogo, mIvShopLogo);
+		mIvShopLogo.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Intent i = new Intent(DetailActivity.this,
+						BikeShopDetail.class);
+				i.putExtra(Const.SHOP_ID, res.mContactDetails.mShopId);
+//				i.putExtra(Const.LATITUDE, mLat);
+//				i.putExtra(Const.LONGITUDE, mLong);
+				startActivity(i);
+			}
+		});
+		
 		if (res.mContactDetails.mContact.value != null
 				&& !res.mContactDetails.mContact.value.isEmpty()) {
 			mTvShopOrContact.setText(res.mContactDetails.mContact.label);
 			mTvNameContact.setText(res.mContactDetails.mContact.value);
+			if (res.mContactDetails.mShopId != null && !res.mContactDetails.mShopId.isEmpty()) {
+				mTvNameContact.setOnClickListener(new OnClickListener() {
+					
+					@Override
+					public void onClick(View v) {
+						Intent i = new Intent(DetailActivity.this,
+								BikeShopDetail.class);
+						i.putExtra(Const.SHOP_ID, res.mContactDetails.mShopId);
+//						i.putExtra(Const.LATITUDE, mLat);
+//						i.putExtra(Const.LONGITUDE, mLong);
+						startActivity(i);
+					}
+				});
+			}
 		} else {
 			mLlShop.setVisibility(View.GONE);
 		}
 
+		
 		if (res.mContactDetails.mContactNo.value != null
 				&& !res.mContactDetails.mContactNo.value.isEmpty())
 			mTvContactNo.setText(res.mContactDetails.mContactNo.value);

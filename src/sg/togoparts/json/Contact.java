@@ -9,6 +9,8 @@ public class Contact {
 	@SerializedName("shop_logo")
 	public String mShopLogo;
 	
+	@SerializedName("sid")
+	public String mShopId;
 	
 	@SerializedName("contact_email")
 	public String mContactEmail;

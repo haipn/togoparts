@@ -78,7 +78,7 @@ public class PromosAdapter extends BaseAdapter {
 					.findViewById(R.id.tvShopName);
 			holder.datepost = (TextView) convertView
 					.findViewById(R.id.tvDatePost);
-			holder.thumb = (ImageView) convertView.findViewById(R.id.ivThumb);
+//			holder.thumb = (ImageView) convertView.findViewById(R.id.ivThumb);
 			holder.content = (WebView) convertView.findViewById(R.id.wvPromos);
 			convertView.setTag(holder);
 		} else {
@@ -88,7 +88,7 @@ public class PromosAdapter extends BaseAdapter {
 		holder.title.setText(promos.title);
 		holder.shopname.setText(promos.shopname);
 		holder.datepost.setText(promos.dateposted);
-		imageLoader.displayImage(promos.thumbnail, holder.thumb, options);
+//		imageLoader.displayImage(promos.thumbnail, holder.thumb, options);
 		holder.content.loadData(promos.content, "text/html", "UTF-8");
 		return convertView;
 	}
