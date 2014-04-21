@@ -96,6 +96,8 @@ public class BikeShopDetail extends FragmentActivity implements LocationResult,
 	private LinearLayout mLlMain;
 	private String mShopId;
 	private DisplayImageOptions options;
+	private DisplayImageOptions optionNewItem;
+	private DisplayImageOptions optionPromos;
 	private ImageButton mBtnBack;
 	private TextView mTvTitleHeader;
 	private String mLatitude;
@@ -130,6 +132,21 @@ public class BikeShopDetail extends FragmentActivity implements LocationResult,
 				.showImageOnFail(R.drawable.nophoto)
 				.bitmapConfig(Bitmap.Config.RGB_565).considerExifParams(true)
 				.displayer(new FadeInBitmapDisplayer(300)).build();
+
+		optionNewItem = new DisplayImageOptions.Builder()
+				.resetViewBeforeLoading(true).cacheOnDisc(true)
+				.imageScaleType(ImageScaleType.EXACTLY_STRETCHED)
+				.showImageForEmptyUri(R.drawable.new_item_tab)
+				.showImageOnFail(R.drawable.new_item_tab)
+				.bitmapConfig(Bitmap.Config.RGB_565).considerExifParams(true)
+				.displayer(new FadeInBitmapDisplayer(300)).build();
+		optionPromos = new DisplayImageOptions.Builder()
+				.resetViewBeforeLoading(true).cacheOnDisc(true)
+				.imageScaleType(ImageScaleType.EXACTLY_STRETCHED)
+				.showImageForEmptyUri(R.drawable.promos_tab)
+				.showImageOnFail(R.drawable.promos_tab)
+				.bitmapConfig(Bitmap.Config.RGB_565).considerExifParams(true)
+				.displayer(new FadeInBitmapDisplayer(300)).build();
 		if (mLatitude != null && !mLatitude.isEmpty()) {
 			requestBikeShopDetail();
 		} else {
@@ -144,9 +161,9 @@ public class BikeShopDetail extends FragmentActivity implements LocationResult,
 
 	private void requestBikeShopDetail() {
 		RequestQueue queue = MyVolley.getRequestQueue();
-		GsonRequest<ShopDetail> myReq = new GsonRequest<ShopDetail>(
-				Method.GET, String.format(Const.URL_BIKESHOP_DETAIL,
-						mShopId, mLatitude, mLongitude), ShopDetail.class,
+		GsonRequest<ShopDetail> myReq = new GsonRequest<ShopDetail>(Method.GET,
+				String.format(Const.URL_BIKESHOP_DETAIL, mShopId, mLatitude,
+						mLongitude), ShopDetail.class,
 				createMyReqSuccessListener(), createMyReqErrorListener());
 		queue.add(myReq);
 		Log.d("haipn",
@@ -198,15 +215,36 @@ public class BikeShopDetail extends FragmentActivity implements LocationResult,
 	protected void fillData(final ShopDetail res) {
 		mTvTitleHeader.setText(res.shopname);
 
-		if (res.forpaidonly.openlabel.contains("OPEN")) {
-			mLlOpen.setBackgroundColor(getResources().getColor(R.color.green));
+		if (res.forpaidonly.openlabel != null
+				&& !res.forpaidonly.openlabel.isEmpty()) {
+			if (res.forpaidonly.openlabel.contains("OPEN")) {
+				mLlOpen.setBackgroundColor(getResources().getColor(
+						R.color.green));
+				mTvOpenLabel.setTextColor(getResources().getColor(
+						android.R.color.white));
+				mTvRemark.setTextColor(getResources().getColor(
+						android.R.color.white));
+			} else {
+				mLlOpen.setBackgroundColor(getResources().getColor(
+						R.color.closed_shop));
+				mTvOpenLabel.setTextColor(getResources().getColor(
+						android.R.color.black));
+				mTvRemark.setTextColor(getResources().getColor(
+						android.R.color.black));
+			}
+			mTvOpenLabel.setText(res.forpaidonly.openlabel);
+			mTvRemark.setText(res.forpaidonly.remarks);
+			mLlOpen.setVisibility(View.VISIBLE);
 		} else {
-			mLlOpen.setBackgroundColor(getResources().getColor(R.color.red));
+			mLlOpen.setVisibility(View.INVISIBLE);
 		}
 
-		mTvOpenLabel.setText(res.forpaidonly.openlabel);
-		mTvRemark.setText(res.forpaidonly.remarks);
-		mTvDistance.setText(res.distance);
+		if (res.distance != null && !res.distance.isEmpty()) {
+			mTvDistance.setText(res.distance);
+			mTvDistance.setVisibility(View.VISIBLE);
+		} else {
+			mTvDistance.setVisibility(View.GONE);
+		}
 
 		findViewById(R.id.llLocation).setOnClickListener(new OnClickListener() {
 
@@ -321,9 +359,10 @@ public class BikeShopDetail extends FragmentActivity implements LocationResult,
 
 		mTvBrands.setText(getString(R.string.label_brand, res.shopname));
 		mTvBrandRetailed.setText(res.forpaidonly.brands_retailed);
-		imageLoader.displayImage(res.forpaidonly.promo, mIvPromos, options);
 		imageLoader
-				.displayImage(res.forpaidonly.new_item, mIvNewItems, options);
+				.displayImage(res.forpaidonly.promo, mIvPromos, optionPromos);
+		imageLoader.displayImage(res.forpaidonly.new_item, mIvNewItems,
+				optionNewItem);
 		mTvPromos.setText(getString(R.string.view_promos,
 				res.forpaidonly.promo_cnt));
 		mTvNewItems.setText(getString(R.string.view_new_item,
@@ -628,7 +667,7 @@ public class BikeShopDetail extends FragmentActivity implements LocationResult,
 				Log.d("haipn", "sussecc");
 				initInterface();
 				if (response.forpaidonly != null
-						&& response.forpaidonly.openlabel != null) {
+						&& (response.forpaidonly.openlabel != null || response.forpaidonly.openinghrs != null)) {
 					createHeader();
 					fillData(response);
 				} else {

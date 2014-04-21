@@ -34,21 +34,22 @@ public class BikeShopAdapter extends BaseAdapter {
 	protected ImageLoader imageLoader = ImageLoader.getInstance();
 	DisplayImageOptions options;
 	private ButtonClickListener mBtListener;
-	
+
 	public interface ButtonClickListener {
 		public void onNewItemsClick(BikeShop shop);
+
 		public void onPromosClick(BikeShop shop);
 	}
-	
-	public BikeShopAdapter(Context context, ArrayList<BikeShop> result, ButtonClickListener btListener) {
+
+	public BikeShopAdapter(Context context, ArrayList<BikeShop> result,
+			ButtonClickListener btListener) {
 		super();
 		mBtListener = btListener;
 		mContext = context;
 		mListResult = result;
 		options = new DisplayImageOptions.Builder()
 				.resetViewBeforeLoading(true).cacheOnDisc(true)
-				.cacheInMemory(true)
-				.imageScaleType(ImageScaleType.EXACTLY)
+				.cacheInMemory(true).imageScaleType(ImageScaleType.EXACTLY)
 				.bitmapConfig(Bitmap.Config.RGB_565).considerExifParams(true)
 				.displayer(new FadeInBitmapDisplayer(300)).build();
 	}
@@ -115,10 +116,10 @@ public class BikeShopAdapter extends BaseAdapter {
 			} else {
 				holder.promos.setVisibility(View.VISIBLE);
 				holder.promos.setOnClickListener(new OnClickListener() {
-					
+
 					@Override
 					public void onClick(View v) {
-						int count ;
+						int count;
 						try {
 							count = Integer.valueOf(shop.forpaidonly.promos);
 						} catch (NumberFormatException e) {
@@ -127,7 +128,7 @@ public class BikeShopAdapter extends BaseAdapter {
 						} catch (NullPointerException e) {
 							e.printStackTrace();
 							return;
-						} 
+						}
 						if (count == 0)
 							return;
 						mBtListener.onPromosClick(shop);
@@ -139,19 +140,20 @@ public class BikeShopAdapter extends BaseAdapter {
 				holder.llOpen.setVisibility(View.VISIBLE);
 				holder.newItem.setVisibility(View.VISIBLE);
 				holder.newItem.setOnClickListener(new OnClickListener() {
-					
+
 					@Override
 					public void onClick(View v) {
-						int count ;
+						int count;
 						try {
-							count = Integer.valueOf(shop.forpaidonly.new_item_ads);
+							count = Integer
+									.valueOf(shop.forpaidonly.new_item_ads);
 						} catch (NumberFormatException e) {
 							e.printStackTrace();
 							return;
 						} catch (NullPointerException e) {
 							e.printStackTrace();
 							return;
-						} 
+						}
 						if (count == 0)
 							return;
 						mBtListener.onNewItemsClick(shop);
@@ -160,7 +162,12 @@ public class BikeShopAdapter extends BaseAdapter {
 
 				holder.promos.setText(mContext.getString(R.string.promos,
 						shop.forpaidonly.promos));
-				holder.distance.setText(shop.distance);
+				if (shop.distance != null && !shop.distance.isEmpty()) {
+					holder.distance.setText(shop.distance);
+					holder.distance.setVisibility(View.VISIBLE);
+				} else {
+					holder.distance.setVisibility(View.GONE);
+				}
 				if (shop.shoplogo != null && !shop.shoplogo.isEmpty()) {
 					holder.logo.setVisibility(View.VISIBLE);
 					Object tag = holder.logo.getTag();
@@ -196,8 +203,9 @@ public class BikeShopAdapter extends BaseAdapter {
 				} else {
 					holder.logo.setVisibility(View.GONE);
 				}
-				
-				if (shop.forpaidonly.shopphoto != null && !shop.forpaidonly.shopphoto.isEmpty()) {
+
+				if (shop.forpaidonly.shopphoto != null
+						&& !shop.forpaidonly.shopphoto.isEmpty()) {
 					holder.photo.setVisibility(View.VISIBLE);
 					Object tagPhoto = holder.photo.getTag();
 					if (tagPhoto == null
@@ -242,14 +250,18 @@ public class BikeShopAdapter extends BaseAdapter {
 					if (shop.forpaidonly.openlabel.contains("OPEN")) {
 						holder.llOpen.setBackgroundColor(mContext
 								.getResources().getColor(R.color.green));
-						holder.openLabel.setTextColor(mContext.getResources().getColor(android.R.color.white));
-						holder.remark.setTextColor(mContext.getResources().getColor(android.R.color.white));
-						
+						holder.openLabel.setTextColor(mContext.getResources()
+								.getColor(android.R.color.white));
+						holder.remark.setTextColor(mContext.getResources()
+								.getColor(android.R.color.white));
+
 					} else {
 						holder.llOpen.setBackgroundColor(mContext
 								.getResources().getColor(R.color.closed_shop));
-						holder.openLabel.setTextColor(mContext.getResources().getColor(android.R.color.black));
-						holder.remark.setTextColor(mContext.getResources().getColor(android.R.color.black));
+						holder.openLabel.setTextColor(mContext.getResources()
+								.getColor(android.R.color.black));
+						holder.remark.setTextColor(mContext.getResources()
+								.getColor(android.R.color.black));
 					}
 					holder.llOpen.setVisibility(View.VISIBLE);
 				} else
