@@ -3,7 +3,6 @@ package sg.togoparts.app;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.util.Log;
 
 public class Const {
 	public static final String GA_PROPERTY_ID = "UA-479713-13";
@@ -31,7 +30,7 @@ public class Const {
 	public static String URL_LIST_SEARCH = "http://www.togoparts.com/iphone_ws/mp_list_ads.php?v=1.1&source=android&%s";
 	public static String URL_SHORTLIST = "http://www.togoparts.com/iphone_ws/mp_shortlist_ads.php?source=android&aid=%s";
 	public static String URL_CONTACT_LOG = "http://www.togoparts.com/iphone_ws/contact_log.php?source=android&id=%s&fktype=%s&category=%s";
-	public static String URL_BIKE_SHOP = "http://www.togoparts.com/iphone_ws/bs_listings.php?source=android&shopsearch=%s&country=%s&area=%s&open=%s&mechanic=%s&lat=%s&long=%s&sortby=%s";
+	public static String URL_BIKE_SHOP = "http://www.togoparts.com/iphone_ws/bs_listings.php?source=android&shopsearch=%s&country=%s&area=%s&open=%s&mechanic=%s&lat=%s&long=%s&sortedby=%s";
 	public static String URL_ABOUT = "http://www.togoparts.com/iphone_ws/about-us.php?source=android";
 	public static String URL_PROMOS = "http://www.togoparts.com/iphone_ws/bs_promos.php?source=android&sid=%s";
 	public static boolean isAppExitable = false;

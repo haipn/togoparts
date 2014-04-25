@@ -1,5 +1,6 @@
 package sg.togoparts;
 
+import sg.togoparts.app.Const;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -20,8 +21,6 @@ import com.google.analytics.tracking.android.Fields;
 import com.google.analytics.tracking.android.GoogleAnalytics;
 import com.google.analytics.tracking.android.MapBuilder;
 import com.google.analytics.tracking.android.Tracker;
-import sg.togoparts.R;
-import sg.togoparts.app.Const;
 
 public class SearchFragment extends Fragment_Main {
 	private static final String SCREEN_LABEL = "Marketplace Search Form";

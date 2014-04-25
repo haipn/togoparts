@@ -81,4 +81,6 @@
 	<string name="bikeshop_search">Bikeshop Search</string>
 	<string name="about">About Togoparts</string>
 	<string name="more">More</string>
+	<string name="map">Map</string>
+	<string name="title_search_bikeshop">Bikeshop Search Results</string>
 </resources>

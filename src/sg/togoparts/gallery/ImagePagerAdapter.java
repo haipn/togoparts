@@ -2,7 +2,6 @@ package sg.togoparts.gallery;
 
 import java.util.ArrayList;
 
-import sg.togoparts.DetailActivity;
 import sg.togoparts.R;
 import android.content.Context;
 import android.graphics.Bitmap;

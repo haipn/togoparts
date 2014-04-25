@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 import sg.togoparts.app.Const;
 import sg.togoparts.app.ErrorDialog;
-import sg.togoparts.app.MyLocation.LocationResult;
 import sg.togoparts.app.MyLocation;
+import sg.togoparts.app.MyLocation.LocationResult;
 import sg.togoparts.app.MyVolley;
 import sg.togoparts.app.NewGridView;
 import sg.togoparts.app.SMSDialog;
@@ -102,7 +102,7 @@ public class BikeShopDetail extends FragmentActivity implements LocationResult,
 	private TextView mTvTitleHeader;
 	private String mLatitude;
 	private String mLongitude;
-	private ArrayList<String> actualNo;
+	private ArrayList<String> actualNo = new ArrayList<String>();
 	protected String[] listNumber;
 	protected int mTypeDialog;
 
@@ -217,7 +217,9 @@ public class BikeShopDetail extends FragmentActivity implements LocationResult,
 
 		if (res.forpaidonly.openlabel != null
 				&& !res.forpaidonly.openlabel.isEmpty()) {
-			if (res.forpaidonly.openlabel.contains("OPEN")) {
+			if (res.forpaidonly.openlabel.contains("OPEN")
+					|| res.forpaidonly.openlabel.contains("Open")
+					|| res.forpaidonly.openlabel.contains("open")) {
 				mLlOpen.setBackgroundColor(getResources().getColor(
 						R.color.green));
 				mTvOpenLabel.setTextColor(getResources().getColor(
@@ -379,6 +381,11 @@ public class BikeShopDetail extends FragmentActivity implements LocationResult,
 			findViewById(R.id.llNewItems).setVisibility(View.GONE);
 		}
 
+		if (checkVisibleNewItems(res) && checkVisiblePromos(res)) {
+			findViewById(R.id.separate1).setVisibility(View.VISIBLE);
+		} else {
+			findViewById(R.id.separate1).setVisibility(View.GONE);
+		}
 		mTvPromos.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -429,11 +436,13 @@ public class BikeShopDetail extends FragmentActivity implements LocationResult,
 		LinearLayout mLlContact = (LinearLayout) findViewById(R.id.llContact);
 		if (address != null && !address.isEmpty()) {
 			if (res.forpaidonly.actualno != null
-					&& res.forpaidonly.actualno.size() > 0)
+					&& res.forpaidonly.actualno.size() > 0) {
 				actualNo = res.forpaidonly.actualno;
+			}
 			mTvSMS.setVisibility(View.VISIBLE);
 			mTvCall.setVisibility(View.VISIBLE);
 			mLlContact.setVisibility(View.VISIBLE);
+
 			if (actualNo.get(0).length() != 8) {
 				mLlContact.setVisibility(View.GONE);
 			} else {
@@ -454,20 +463,33 @@ public class BikeShopDetail extends FragmentActivity implements LocationResult,
 
 				if (actualNo == null || actualNo.size() == 0)
 					return;
-				// listNumber = address.split("/");
 				if (actualNo.size() > 1) {
 					FragmentTransaction ft = getSupportFragmentManager()
 							.beginTransaction();
 					SMSDialog dialog = new SMSDialog(BikeShopDetail.this);
 					Bundle b = new Bundle();
-					listNumber = new String[actualNo.size()];
+					ArrayList<String> smsNos = new ArrayList<String>();
 					for (int i = 0; i < actualNo.size(); i++) {
-						listNumber[i] = actualNo.get(i);
+						if (actualNo.get(i).startsWith("8")
+								|| actualNo.get(i).startsWith("9")) {
+							smsNos.add(actualNo.get(i));
+						}
 					}
-					b.putStringArray(SMSDialog.DATA, listNumber);
-					dialog.setArguments(b);
-					dialog.show(ft, "sms dialog");
-					mTypeDialog = TYPE_SMS;
+					if (smsNos.size() == 1) {
+						Intent smsIntent = new Intent(Intent.ACTION_VIEW);
+						smsIntent.setType("vnd.android-dir/mms-sms");
+						smsIntent.putExtra("address", smsNos.get(0));
+						startActivity(smsIntent);
+					} else {
+						listNumber = new String[smsNos.size()];
+						for (int i = 0; i < smsNos.size(); i++) {
+							listNumber[i] = smsNos.get(i);
+						}
+						b.putStringArray(SMSDialog.DATA, listNumber);
+						dialog.setArguments(b);
+						dialog.show(ft, "sms dialog");
+						mTypeDialog = TYPE_SMS;
+					}
 				} else {
 					Intent smsIntent = new Intent(Intent.ACTION_VIEW);
 					smsIntent.setType("vnd.android-dir/mms-sms");

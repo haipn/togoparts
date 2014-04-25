@@ -1,14 +1,13 @@
 package sg.togoparts;
 
 import java.util.ArrayList;
-import sg.togoparts.R;
+
 import sg.togoparts.app.Const;
 import sg.togoparts.app.MyVolley;
 import sg.togoparts.gallery.SearchResultAdapter;
 import sg.togoparts.json.GsonRequest;
 import sg.togoparts.json.SearchResult;
 import sg.togoparts.json.SearchResult.AdsResult;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;

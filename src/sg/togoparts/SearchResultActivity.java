@@ -1,7 +1,7 @@
 package sg.togoparts;
 
 import java.util.ArrayList;
-import sg.togoparts.R;
+
 import sg.togoparts.app.Const;
 import sg.togoparts.app.ErrorDialog;
 import sg.togoparts.app.MyVolley;
@@ -9,7 +9,6 @@ import sg.togoparts.gallery.SearchResultAdapter;
 import sg.togoparts.json.GsonRequest;
 import sg.togoparts.json.SearchResult;
 import sg.togoparts.json.SearchResult.AdsResult;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -127,8 +126,6 @@ public class SearchResultActivity extends FragmentActivity {
 			@Override
 			public void onScroll(AbsListView view, int firstVisibleItem,
 					int visibleItemCount, int totalItemCount) {
-				Log.d("haipn", "padid: " + mPageId + " page total:"
-						+ mPageTotal);
 				if (mPageId >= mPageTotal)
 					return;
 				if (firstVisibleItem + visibleItemCount == totalItemCount

@@ -17,7 +17,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.KeyEvent;
-import sg.togoparts.R;
 
 public class FSActivity_ShortList extends Activity_Main {
 

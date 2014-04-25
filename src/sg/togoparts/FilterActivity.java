@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import sg.togoparts.R;
+
 import sg.togoparts.app.Const;
 import sg.togoparts.app.ErrorDialog;
 import sg.togoparts.app.MyVolley;
@@ -13,7 +13,6 @@ import sg.togoparts.json.GsonRequest;
 import sg.togoparts.json.ListCategories;
 import sg.togoparts.json.ListCategories.Cat;
 import sg.togoparts.json.ListCategories.Shopname;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;

@@ -3,25 +3,17 @@ package sg.togoparts.gallery;
 import java.util.ArrayList;
 
 import sg.togoparts.R;
-import sg.togoparts.json.BikeShop;
-import sg.togoparts.json.BikeShop.PinAd;
 import sg.togoparts.json.ListPromos.Promos;
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.google.ads.AdRequest;
-import com.google.ads.AdSize;
-import com.google.ads.doubleclick.DfpAdView;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.ImageScaleType;

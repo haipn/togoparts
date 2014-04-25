@@ -6,11 +6,10 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 
 import com.facebook.AppEventsLogger;
-import sg.togoparts.R;
 
 public class Splash extends Activity {
 	
-	public static final String FACEBOOK_ID = "1470753113148528";
+	public static final String FACEBOOK_ID = "198306676966429";
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub

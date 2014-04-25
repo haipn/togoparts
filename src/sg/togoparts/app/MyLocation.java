@@ -2,6 +2,7 @@ package sg.togoparts.app;
 
 import java.util.Timer;
 import java.util.TimerTask;
+
 import android.content.Context;
 import android.location.Location;
 import android.location.LocationListener;

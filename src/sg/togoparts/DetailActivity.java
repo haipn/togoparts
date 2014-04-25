@@ -1,7 +1,7 @@
 package sg.togoparts;
 
 import java.util.ArrayList;
-import sg.togoparts.R;
+
 import sg.togoparts.app.Const;
 import sg.togoparts.app.ErrorDialog;
 import sg.togoparts.app.MyVolley;
@@ -10,10 +10,9 @@ import sg.togoparts.app.SMSDialog.AlertPositiveListener;
 import sg.togoparts.gallery.HorizontalListView;
 import sg.togoparts.json.Ads;
 import sg.togoparts.json.AdsDetail;
+import sg.togoparts.json.AdsDetail.Picture;
 import sg.togoparts.json.ContactLog;
 import sg.togoparts.json.GsonRequest;
-import sg.togoparts.json.AdsDetail.Picture;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;

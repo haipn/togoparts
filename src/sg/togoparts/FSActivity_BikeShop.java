@@ -1,5 +1,6 @@
 package sg.togoparts;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import sg.togoparts.app.Const;
@@ -11,7 +12,6 @@ import sg.togoparts.gallery.BikeShopAdapter;
 import sg.togoparts.json.BikeShop;
 import sg.togoparts.json.GsonRequest;
 import sg.togoparts.json.ListBikeShop;
-import android.app.TabActivity;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
@@ -35,7 +35,6 @@ import com.android.volley.Request.Method;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.google.ads.AdRequest;
 import com.google.ads.AdView;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener;
@@ -52,7 +51,7 @@ public class FSActivity_BikeShop extends FragmentActivity implements
 	private String mQuery;
 	protected BikeShopAdapter mAdapter;
 	private PullToRefreshListView mLvResult;
-	private ArrayList<BikeShop> mResult;
+	public ArrayList<BikeShop> mResult;
 	private int mPageId;
 	private int mPageTotal;
 	protected boolean enableLoadMore = false;
@@ -147,8 +146,6 @@ public class FSActivity_BikeShop extends FragmentActivity implements
 			@Override
 			public void onScroll(AbsListView view, int firstVisibleItem,
 					int visibleItemCount, int totalItemCount) {
-				Log.d("haipn", "padid: " + mPageId + " page total:"
-						+ mPageTotal);
 				if (mPageId >= mPageTotal)
 					return;
 				if (firstVisibleItem + visibleItemCount == totalItemCount
@@ -169,6 +166,7 @@ public class FSActivity_BikeShop extends FragmentActivity implements
 		mTvNoResult = (TextView) findViewById(R.id.tvNoResult);
 		mIntent = getIntent();
 		mResult = new ArrayList<BikeShop>();
+		
 		mAdapter = new BikeShopAdapter(this, mResult, this);
 		mLvResult.setAdapter(mAdapter);
 
@@ -208,6 +206,7 @@ public class FSActivity_BikeShop extends FragmentActivity implements
 			if (arg1 == RESULT_CANCELED) {
 				Log.d("haipn", "result cancel");
 			} else {
+				mTvTitle.setText(R.string.title_search_bikeshop);
 				mResult.clear();
 				enableLoadMore = false;
 				mIntent = arg2;
@@ -267,15 +266,26 @@ public class FSActivity_BikeShop extends FragmentActivity implements
 		mTvTitle = (TextView) findViewById(R.id.title);
 		mTvTitle.setVisibility(View.VISIBLE);
 
+		mBtnRight.setBackgroundResource(R.drawable.btn_search);
+		mBtnLeft.setBackgroundResource(R.drawable.btn_map);
 		mBtnLeft.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				TabActivity tabs = (TabActivity) getParent();
-				tabs.getTabHost().setCurrentTabByTag("1");
+				// TabActivity tabs = (TabActivity) getParent();
+				// tabs.getTabHost().setCurrentTabByTag("1");
+				Intent i = new Intent(FSActivity_BikeShop.this,
+						MapActivity.class);
+				Log.d("haipn", "title bikeshop:"
+						+ mTvTitle.getText().toString());
+				mQueryBundle.putString(Const.TITLE, mTvTitle.getText()
+						.toString());
+				i.putExtra(Const.LATITUDE, mLat);
+				i.putExtra(Const.LONGITUDE, mLong);
+				i.putExtras(mQueryBundle);
+				startActivityForResult(i, FILTER_RETURN);
 			}
 		});
-		mBtnRight.setBackgroundResource(R.drawable.btn_filter);
 		mBtnRight.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -293,7 +303,11 @@ public class FSActivity_BikeShop extends FragmentActivity implements
 		} else {
 			mTvTitle.setText(R.string.bikeshop_title);
 		}
+		mBtnLeft.setEnabled(false);
+		mBtnRight.setEnabled(false);
 	}
+	
+	public static int NUM_TYPE;
 
 	private Response.Listener<ListBikeShop> createMyReqSuccessListener() {
 		return new Response.Listener<ListBikeShop>() {
@@ -309,6 +323,7 @@ public class FSActivity_BikeShop extends FragmentActivity implements
 						mResult.clear();
 
 					mLvResult.setVisibility(View.VISIBLE);
+
 					mResult.addAll(response.bikeshoplist);
 					mAdapter.notifyDataSetChanged();
 					mPageTotal = response.page_details.no_of_pages;
@@ -317,9 +332,21 @@ public class FSActivity_BikeShop extends FragmentActivity implements
 				}
 				mLvResult.onRefreshComplete();
 				mProgress.setVisibility(View.GONE);
+				mBtnLeft.setEnabled(true);
+				mBtnRight.setEnabled(true);
 				// mLvResult.setAdapter(mAdapter);
 			}
 		};
+	}
+
+	protected int getTypeView(ArrayList<BikeShop> mResult2) {
+		int ret = 0;
+		for (BikeShop bikeShop : mResult2) {
+			if (bikeShop.pinad != null) {
+				ret++;
+			}
+		}
+		return ret;
 	}
 
 	private Response.ErrorListener createMyReqErrorListener() {
@@ -366,5 +393,4 @@ public class FSActivity_BikeShop extends FragmentActivity implements
 		i.putExtra(Const.SHOP_ID, shop.sid);
 		startActivity(i);
 	}
-
 }

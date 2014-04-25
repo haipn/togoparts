@@ -3,6 +3,9 @@ package sg.togoparts.gallery;
 import java.util.ArrayList;
 import java.util.List;
 
+import sg.togoparts.R;
+import sg.togoparts.json.Category;
+import sg.togoparts.json.Group;
 import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -12,10 +15,6 @@ import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
-
-import sg.togoparts.R;
-import sg.togoparts.json.Category;
-import sg.togoparts.json.Group;
 
 public class MyExpandableAdapter extends BaseExpandableListAdapter {
 

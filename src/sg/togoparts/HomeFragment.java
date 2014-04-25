@@ -1,7 +1,7 @@
 package sg.togoparts;
 
 import java.util.ArrayList;
-import sg.togoparts.R;
+
 import sg.togoparts.app.Const;
 import sg.togoparts.app.ErrorDialog;
 import sg.togoparts.app.MyVolley;
@@ -9,7 +9,6 @@ import sg.togoparts.gallery.FontableTextView;
 import sg.togoparts.json.Ads;
 import sg.togoparts.json.GsonRequest;
 import sg.togoparts.json.MpListLatestAds;
-
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;

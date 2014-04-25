@@ -1,15 +1,14 @@
 package sg.togoparts;
 
 import java.util.ArrayList;
-import sg.togoparts.R;
+
 import sg.togoparts.app.Const;
 import sg.togoparts.app.MyVolley;
 import sg.togoparts.gallery.HorizontalListView;
 import sg.togoparts.json.Ads;
 import sg.togoparts.json.AdsDetail;
-import sg.togoparts.json.GsonRequest;
 import sg.togoparts.json.AdsDetail.Picture;
-
+import sg.togoparts.json.GsonRequest;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;

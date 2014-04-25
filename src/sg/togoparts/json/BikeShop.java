@@ -2,6 +2,9 @@ package sg.togoparts.json;
 
 import java.util.ArrayList;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 public class BikeShop {
 	public String sid;
 	public String shopname;
@@ -18,6 +21,7 @@ public class BikeShop {
 		public String unit_id;
 		public int unit_width;
 		public int unit_height;
+		public int index;
 	}
 
 	public class Forpaidonly {
@@ -48,4 +52,43 @@ public class BikeShop {
 		public String name;
 		public String img;
 	}
+
+//	@Override
+//	public int describeContents() {
+//		// TODO Auto-generated method stub
+//		return 0;
+//	}
+//
+//	@Override
+//	public void writeToParcel(Parcel dest, int flags) {
+//		dest.writeString(sid);
+//		dest.writeString(shopname);
+//		dest.writeString(address);
+//		dest.writeString(distance);
+//		dest.writeString(latitude);
+//		dest.writeString(longitude);
+////		if (forpaidonly != null && forpaidonly.openlabel != null)
+////			dest.writeString(forpaidonly.openlabel);
+//	}
+//
+//	public BikeShop(Parcel source) {
+//		sid = source.readString();
+//		shopname = source.readString();
+//		address = source.readString();
+//		distance = source.readString();
+//		latitude = source.readString();
+//		longitude = source.readString();
+////		forpaidonly = new Forpaidonly();
+////		forpaidonly.openlabel = source.readString();
+//	}
+//
+//	public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
+//		public BikeShop createFromParcel(Parcel in) {
+//			return new BikeShop(in);
+//		}
+//
+//		public BikeShop[] newArray(int size) {
+//			return new BikeShop[size];
+//		}
+//	};
 }

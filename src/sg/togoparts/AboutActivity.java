@@ -5,23 +5,18 @@ import sg.togoparts.app.ErrorDialog;
 import sg.togoparts.app.MyVolley;
 import sg.togoparts.json.About;
 import sg.togoparts.json.GsonRequest;
-import sg.togoparts.json.ShopDetail;
-
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.Request.Method;
-
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
-import android.text.Html;
 import android.util.Log;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.webkit.WebView;
-import android.widget.ImageButton;
 import android.widget.TextView;
+
+import com.android.volley.Request.Method;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 
 public class AboutActivity extends FragmentActivity {
 	TextView mTitle;
