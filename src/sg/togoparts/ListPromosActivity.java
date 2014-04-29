@@ -20,6 +20,10 @@ import com.android.volley.Request.Method;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.google.analytics.tracking.android.Fields;
+import com.google.analytics.tracking.android.GoogleAnalytics;
+import com.google.analytics.tracking.android.MapBuilder;
+import com.google.analytics.tracking.android.Tracker;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 
 public class ListPromosActivity extends FragmentActivity {
@@ -34,6 +38,12 @@ public class ListPromosActivity extends FragmentActivity {
 		// TODO Auto-generated method stub
 		super.onCreate(arg0);
 		setContentView(R.layout.promos_activity);
+		
+		Tracker tracker = GoogleAnalytics.getInstance(this).getTracker(
+				Const.GA_PROPERTY_ID);
+		tracker.set(Fields.SCREEN_NAME, "Bikeshop Promos");
+		tracker.send(MapBuilder.createAppView().build());
+		
 		mLvPromos = (PullToRefreshListView) findViewById(R.id.lvPromos);
 		
 		mShopId = getIntent().getStringExtra(Const.SHOP_ID);

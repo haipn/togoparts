@@ -1,5 +1,7 @@
 package sg.togoparts;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 
 import sg.togoparts.app.Const;
@@ -102,7 +104,8 @@ public class SearchResultActivity extends FragmentActivity {
 				mPageId = 1;
 				enableLoadMore = false;
 				searchResult(mIntent);
-				Tracker tracker = GoogleAnalytics.getInstance(SearchResultActivity.this).getTracker(
+				Tracker tracker = GoogleAnalytics.getInstance(
+						SearchResultActivity.this).getTracker(
 						Const.GA_PROPERTY_ID);
 				tracker.set(Fields.SCREEN_NAME, mScreenName + " Pull Refresh");
 				tracker.send(MapBuilder.createAppView().build());
@@ -177,7 +180,7 @@ public class SearchResultActivity extends FragmentActivity {
 				createMyReqSuccessListener(), createMyReqErrorListener());
 		queue.add(myReq);
 		Log.d("haipn", "page id:" + mPageId);
-		
+
 	}
 
 	@Override
@@ -258,14 +261,37 @@ public class SearchResultActivity extends FragmentActivity {
 
 		String group = mQueryBundle.getString(FilterActivity.GROUP_ID);
 		if (group == null) {
-			mQuery = String.format(Const.URL_LIST_SEARCH, String.format(
-					Const.URL_LIST_SEARCH_PARAM, mKeyword, postBy, size, value,
-					unit, from, to, adStatus, market, type, shopname, sort));
+			try {
+				mQuery = String.format(Const.URL_LIST_SEARCH, String.format(
+						Const.URL_LIST_SEARCH_PARAM,
+						URLEncoder.encode(mKeyword, "UTF-8"), postBy, size,
+						value, unit, from, to, adStatus, market, type,
+						shopname, sort));
+			} catch (UnsupportedEncodingException e) {
+				mQuery = String.format(Const.URL_LIST_SEARCH, String.format(
+						Const.URL_LIST_SEARCH_PARAM,
+						URLEncoder.encode(mKeyword), postBy, size,
+						value, unit, from, to, adStatus, market, type,
+						shopname, sort));
+				e.printStackTrace();
+			}
 		} else {
-			mQuery = String.format(Const.URL_LIST_SEARCH, String.format(
-					Const.URL_LIST_SEARCH_PARAM, mKeyword, postBy, size, value,
-					unit, from, to, adStatus, market, type, shopname, sort))
-					+ "&gid=" + group;
+			try {
+				mQuery = String.format(Const.URL_LIST_SEARCH, String.format(
+						Const.URL_LIST_SEARCH_PARAM,
+						URLEncoder.encode(mKeyword, "UTF-8"), postBy, size,
+						value, unit, from, to, adStatus, market, type,
+						shopname, sort))
+						+ "&gid=" + group;
+			} catch (UnsupportedEncodingException e) {
+				mQuery = String.format(Const.URL_LIST_SEARCH, String.format(
+						Const.URL_LIST_SEARCH_PARAM,
+						URLEncoder.encode(mKeyword), postBy, size,
+						value, unit, from, to, adStatus, market, type,
+						shopname, sort))
+						+ "&gid=" + group;
+				e.printStackTrace();
+			}
 		}
 		if (mParameter != null)
 			mQuery = mQuery + "&" + mParameter;
@@ -317,7 +343,7 @@ public class SearchResultActivity extends FragmentActivity {
 				} else {
 					if (mPageId <= 1)
 						mResult.clear();
-					
+
 					mLvResult.setVisibility(View.VISIBLE);
 					mResult.addAll(response.ads);
 					mAdapter.notifyDataSetChanged();

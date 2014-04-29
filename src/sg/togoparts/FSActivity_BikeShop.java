@@ -1,6 +1,7 @@
 package sg.togoparts;
 
-import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 
 import sg.togoparts.app.Const;
@@ -36,6 +37,10 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.google.ads.AdView;
+import com.google.analytics.tracking.android.Fields;
+import com.google.analytics.tracking.android.GoogleAnalytics;
+import com.google.analytics.tracking.android.MapBuilder;
+import com.google.analytics.tracking.android.Tracker;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
@@ -67,6 +72,8 @@ public class FSActivity_BikeShop extends FragmentActivity implements
 	String mLat = "0.0";
 	String mLong = "0.0";
 
+	private boolean isSearch;
+
 	protected void loadMore() {
 
 		mPageId++;
@@ -75,10 +82,7 @@ public class FSActivity_BikeShop extends FragmentActivity implements
 				Method.GET, mQuery + PAGE_ID + mPageId, ListBikeShop.class,
 				createMyReqSuccessListener(), createMyReqErrorListener());
 		queue.add(myReq);
-		// Tracker tracker = GoogleAnalytics.getInstance(this).getTracker(
-		// Const.GA_PROPERTY_ID);
-		// tracker.set(Fields.SCREEN_NAME, mScreenName + " More");
-		// tracker.send(MapBuilder.createAppView().build());
+		
 	}
 
 	@Override
@@ -115,12 +119,11 @@ public class FSActivity_BikeShop extends FragmentActivity implements
 				mPageId = 1;
 				enableLoadMore = false;
 				searchResult(mIntent);
-				// Tracker tracker =
-				// GoogleAnalytics.getInstance(FSActivity_BikeShop.this).getTracker(
-				// Const.GA_PROPERTY_ID);
-				// tracker.set(Fields.SCREEN_NAME, mScreenName +
-				// " Pull Refresh");
-				// tracker.send(MapBuilder.createAppView().build());
+				if (isSearch) {
+					tracking("Bikeshop Search Result Pull Refresh");
+				} else {
+					tracking("Bikeshop Listing Pull Refresh");
+				}
 			}
 		});
 		mLvResult.setOnItemClickListener(new OnItemClickListener() {
@@ -153,6 +156,11 @@ public class FSActivity_BikeShop extends FragmentActivity implements
 					loadMore();
 					enableLoadMore = false;
 					mProgress.setVisibility(View.VISIBLE);
+					if (isSearch) {
+						tracking("Bikeshop Search Result More");
+					} else {
+						tracking("Bikeshop Listing More");
+					}
 				}
 			}
 
@@ -177,6 +185,7 @@ public class FSActivity_BikeShop extends FragmentActivity implements
 			mLong = "";
 			searchResult(mIntent);
 		}
+		tracking("Bikeshop Listing");
 	}
 
 	private void searchResult(Intent i) {
@@ -185,7 +194,6 @@ public class FSActivity_BikeShop extends FragmentActivity implements
 		// Const.GA_PROPERTY_ID);
 		// tracker.set(Fields.SCREEN_NAME, mScreenName);
 		// tracker.send(MapBuilder.createAppView().build());
-
 		mQueryBundle = i.getExtras();
 		mPageId = 1;
 		if (mQueryBundle != null)
@@ -201,15 +209,27 @@ public class FSActivity_BikeShop extends FragmentActivity implements
 	}
 
 	@Override
+	protected void onStart() {
+		Log.d("haipn", "bikeshop onStart result");
+		super.onStart();
+	}
+	@Override
 	protected void onActivityResult(int arg0, int arg1, Intent arg2) {
+		Log.d("haipn", "bikeshop onActivity result");
 		if (arg0 == FILTER_RETURN) {
 			if (arg1 == RESULT_CANCELED) {
+				isSearch = false;
 				Log.d("haipn", "result cancel");
 			} else {
+				isSearch = true;
+				tracking("Bikeshop Search Result");
 				mTvTitle.setText(R.string.title_search_bikeshop);
 				mResult.clear();
 				enableLoadMore = false;
 				mIntent = arg2;
+				mResult = new ArrayList<BikeShop>();
+				mAdapter = new BikeShopAdapter(this, mResult, this);
+				mLvResult.setAdapter(mAdapter);
 				searchResult(arg2);
 			}
 		}
@@ -254,8 +274,14 @@ public class FSActivity_BikeShop extends FragmentActivity implements
 			mQueryBundle.putString(FilterActivity.SORT_BY, "2");
 		}
 
-		mQuery = String.format(Const.URL_BIKE_SHOP, bikeShop, "", type, open,
-				mechanicStr, mLat, mLong, sort);
+		try {
+			mQuery = String.format(Const.URL_BIKE_SHOP, URLEncoder.encode(bikeShop, "UTF-8"), "", type, open,
+					mechanicStr, mLat, mLong, sort);
+		} catch (UnsupportedEncodingException e) {
+			mQuery = String.format(Const.URL_BIKE_SHOP, URLEncoder.encode(bikeShop), "", type, open,
+					mechanicStr, mLat, mLong, sort);
+			e.printStackTrace();
+		}
 	}
 
 	private void createHeader() {
@@ -280,6 +306,7 @@ public class FSActivity_BikeShop extends FragmentActivity implements
 						+ mTvTitle.getText().toString());
 				mQueryBundle.putString(Const.TITLE, mTvTitle.getText()
 						.toString());
+				mQueryBundle.putBoolean(MapActivity.IS_SEARCH, isSearch);
 				i.putExtra(Const.LATITUDE, mLat);
 				i.putExtra(Const.LONGITUDE, mLong);
 				i.putExtras(mQueryBundle);
@@ -382,6 +409,8 @@ public class FSActivity_BikeShop extends FragmentActivity implements
 		Bundle bundle = new Bundle();
 		bundle.putString(FilterActivity.SHOP_NAME, shop.sid);
 		i.putExtras(bundle);
+		i.putExtra(SearchResultActivity.SCREEN_SEARCH_RESULT,
+				"Marketplace List Ads by Bikeshop");
 		i.putExtra(Const.TITLE, "All Ads by " + shop.shopname);
 		startActivity(i);
 	}
@@ -392,5 +421,12 @@ public class FSActivity_BikeShop extends FragmentActivity implements
 				ListPromosActivity.class);
 		i.putExtra(Const.SHOP_ID, shop.sid);
 		startActivity(i);
+	}
+	
+	public void tracking(String name) {
+		Tracker tracker = GoogleAnalytics.getInstance(this).getTracker(
+				Const.GA_PROPERTY_ID);
+		tracker.set(Fields.SCREEN_NAME, name);
+		tracker.send(MapBuilder.createAppView().build());
 	}
 }

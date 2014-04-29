@@ -28,6 +28,10 @@ import com.android.volley.Request.Method;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.google.analytics.tracking.android.Fields;
+import com.google.analytics.tracking.android.GoogleAnalytics;
+import com.google.analytics.tracking.android.MapBuilder;
+import com.google.analytics.tracking.android.Tracker;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -45,6 +49,7 @@ public class MapActivity extends FragmentActivity {
 
 	public static final String LIST_BIKE_SHOP = "list bike shop";
 	protected static final int FILTER_RETURN = 0;
+	public static final String IS_SEARCH = "is search";
 	// Google Map
 	private GoogleMap googleMap;
 	private ImageButton mBtnBack;
@@ -130,7 +135,7 @@ public class MapActivity extends FragmentActivity {
 		// createListPins(listStringShop);
 		// Log.d("haipn", "map activity:" + listStringShop.size());
 		searchResult(getIntent());
-
+		
 	}
 
 	private void createListPins(ArrayList<String> shops) {
@@ -296,8 +301,10 @@ public class MapActivity extends FragmentActivity {
 				st += " - ";
 				st += shop.forpaidonly.openlabel;
 			}
-			else
-				st += "  ";
+			else {
+				st += " - ";
+				st += "Unknown";
+			}
 			ret.add(st);
 		}
 		return ret;
@@ -318,6 +325,17 @@ public class MapActivity extends FragmentActivity {
 	private void searchResult(Intent i) {
 		mProgress.setVisibility(View.VISIBLE);
 		mQueryBundle = i.getExtras();
+		if (mQueryBundle.getBoolean(IS_SEARCH)) {
+			Tracker tracker = GoogleAnalytics.getInstance(this).getTracker(
+					Const.GA_PROPERTY_ID);
+			tracker.set(Fields.SCREEN_NAME, "Bikeshop Map Search Result");
+			tracker.send(MapBuilder.createAppView().build());
+		} else {
+			Tracker tracker = GoogleAnalytics.getInstance(this).getTracker(
+					Const.GA_PROPERTY_ID);
+			tracker.set(Fields.SCREEN_NAME, "Bikeshop Map");
+			tracker.send(MapBuilder.createAppView().build());
+		}
 		if (mQueryBundle != null)
 			getQuery();
 		Log.d("haipn", "query:" + mQuery);
@@ -410,7 +428,8 @@ public class MapActivity extends FragmentActivity {
 
 		mTvTitleHeader = (TextView) findViewById(R.id.title);
 		mTvTitleHeader.setVisibility(View.VISIBLE);
-		Log.d("haipn", "map title:" + getIntent().getStringExtra(Const.TITLE));
+		
+		
 		if (mQueryBundle.getString(Const.TITLE) != null) {
 			mTvTitleHeader.setText(getIntent().getStringExtra(Const.TITLE));
 		} else {

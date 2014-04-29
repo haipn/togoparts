@@ -5,6 +5,11 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import com.google.analytics.tracking.android.Fields;
+import com.google.analytics.tracking.android.GoogleAnalytics;
+import com.google.analytics.tracking.android.MapBuilder;
+import com.google.analytics.tracking.android.Tracker;
+
 import sg.togoparts.app.Const;
 import sg.togoparts.app.MyLocation;
 import android.content.Intent;
@@ -76,6 +81,12 @@ public class FilterBikeShop extends FragmentActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.filter_bikeshop);
 
+		
+		Tracker tracker = GoogleAnalytics.getInstance(this).getTracker(
+				Const.GA_PROPERTY_ID);
+		tracker.set(Fields.SCREEN_NAME, "Bikeshop Search Form");
+		tracker.send(MapBuilder.createAppView().build());
+		
 		createHeader();
 		mGroupSort = (RadioGroup) findViewById(R.id.group);
 		mRb1 = (RadioButton) findViewById(R.id.rbSort1);

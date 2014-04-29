@@ -67,7 +67,7 @@
 	<string name="apply">Apply</string>
 	<string name="new_item">New Item Ads (%s)</string>
 	<string name="promos">Promos (%s)</string>
-	<string name="filter_bikeshop">Bikeshop Name</string>
+	<string name="filter_bikeshop">Bikeshop / Brand Name</string>
 	<string name="hint_bikeshop">Shop Name</string>
 	<string name="filter_area">Area</string>
 	<string name="filter_opennow">Open Now</string>

@@ -12,6 +12,7 @@ import sg.togoparts.app.SMSDialog;
 import sg.togoparts.app.SMSDialog.AlertPositiveListener;
 import sg.togoparts.gallery.ImagePagerAdapter;
 import sg.togoparts.json.BikeShop.Brand;
+import sg.togoparts.json.ContactLog;
 import sg.togoparts.json.GsonRequest;
 import sg.togoparts.json.ShopDetail;
 import android.content.Context;
@@ -44,6 +45,10 @@ import com.android.volley.Request.Method;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.google.analytics.tracking.android.Fields;
+import com.google.analytics.tracking.android.GoogleAnalytics;
+import com.google.analytics.tracking.android.MapBuilder;
+import com.google.analytics.tracking.android.Tracker;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
@@ -111,6 +116,10 @@ public class BikeShopDetail extends FragmentActivity implements LocationResult,
 
 		super.onCreate(arg0);
 		setContentView(R.layout.bikeshop_detail);
+		Tracker tracker = GoogleAnalytics.getInstance(this).getTracker(
+				Const.GA_PROPERTY_ID);
+		tracker.set(Fields.SCREEN_NAME, "Bikeshop Details");
+		tracker.send(MapBuilder.createAppView().build());
 		mIvLoading = (ImageView) findViewById(R.id.loading);
 		mLlMain = (LinearLayout) findViewById(R.id.llMain);
 		// Get the background, which has been compiled to an AnimationDrawable
@@ -495,7 +504,7 @@ public class BikeShopDetail extends FragmentActivity implements LocationResult,
 					smsIntent.setType("vnd.android-dir/mms-sms");
 					smsIntent.putExtra("address", actualNo.get(0));
 					startActivity(smsIntent);
-					// postSMSLog();
+					postSMSLog();
 				}
 			}
 		});
@@ -523,7 +532,7 @@ public class BikeShopDetail extends FragmentActivity implements LocationResult,
 					Intent callIntent = new Intent(Intent.ACTION_CALL);
 					callIntent.setData(Uri.parse("tel:" + actualNo.get(0)));
 					startActivity(callIntent);
-					// postCallLog();
+					postCallLog();
 				}
 			}
 		});
@@ -583,6 +592,8 @@ public class BikeShopDetail extends FragmentActivity implements LocationResult,
 		Bundle bundle = new Bundle();
 		bundle.putString(FilterActivity.SHOP_NAME, detail.sid);
 		i.putExtras(bundle);
+		i.putExtra(SearchResultActivity.SCREEN_SEARCH_RESULT,
+				"Marketplace List Ads by Bikeshop");
 		i.putExtra(Const.TITLE, "All Ads by " + detail.shopname);
 		startActivity(i);
 	}
@@ -870,7 +881,7 @@ public class BikeShopDetail extends FragmentActivity implements LocationResult,
 				Intent callIntent = new Intent(Intent.ACTION_CALL);
 				callIntent.setData(Uri.parse("tel:" + address));
 				startActivity(callIntent);
-				// postCallLog();
+				postCallLog();
 			}
 		} else {
 			if (address != null && !address.isEmpty()) {
@@ -878,7 +889,7 @@ public class BikeShopDetail extends FragmentActivity implements LocationResult,
 				smsIntent.setType("vnd.android-dir/mms-sms");
 				smsIntent.putExtra("address", address);
 				startActivity(smsIntent);
-				// postSMSLog();
+				postSMSLog();
 			}
 		}
 	}
@@ -897,5 +908,33 @@ public class BikeShopDetail extends FragmentActivity implements LocationResult,
 				"request:"
 						+ String.format(Const.URL_BIKESHOP_DETAIL, mShopId,
 								mLatitude, mLongitude));
+	}
+
+	private void postSMSLog() {
+		RequestQueue queue = MyVolley.getRequestQueue();
+		GsonRequest<ContactLog> myReq = new GsonRequest<ContactLog>(Method.GET,
+				String.format(Const.URL_CONTACT_LOG, mShopId, "shopid",
+						"sms_android"), ContactLog.class,
+				createPostLogSuccessListener(), null);
+		queue.add(myReq);
+	}
+
+	private void postCallLog() {
+		RequestQueue queue = MyVolley.getRequestQueue();
+		GsonRequest<ContactLog> myReq = new GsonRequest<ContactLog>(Method.GET,
+				String.format(Const.URL_CONTACT_LOG, mShopId, "shopid",
+						"call_android"), ContactLog.class,
+				createPostLogSuccessListener(), null);
+		queue.add(myReq);
+	}
+
+	private Response.Listener<ContactLog> createPostLogSuccessListener() {
+		return new Response.Listener<ContactLog>() {
+			@Override
+			public void onResponse(ContactLog response) {
+				Log.d("haipn", "response:" + response.message + "  "
+						+ response.msg_type);
+			}
+		};
 	}
 }
