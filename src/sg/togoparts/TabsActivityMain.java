@@ -132,7 +132,7 @@ public class TabsActivityMain extends TabActivity implements AdListener {
 								"Marketplace Shortlisted Ads");
 					} else if (tabId.equals("4")){
 						tracker.set(Fields.SCREEN_NAME,
-								"Bikeshop List");
+								"Bikeshop Listing");
 					} else {
 						
 					}

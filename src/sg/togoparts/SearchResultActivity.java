@@ -153,18 +153,23 @@ public class SearchResultActivity extends FragmentActivity {
 		mLvResult.setAdapter(mAdapter);
 		searchResult(mIntent);
 		createHeader();
+		Log.d("haipn","screen name:" + mScreenName);
 
 	}
 
 	private void searchResult(Intent i) {
+		mParameter = i.getStringExtra(FilterActivity.PARAM);
+		mQueryBundle = i.getExtras();
 		mScreenName = i.getStringExtra(SCREEN_SEARCH_RESULT);
+		if (mScreenName == null) {
+			mScreenName = mQueryBundle.getString(SCREEN_SEARCH_RESULT);
+		}
 		Tracker tracker = GoogleAnalytics.getInstance(this).getTracker(
 				Const.GA_PROPERTY_ID);
 		tracker.set(Fields.SCREEN_NAME, mScreenName);
 		tracker.send(MapBuilder.createAppView().build());
 
-		mParameter = i.getStringExtra(FilterActivity.PARAM);
-		mQueryBundle = i.getExtras();
+		
 		if (i.getStringExtra(FilterActivity.KEYWORD) != null)
 			mKeyword = i.getStringExtra(FilterActivity.KEYWORD);
 		mPageId = 1;

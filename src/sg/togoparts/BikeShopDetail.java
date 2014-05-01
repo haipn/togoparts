@@ -356,9 +356,9 @@ public class BikeShopDetail extends FragmentActivity implements LocationResult,
 		if (res.forpaidonly.mechanic_svcs != null
 				&& !res.forpaidonly.mechanic_svcs.isEmpty()) {
 			mTvMechanic.setText(res.forpaidonly.mechanic_svcs);
-			findViewById(R.id.llBikeAvai).setVisibility(View.VISIBLE);
+			findViewById(R.id.llMechanic).setVisibility(View.VISIBLE);
 		} else {
-			findViewById(R.id.llBikeAvai).setVisibility(View.GONE);
+			findViewById(R.id.llMechanic).setVisibility(View.GONE);
 		}
 		if (res.forpaidonly.delivery != null
 				&& !res.forpaidonly.delivery.isEmpty()) {

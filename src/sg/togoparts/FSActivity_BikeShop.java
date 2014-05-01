@@ -51,7 +51,6 @@ public class FSActivity_BikeShop extends FragmentActivity implements
 	public static final String PAGE_ID = "&page_id=";
 
 	protected static final int FILTER_RETURN = 0;
-	public static final String SCREEN_SEARCH_RESULT = "screen name";
 	private Bundle mQueryBundle;
 	private String mQuery;
 	protected BikeShopAdapter mAdapter;
@@ -82,7 +81,7 @@ public class FSActivity_BikeShop extends FragmentActivity implements
 				Method.GET, mQuery + PAGE_ID + mPageId, ListBikeShop.class,
 				createMyReqSuccessListener(), createMyReqErrorListener());
 		queue.add(myReq);
-		
+
 	}
 
 	@Override
@@ -174,7 +173,7 @@ public class FSActivity_BikeShop extends FragmentActivity implements
 		mTvNoResult = (TextView) findViewById(R.id.tvNoResult);
 		mIntent = getIntent();
 		mResult = new ArrayList<BikeShop>();
-		
+
 		mAdapter = new BikeShopAdapter(this, mResult, this);
 		mLvResult.setAdapter(mAdapter);
 
@@ -213,6 +212,7 @@ public class FSActivity_BikeShop extends FragmentActivity implements
 		Log.d("haipn", "bikeshop onStart result");
 		super.onStart();
 	}
+
 	@Override
 	protected void onActivityResult(int arg0, int arg1, Intent arg2) {
 		Log.d("haipn", "bikeshop onActivity result");
@@ -275,11 +275,13 @@ public class FSActivity_BikeShop extends FragmentActivity implements
 		}
 
 		try {
-			mQuery = String.format(Const.URL_BIKE_SHOP, URLEncoder.encode(bikeShop, "UTF-8"), "", type, open,
+			mQuery = String.format(Const.URL_BIKE_SHOP,
+					URLEncoder.encode(bikeShop, "UTF-8"), "", type, open,
 					mechanicStr, mLat, mLong, sort);
 		} catch (UnsupportedEncodingException e) {
-			mQuery = String.format(Const.URL_BIKE_SHOP, URLEncoder.encode(bikeShop), "", type, open,
-					mechanicStr, mLat, mLong, sort);
+			mQuery = String.format(Const.URL_BIKE_SHOP,
+					URLEncoder.encode(bikeShop), "", type, open, mechanicStr,
+					mLat, mLong, sort);
 			e.printStackTrace();
 		}
 	}
@@ -333,7 +335,7 @@ public class FSActivity_BikeShop extends FragmentActivity implements
 		mBtnLeft.setEnabled(false);
 		mBtnRight.setEnabled(false);
 	}
-	
+
 	public static int NUM_TYPE;
 
 	private Response.Listener<ListBikeShop> createMyReqSuccessListener() {
@@ -408,6 +410,8 @@ public class FSActivity_BikeShop extends FragmentActivity implements
 				SearchResultActivity.class);
 		Bundle bundle = new Bundle();
 		bundle.putString(FilterActivity.SHOP_NAME, shop.sid);
+		bundle.putString(SearchResultActivity.SCREEN_SEARCH_RESULT,
+				"Marketplace List Ads by Bikeshop");
 		i.putExtras(bundle);
 		i.putExtra(SearchResultActivity.SCREEN_SEARCH_RESULT,
 				"Marketplace List Ads by Bikeshop");
@@ -422,7 +426,7 @@ public class FSActivity_BikeShop extends FragmentActivity implements
 		i.putExtra(Const.SHOP_ID, shop.sid);
 		startActivity(i);
 	}
-	
+
 	public void tracking(String name) {
 		Tracker tracker = GoogleAnalytics.getInstance(this).getTracker(
 				Const.GA_PROPERTY_ID);
