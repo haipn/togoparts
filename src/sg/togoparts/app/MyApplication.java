@@ -2,8 +2,11 @@ package sg.togoparts.app;
 
 import java.io.File;
 
+import sg.togoparts.Splash;
+
 import android.app.Application;
 
+import com.facebook.SessionDefaultAudience;
 import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiscCache;
 import com.nostra13.universalimageloader.cache.disc.naming.HashCodeFileNameGenerator;
 import com.nostra13.universalimageloader.cache.memory.impl.LruMemoryCache;
@@ -14,6 +17,10 @@ import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.nostra13.universalimageloader.core.decode.BaseImageDecoder;
 import com.nostra13.universalimageloader.core.download.BaseImageDownloader;
 import com.nostra13.universalimageloader.utils.StorageUtils;
+import com.sromku.simple.fb.Permission;
+import com.sromku.simple.fb.SimpleFacebook;
+import com.sromku.simple.fb.SimpleFacebookConfiguration;
+import com.sromku.simple.fb.utils.Logger;
 
 /**
  * Application class for init ImageLoader, Volley. Used to ensure that MyVolley
@@ -23,6 +30,9 @@ import com.nostra13.universalimageloader.utils.StorageUtils;
  * 
  */
 public class MyApplication extends Application {
+	private static final String APP_ID = "198306676966429";
+	private static final String APP_NAMESPACE = "togoparts";
+
 	@Override
 	public void onCreate() {
 		super.onCreate();
@@ -34,7 +44,8 @@ public class MyApplication extends Application {
 		// ImageLoaderConfiguration.createDefault(this);
 		// method.
 		ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(
-				this).threadPoolSize(3)
+				this)
+				.threadPoolSize(3)
 				// default
 				.threadPriority(Thread.NORM_PRIORITY - 1)
 				// default
@@ -47,17 +58,34 @@ public class MyApplication extends Application {
 				// default
 				.discCache(new UnlimitedDiscCache(cacheDir))
 				// default
-				.discCacheSize(50 * 1024 * 1024)
-				.discCacheFileCount(300)
+				.discCacheSize(50 * 1024 * 1024).discCacheFileCount(300)
 				.discCacheFileNameGenerator(new HashCodeFileNameGenerator()) // default
 				.imageDownloader(new BaseImageDownloader(this)) // default
 				.imageDecoder(new BaseImageDecoder(true)) // default
-				.defaultDisplayImageOptions(
-						DisplayImageOptions.createSimple()) // default
+				.defaultDisplayImageOptions(DisplayImageOptions.createSimple()) // default
 				.writeDebugLogs().build();
 		// Initialize ImageLoader with configuration.
 		ImageLoader.getInstance().init(config);
 		init();
+
+		// set log to true
+		Logger.DEBUG_WITH_STACKTRACE = true;
+
+		// initialize facebook configuration
+		Permission[] permissions = new Permission[] {
+				Permission.PUBLIC_PROFILE, Permission.USER_GROUPS,
+				Permission.USER_BIRTHDAY, Permission.USER_LIKES,
+				Permission.USER_PHOTOS, Permission.USER_VIDEOS,
+				Permission.USER_FRIENDS, Permission.USER_EVENTS,
+				Permission.USER_VIDEOS, Permission.USER_RELATIONSHIPS,
+				Permission.READ_STREAM, Permission.PUBLISH_ACTION };
+		SimpleFacebookConfiguration configuration = new SimpleFacebookConfiguration.Builder()
+				.setAppId(APP_ID).setNamespace(APP_NAMESPACE)
+				.setPermissions(permissions)
+				.setDefaultAudience(SessionDefaultAudience.FRIENDS)
+				.setAskForAllPermissionsAtOnce(false).build();
+
+		SimpleFacebook.setConfiguration(configuration);
 	}
 
 	private void init() {

@@ -33,6 +33,7 @@ public class Const {
 	public static String URL_BIKE_SHOP = "http://www.togoparts.com/iphone_ws/bs_listings.php?source=android&shopsearch=%s&country=%s&area=%s&open=%s&mechanic=%s&lat=%s&long=%s&sortedby=%s";
 	public static String URL_ABOUT = "http://www.togoparts.com/iphone_ws/about-us.php?source=android";
 	public static String URL_PROMOS = "http://www.togoparts.com/iphone_ws/bs_promos.php?source=android&sid=%s";
+	public static String URL_LOGIN = "https://www.togoparts.com/iphone_ws/user_login.php";
 	public static boolean isAppExitable = false;
 
 	/**
