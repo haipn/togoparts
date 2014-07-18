@@ -9,6 +9,7 @@ import java.util.Map;
 import sg.togoparts.R;
 import sg.togoparts.app.Const;
 import sg.togoparts.app.MyVolley;
+import sg.togoparts.json.GsonRequest;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -25,6 +26,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.sromku.simple.fb.Permission;
 import com.sromku.simple.fb.SimpleFacebook;
 import com.sromku.simple.fb.entities.Profile;
@@ -35,9 +37,9 @@ import com.sromku.simple.fb.listeners.OnProfileListener;
 
 public class LoginActivity extends FragmentActivity {
 
-	public static String CLIENT_ID = "198306676966429";
-	public static String USER = "pauvi";
-	public static String PASS = "paultesting";
+	public static String CLIENT_ID = "G101vptA69sVpvlr";
+	public static String USER = "tgptestuser3";
+	public static String PASS = "hx77WTF3";
 	EditText mEdtUser;
 	EditText mEdtPass;
 	Button mBtnLogin;
@@ -76,7 +78,8 @@ public class LoginActivity extends FragmentActivity {
 			@Override
 			public void onClick(View v) {
 				String passMD5 = getMD5EncryptedString(PASS);
-				login(USER, passMD5);
+				login(mEdtUser.getText().toString(), mEdtPass.getText()
+						.toString());
 			}
 		});
 
@@ -118,11 +121,7 @@ public class LoginActivity extends FragmentActivity {
 				// mTextStatus.setText("Logged in");
 				// loggedInUIState();
 				Log.d("haipn", "login fb");
-				Profile.Properties properties = new Profile.Properties.Builder()
-						.add(Properties.ID).add(Properties.FIRST_NAME)
-						.add(Properties.EMAIL).add(Properties.COVER)
-						.add(Properties.WORK).add(Properties.EDUCATION).build();
-				mSimpleFacebook.getProfile(properties, onProfileListener);
+				getProfileFb();
 			}
 
 			@Override
@@ -147,7 +146,7 @@ public class LoginActivity extends FragmentActivity {
 					+ profile.getEmail() + ","
 					+ mSimpleFacebook.getSession().getAccessToken());
 
-			login(profile.getId(), profile.getEmail(), mSimpleFacebook
+			loginFB(profile.getId(), profile.getEmail(), mSimpleFacebook
 					.getSession().getAccessToken());
 		}
 	};
@@ -196,16 +195,20 @@ public class LoginActivity extends FragmentActivity {
 
 		if (user != null && !user.equals("") && pass != null
 				&& !pass.equals("")) {
-			StringRequest myReq = new StringRequest(Method.POST,
-					Const.URL_LOGIN, createMyReqSuccessListener(),
-					createMyReqErrorListener()) {
+			GsonRequest<ResultLogin> myReq = new GsonRequest<ResultLogin>(
+					Method.POST, Const.URL_LOGIN, ResultLogin.class,
+					createMyReqSuccessListener(), createMyReqErrorListener()) {
 
 				protected Map<String, String> getParams()
 						throws com.android.volley.AuthFailureError {
 					Map<String, String> params = new HashMap<String, String>();
+					String key = pass + System.currentTimeMillis() / 1000
+							+ CLIENT_ID;
+					key = getMD5EncryptedString(key);
 					params.put("TgpUserName", user);
-					params.put("TgpPassword", pass);
-					params.put("ClientId", CLIENT_ID);
+					params.put("logintime", System.currentTimeMillis() / 1000
+							+ "");
+					params.put("TgpKey", key);
 					return params;
 				};
 			};
@@ -213,22 +216,27 @@ public class LoginActivity extends FragmentActivity {
 		}
 	}
 
-	public void login(final String id, final String email, final String token) {
+	public void loginFB(final String id, final String email, final String token) {
 		RequestQueue queue = MyVolley.getRequestQueue();
 
 		if (id != null && !id.equals("") && email != null && !email.equals("")
 				&& token != null && !token.equals("")) {
-			StringRequest myReq = new StringRequest(Method.POST,
-					Const.URL_LOGIN, createMyReqSuccessListener(),
-					createMyReqErrorListener()) {
+			GsonRequest<ResultLogin> myReq = new GsonRequest<ResultLogin>(
+					Method.POST, Const.URL_LOGIN, ResultLogin.class,
+					createMyReqSuccessListener(), createMyReqErrorListener()) {
 
 				protected Map<String, String> getParams()
 						throws com.android.volley.AuthFailureError {
 					Map<String, String> params = new HashMap<String, String>();
+					String tkey = id + System.currentTimeMillis() / 1000
+							+ CLIENT_ID;
+					tkey = getMD5EncryptedString(tkey);
 					params.put("FBid", id);
 					params.put("FBemail", email);
-					params.put("ClientId", CLIENT_ID);
-					params.put("access_token", token);
+					params.put("TgpKey", tkey);
+					params.put("logintime", System.currentTimeMillis() / 1000
+							+ "");
+					params.put("AccessToken", token);
 					return params;
 				};
 			};
@@ -236,11 +244,11 @@ public class LoginActivity extends FragmentActivity {
 		}
 	}
 
-	private Response.Listener<String> createMyReqSuccessListener() {
-		return new Response.Listener<String>() {
+	private Response.Listener<ResultLogin> createMyReqSuccessListener() {
+		return new Response.Listener<ResultLogin>() {
 			@Override
-			public void onResponse(String response) {
-				Log.d("haipn", "response success:" + response);
+			public void onResponse(ResultLogin response) {
+				Log.d("haipn", "response success:" + response.Result.Return);
 			}
 		};
 	}
@@ -301,6 +309,14 @@ public class LoginActivity extends FragmentActivity {
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	private void getProfileFb() {
+		Profile.Properties properties = new Profile.Properties.Builder()
+				.add(Properties.ID).add(Properties.FIRST_NAME)
+				.add(Properties.EMAIL).add(Properties.COVER)
+				.add(Properties.WORK).add(Properties.EDUCATION).build();
+		mSimpleFacebook.getProfile(properties, onProfileListener);
 	}
 
 }
