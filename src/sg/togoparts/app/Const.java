@@ -34,6 +34,9 @@ public class Const {
 	public static String URL_ABOUT = "http://www.togoparts.com/iphone_ws/about-us.php?source=android";
 	public static String URL_PROMOS = "http://www.togoparts.com/iphone_ws/bs_promos.php?source=android&sid=%s";
 	public static String URL_LOGIN = "https://www.togoparts.com/iphone_ws/user-login.php?source=android";
+	public static String URL_MERGE = "https://www.togoparts.com/iphone_ws/fb-user-merge.php?source=android";
+	public static String URL_SIGNUP = "https://www.togoparts.com/iphone_ws/fb-user-new.php?source=android";
+	public static String URL_PROFILE = "https://www.togoparts.com/iphone_ws/user-profile.php?source=android";
 	public static boolean isAppExitable = false;
 
 	/**

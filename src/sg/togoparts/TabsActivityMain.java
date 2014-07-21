@@ -40,11 +40,6 @@ public class TabsActivityMain extends TabActivity implements AdListener {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.tabs_activity_main);
 
-		// String android_id =
-		// Secure.getString(getApplicationContext().getContentResolver(),
-		// Secure.ANDROID_ID);
-		//
-		// ads:testDevices="4c1aaf1e7e9ea04a"
 		tabHost = getTabHost();
 		TabHost.TabSpec spec;
 		Intent intent;

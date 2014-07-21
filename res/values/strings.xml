@@ -56,6 +56,8 @@
     <string name="search_result">Search Result</string>
     <string name="bikeshop_title">Singapore Bikeshop List</string>
     <string name="filter_title">Filter</string>
+    
+    <!-- V1.1 -->
     <string name="filter_bikeshop_title">Bikeshop Search</string>
     <string name="shortlist">Shortlisted Ads</string>
     <string name="title_ad_detail">Ad Details</string>
@@ -84,4 +86,14 @@
 	<string name="more">More</string>
 	<string name="map">Map</string>
 	<string name="title_search_bikeshop">Bikeshop Search Results</string>
+	<!--  v1.2-->
+	<string name="error">Error</string>
+	<string name="label_rating">Marketplace Rating</string>
+	<string name="label_free_ads_posted">Free Ads Posted:</string>
+	<string name="label_free_ads_quota">Free Ads Quota:</string>
+	<string name="label_free_ads_balance">Free Ads Balance:</string>
+	<string name="label_priority_ads_posted">Priority Ads Posted:</string>
+	<string name="label_new_items_ads">New Items Ads:</string>
+	<string name="label_my_ads">My Ads</string>
+	<string name="label_logout">Logout</string>
 </resources>

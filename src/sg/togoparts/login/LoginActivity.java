@@ -10,6 +10,7 @@ import sg.togoparts.R;
 import sg.togoparts.app.Const;
 import sg.togoparts.app.MyVolley;
 import sg.togoparts.json.GsonRequest;
+import sg.togoparts.login.ResultLogin.ResultValue;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -45,7 +46,9 @@ public class LoginActivity extends FragmentActivity {
 	Button mBtnLogin;
 	Button mBtnLoginFb;
 	Button mBtnLogout;
+	protected Profile mProfileFb;
 	protected SimpleFacebook mSimpleFacebook;
+	protected ErrorDialog mDialog;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -77,7 +80,6 @@ public class LoginActivity extends FragmentActivity {
 
 			@Override
 			public void onClick(View v) {
-				String passMD5 = getMD5EncryptedString(PASS);
 				login(mEdtUser.getText().toString(), mEdtPass.getText()
 						.toString());
 			}
@@ -87,6 +89,9 @@ public class LoginActivity extends FragmentActivity {
 		mBtnLogout = (Button) findViewById(R.id.btnLogout);
 		setLogin();
 		setLogout();
+
+		mDialog = new ErrorDialog();
+
 	}
 
 	/**
@@ -145,7 +150,7 @@ public class LoginActivity extends FragmentActivity {
 			Log.i("haipn", "My profile id = " + profile.getId() + ", "
 					+ profile.getEmail() + ","
 					+ mSimpleFacebook.getSession().getAccessToken());
-
+			mProfileFb = profile;
 			loginFB(profile.getId(), profile.getEmail(), mSimpleFacebook
 					.getSession().getAccessToken());
 		}
@@ -249,8 +254,95 @@ public class LoginActivity extends FragmentActivity {
 			@Override
 			public void onResponse(ResultLogin response) {
 				Log.d("haipn", "response success:" + response.Result.Return);
+				processResult(response);
 			}
 		};
+	}
+
+	private Response.Listener<ResultLogin> createMergeSuccessListener() {
+		return new Response.Listener<ResultLogin>() {
+			@Override
+			public void onResponse(ResultLogin response) {
+				Log.d("haipn", "merge success:" + response.Result.Return);
+			}
+		};
+	}
+
+	private Response.Listener<ResultLogin> createSignupSuccessListener() {
+		return new Response.Listener<ResultLogin>() {
+			@Override
+			public void onResponse(ResultLogin response) {
+				Log.d("haipn", "signup success:" + response.Result.Return);
+			}
+		};
+	}
+
+	protected void processResult(ResultLogin response) {
+		ResultValue result = response.Result;
+		if (result.Return.equals("success")) {
+			Log.d("haipn", "Username:" + mProfileFb.getUsername());
+			success();
+		} else if (result.Return.equals("error")) {
+			showError(result.Message);
+		} else if (result.Return.equals("merge")) {
+			merge(result.Userid);
+		} else if (result.Return.equals("new")) {
+			signup();
+		}
+	}
+
+	private void signup() {
+		RequestQueue queue = MyVolley.getRequestQueue();
+
+		GsonRequest<ResultLogin> myReq = new GsonRequest<ResultLogin>(
+				Method.POST, Const.URL_SIGNUP, ResultLogin.class,
+				createSignupSuccessListener(), createMyReqErrorListener()) {
+
+			protected Map<String, String> getParams()
+					throws com.android.volley.AuthFailureError {
+				Map<String, String> params = new HashMap<String, String>();
+				params.put("FBid", mProfileFb.getId());
+				params.put("FBemail", mProfileFb.getEmail());
+				
+				params.put("Username", mProfileFb.getUsername());
+				params.put("AccessToken", mSimpleFacebook.getSession()
+						.getAccessToken());
+				params.put("Country", "Vietnam");
+				return params;
+			};
+		};
+		queue.add(myReq);
+	}
+
+	private void merge(final String userid) {
+		RequestQueue queue = MyVolley.getRequestQueue();
+
+		GsonRequest<ResultLogin> myReq = new GsonRequest<ResultLogin>(
+				Method.POST, Const.URL_MERGE, ResultLogin.class,
+				createMergeSuccessListener(), createMyReqErrorListener()) {
+
+			protected Map<String, String> getParams()
+					throws com.android.volley.AuthFailureError {
+				Map<String, String> params = new HashMap<String, String>();
+				params.put("FBid", mProfileFb.getId());
+				params.put("FBemail", mProfileFb.getEmail());
+				params.put("Userid", userid);
+				params.put("AccessToken", mSimpleFacebook.getSession()
+						.getAccessToken());
+				return params;
+			};
+		};
+		queue.add(myReq);
+	}
+
+	private void showError(String msg) {
+		mDialog.setMessage(msg);
+		mDialog.show(getSupportFragmentManager(), "error");
+	}
+
+	private void success() {
+		// TODO Auto-generated method stub
+
 	}
 
 	private Response.ErrorListener createMyReqErrorListener() {
@@ -314,8 +406,9 @@ public class LoginActivity extends FragmentActivity {
 	private void getProfileFb() {
 		Profile.Properties properties = new Profile.Properties.Builder()
 				.add(Properties.ID).add(Properties.FIRST_NAME)
-				.add(Properties.EMAIL).add(Properties.COVER)
-				.add(Properties.WORK).add(Properties.EDUCATION).build();
+				.add(Properties.LAST_NAME).add(Properties.EMAIL)
+				.add(Properties.COVER).add(Properties.WORK)
+				.add(Properties.EDUCATION).build();
 		mSimpleFacebook.getProfile(properties, onProfileListener);
 	}
 

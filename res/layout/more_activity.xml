@@ -11,6 +11,25 @@
         layout="@layout/new_actionbar" />
 
     <sg.togoparts.gallery.FontableTextView
+        android:id="@+id/tvShortlistedAds"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:background="@drawable/textview_more"
+        android:drawableLeft="@drawable/search_icon"
+        android:drawablePadding="5dp"
+        android:gravity="center_vertical"
+        android:padding="10dp"
+        android:text="@string/shortlist"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.25dp"
+        android:background="@drawable/gray" >
+    </View>
+
+    <sg.togoparts.gallery.FontableTextView
         android:id="@+id/tvAdsSearch"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -66,5 +85,15 @@
         android:layout_height="0.25dp"
         android:background="@drawable/gray" >
     </View>
+
+    <Button
+        android:id="@+id/btnLogout"
+        android:layout_margin="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/btn_click"
+        android:text="@string/label_logout"
+        android:textColor="@android:color/white"
+        android:textSize="30sp" />
 
 </LinearLayout>
