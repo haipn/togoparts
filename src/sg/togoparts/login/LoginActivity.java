@@ -44,8 +44,6 @@ public class LoginActivity extends FragmentActivity {
 	EditText mEdtUser;
 	EditText mEdtPass;
 	Button mBtnLogin;
-	Button mBtnLoginFb;
-	Button mBtnLogout;
 	protected Profile mProfileFb;
 	protected SimpleFacebook mSimpleFacebook;
 	protected ErrorDialog mDialog;
@@ -85,63 +83,11 @@ public class LoginActivity extends FragmentActivity {
 			}
 		});
 
-		mBtnLoginFb = (Button) findViewById(R.id.btnLoginFb);
-		mBtnLogout = (Button) findViewById(R.id.btnLogout);
-		setLogin();
-		setLogout();
+		// setLogin();
+		// setLogout();
 
 		mDialog = new ErrorDialog();
 
-	}
-
-	/**
-	 * Login example.
-	 */
-	private void setLogin() {
-		// Login listener
-		final OnLoginListener onLoginListener = new OnLoginListener() {
-
-			@Override
-			public void onFail(String reason) {
-				// mTextStatus.setText(reason);
-				Log.w("haipn", "Failed to login");
-			}
-
-			@Override
-			public void onException(Throwable throwable) {
-				// mTextStatus.setText("Exception: " + throwable.getMessage());
-				Log.e("haipn", "Bad thing happened", throwable);
-			}
-
-			@Override
-			public void onThinking() {
-				// show progress bar or something to the user while login is
-				// happening
-				Log.w("haipn", "Thinking....");
-			}
-
-			@Override
-			public void onLogin() {
-				// change the state of the button or do whatever you want
-				// mTextStatus.setText("Logged in");
-				// loggedInUIState();
-				Log.d("haipn", "login fb");
-				getProfileFb();
-			}
-
-			@Override
-			public void onNotAcceptingPermissions(Permission.Type type) {
-				// toast(String.format("You didn't accept %s permissions",
-				// type.name()));
-			}
-		};
-
-		mBtnLoginFb.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View arg0) {
-				mSimpleFacebook.login(onLoginListener);
-			}
-		});
 	}
 
 	OnProfileListener onProfileListener = new OnProfileListener() {
@@ -151,49 +97,49 @@ public class LoginActivity extends FragmentActivity {
 					+ profile.getEmail() + ","
 					+ mSimpleFacebook.getSession().getAccessToken());
 			mProfileFb = profile;
-			loginFB(profile.getId(), profile.getEmail(), mSimpleFacebook
-					.getSession().getAccessToken());
+			// loginFB(profile.getId(), profile.getEmail(), mSimpleFacebook
+			// .getSession().getAccessToken());
 		}
 	};
 
 	/**
 	 * Logout example
 	 */
-	private void setLogout() {
-		final OnLogoutListener onLogoutListener = new OnLogoutListener() {
-
-			@Override
-			public void onFail(String reason) {
-				Log.w("haipn", "Failed to login");
-			}
-
-			@Override
-			public void onException(Throwable throwable) {
-				Log.e("haipn", "Bad thing happened", throwable);
-			}
-
-			@Override
-			public void onThinking() {
-				// show progress bar or something to the user while login is
-				// happening
-				Log.d("haipn", "Thinking...");
-			}
-
-			@Override
-			public void onLogout() {
-				// change the state of the button or do whatever you want
-				Log.d("haipn", "logout...");
-			}
-
-		};
-
-		mBtnLogout.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View arg0) {
-				mSimpleFacebook.logout(onLogoutListener);
-			}
-		});
-	}
+	// private void setLogout() {
+	// final OnLogoutListener onLogoutListener = new OnLogoutListener() {
+	//
+	// @Override
+	// public void onFail(String reason) {
+	// Log.w("haipn", "Failed to login");
+	// }
+	//
+	// @Override
+	// public void onException(Throwable throwable) {
+	// Log.e("haipn", "Bad thing happened", throwable);
+	// }
+	//
+	// @Override
+	// public void onThinking() {
+	// // show progress bar or something to the user while login is
+	// // happening
+	// Log.d("haipn", "Thinking...");
+	// }
+	//
+	// @Override
+	// public void onLogout() {
+	// // change the state of the button or do whatever you want
+	// Log.d("haipn", "logout...");
+	// }
+	//
+	// };
+	//
+	// mBtnLogout.setOnClickListener(new View.OnClickListener() {
+	// @Override
+	// public void onClick(View arg0) {
+	// mSimpleFacebook.logout(onLogoutListener);
+	// }
+	// });
+	// }
 
 	public void login(final String user, final String pass) {
 		RequestQueue queue = MyVolley.getRequestQueue();
@@ -214,34 +160,6 @@ public class LoginActivity extends FragmentActivity {
 					params.put("logintime", System.currentTimeMillis() / 1000
 							+ "");
 					params.put("TgpKey", key);
-					return params;
-				};
-			};
-			queue.add(myReq);
-		}
-	}
-
-	public void loginFB(final String id, final String email, final String token) {
-		RequestQueue queue = MyVolley.getRequestQueue();
-
-		if (id != null && !id.equals("") && email != null && !email.equals("")
-				&& token != null && !token.equals("")) {
-			GsonRequest<ResultLogin> myReq = new GsonRequest<ResultLogin>(
-					Method.POST, Const.URL_LOGIN, ResultLogin.class,
-					createMyReqSuccessListener(), createMyReqErrorListener()) {
-
-				protected Map<String, String> getParams()
-						throws com.android.volley.AuthFailureError {
-					Map<String, String> params = new HashMap<String, String>();
-					String tkey = id + System.currentTimeMillis() / 1000
-							+ CLIENT_ID;
-					tkey = Const.getSHA256EncryptedString(tkey);
-					params.put("FBid", id);
-					params.put("FBemail", email);
-					params.put("TgpKey", tkey);
-					params.put("logintime", System.currentTimeMillis() / 1000
-							+ "");
-					params.put("AccessToken", token);
 					return params;
 				};
 			};
@@ -282,12 +200,9 @@ public class LoginActivity extends FragmentActivity {
 		if (result.Return.equals("success")) {
 			Log.d("haipn", "Username:" + mProfileFb.getUsername());
 			success();
-		} else if (result.Return.equals("error")) {
+		} else if (result.Return.equals("error")
+				|| result.Return.equals("banned")) {
 			showError(result.Message);
-		} else if (result.Return.equals("merge")) {
-			merge(result.Userid);
-		} else if (result.Return.equals("new")) {
-			signup();
 		}
 	}
 
@@ -303,7 +218,7 @@ public class LoginActivity extends FragmentActivity {
 				Map<String, String> params = new HashMap<String, String>();
 				params.put("FBid", mProfileFb.getId());
 				params.put("FBemail", mProfileFb.getEmail());
-				
+
 				params.put("Username", mProfileFb.getUsername());
 				params.put("AccessToken", mSimpleFacebook.getSession()
 						.getAccessToken());

@@ -5,7 +5,7 @@
 
     <EditText
         android:id="@+id/edtUser"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
@@ -18,7 +18,7 @@
 
     <EditText
         android:id="@+id/edtPass"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/edtUser"
         android:layout_below="@+id/edtUser"
@@ -28,28 +28,11 @@
 
     <Button
         android:id="@+id/btnLogin"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/edtPass"
         android:layout_below="@+id/edtPass"
         android:layout_marginTop="24dp"
         android:text="Login" />
 
-    <Button
-        android:id="@+id/btnLoginFb"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/btnLogin"
-        android:layout_alignBottom="@+id/btnLogin"
-        android:layout_centerHorizontal="true"
-        android:text="Login FB" />
-
-    <Button
-        android:id="@+id/btnLogout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/btnLoginFb"
-        android:layout_toRightOf="@+id/edtUser"
-        android:text="Logout" />
-	
 </RelativeLayout>
