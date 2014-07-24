@@ -96,4 +96,12 @@
 	<string name="label_new_items_ads">New Items Ads:</string>
 	<string name="label_my_ads">My Ads</string>
 	<string name="label_logout">Logout</string>
+	<string name="label_login_fb">Sign Up or Login Facebook</string>
+	<string name="label_login_normal">Or LOGIN using your\n Username and Password</string>
+	<string name="label_username">Username</string>
+	<string name="label_location">Location</string>
+	<string name="label_gender">Gender</string>
+	<string name="yes">Yes</string>
+	<string name="no">No</string>
+	<string name="label_merge">An Existing account in Togoparts matches your email in Facebook Account. Do you want to merge your Togoparts account with Facebook?</string>
 </resources>

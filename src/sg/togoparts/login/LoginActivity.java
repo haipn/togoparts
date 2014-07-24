@@ -209,7 +209,7 @@ public class LoginActivity extends FragmentActivity {
 					Map<String, String> params = new HashMap<String, String>();
 					String key = pass + System.currentTimeMillis() / 1000
 							+ CLIENT_ID;
-					key = getMD5EncryptedString(key);
+					key = Const.getSHA256EncryptedString(key);
 					params.put("TgpUserName", user);
 					params.put("logintime", System.currentTimeMillis() / 1000
 							+ "");
@@ -235,7 +235,7 @@ public class LoginActivity extends FragmentActivity {
 					Map<String, String> params = new HashMap<String, String>();
 					String tkey = id + System.currentTimeMillis() / 1000
 							+ CLIENT_ID;
-					tkey = getMD5EncryptedString(tkey);
+					tkey = Const.getSHA256EncryptedString(tkey);
 					params.put("FBid", id);
 					params.put("FBemail", email);
 					params.put("TgpKey", tkey);
@@ -352,22 +352,6 @@ public class LoginActivity extends FragmentActivity {
 				Log.d("haipn", "response error:" + error.getMessage());
 			}
 		};
-	}
-
-	public String getMD5EncryptedString(String encTarget) {
-		MessageDigest mdEnc = null;
-		try {
-			mdEnc = MessageDigest.getInstance("MD5");
-		} catch (NoSuchAlgorithmException e) {
-			System.out.println("Exception while encrypting to md5");
-			e.printStackTrace();
-		} // Encryption algorithm
-		mdEnc.update(encTarget.getBytes(), 0, encTarget.length());
-		String md5 = new BigInteger(1, mdEnc.digest()).toString(16);
-		while (md5.length() < 32) {
-			md5 = "0" + md5;
-		}
-		return md5;
 	}
 
 	@Override
