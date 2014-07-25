@@ -1,10 +1,25 @@
 package sg.togoparts.login;
 
-import java.math.BigInteger;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpVersion;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.mime.HttpMultipartMode;
+import org.apache.http.entity.mime.MultipartEntity;
+import org.apache.http.entity.mime.content.FileBody;
+import org.apache.http.entity.mime.content.StringBody;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.CoreProtocolPNames;
+import org.apache.http.params.HttpParams;
+import org.apache.http.util.EntityUtils;
 
 import sg.togoparts.R;
 import sg.togoparts.app.Const;
@@ -12,7 +27,10 @@ import sg.togoparts.app.MyVolley;
 import sg.togoparts.json.GsonRequest;
 import sg.togoparts.login.ResultLogin.ResultValue;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
+import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -26,8 +44,6 @@ import com.android.volley.Request.Method;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.sromku.simple.fb.Permission;
 import com.sromku.simple.fb.SimpleFacebook;
 import com.sromku.simple.fb.entities.Profile;
@@ -38,6 +54,8 @@ import com.sromku.simple.fb.listeners.OnProfileListener;
 
 public class LoginActivity extends FragmentActivity {
 
+	protected static final String PATH_FILE = Environment.getExternalStorageDirectory() + "/" + "im0.jpeg";
+	static final String URL = "http://www.togoparts.com/iphone_ws/mp-postad-test.php?debugcode=n1vJuAis&source=android";
 	public static String CLIENT_ID = "G101vptA69sVpvlr";
 	public static String USER = "tgptestuser3";
 	public static String PASS = "hx77WTF3";
@@ -70,6 +88,12 @@ public class LoginActivity extends FragmentActivity {
 		// } catch (NoSuchAlgorithmException e) {
 		//
 		// }
+
+		HttpParams params = new BasicHttpParams();
+		params.setParameter(CoreProtocolPNames.PROTOCOL_VERSION,
+				HttpVersion.HTTP_1_1);
+		mHttpClient = new DefaultHttpClient(params);
+		
 		mEdtPass = (EditText) findViewById(R.id.edtPass);
 		mEdtPass.setText(PASS);
 
@@ -82,6 +106,7 @@ public class LoginActivity extends FragmentActivity {
 			public void onClick(View v) {
 				login(mEdtUser.getText().toString(), mEdtPass.getText()
 						.toString());
+//				 new UploadFileTask().execute(URL);
 			}
 		});
 
@@ -254,7 +279,8 @@ public class LoginActivity extends FragmentActivity {
 			@Override
 			public void onResponse(ResultLogin response) {
 				Log.d("haipn", "response success:" + response.Result.Return);
-				processResult(response);
+//				processResult(response);
+				new UploadFileTask().execute(URL, response.Result.session_id);
 			}
 		};
 	}
@@ -303,7 +329,7 @@ public class LoginActivity extends FragmentActivity {
 				Map<String, String> params = new HashMap<String, String>();
 				params.put("FBid", mProfileFb.getId());
 				params.put("FBemail", mProfileFb.getEmail());
-				
+
 				params.put("Username", mProfileFb.getUsername());
 				params.put("AccessToken", mSimpleFacebook.getSession()
 						.getAccessToken());
@@ -396,4 +422,50 @@ public class LoginActivity extends FragmentActivity {
 		mSimpleFacebook.getProfile(properties, onProfileListener);
 	}
 
+	private DefaultHttpClient mHttpClient;
+
+	public void uploadUserPhoto(String url, File image, String session_id) {
+
+		try {
+
+			HttpPost httppost = new HttpPost(url);
+			MultipartEntity multipartEntity = new MultipartEntity(
+					HttpMultipartMode.BROWSER_COMPATIBLE);
+			multipartEntity.addPart("image", new FileBody(image));
+			multipartEntity.addPart("session_id", new StringBody(session_id));
+			httppost.setEntity(multipartEntity);
+
+			mHttpClient.execute(httppost, new PhotoUploadResponseHandler());
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	private class PhotoUploadResponseHandler implements ResponseHandler<Object> {
+
+		@Override
+		public Object handleResponse(HttpResponse response)
+				throws ClientProtocolException, IOException {
+
+			HttpEntity r_entity = response.getEntity();
+			String responseString = EntityUtils.toString(r_entity);
+			Log.d("UPLOAD", responseString);
+
+			return null;
+		}
+
+	}
+
+	class UploadFileTask extends AsyncTask<String, Void, Void> {
+
+	    protected Void doInBackground(String... urls) {
+	    	uploadUserPhoto(urls[0], new File(PATH_FILE), urls[1]);
+			return null;
+	    }
+
+	    protected void onPostExecute() {
+	    	Log.d("haipn", "upload successful");
+	    }
+	}
 }

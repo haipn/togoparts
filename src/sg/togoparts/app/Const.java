@@ -41,6 +41,7 @@ public class Const {
 	public static String URL_MERGE = "https://www.togoparts.com/iphone_ws/fb-user-merge.php?source=android";
 	public static String URL_SIGNUP = "https://www.togoparts.com/iphone_ws/fb-user-new.php?source=android";
 	public static String URL_PROFILE = "https://www.togoparts.com/iphone_ws/user-profile.php?source=android";
+	public static String URL_POST_AD = "http://www.togoparts.com/iphone_ws/mp-postad-test.php?debugcode=n1vJuAis&source=android";
 	public static boolean isAppExitable = false;
 
 	/**
