@@ -29,6 +29,9 @@ import com.sromku.simple.fb.listeners.OnLoginListener;
 import com.sromku.simple.fb.listeners.OnProfileListener;
 
 public class ChooseLogin extends FragmentActivity {
+	public static final String ACCESSTOKEN = "access token";
+	public static final String FACEBOOK_ID = "facebook id";
+	public static final String FACEBOOK_MAIL = "facebook mail";
 	public static String CLIENT_ID = "G101vptA69sVpvlr";
 	protected Profile mProfileFb;
 	protected SimpleFacebook mSimpleFacebook;
@@ -36,6 +39,7 @@ public class ChooseLogin extends FragmentActivity {
 	private Button mBtnLoginNormal;
 	private ErrorDialog mDialog;
 	private ProgressDialog mProgressDialog;
+
 	@Override
 	protected void onCreate(Bundle arg0) {
 		super.onCreate(arg0);
@@ -44,8 +48,8 @@ public class ChooseLogin extends FragmentActivity {
 		mBtnLoginFb = (Button) findViewById(R.id.btnLoginFb);
 		mBtnLoginNormal = (Button) findViewById(R.id.btnLoginNormal);
 
+		setLoginFacebook();
 		setLogin();
-
 		mDialog = new ErrorDialog();
 		mProgressDialog = new ProgressDialog(this);
 	}
@@ -63,10 +67,20 @@ public class ChooseLogin extends FragmentActivity {
 		mSimpleFacebook.onActivityResult(this, requestCode, resultCode, data);
 	}
 
-	/**
-	 * Login example.
-	 */
 	private void setLogin() {
+		mBtnLoginNormal.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				startActivity(new Intent(ChooseLogin.this, LoginActivity.class));
+			}
+		});
+	}
+
+	/**
+	 * Login facebook.
+	 */
+	private void setLoginFacebook() {
 		// Login listener
 		final OnLoginListener onLoginListener = new OnLoginListener() {
 
@@ -97,7 +111,7 @@ public class ChooseLogin extends FragmentActivity {
 				// change the state of the button or do whatever you want
 				// mTextStatus.setText("Logged in");
 				// loggedInUIState();
-				
+
 				Log.d("haipn", "login fb");
 				getProfileFb();
 			}
@@ -194,9 +208,17 @@ public class ChooseLogin extends FragmentActivity {
 		} else if (result.Return.equals("error")) {
 			showError(result.Message);
 		} else if (result.Return.equals("merge")) {
-			// merge(result.Userid);
+			Intent merge = new Intent(this, MergeAccount.class);
+			merge.putExtra(ACCESSTOKEN, mSimpleFacebook.getSession().getAccessToken());
+			merge.putExtra(FACEBOOK_ID, mProfileFb.getId());
+			merge.putExtra(FACEBOOK_MAIL, mProfileFb.getEmail());
+			startActivity(merge);
 		} else if (result.Return.equals("new")) {
-			// signup();
+			Intent signup = new Intent(this, Signup.class);
+			signup.putExtra(ACCESSTOKEN, mSimpleFacebook.getSession().getAccessToken());
+			signup.putExtra(FACEBOOK_ID, mProfileFb.getId());
+			signup.putExtra(FACEBOOK_MAIL, mProfileFb.getEmail());
+			startActivity(signup);
 		}
 	}
 

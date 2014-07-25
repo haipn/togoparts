@@ -1,25 +1,10 @@
 package sg.togoparts.login;
 
-import java.io.File;
-import java.io.IOException;
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
-
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpVersion;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.ResponseHandler;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.mime.HttpMultipartMode;
-import org.apache.http.entity.mime.MultipartEntity;
-import org.apache.http.entity.mime.content.FileBody;
-import org.apache.http.entity.mime.content.StringBody;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.params.BasicHttpParams;
-import org.apache.http.params.CoreProtocolPNames;
-import org.apache.http.params.HttpParams;
-import org.apache.http.util.EntityUtils;
 
 import sg.togoparts.R;
 import sg.togoparts.app.Const;
@@ -27,10 +12,7 @@ import sg.togoparts.app.MyVolley;
 import sg.togoparts.json.GsonRequest;
 import sg.togoparts.login.ResultLogin.ResultValue;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Environment;
-import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -44,6 +26,8 @@ import com.android.volley.Request.Method;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.sromku.simple.fb.Permission;
 import com.sromku.simple.fb.SimpleFacebook;
 import com.sromku.simple.fb.entities.Profile;
@@ -54,16 +38,12 @@ import com.sromku.simple.fb.listeners.OnProfileListener;
 
 public class LoginActivity extends FragmentActivity {
 
-	protected static final String PATH_FILE = Environment.getExternalStorageDirectory() + "/" + "im0.jpeg";
-	static final String URL = "http://www.togoparts.com/iphone_ws/mp-postad-test.php?debugcode=n1vJuAis&source=android";
 	public static String CLIENT_ID = "G101vptA69sVpvlr";
 	public static String USER = "tgptestuser3";
 	public static String PASS = "hx77WTF3";
 	EditText mEdtUser;
 	EditText mEdtPass;
 	Button mBtnLogin;
-	Button mBtnLoginFb;
-	Button mBtnLogout;
 	protected Profile mProfileFb;
 	protected SimpleFacebook mSimpleFacebook;
 	protected ErrorDialog mDialog;
@@ -88,12 +68,6 @@ public class LoginActivity extends FragmentActivity {
 		// } catch (NoSuchAlgorithmException e) {
 		//
 		// }
-
-		HttpParams params = new BasicHttpParams();
-		params.setParameter(CoreProtocolPNames.PROTOCOL_VERSION,
-				HttpVersion.HTTP_1_1);
-		mHttpClient = new DefaultHttpClient(params);
-		
 		mEdtPass = (EditText) findViewById(R.id.edtPass);
 		mEdtPass.setText(PASS);
 
@@ -106,67 +80,14 @@ public class LoginActivity extends FragmentActivity {
 			public void onClick(View v) {
 				login(mEdtUser.getText().toString(), mEdtPass.getText()
 						.toString());
-//				 new UploadFileTask().execute(URL);
 			}
 		});
 
-		mBtnLoginFb = (Button) findViewById(R.id.btnLoginFb);
-		mBtnLogout = (Button) findViewById(R.id.btnLogout);
-		setLogin();
-		setLogout();
+		// setLogin();
+		// setLogout();
 
 		mDialog = new ErrorDialog();
 
-	}
-
-	/**
-	 * Login example.
-	 */
-	private void setLogin() {
-		// Login listener
-		final OnLoginListener onLoginListener = new OnLoginListener() {
-
-			@Override
-			public void onFail(String reason) {
-				// mTextStatus.setText(reason);
-				Log.w("haipn", "Failed to login");
-			}
-
-			@Override
-			public void onException(Throwable throwable) {
-				// mTextStatus.setText("Exception: " + throwable.getMessage());
-				Log.e("haipn", "Bad thing happened", throwable);
-			}
-
-			@Override
-			public void onThinking() {
-				// show progress bar or something to the user while login is
-				// happening
-				Log.w("haipn", "Thinking....");
-			}
-
-			@Override
-			public void onLogin() {
-				// change the state of the button or do whatever you want
-				// mTextStatus.setText("Logged in");
-				// loggedInUIState();
-				Log.d("haipn", "login fb");
-				getProfileFb();
-			}
-
-			@Override
-			public void onNotAcceptingPermissions(Permission.Type type) {
-				// toast(String.format("You didn't accept %s permissions",
-				// type.name()));
-			}
-		};
-
-		mBtnLoginFb.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View arg0) {
-				mSimpleFacebook.login(onLoginListener);
-			}
-		});
 	}
 
 	OnProfileListener onProfileListener = new OnProfileListener() {
@@ -176,49 +97,49 @@ public class LoginActivity extends FragmentActivity {
 					+ profile.getEmail() + ","
 					+ mSimpleFacebook.getSession().getAccessToken());
 			mProfileFb = profile;
-			loginFB(profile.getId(), profile.getEmail(), mSimpleFacebook
-					.getSession().getAccessToken());
+			// loginFB(profile.getId(), profile.getEmail(), mSimpleFacebook
+			// .getSession().getAccessToken());
 		}
 	};
 
 	/**
 	 * Logout example
 	 */
-	private void setLogout() {
-		final OnLogoutListener onLogoutListener = new OnLogoutListener() {
-
-			@Override
-			public void onFail(String reason) {
-				Log.w("haipn", "Failed to login");
-			}
-
-			@Override
-			public void onException(Throwable throwable) {
-				Log.e("haipn", "Bad thing happened", throwable);
-			}
-
-			@Override
-			public void onThinking() {
-				// show progress bar or something to the user while login is
-				// happening
-				Log.d("haipn", "Thinking...");
-			}
-
-			@Override
-			public void onLogout() {
-				// change the state of the button or do whatever you want
-				Log.d("haipn", "logout...");
-			}
-
-		};
-
-		mBtnLogout.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View arg0) {
-				mSimpleFacebook.logout(onLogoutListener);
-			}
-		});
-	}
+	// private void setLogout() {
+	// final OnLogoutListener onLogoutListener = new OnLogoutListener() {
+	//
+	// @Override
+	// public void onFail(String reason) {
+	// Log.w("haipn", "Failed to login");
+	// }
+	//
+	// @Override
+	// public void onException(Throwable throwable) {
+	// Log.e("haipn", "Bad thing happened", throwable);
+	// }
+	//
+	// @Override
+	// public void onThinking() {
+	// // show progress bar or something to the user while login is
+	// // happening
+	// Log.d("haipn", "Thinking...");
+	// }
+	//
+	// @Override
+	// public void onLogout() {
+	// // change the state of the button or do whatever you want
+	// Log.d("haipn", "logout...");
+	// }
+	//
+	// };
+	//
+	// mBtnLogout.setOnClickListener(new View.OnClickListener() {
+	// @Override
+	// public void onClick(View arg0) {
+	// mSimpleFacebook.logout(onLogoutListener);
+	// }
+	// });
+	// }
 
 	public void login(final String user, final String pass) {
 		RequestQueue queue = MyVolley.getRequestQueue();
@@ -246,41 +167,12 @@ public class LoginActivity extends FragmentActivity {
 		}
 	}
 
-	public void loginFB(final String id, final String email, final String token) {
-		RequestQueue queue = MyVolley.getRequestQueue();
-
-		if (id != null && !id.equals("") && email != null && !email.equals("")
-				&& token != null && !token.equals("")) {
-			GsonRequest<ResultLogin> myReq = new GsonRequest<ResultLogin>(
-					Method.POST, Const.URL_LOGIN, ResultLogin.class,
-					createMyReqSuccessListener(), createMyReqErrorListener()) {
-
-				protected Map<String, String> getParams()
-						throws com.android.volley.AuthFailureError {
-					Map<String, String> params = new HashMap<String, String>();
-					String tkey = id + System.currentTimeMillis() / 1000
-							+ CLIENT_ID;
-					tkey = Const.getSHA256EncryptedString(tkey);
-					params.put("FBid", id);
-					params.put("FBemail", email);
-					params.put("TgpKey", tkey);
-					params.put("logintime", System.currentTimeMillis() / 1000
-							+ "");
-					params.put("AccessToken", token);
-					return params;
-				};
-			};
-			queue.add(myReq);
-		}
-	}
-
 	private Response.Listener<ResultLogin> createMyReqSuccessListener() {
 		return new Response.Listener<ResultLogin>() {
 			@Override
 			public void onResponse(ResultLogin response) {
 				Log.d("haipn", "response success:" + response.Result.Return);
-//				processResult(response);
-				new UploadFileTask().execute(URL, response.Result.session_id);
+				processResult(response);
 			}
 		};
 	}
@@ -308,12 +200,9 @@ public class LoginActivity extends FragmentActivity {
 		if (result.Return.equals("success")) {
 			Log.d("haipn", "Username:" + mProfileFb.getUsername());
 			success();
-		} else if (result.Return.equals("error")) {
+		} else if (result.Return.equals("error")
+				|| result.Return.equals("banned")) {
 			showError(result.Message);
-		} else if (result.Return.equals("merge")) {
-			merge(result.Userid);
-		} else if (result.Return.equals("new")) {
-			signup();
 		}
 	}
 
@@ -422,50 +311,4 @@ public class LoginActivity extends FragmentActivity {
 		mSimpleFacebook.getProfile(properties, onProfileListener);
 	}
 
-	private DefaultHttpClient mHttpClient;
-
-	public void uploadUserPhoto(String url, File image, String session_id) {
-
-		try {
-
-			HttpPost httppost = new HttpPost(url);
-			MultipartEntity multipartEntity = new MultipartEntity(
-					HttpMultipartMode.BROWSER_COMPATIBLE);
-			multipartEntity.addPart("image", new FileBody(image));
-			multipartEntity.addPart("session_id", new StringBody(session_id));
-			httppost.setEntity(multipartEntity);
-
-			mHttpClient.execute(httppost, new PhotoUploadResponseHandler());
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	private class PhotoUploadResponseHandler implements ResponseHandler<Object> {
-
-		@Override
-		public Object handleResponse(HttpResponse response)
-				throws ClientProtocolException, IOException {
-
-			HttpEntity r_entity = response.getEntity();
-			String responseString = EntityUtils.toString(r_entity);
-			Log.d("UPLOAD", responseString);
-
-			return null;
-		}
-
-	}
-
-	class UploadFileTask extends AsyncTask<String, Void, Void> {
-
-	    protected Void doInBackground(String... urls) {
-	    	uploadUserPhoto(urls[0], new File(PATH_FILE), urls[1]);
-			return null;
-	    }
-
-	    protected void onPostExecute() {
-	    	Log.d("haipn", "upload successful");
-	    }
-	}
 }
