@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.EditText;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -32,11 +33,17 @@ public class ChooseLogin extends FragmentActivity {
 	public static final String ACCESSTOKEN = "access token";
 	public static final String FACEBOOK_ID = "facebook id";
 	public static final String FACEBOOK_MAIL = "facebook mail";
+	public static String USER = "tgptestuser3";
+	public static String PASS = "hx77WTF3";
 	public static String CLIENT_ID = "G101vptA69sVpvlr";
 	protected Profile mProfileFb;
 	protected SimpleFacebook mSimpleFacebook;
+
+	EditText mEdtUser;
+	EditText mEdtPass;
 	private Button mBtnLoginFb;
 	private Button mBtnLoginNormal;
+	private Button mBtnSkip;
 	private ErrorDialog mDialog;
 	private ProgressDialog mProgressDialog;
 
@@ -46,8 +53,10 @@ public class ChooseLogin extends FragmentActivity {
 		setContentView(R.layout.choose_login);
 		mSimpleFacebook = SimpleFacebook.getInstance(this);
 		mBtnLoginFb = (Button) findViewById(R.id.btnLoginFb);
-		mBtnLoginNormal = (Button) findViewById(R.id.btnLoginNormal);
-
+		mBtnLoginNormal = (Button) findViewById(R.id.btnLogin);
+		mEdtPass = (EditText) findViewById(R.id.edtPass);
+		mEdtUser = (EditText) findViewById(R.id.edtUsername);
+		mBtnSkip = (Button) findViewById(R.id.btnSkip);
 		setLoginFacebook();
 		setLogin();
 		mDialog = new ErrorDialog();
@@ -72,9 +81,36 @@ public class ChooseLogin extends FragmentActivity {
 
 			@Override
 			public void onClick(View arg0) {
-				startActivity(new Intent(ChooseLogin.this, LoginActivity.class));
+				login(mEdtUser.getText().toString(), mEdtPass.getText()
+						.toString());
 			}
 		});
+	}
+
+	public void login(final String user, final String pass) {
+		RequestQueue queue = MyVolley.getRequestQueue();
+
+		if (user != null && !user.equals("") && pass != null
+				&& !pass.equals("")) {
+			GsonRequest<ResultLogin> myReq = new GsonRequest<ResultLogin>(
+					Method.POST, Const.URL_LOGIN, ResultLogin.class,
+					createMyReqSuccessListener(), createMyReqErrorListener()) {
+
+				protected Map<String, String> getParams()
+						throws com.android.volley.AuthFailureError {
+					Map<String, String> params = new HashMap<String, String>();
+					String key = pass + System.currentTimeMillis() / 1000
+							+ CLIENT_ID;
+					key = Const.getSHA256EncryptedString(key);
+					params.put("TgpUserName", user);
+					params.put("logintime", System.currentTimeMillis() / 1000
+							+ "");
+					params.put("TgpKey", key);
+					return params;
+				};
+			};
+			queue.add(myReq);
+		}
 	}
 
 	/**
@@ -209,13 +245,15 @@ public class ChooseLogin extends FragmentActivity {
 			showError(result.Message);
 		} else if (result.Return.equals("merge")) {
 			Intent merge = new Intent(this, MergeAccount.class);
-			merge.putExtra(ACCESSTOKEN, mSimpleFacebook.getSession().getAccessToken());
+			merge.putExtra(ACCESSTOKEN, mSimpleFacebook.getSession()
+					.getAccessToken());
 			merge.putExtra(FACEBOOK_ID, mProfileFb.getId());
 			merge.putExtra(FACEBOOK_MAIL, mProfileFb.getEmail());
 			startActivity(merge);
 		} else if (result.Return.equals("new")) {
 			Intent signup = new Intent(this, Signup.class);
-			signup.putExtra(ACCESSTOKEN, mSimpleFacebook.getSession().getAccessToken());
+			signup.putExtra(ACCESSTOKEN, mSimpleFacebook.getSession()
+					.getAccessToken());
 			signup.putExtra(FACEBOOK_ID, mProfileFb.getId());
 			signup.putExtra(FACEBOOK_MAIL, mProfileFb.getEmail());
 			startActivity(signup);

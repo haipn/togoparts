@@ -166,7 +166,6 @@ public class LoginActivity extends FragmentActivity {
 			queue.add(myReq);
 		}
 	}
-
 	private Response.Listener<ResultLogin> createMyReqSuccessListener() {
 		return new Response.Listener<ResultLogin>() {
 			@Override
