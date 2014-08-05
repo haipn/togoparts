@@ -1,17 +1,3 @@
-<<<<<<< HEAD
-package sg.togoparts.login;
-
-import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
-
-public class MergeAccount extends FragmentActivity {
-	@Override
-	protected void onCreate(Bundle arg0) {
-		// TODO Auto-generated method stub
-		super.onCreate(arg0);
-	}
-}
-=======
 package sg.togoparts.login;
 
 import java.util.HashMap;
@@ -80,4 +66,3 @@ public class MergeAccount extends FragmentActivity {
 		};
 	}
 }
->>>>>>> f1e29025c66213d7afac6821a34c459fb5d8ef85
