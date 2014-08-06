@@ -2,6 +2,8 @@ package sg.togoparts.json;
 
 import java.io.UnsupportedEncodingException;
 
+import android.util.Log;
+
 import com.android.volley.NetworkResponse;
 import com.android.volley.ParseError;
 import com.android.volley.Request;
@@ -54,6 +56,7 @@ public class GsonRequest<T> extends Request<T> {
     protected Response<T> parseNetworkResponse(NetworkResponse response) {
         try {
             String json = new String(response.data, HttpHeaderParser.parseCharset(response.headers));
+//            Log.d("haipn", "response:" + json);
             return Response.success(mGson.fromJson(json, mClazz),
                                     HttpHeaderParser.parseCacheHeaders(response));
             

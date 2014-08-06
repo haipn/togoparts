@@ -1,15 +1,19 @@
 package sg.togoparts;
 
+import sg.togoparts.app.Const;
+import sg.togoparts.login.ChooseLogin;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.facebook.AppEventsLogger;
 
 public class Splash extends Activity {
-	
+
 	public static final String FACEBOOK_ID = "198306676966429";
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -32,7 +36,13 @@ public class Splash extends Activity {
 		}
 
 		protected void onPostExecute(Integer result) {
-			startActivity(new Intent(Splash.this, TabsActivityMain.class));
+			if (Const.isLogin(Splash.this)) {
+				Log.d("haipn", "login roi");
+				startActivity(new Intent(Splash.this, TabsActivityMain.class));
+			} else {
+				Log.d("haipn", "chua login nhe");
+				startActivity(new Intent(Splash.this, ChooseLogin.class));
+			}
 			finish();
 		}
 

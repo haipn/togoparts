@@ -17,8 +17,8 @@
             android:id="@+id/imageView1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="30dp"
-            android:layout_marginTop="30dp"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="20dp"
             android:src="@drawable/logo_banner" />
 
         <Button
@@ -79,6 +79,16 @@
             android:text="@string/label_login"
             android:textColor="@android:color/white"
             android:textSize="20sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:text="@string/label_forgot_password"
+            android:textSize="12sp" >
+        </TextView>
 
         <Button
             android:id="@+id/btnSkip"

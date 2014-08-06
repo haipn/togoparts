@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import sg.togoparts.R;
+import sg.togoparts.TabsActivityMain;
 import sg.togoparts.app.Const;
 import sg.togoparts.app.MyVolley;
 import sg.togoparts.json.GsonRequest;
@@ -33,6 +34,12 @@ public class ChooseLogin extends FragmentActivity {
 	public static final String ACCESSTOKEN = "access token";
 	public static final String FACEBOOK_ID = "facebook id";
 	public static final String FACEBOOK_MAIL = "facebook mail";
+	public static final String USER_ID = "user id";
+	public static final String PICTURE = "picture";
+	public static final String COUNTRY = "country";
+	public static final String GENDER = "gender";
+	public static final String USERNAME = "username";
+	public static final String FACEBOOK_FIRST_LAST_NAME = "last first name";
 	public static String USER = "tgptestuser3";
 	public static String PASS = "hx77WTF3";
 	public static String CLIENT_ID = "G101vptA69sVpvlr";
@@ -56,6 +63,9 @@ public class ChooseLogin extends FragmentActivity {
 		mBtnLoginNormal = (Button) findViewById(R.id.btnLogin);
 		mEdtPass = (EditText) findViewById(R.id.edtPass);
 		mEdtUser = (EditText) findViewById(R.id.edtUsername);
+
+		mEdtUser.setText(USER);
+		mEdtPass.setText(PASS);
 		mBtnSkip = (Button) findViewById(R.id.btnSkip);
 		setLoginFacebook();
 		setLogin();
@@ -81,6 +91,7 @@ public class ChooseLogin extends FragmentActivity {
 
 			@Override
 			public void onClick(View arg0) {
+				mProgressDialog.show();
 				login(mEdtUser.getText().toString(), mEdtPass.getText()
 						.toString());
 			}
@@ -94,7 +105,8 @@ public class ChooseLogin extends FragmentActivity {
 				&& !pass.equals("")) {
 			GsonRequest<ResultLogin> myReq = new GsonRequest<ResultLogin>(
 					Method.POST, Const.URL_LOGIN, ResultLogin.class,
-					createMyReqSuccessListener(), createMyReqErrorListener()) {
+					createLoginNormalSuccessListener(),
+					createMyReqErrorListener()) {
 
 				protected Map<String, String> getParams()
 						throws com.android.volley.AuthFailureError {
@@ -124,14 +136,14 @@ public class ChooseLogin extends FragmentActivity {
 			public void onFail(String reason) {
 				// mTextStatus.setText(reason);
 				Log.w("haipn", "Failed to login");
-				mProgressDialog.dismiss();
+				// mProgressDialog.dismiss();
 			}
 
 			@Override
 			public void onException(Throwable throwable) {
 				// mTextStatus.setText("Exception: " + throwable.getMessage());
 				Log.e("haipn", "Bad thing happened", throwable);
-				mProgressDialog.dismiss();
+				// mProgressDialog.dismiss();
 			}
 
 			@Override
@@ -139,7 +151,7 @@ public class ChooseLogin extends FragmentActivity {
 				// show progress bar or something to the user while login is
 				// happening
 				Log.w("haipn", "Thinking....");
-				mProgressDialog.show();
+				// mProgressDialog.show();
 			}
 
 			@Override
@@ -162,6 +174,7 @@ public class ChooseLogin extends FragmentActivity {
 		mBtnLoginFb.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View arg0) {
+				mProgressDialog.show();
 				mSimpleFacebook.login(onLoginListener);
 			}
 		});
@@ -195,7 +208,7 @@ public class ChooseLogin extends FragmentActivity {
 				&& token != null && !token.equals("")) {
 			GsonRequest<ResultLogin> myReq = new GsonRequest<ResultLogin>(
 					Method.POST, Const.URL_LOGIN, ResultLogin.class,
-					createMyReqSuccessListener(), createMyReqErrorListener()) {
+					createLoginFbSuccessListener(), createMyReqErrorListener()) {
 
 				protected Map<String, String> getParams()
 						throws com.android.volley.AuthFailureError {
@@ -203,6 +216,11 @@ public class ChooseLogin extends FragmentActivity {
 					String tkey = id + System.currentTimeMillis() / 1000
 							+ CLIENT_ID;
 					tkey = Const.getSHA256EncryptedString(tkey);
+					Log.d("haipn",
+							"Fb login: id:" + id + ", email:" + email
+									+ ", tgpKey :" + tkey + ", logintime:"
+									+ System.currentTimeMillis() / 1000
+									+ ", AccessToken:" + token);
 					params.put("FBid", id);
 					params.put("FBemail", email);
 					params.put("TgpKey", tkey);
@@ -216,13 +234,26 @@ public class ChooseLogin extends FragmentActivity {
 		}
 	}
 
-	private Response.Listener<ResultLogin> createMyReqSuccessListener() {
+	private Response.Listener<ResultLogin> createLoginNormalSuccessListener() {
 		return new Response.Listener<ResultLogin>() {
 			@Override
 			public void onResponse(ResultLogin response) {
 				Log.d("haipn", "response success:" + response.Result.Return);
-				processResult(response);
 				mProgressDialog.dismiss();
+				processResultNormal(response);
+
+			}
+		};
+	}
+
+	private Response.Listener<ResultLogin> createLoginFbSuccessListener() {
+		return new Response.Listener<ResultLogin>() {
+			@Override
+			public void onResponse(ResultLogin response) {
+				Log.d("haipn", "response success:" + response.Result.Return);
+				mProgressDialog.dismiss();
+				processResultFb(response);
+
 			}
 		};
 	}
@@ -232,26 +263,53 @@ public class ChooseLogin extends FragmentActivity {
 			@Override
 			public void onErrorResponse(VolleyError error) {
 				Log.d("haipn", "response error:" + error.getMessage());
+				mProgressDialog.dismiss();
 			}
 		};
 	}
 
-	protected void processResult(ResultLogin response) {
+	protected void processResultNormal(ResultLogin response) {
 		ResultValue result = response.Result;
+		Log.d("haipn", "process result normal:" + result.Return);
 		if (result.Return.equals("success")) {
-			Log.d("haipn", "Username:" + mProfileFb.getUsername());
 			// success();
-		} else if (result.Return.equals("error")) {
+			Const.writeSessionId(this, result.session_id, result.refresh_id);
+			startActivity(new Intent(this, TabsActivityMain.class));
+			finish();
+		} else if (result.Return.equals("error")
+				|| result.Return.equals("banned")) {
+			showError(result.Message);
+		}
+	}
+
+	protected void processResultFb(ResultLogin response) {
+
+		ResultValue result = response.Result;
+		Log.d("haipn", "process result fb:" + result.Return);
+		if (result.Return.equals("success")) {
+			// success();
+			Const.writeSessionId(this, result.session_id, result.refresh_id);
+			startActivity(new Intent(this, TabsActivityMain.class));
+			finish();
+		} else if (result.Return.equals("error")
+				|| result.Return.equals("banned")) {
 			showError(result.Message);
 		} else if (result.Return.equals("merge")) {
 			Intent merge = new Intent(this, MergeAccount.class);
 			merge.putExtra(ACCESSTOKEN, mSimpleFacebook.getSession()
 					.getAccessToken());
+			merge.putExtra(USER_ID, result.Userid);
 			merge.putExtra(FACEBOOK_ID, mProfileFb.getId());
 			merge.putExtra(FACEBOOK_MAIL, mProfileFb.getEmail());
+			merge.putExtra(PICTURE, result.picture);
+			merge.putExtra(COUNTRY, result.country);
+			merge.putExtra(GENDER, result.gender);
+			merge.putExtra(USERNAME, result.username);
 			startActivity(merge);
 		} else if (result.Return.equals("new")) {
 			Intent signup = new Intent(this, Signup.class);
+			signup.putExtra(FACEBOOK_FIRST_LAST_NAME, mProfileFb.getFirstName()
+					+ " " + mProfileFb.getLastName());
 			signup.putExtra(ACCESSTOKEN, mSimpleFacebook.getSession()
 					.getAccessToken());
 			signup.putExtra(FACEBOOK_ID, mProfileFb.getId());

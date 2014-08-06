@@ -12,6 +12,10 @@ public class Const {
 	public static final String GA_PROPERTY_ID = "UA-479713-13";
 	public static final String SHARE_PREF = "togoparts pref";
 	public static final String KEY_SHORTLIST = "shortlists";
+	public static final String SESSION_ID = "session id";
+	public static final String USER_ID = "user id";
+	public static final String ACCESS_TOKEN = "access token";
+	public static final String REFRESH_ID = "refresh id";
 	public static final String ADS_ID = "ads id";
 	public static final String CAT_ID = "category id";
 	public static final String QUERY = "query";
@@ -22,7 +26,7 @@ public class Const {
 	public static final String URL_BIKESHOP_DETAIL = "http://www.togoparts.com/iphone_ws/bs_details.php?source=android&sid=%s&lat=%s&long=%s";
 	public static final String LATITUDE = "latitude";
 	public static final String LONGITUDE = "longitude";
-	
+
 	public static String URL_LIST_LASTEST_ADS = "http://www.togoparts.com/iphone_ws/mp_list_latest_ads.php?source=android";
 	public static String URL_LIST_CATEGORY = "http://www.togoparts.com/iphone_ws/mp_list_categories.php?source=android";
 	public static String URL_LIST_SEARCH_PARAM = "searchtext=%s"
@@ -38,10 +42,12 @@ public class Const {
 	public static String URL_ABOUT = "http://www.togoparts.com/iphone_ws/about-us.php?source=android";
 	public static String URL_PROMOS = "http://www.togoparts.com/iphone_ws/bs_promos.php?source=android&sid=%s";
 	public static String URL_LOGIN = "https://www.togoparts.com/iphone_ws/user-login.php?source=android";
+	public static String URL_LOGOUT = "https://www.togoparts.com/iphone_ws/user-logout.php?source=android";
 	public static String URL_MERGE = "https://www.togoparts.com/iphone_ws/fb-user-merge.php?source=android";
 	public static String URL_SIGNUP = "https://www.togoparts.com/iphone_ws/fb-user-new.php?source=android";
 	public static String URL_PROFILE = "https://www.togoparts.com/iphone_ws/user-profile.php?source=android";
 	public static String URL_POST_AD = "http://www.togoparts.com/iphone_ws/mp-postad-test.php?debugcode=n1vJuAis&source=android";
+	public static String URL_GET_COUNTRYS = "http://www.togoparts.com/iphone_ws/get-dropdown-values.php?country=1";
 	public static boolean isAppExitable = false;
 
 	/**
@@ -97,22 +103,60 @@ public class Const {
 		ret = text.split(" ");
 		return ret;
 	}
-	
+
 	public static String getSHA256EncryptedString(String encTarget) {
-		try{
-	        MessageDigest digest = MessageDigest.getInstance("SHA-256");
-	        byte[] hash = digest.digest(encTarget.getBytes("UTF-8"));
-	        StringBuffer hexString = new StringBuffer();
+		try {
+			MessageDigest digest = MessageDigest.getInstance("SHA-256");
+			byte[] hash = digest.digest(encTarget.getBytes("UTF-8"));
+			StringBuffer hexString = new StringBuffer();
 
-	        for (int i = 0; i < hash.length; i++) {
-	            String hex = Integer.toHexString(0xff & hash[i]);
-	            if(hex.length() == 1) hexString.append('0');
-	            hexString.append(hex);
-	        }
+			for (int i = 0; i < hash.length; i++) {
+				String hex = Integer.toHexString(0xff & hash[i]);
+				if (hex.length() == 1)
+					hexString.append('0');
+				hexString.append(hex);
+			}
 
-	        return hexString.toString();
-	    } catch(Exception ex){
-	       throw new RuntimeException(ex);
-	    }
+			return hexString.toString();
+		} catch (Exception ex) {
+			throw new RuntimeException(ex);
+		}
 	}
+
+	public static boolean isLogin(Context context) {
+		String session_id = getTogoPartsPreferences(context).getString(
+				SESSION_ID, "");
+		if (session_id != null && session_id.length() > 0) {
+			return true;
+		}
+		return false;
+	}
+
+	public static String getSessionId(Context context) {
+		String session_id = getTogoPartsPreferences(context).getString(
+				SESSION_ID, "");
+		return session_id;
+	}
+
+	public static String getRefreshId(Context context) {
+		String session_id = getTogoPartsPreferences(context).getString(
+				REFRESH_ID, "");
+		return session_id;
+	}
+
+	public static void writeSessionId(Context context, String session_id,
+			String refresh_id) {
+		Editor edit = getTogoPartsPreferences(context).edit();
+		edit.putString(SESSION_ID, session_id);
+		edit.putString(REFRESH_ID, refresh_id);
+		edit.commit();
+	}
+
+	public static void deleteSessionId(Context context) {
+		Editor edit = getTogoPartsPreferences(context).edit();
+		edit.putString(SESSION_ID, "");
+		edit.putString(REFRESH_ID, "");
+		edit.commit();
+	}
+
 }

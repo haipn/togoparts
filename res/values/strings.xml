@@ -15,12 +15,10 @@
     <string name="sort_by_2">Price: Highest</string>
     <string name="sort_by_3">Posted: Newest</string>
     <string name="sort_by_4">Posted: Oldest</string>
-    
     <string name="sort_bikeshop_1">Nearest to Furthest</string>
     <string name="sort_bikeshop_2">Furthest to Nearest</string>
     <string name="sort_bikeshop_3">A to Z</string>
     <string name="sort_bikeshop_4">Z to A</string>
-    
     <string name="search_decription">Product Description:</string>
     <string name="search_posted_by">Posted by:</string>
     <string name="search_size">Size:</string>
@@ -56,7 +54,7 @@
     <string name="search_result">Search Result</string>
     <string name="bikeshop_title">Singapore Bikeshop List</string>
     <string name="filter_title">Filter</string>
-    
+
     <!-- V1.1 -->
     <string name="filter_bikeshop_title">Bikeshop Search</string>
     <string name="shortlist">Shortlisted Ads</string>
@@ -66,46 +64,55 @@
     <string name="taptoundo">Tap to undo</string>
     <string name="no_result_found">No result found</string>
     <string name="no_shortlist">No shortlisted ads</string>
-	<string name="apply_filer">Apply Filter</string>
-	<string name="apply">Apply</string>
-	<string name="new_item">New Item Ads (%s)</string>
-	<string name="promos">Promos (%s)</string>
-	<string name="filter_bikeshop">Bikeshop / Brand Name</string>
-	<string name="hint_bikeshop">Shop Name</string>
-	<string name="filter_area">Area</string>
-	<string name="filter_opennow">Open Now</string>
-	<string name="filter_mechanic">Mechanic Services</string>
-	<string name="label_brand">Brands Distributed by %s</string>
-	<string name="location">Location</string>
-	<string name="view_promos">Promos (%s)</string>
-	<string name="view_new_item">New Item Ads(%s)</string>
-	<string name="marketplace_search">Marketplace Search</string>
-	<string name="bikeshop_promos">Bikeshop Promos</string>
-	<string name="bikeshop_search">Bikeshop Search</string>
-	<string name="about">About Togoparts</string>
-	<string name="more">More</string>
-	<string name="map">Map</string>
-	<string name="title_search_bikeshop">Bikeshop Search Results</string>
-	<!--  v1.2-->
-	<string name="error">Error</string>
-	<string name="label_rating">Marketplace Rating</string>
-	<string name="label_free_ads_posted">Free Ads Posted:</string>
-	<string name="label_free_ads_quota">Free Ads Quota:</string>
-	<string name="label_free_ads_balance">Free Ads Balance:</string>
-	<string name="label_priority_ads_posted">Priority Ads Posted:</string>
-	<string name="label_new_items_ads">New Items Ads:</string>
-	<string name="label_my_ads">My Ads</string>
-	<string name="label_logout">Logout</string>
-	<string name="label_login">Login</string>
-	<string name="label_skip">Skip</string>
-	<string name="label_login_fb">Sign Up or Login Facebook</string>
-	<string name="label_login_normal">Or LOGIN using your\n Username and Password</string>
-	<string name="label_username">Username</string>
-	<string name="password">Password:</string>
-	<string name="username">Username:</string>
-	<string name="label_location">Location</string>
-	<string name="label_gender">Gender</string>
-	<string name="yes">Yes</string>
-	<string name="no">No</string>
-	<string name="label_merge">An Existing account in Togoparts matches your email in Facebook Account. Do you want to merge your Togoparts account with Facebook?</string>
+    <string name="apply_filer">Apply Filter</string>
+    <string name="apply">Apply</string>
+    <string name="new_item">New Item Ads (%s)</string>
+    <string name="promos">Promos (%s)</string>
+    <string name="filter_bikeshop">Bikeshop / Brand Name</string>
+    <string name="hint_bikeshop">Shop Name</string>
+    <string name="filter_area">Area</string>
+    <string name="filter_opennow">Open Now</string>
+    <string name="filter_mechanic">Mechanic Services</string>
+    <string name="label_brand">Brands Distributed by %s</string>
+    <string name="location">Location</string>
+    <string name="view_promos">Promos (%s)</string>
+    <string name="view_new_item">New Item Ads(%s)</string>
+    <string name="marketplace_search">Marketplace Search</string>
+    <string name="bikeshop_promos">Bikeshop Promos</string>
+    <string name="bikeshop_search">Bikeshop Search</string>
+    <string name="about">About Togoparts</string>
+    <string name="more">More</string>
+    <string name="map">Map</string>
+    <string name="title_search_bikeshop">Bikeshop Search Results</string>
+    <!-- v1.2 -->
+    <string name="error">Error</string>
+    <string name="label_rating">Marketplace Rating</string>
+    <string name="label_free_ads_posted">Free Ads Posted:</string>
+    <string name="label_free_ads_quota">Free Ads Quota:</string>
+    <string name="label_free_ads_balance">Free Ads Balance:</string>
+    <string name="label_priority_ads_posted">Priority Ads Posted:</string>
+    <string name="label_new_items_ads">New Items Ads:</string>
+    <string name="label_my_ads">My Ads</string>
+    <string name="label_logout">Logout</string>
+    <string name="label_login">Login</string>
+    <string name="label_skip">Skip</string>
+    <string name="label_login_fb">Sign Up or Login Facebook</string>
+    <string name="label_login_normal">Or LOGIN using your\n Username and Password</string>
+    <string name="label_name">Name:</string>
+    <string name="label_email">Email:</string>
+    <string name="label_username">Username</string>
+    <string name="password">Password:</string>
+    <string name="username">Username:</string>
+    <string name="country">Country:</string>
+    <string name="button_register">Register now</string>
+    <string name="label_location">Location</string>
+    <string name="label_gender">Gender</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="label_merge">An Existing account in Togoparts matches your email in Facebook Account. Do you want to merge your Togoparts account with Facebook?</string>
+    <string name="label_forgot_password">Forgot your password? Log into www.togoparts.com\non your web browser to get it.</string>
+    <string name="label_signup">Please provide a username to complete your registration.</string>
+    <string name="fb_signup">Facebook Signup</string>
+    <string name="merge_account">Merge Account</string>
+
 </resources>

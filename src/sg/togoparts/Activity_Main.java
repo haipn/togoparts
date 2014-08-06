@@ -33,8 +33,13 @@ public class Activity_Main extends FragmentActivity implements HeaderView {
 
 			@Override
 			public void onClick(View v) {
-				TabActivity tabs = (TabActivity) getParent();
-				tabs.getTabHost().setCurrentTabByTag("1");
+				try {
+					TabActivity tabs = (TabActivity) getParent();
+					tabs.getTabHost().setCurrentTabByTag("1");
+				} catch (NullPointerException e) {
+					finish();
+					e.printStackTrace();
+				}
 			}
 		});
 		// add initial fragment, do not add to back stack, no transition

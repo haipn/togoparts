@@ -16,7 +16,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:background="@drawable/textview_more"
-        android:drawableLeft="@drawable/search_icon"
+        android:drawableLeft="@drawable/short_listed_icon"
         android:drawablePadding="5dp"
         android:gravity="center_vertical"
         android:padding="10dp"
@@ -35,7 +35,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:background="@drawable/textview_more"
-        android:drawableLeft="@drawable/search_icon"
+        android:drawableLeft="@drawable/marketplace_search_icon"
         android:drawablePadding="5dp"
         android:gravity="center_vertical"
         android:padding="10dp"
@@ -54,7 +54,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:background="@drawable/textview_more"
-        android:drawableLeft="@drawable/search_icon"
+        android:drawableLeft="@drawable/bikeshop_search_icon"
         android:drawablePadding="5dp"
         android:gravity="center_vertical"
         android:padding="10dp"
@@ -73,7 +73,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:background="@drawable/textview_more"
-        android:drawableLeft="@drawable/about_togoparts_icon"
+        android:drawableLeft="@drawable/about_togopart_icon"
         android:drawablePadding="5dp"
         android:gravity="center_vertical"
         android:padding="10dp"
@@ -86,14 +86,17 @@
         android:background="@drawable/gray" >
     </View>
 
-    <Button
-        android:id="@+id/btnLogout"
-        android:layout_margin="10dp"
-        android:layout_width="match_parent"
+    <sg.togoparts.gallery.FontableTextView
+        android:id="@+id/tvLoginOrLogout"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/btn_click"
-        android:text="@string/label_logout"
-        android:textColor="@android:color/white"
-        android:textSize="30sp" />
+        android:layout_gravity="center_vertical"
+        android:background="@drawable/textview_more"
+        android:drawableLeft="@drawable/login_icon"
+        android:drawablePadding="5dp"
+        android:gravity="center_vertical"
+        android:padding="10dp"
+        android:text="@string/label_login"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
 
 </LinearLayout>
