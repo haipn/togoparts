@@ -1,6 +1,8 @@
 package sg.togoparts;
 
 import sg.togoparts.app.Const;
+import sg.togoparts.login.FSActivity_PostAd;
+import sg.togoparts.login.FSActivity_Profile;
 import android.app.AlertDialog;
 import android.app.TabActivity;
 import android.content.DialogInterface;
@@ -57,23 +59,23 @@ public class TabsActivityMain extends TabActivity implements AdListener {
 		spec = tabHost
 				.newTabSpec("1")
 				.setIndicator(null,
-						getResources().getDrawable(R.drawable.tab_home))
-				.setContent(intent);
-		tabHost.addTab(spec);
-
-		intent = new Intent().setClass(this, FSActivity_MarketPlace.class);
-		spec = tabHost
-				.newTabSpec("2")
-				.setIndicator(null,
 						getResources().getDrawable(R.drawable.tab_marketplace))
 				.setContent(intent);
 		tabHost.addTab(spec);
 
-		intent = new Intent().setClass(this, FSActivity_ShortList.class);
+		intent = new Intent().setClass(this, FSActivity_Profile.class);
+		spec = tabHost
+				.newTabSpec("2")
+				.setIndicator(null,
+						getResources().getDrawable(R.drawable.tab_myads))
+				.setContent(intent);
+		tabHost.addTab(spec);
+
+		intent = new Intent().setClass(this, FSActivity_PostAd.class);
 		spec = tabHost
 				.newTabSpec("3")
 				.setIndicator(null,
-						getResources().getDrawable(R.drawable.tab_shortlist))
+						getResources().getDrawable(R.drawable.tab_sell))
 				.setContent(intent);
 		tabHost.addTab(spec);
 		

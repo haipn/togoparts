@@ -78,7 +78,6 @@ public class MyApplication extends Application {
 		SimpleFacebookConfiguration configuration = new SimpleFacebookConfiguration.Builder()
 				.setAppId(APP_ID).setNamespace(APP_NAMESPACE)
 				.setPermissions(permissions)
-				.setDefaultAudience(SessionDefaultAudience.FRIENDS)
 				.setAskForAllPermissionsAtOnce(false).build();
 
 		SimpleFacebook.setConfiguration(configuration);

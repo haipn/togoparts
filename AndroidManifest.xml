@@ -62,6 +62,7 @@
             android:name="sg.togoparts.TabsActivityMain"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
+            android:launchMode="singleTask"
             android:windowSoftInputMode="adjustPan|adjustResize" >
         </activity>
         <activity
@@ -167,6 +168,16 @@
         </activity>
         <activity
             android:name="sg.togoparts.login.Signup"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="sg.togoparts.login.FSActivity_Profile"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="sg.togoparts.login.FSActivity_PostAd"
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
         </activity>

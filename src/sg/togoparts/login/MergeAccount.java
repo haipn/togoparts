@@ -130,10 +130,7 @@ public class MergeAccount extends FragmentActivity {
 							"Merge Account successful", Toast.LENGTH_LONG)
 							.show();
 					mProgressDialog.dismiss();
-					Intent i = new Intent(MergeAccount.this, TabsActivityMain.class);
-					i.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-					i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-					startActivity(i);
+					setResult(RESULT_OK);
 					finish();
 					
 				} else {

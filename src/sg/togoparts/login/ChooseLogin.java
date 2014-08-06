@@ -1,5 +1,7 @@
 package sg.togoparts.login;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -11,18 +13,23 @@ import sg.togoparts.json.GsonRequest;
 import sg.togoparts.login.ResultLogin.ResultValue;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
+import android.content.pm.Signature;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.android.volley.Request.Method;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.Request.Method;
 import com.sromku.simple.fb.Permission;
 import com.sromku.simple.fb.SimpleFacebook;
 import com.sromku.simple.fb.entities.Profile;
@@ -58,9 +65,35 @@ public class ChooseLogin extends FragmentActivity {
 	protected void onCreate(Bundle arg0) {
 		super.onCreate(arg0);
 		setContentView(R.layout.choose_login);
+		try {
+			PackageInfo info = getPackageManager().getPackageInfo(
+					"sg.togoparts",
+					PackageManager.GET_SIGNATURES);
+			for (Signature signature : info.signatures) {
+				MessageDigest md = MessageDigest.getInstance("SHA");
+				md.update(signature.toByteArray());
+				Log.d("KeyHash:",
+						Base64.encodeToString(md.digest(), Base64.DEFAULT));
+			}
+		} catch (NameNotFoundException e) {
+			e.printStackTrace();
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		}
 		mSimpleFacebook = SimpleFacebook.getInstance(this);
 		mBtnLoginFb = (Button) findViewById(R.id.btnLoginFb);
 		mBtnLoginNormal = (Button) findViewById(R.id.btnLogin);
+		mBtnSkip = (Button) findViewById(R.id.btnSkip);
+		mBtnSkip.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				startActivity(new Intent(ChooseLogin.this,
+						TabsActivityMain.class));
+				finish();
+			}
+		});
+
 		mEdtPass = (EditText) findViewById(R.id.edtPass);
 		mEdtUser = (EditText) findViewById(R.id.edtUsername);
 
@@ -84,6 +117,10 @@ public class ChooseLogin extends FragmentActivity {
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		mSimpleFacebook.onActivityResult(this, requestCode, resultCode, data);
+		if ((requestCode == 0 || requestCode == 1) && resultCode == RESULT_OK) {
+			startActivity(new Intent(this, TabsActivityMain.class));
+			finish();
+		}
 	}
 
 	private void setLogin() {
@@ -305,7 +342,7 @@ public class ChooseLogin extends FragmentActivity {
 			merge.putExtra(COUNTRY, result.country);
 			merge.putExtra(GENDER, result.gender);
 			merge.putExtra(USERNAME, result.username);
-			startActivity(merge);
+			startActivityForResult(merge, 0);
 		} else if (result.Return.equals("new")) {
 			Intent signup = new Intent(this, Signup.class);
 			signup.putExtra(FACEBOOK_FIRST_LAST_NAME, mProfileFb.getFirstName()
@@ -314,7 +351,7 @@ public class ChooseLogin extends FragmentActivity {
 					.getAccessToken());
 			signup.putExtra(FACEBOOK_ID, mProfileFb.getId());
 			signup.putExtra(FACEBOOK_MAIL, mProfileFb.getEmail());
-			startActivity(signup);
+			startActivityForResult(signup, 1);
 		}
 	}
 

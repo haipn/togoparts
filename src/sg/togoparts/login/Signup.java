@@ -145,10 +145,7 @@ public class Signup extends FragmentActivity {
 							"Signup Account successful", Toast.LENGTH_LONG)
 							.show();
 					mProgressDialog.dismiss();
-					Intent i = new Intent(Signup.this, TabsActivityMain.class);
-					i.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-					i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-					startActivity(i);
+					setResult(RESULT_OK);
 					finish();
 				} else {
 					showError(response.Result.Message);
