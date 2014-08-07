@@ -7,9 +7,13 @@ import sg.togoparts.app.ErrorDialog;
 import sg.togoparts.app.MyVolley;
 import sg.togoparts.app.SMSDialog;
 import sg.togoparts.app.SMSDialog.AlertPositiveListener;
+import sg.togoparts.gallery.AttributeAdapter;
 import sg.togoparts.gallery.HorizontalListView;
+import sg.togoparts.gallery.MessageAdapter;
 import sg.togoparts.json.Ads;
 import sg.togoparts.json.AdsDetail;
+import sg.togoparts.json.AdsDetail.Attribute;
+import sg.togoparts.json.AdsDetail.Message;
 import sg.togoparts.json.AdsDetail.Picture;
 import sg.togoparts.json.ContactLog;
 import sg.togoparts.json.GsonRequest;
@@ -38,9 +42,11 @@ import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
+import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -116,11 +122,25 @@ public class DetailActivity extends FragmentActivity implements
 	private LinearLayout mLlContactNo;
 	private LinearLayout mLlAddress;
 	private LinearLayout mLlRelate;
+
+	private GridView mGvAttribute;
+	private AttributeAdapter mAttributeAdapter;
+	private ArrayList<Attribute> mListAttribute;
+
 	private String mAdsId;
 
 	private RelateAdapter mRelateAdapter;
 	private ArrayList<Ads> mListRelateAds;
 
+	private ListView mLvMessage;
+	private ArrayList<Message> mListMessage;
+	private MessageAdapter mMsgAdapter;
+	private LinearLayout mLlMessage;
+	private TextView mTvViewAllMsg;
+
+	private TextView mTvPositive;
+	private TextView mTvNeutral;
+	private TextView mTvNegative;
 	ImageView mIvLoading;
 	LinearLayout mLlMain;
 	private String[] listNumber;
@@ -154,6 +174,9 @@ public class DetailActivity extends FragmentActivity implements
 				.bitmapConfig(Bitmap.Config.RGB_565).considerExifParams(true)
 				.displayer(new FadeInBitmapDisplayer(300)).build();
 		mListRelateAds = new ArrayList<Ads>();
+		mListAttribute = new ArrayList<AdsDetail.Attribute>();
+		mListMessage = new ArrayList<AdsDetail.Message>();
+
 		RequestQueue queue = MyVolley.getRequestQueue();
 		GsonRequest<AdsDetail> myReq = new GsonRequest<AdsDetail>(Method.GET,
 				String.format(Const.URL_ADS_DETAIL, mAdsId), AdsDetail.class,
@@ -211,6 +234,16 @@ public class DetailActivity extends FragmentActivity implements
 		mLlSize = (LinearLayout) findViewById(R.id.llSize);
 		mLlRelate = (LinearLayout) findViewById(R.id.llRelate);
 
+		mGvAttribute = (GridView) findViewById(R.id.gvAttribute);
+		mAttributeAdapter = new AttributeAdapter(this, mListAttribute);
+		mGvAttribute.setAdapter(mAttributeAdapter);
+		
+		mLvMessage = (ListView) findViewById(R.id.lvMessage);
+		mMsgAdapter = new MessageAdapter(this, mListMessage);
+		mLvMessage.setAdapter(mMsgAdapter);
+		mLlMessage = (LinearLayout) findViewById(R.id.llComment);
+		mTvViewAllMsg = (TextView) findViewById(R.id.tvViewAllComment);
+
 		mRelateAdapter = new RelateAdapter(this, mListRelateAds);
 		mHlRelate.setAdapter(mRelateAdapter);
 		mHlRelate.setOnItemClickListener(new OnItemClickListener() {
@@ -246,6 +279,10 @@ public class DetailActivity extends FragmentActivity implements
 		mTvDescription = (TextView) findViewById(R.id.tvDescription);
 		mTvSize = (TextView) findViewById(R.id.tvSize);
 		mTvPostebyAndPostTime = (TextView) findViewById(R.id.tvPostebyAndPostTime);
+		mTvPositive = (TextView) findViewById(R.id.tvPositive);
+		mTvNeutral = (TextView) findViewById(R.id.tvNeutral);
+		mTvNegative = (TextView) findViewById(R.id.tvNegative);
+
 		mTvAllPostedBy = (TextView) findViewById(R.id.btnAllPostedBy);
 		mIvShopLogo = (ImageView) findViewById(R.id.imvShopLogo);
 
@@ -496,6 +533,12 @@ public class DetailActivity extends FragmentActivity implements
 				+ res.mDateposted);
 		mTvAllPostedBy.setText(getString(R.string.label_all_postby,
 				res.mPostedByDetails.mUserName));
+
+		if (res.mPostedByDetails.mRatings != null) {
+			mTvPositive.setText(res.mPostedByDetails.mRatings.Positive + "");
+			mTvNeutral.setText(res.mPostedByDetails.mRatings.Neutral + "");
+			mTvNegative.setText(res.mPostedByDetails.mRatings.Negative + "");
+		}
 		mTvAllPostedBy.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -521,32 +564,32 @@ public class DetailActivity extends FragmentActivity implements
 		});
 		imageLoader.displayImage(res.mContactDetails.mShopLogo, mIvShopLogo);
 		mIvShopLogo.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
-				Intent i = new Intent(DetailActivity.this,
-						BikeShopDetail.class);
+				Intent i = new Intent(DetailActivity.this, BikeShopDetail.class);
 				i.putExtra(Const.SHOP_ID, res.mContactDetails.mShopId);
-//				i.putExtra(Const.LATITUDE, mLat);
-//				i.putExtra(Const.LONGITUDE, mLong);
+				// i.putExtra(Const.LATITUDE, mLat);
+				// i.putExtra(Const.LONGITUDE, mLong);
 				startActivity(i);
 			}
 		});
-		
+
 		if (res.mContactDetails.mContact.value != null
 				&& !res.mContactDetails.mContact.value.isEmpty()) {
 			mTvShopOrContact.setText(res.mContactDetails.mContact.label);
 			mTvNameContact.setText(res.mContactDetails.mContact.value);
-			if (res.mContactDetails.mShopId != null && !res.mContactDetails.mShopId.isEmpty()) {
+			if (res.mContactDetails.mShopId != null
+					&& !res.mContactDetails.mShopId.isEmpty()) {
 				mTvNameContact.setOnClickListener(new OnClickListener() {
-					
+
 					@Override
 					public void onClick(View v) {
 						Intent i = new Intent(DetailActivity.this,
 								BikeShopDetail.class);
 						i.putExtra(Const.SHOP_ID, res.mContactDetails.mShopId);
-//						i.putExtra(Const.LATITUDE, mLat);
-//						i.putExtra(Const.LONGITUDE, mLong);
+						// i.putExtra(Const.LATITUDE, mLat);
+						// i.putExtra(Const.LONGITUDE, mLong);
 						startActivity(i);
 					}
 				});
@@ -555,7 +598,6 @@ public class DetailActivity extends FragmentActivity implements
 			mLlShop.setVisibility(View.GONE);
 		}
 
-		
 		if (res.mContactDetails.mContactNo.value != null
 				&& !res.mContactDetails.mContactNo.value.isEmpty())
 			mTvContactNo.setText(res.mContactDetails.mContactNo.value);
@@ -651,8 +693,7 @@ public class DetailActivity extends FragmentActivity implements
 					mTypeDialog = TYPE_CALL;
 				} else {
 					Intent callIntent = new Intent(Intent.ACTION_CALL);
-					callIntent.setData(Uri.parse("tel:"
-							+ actualNo.get(0)));
+					callIntent.setData(Uri.parse("tel:" + actualNo.get(0)));
 					startActivity(callIntent);
 					postCallLog();
 				}
@@ -663,6 +704,28 @@ public class DetailActivity extends FragmentActivity implements
 			mRelateAdapter.notifyDataSetChanged();
 		} else {
 			mLlRelate.setVisibility(View.GONE);
+		}
+
+		mListAttribute.addAll(res.Attributes);
+		mAttributeAdapter.notifyDataSetChanged();
+		if (res.mTotalMessages == 0) {
+			mLlMessage.setVisibility(View.GONE);
+		} else {
+			mLlMessage.setVisibility(View.VISIBLE);
+			if (res.mTotalMessages > 3) {
+				mTvViewAllMsg.setVisibility(View.VISIBLE);
+				;
+				mTvViewAllMsg
+						.setText(getString(R.string.label_view_all_comment,
+								res.mTotalMessages - 3));
+				mListMessage.addAll(res.mListMessages.subList(0, 2));
+			} else {
+				mTvViewAllMsg.setVisibility(View.GONE);
+				mListMessage.addAll(res.mListMessages);
+
+			}
+
+			mMsgAdapter.notifyDataSetChanged();
 		}
 		startAnimation();
 	}

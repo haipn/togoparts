@@ -4,14 +4,19 @@ import java.util.ArrayList;
 
 import sg.togoparts.app.Const;
 import sg.togoparts.app.MyVolley;
+import sg.togoparts.gallery.AttributeAdapter;
 import sg.togoparts.gallery.HorizontalListView;
+import sg.togoparts.gallery.MessageAdapter;
 import sg.togoparts.json.Ads;
 import sg.togoparts.json.AdsDetail;
+import sg.togoparts.json.AdsDetail.Attribute;
+import sg.togoparts.json.AdsDetail.Message;
 import sg.togoparts.json.AdsDetail.Picture;
 import sg.togoparts.json.GsonRequest;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.LinearGradient;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.app.Fragment;
@@ -26,7 +31,10 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
+import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -79,10 +87,19 @@ public class DetailFragment extends Fragment_Main {
 	private TextView mTvEmail;
 	private HorizontalListView mHlRelate;
 
+	private GridView mGvAttribute;
+	private AttributeAdapter mAttributeAdapter;
+	private ArrayList<Attribute> mListAttribute;
 	private String mAdsId;
-	
+
 	private RelateAdapter mRelateAdapter;
 	private ArrayList<Ads> mListRelateAds;
+
+	private ListView mLvMessage;
+	private ArrayList<Message> mListMessage;
+	private MessageAdapter mMsgAdapter;
+	private LinearLayout mLlMessage;
+	private TextView mTvViewAllMsg;
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -99,7 +116,7 @@ public class DetailFragment extends Fragment_Main {
 
 		mTvSpecial = (TextView) rv.findViewById(R.id.tvSpecial);
 		mTvListingLabel = (TextView) rv.findViewById(R.id.tvListinglabel);
-//		mTvPriority = (TextView) rv.findViewById(R.id.tvPriority);
+		// mTvPriority = (TextView) rv.findViewById(R.id.tvPriority);
 		mTvAdType = (TextView) rv.findViewById(R.id.tvAdTypes);
 
 		mTvDescription = (TextView) rv.findViewById(R.id.tvDescription);
@@ -118,9 +135,16 @@ public class DetailFragment extends Fragment_Main {
 		mTvMailCount = (TextView) rv.findViewById(R.id.tvMailCount);
 		mTvSMS = (TextView) rv.findViewById(R.id.tvSMS);
 		mTvCall = (TextView) rv.findViewById(R.id.tvCall);
-//		mTvEmail = (TextView) rv.findViewById(R.id.tvEmail);
+		// mTvEmail = (TextView) rv.findViewById(R.id.tvEmail);
 
 		mHlRelate = (HorizontalListView) rv.findViewById(R.id.hlvRelate);
+		mGvAttribute = (GridView) rv.findViewById(R.id.gvAttribute);
+		mAttributeAdapter = new AttributeAdapter(getActivity(), mListAttribute);
+
+		mLvMessage = (ListView) rv.findViewById(R.id.lvMessage);
+		mMsgAdapter = new MessageAdapter(getActivity(), mListMessage);
+		mLlMessage = (LinearLayout) rv.findViewById(R.id.llComment);
+		mTvViewAllMsg = (TextView) rv.findViewById(R.id.tvViewAllComment);
 		
 		mRelateAdapter = new RelateAdapter(getActivity(), mListRelateAds);
 		mHlRelate.setAdapter(mRelateAdapter);
@@ -131,10 +155,11 @@ public class DetailFragment extends Fragment_Main {
 					long arg3) {
 				Fragment fragment = new DetailFragment();
 				Bundle bundle = new Bundle();
-				bundle.putString(Const.ADS_ID, mListRelateAds.get(arg2).getAdsId());
+				bundle.putString(Const.ADS_ID, mListRelateAds.get(arg2)
+						.getAdsId());
 				fragment.setArguments(bundle);
 				addFragment(fragment, true, FragmentTransaction.TRANSIT_NONE);
-				
+
 			}
 		});
 		return rv;
@@ -149,7 +174,8 @@ public class DetailFragment extends Fragment_Main {
 				.bitmapConfig(Bitmap.Config.RGB_565).considerExifParams(true)
 				.displayer(new FadeInBitmapDisplayer(300)).build();
 		mListRelateAds = new ArrayList<Ads>();
-		
+		mListAttribute = new ArrayList<AdsDetail.Attribute>();
+		mListMessage = new ArrayList<AdsDetail.Message>();
 		super.onCreate(savedInstanceState);
 	}
 
@@ -168,21 +194,24 @@ public class DetailFragment extends Fragment_Main {
 	protected void fillData(final AdsDetail res) {
 		if (Const.hasInShortList(getActivity(), res.mAdid)) {
 			mTvAddShortList.setText(R.string.remove_shortlist);
-			mTvAddShortList.setBackgroundColor(getResources().getColor(R.color.splash_background));
-			
+			mTvAddShortList.setBackgroundColor(getResources().getColor(
+					R.color.splash_background));
+
 		}
 		mTvAddShortList.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View arg0) {
 				if (Const.hasInShortList(getActivity(), res.mAdid)) {
 					Const.removeFromShortList(getActivity(), res.mAdid);
 					mTvAddShortList.setText(R.string.btn_add_shortlist);
-					mTvAddShortList.setBackgroundColor(getResources().getColor(R.color.orange));
+					mTvAddShortList.setBackgroundColor(getResources().getColor(
+							R.color.orange));
 				} else {
 					Const.addToShortList(getActivity(), res.mAdid);
 					mTvAddShortList.setText(R.string.remove_shortlist);
-					mTvAddShortList.setBackgroundColor(getResources().getColor(R.color.splash_background));
+					mTvAddShortList.setBackgroundColor(getResources().getColor(
+							R.color.splash_background));
 				}
 			}
 		});
@@ -214,7 +243,8 @@ public class DetailFragment extends Fragment_Main {
 			mTvListingLabel.setText(res.mListingLabel);
 		else
 			mTvListingLabel.setVisibility(View.GONE);
-		res.mDescription = res.mDescription.replace("\\n", System.getProperty("line.separator"));
+		res.mDescription = res.mDescription.replace("\\n",
+				System.getProperty("line.separator"));
 		mTvDescription.setText(res.mDescription);
 		mTvSize.setText(res.mSize);
 		mTvPostebyAndPostTime.setText(res.mPostedByDetails.mUserName + " on "
@@ -229,10 +259,30 @@ public class DetailFragment extends Fragment_Main {
 		mTvAddress.setText(res.mContactDetails.mLocation.value);
 		mTvMailCount.setText(res.mMsgSent);
 		mTvViewCount.setText(res.mAdViews);
+		Log.d("haipn"," total message:" + res.mTotalMessages);
 		
 		mListRelateAds.addAll(res.mRelatedAds);
 		mRelateAdapter.notifyDataSetChanged();
+		mListAttribute.addAll(res.Attributes);
+		mAttributeAdapter.notifyDataSetChanged();
+		if (res.mTotalMessages == 0) {
+			mLlMessage.setVisibility(View.GONE);
+		} else {
+			mLlMessage.setVisibility(View.VISIBLE);
+			if (res.mTotalMessages > 3) {
+				mTvViewAllMsg.setVisibility(View.VISIBLE);;
+				mTvViewAllMsg.setText(getString(R.string.label_view_all_comment, res.mTotalMessages - 3));
+				mListMessage.addAll(res.mListMessages.subList(0, 2));
+			} else {
+				mTvViewAllMsg.setVisibility(View.GONE);
+				mListMessage.addAll(res.mListMessages);
+				
+			}
+			
+			mMsgAdapter.notifyDataSetChanged();
+		}
 		
+
 	}
 
 	private Response.Listener<AdsDetail> createMyReqSuccessListener() {
@@ -279,8 +329,7 @@ public class DetailFragment extends Fragment_Main {
 				holder = new ViewHolder();
 				holder.tvTitle = (TextView) convertView
 						.findViewById(R.id.tvTitle);
-				holder.image = (ImageView) convertView
-						.findViewById(R.id.image);
+				holder.image = (ImageView) convertView.findViewById(R.id.image);
 
 				convertView.setTag(holder);
 			} else {
@@ -310,6 +359,7 @@ public class DetailFragment extends Fragment_Main {
 			return arg0;
 		}
 	}
+
 	private class ImagePagerAdapter extends PagerAdapter {
 
 		private ArrayList<String> images;

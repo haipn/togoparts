@@ -116,7 +116,8 @@
     <string name="merge_account">Merge Account</string>
     <string name="msg_signin">Please login to view your ads</string>
     <string name="title_profile">Profile page</string>
-
+	<string name="label_comment">Ad comments</string>
+	<string name="label_view_all_comment">View %d more earlier comments</string>
     <string-array name="label_quota">
         <item>Free Ads Posted</item>
         <item>Free Ads Quota</item>
