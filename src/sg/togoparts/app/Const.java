@@ -48,6 +48,9 @@ public class Const {
 	public static String URL_PROFILE = "https://www.togoparts.com/iphone_ws/user-profile.php?source=android";
 	public static String URL_POST_AD = "http://www.togoparts.com/iphone_ws/mp-postad-test.php?debugcode=n1vJuAis&source=android";
 	public static String URL_GET_COUNTRYS = "http://www.togoparts.com/iphone_ws/get-dropdown-values.php?country=1";
+	public static String URL_GET_MY_ADS = "http://www.togoparts.com/iphone_ws/mp_list_ads.php?profilename=%s";
+	public static String URL_GET_PROFILE = "https://www.togoparts.com/iphone_ws/user-profile.php?source=android";
+	public static String URL_SESSION_REFRESH = "https://www.togoparts.com/iphone_ws/user-session-refresh.php?source=android";
 	public static boolean isAppExitable = false;
 
 	/**

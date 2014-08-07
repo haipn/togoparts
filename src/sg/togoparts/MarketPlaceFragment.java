@@ -57,11 +57,12 @@ public class MarketPlaceFragment extends Fragment_Main implements ClickViewAll {
 			public boolean onChildClick(ExpandableListView parent, View v,
 					int groupPosition, int childPosition, long id) {
 				Intent i = new Intent(getActivity(), SearchResultActivity.class);
-				Category cat = mAdapter.getChild(groupPosition, childPosition);
+				Category cat = (Category) mAdapter.getChild(groupPosition, childPosition);
 
 				if (cat.mCategoryId == null) {
 					i.putExtra(FilterActivity.PARAM,
-							mAdapter.getChild(groupPosition, 0).mParameters);
+							cat.mParameters);
+					Log.d("haipn", "param:" + cat.mParameters);
 				} else {
 					Bundle b = new Bundle();
 					b.putString(FilterActivity.MARKETPLACE_CATEGORY,

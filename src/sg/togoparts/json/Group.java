@@ -16,4 +16,7 @@ public class Group {
 	
 	@SerializedName("categories")
 	public ArrayList<Category> mCategories;
+	
+	@SerializedName("featured")
+	public ArrayList<Feature> mFeatures;
 }

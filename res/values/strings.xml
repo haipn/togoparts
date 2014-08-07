@@ -114,5 +114,22 @@
     <string name="label_signup">Please provide a username to complete your registration.</string>
     <string name="fb_signup">Facebook Signup</string>
     <string name="merge_account">Merge Account</string>
+    <string name="msg_signin">Please login to view your ads</string>
+    <string name="title_profile">Profile page</string>
+
+    <string-array name="label_quota">
+        <item>Free Ads Posted</item>
+        <item>Free Ads Quota</item>
+        <item>Free Ads Left</item>
+        <item>Priority Ads</item>
+        <item>New Item Ads</item>
+        <item>TCredits balance</item>
+    </string-array>
+    <string-array name="label_postingpack">
+        <item>Ads Posted</item>
+        <item>Ads Quota</item>
+        <item>Ads Balance</item>
+        <item>TCredits balance</item>
+    </string-array>
 
 </resources>

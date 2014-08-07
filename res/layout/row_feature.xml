@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:descendantFocusability="blocksDescendants"
+    android:orientation="vertical"
+    android:padding="4dp" >
+
+    <ImageView
+        android:id="@+id/image"
+        android:layout_width="@dimen/image_thumb"
+        android:layout_height="@dimen/image_thumb"
+        android:background="@android:color/white" />
+
+    <sg.togoparts.gallery.FontableTextView
+        android:id="@+id/tvPrice"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingBottom="4dp"
+        android:paddingTop="4dp"
+        android:singleLine="true"
+        android:text="&apos;ajf;ladskjf;sakjf;saklfjsalkfj;aslkjf;sajfkl;asjf;lksajf;lksajf;kjs"
+        android:textColor="@color/orange"
+        android:textSize="15sp" />
+
+    <sg.togoparts.gallery.FontableTextView
+        android:id="@+id/tvTitle"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:singleLine="false"
+        android:text="&apos;ajf;ladskjf;sakjf;saklfjsalkfj;aslkjf;sajfkl;asjf;lksajf;lksajf;kjs"
+        android:textSize="15sp" />
+
+</LinearLayout>

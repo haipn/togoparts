@@ -10,7 +10,7 @@ public class FSActivity_Home extends Activity_Main {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		addFragment(new HomeFragment(), false, FragmentTransaction.TRANSIT_NONE);
+		addFragment(new MarketPlaceFragment(), false, FragmentTransaction.TRANSIT_NONE);
 	}
 
 	void addFragment(Fragment fragment, boolean addToBackStack, int transition) {

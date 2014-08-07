@@ -9,7 +9,8 @@
 	<color name="dark_blue">#00578d</color>
 	<color name="yellow">#fec516</color>
 	<color name="light_green">#0ebf01</color>
-	<color name="lightest_gray">#f0f0f0</color>
+	<color name="lightest_gray">#f3f3f3</color>
+	<color name="normal_gray">#d9d9d9</color>
 	<color name="gray">#989898</color>
 	<color name="dark_yellow">#FEC434</color>
 	<color name="closed_shop">#e5e5e5</color>

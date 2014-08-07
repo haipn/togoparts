@@ -60,7 +60,10 @@ public class HorizontalListView extends AdapterView<ListAdapter> {
 	private OnItemLongClickListener mOnItemLongClicked;
 	private boolean mDataChanged = false;
 	
-
+	public HorizontalListView(Context context) {
+		super(context);
+		initView();
+	}
 	public HorizontalListView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		initView();

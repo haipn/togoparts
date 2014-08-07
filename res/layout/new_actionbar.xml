@@ -3,7 +3,7 @@
     android:id="@+id/actionbar"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/home_ad_event_bg"
+    android:background="@color/normal_gray"
     android:padding="5dp" >
 
     <ImageButton

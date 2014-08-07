@@ -6,16 +6,11 @@
     android:background="@color/splash_background"
     android:orientation="vertical" >
 
-    <include
-        android:id="@+id/header"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        layout="@layout/new_actionbar" />
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="5dp" >
+        android:layout_marginBottom="10dp"
+        android:padding="8dp" >
 
         <ImageView
             android:id="@+id/imvAvatar"
@@ -30,7 +25,7 @@
             android:layout_weight="1"
             android:orientation="vertical" >
 
-            <TextView
+            <sg.togoparts.gallery.FontableTextView
                 android:id="@+id/fontableTextView1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -44,26 +39,29 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp" >
 
-                <TextView
+                <sg.togoparts.gallery.FontableTextView
                     android:id="@+id/tvPositive"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.33"
-                    android:text="345" />
+                    android:drawableLeft="@drawable/plus_icon"
+                    android:drawablePadding="4dp" />
 
-                <TextView
+                <sg.togoparts.gallery.FontableTextView
                     android:id="@+id/tvNeutral"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.33"
-                    android:text="234" />
+                    android:drawableLeft="@drawable/grey_icon"
+                    android:drawablePadding="4dp" />
 
-                <TextView
+                <sg.togoparts.gallery.FontableTextView
                     android:id="@+id/tvNegative"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.33"
-                    android:text="567" />
+                    android:drawableLeft="@drawable/minus_icon"
+                    android:drawablePadding="4dp" />
             </LinearLayout>
 
             <LinearLayout
@@ -84,17 +82,16 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="0.33" >
 
-                        <TextView
+                        <sg.togoparts.gallery.FontableTextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/label_free_ads_posted"
                             android:textSize="12sp" />
 
-                        <TextView
-                            android:id="@+id/textView2"
+                        <sg.togoparts.gallery.FontableTextView
+                            android:id="@+id/tvFreeAdPost"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="123"
                             android:textColor="@color/orange"
                             android:textSize="12sp" />
                     </TableRow>
@@ -105,17 +102,16 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="0.33" >
 
-                        <TextView
+                        <sg.togoparts.gallery.FontableTextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/label_free_ads_quota"
                             android:textSize="12sp" />
 
-                        <TextView
-                            android:id="@+id/textView2"
+                        <sg.togoparts.gallery.FontableTextView
+                            android:id="@+id/tvQuota"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="123"
                             android:textColor="@color/orange"
                             android:textSize="12sp" />
                     </TableRow>
@@ -126,17 +122,16 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="0.33" >
 
-                        <TextView
+                        <sg.togoparts.gallery.FontableTextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/label_free_ads_balance"
                             android:textSize="12sp" />
 
-                        <TextView
-                            android:id="@+id/textView2"
+                        <sg.togoparts.gallery.FontableTextView
+                            android:id="@+id/tvFreeAdsBalance"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="123"
                             android:textColor="@color/orange"
                             android:textSize="12sp" />
                     </TableRow>
@@ -153,17 +148,16 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="0.33" >
 
-                        <TextView
+                        <sg.togoparts.gallery.FontableTextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/label_priority_ads_posted"
                             android:textSize="12sp" />
 
-                        <TextView
-                            android:id="@+id/textView2"
+                        <sg.togoparts.gallery.FontableTextView
+                            android:id="@+id/tvPriorityAdsPosted"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="123"
                             android:textColor="@color/orange"
                             android:textSize="12sp" />
                     </TableRow>
@@ -174,34 +168,31 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="0.33" >
 
-                        <TextView
+                        <sg.togoparts.gallery.FontableTextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/label_new_items_ads"
                             android:textSize="12sp" />
 
-                        <TextView
-                            android:id="@+id/textView2"
+                        <sg.togoparts.gallery.FontableTextView
+                            android:id="@+id/tvNewItemsAds"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="123"
                             android:textColor="@color/orange"
                             android:textSize="12sp" />
                     </TableRow>
 
                     <TableRow
-                        android:id="@+id/tableRow7"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="0.33" >
 
-                        <TextView
+                        <sg.togoparts.gallery.FontableTextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textSize="12sp" />
 
-                        <TextView
-                            android:id="@+id/textView2"
+                        <sg.togoparts.gallery.FontableTextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@color/orange"
@@ -218,7 +209,7 @@
         android:orientation="vertical"
         android:padding="5dp" >
 
-        <TextView
+        <sg.togoparts.gallery.FontableTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/share_button_bg"
@@ -236,7 +227,7 @@
 
             <sg.togoparts.gallery.FontableTextView
                 android:id="@+id/tvNoResult"
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_margin="8dp"
@@ -246,7 +237,7 @@
                 android:visibility="gone" />
 
             <RelativeLayout
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1" >
 
@@ -256,12 +247,12 @@
                     android:layout_height="match_parent" >
                 </com.handmark.pulltorefresh.library.PullToRefreshListView>
 
-                <ProgressBar
-                    android:id="@+id/progressbar"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:layout_centerHorizontal="true" />
+<!--                 <ProgressBar -->
+<!--                     android:id="@+id/progressbar" -->
+<!--                     android:layout_width="fill_parent" -->
+<!--                     android:layout_height="wrap_content" -->
+<!--                     android:layout_alignParentBottom="true" -->
+<!--                     android:layout_centerHorizontal="true" /> -->
             </RelativeLayout>
         </LinearLayout>
     </LinearLayout>

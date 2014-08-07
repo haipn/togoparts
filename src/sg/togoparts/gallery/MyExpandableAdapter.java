@@ -3,18 +3,33 @@ package sg.togoparts.gallery;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.ImageScaleType;
+import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
+
+import sg.togoparts.DetailActivity;
 import sg.togoparts.R;
+import sg.togoparts.app.Const;
+import sg.togoparts.json.Ads;
 import sg.togoparts.json.Category;
+import sg.togoparts.json.Feature;
 import sg.togoparts.json.Group;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.BaseAdapter;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListView;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.AdapterView.OnItemClickListener;
 
 public class MyExpandableAdapter extends BaseExpandableListAdapter {
 
@@ -24,6 +39,8 @@ public class MyExpandableAdapter extends BaseExpandableListAdapter {
 	private List<Group> _listDataHeader; // header titles
 	// child data in format of header title, child title
 	protected ClickViewAll mViewAll;
+	protected ImageLoader imageLoader = ImageLoader.getInstance();
+	private DisplayImageOptions options;
 
 	public MyExpandableAdapter(Context context, List<Group> listDataHeader,
 			ClickViewAll view) {
@@ -31,6 +48,11 @@ public class MyExpandableAdapter extends BaseExpandableListAdapter {
 		this._listDataHeader = listDataHeader;
 		inflater = ((Activity) _context).getLayoutInflater();
 		mViewAll = view;
+		options = new DisplayImageOptions.Builder()
+				.resetViewBeforeLoading(true).cacheOnDisc(true)
+				.imageScaleType(ImageScaleType.EXACTLY_STRETCHED)
+				.bitmapConfig(Bitmap.Config.RGB_565).considerExifParams(true)
+				.displayer(new FadeInBitmapDisplayer(300)).build();
 	}
 
 	private class ViewHolder {
@@ -39,17 +61,18 @@ public class MyExpandableAdapter extends BaseExpandableListAdapter {
 		public TextView tvTitleChild;
 		public TextView tvNoAds;
 		public TextView tvDescription;
+		public HorizontalListView lvFeature;
 	}
 
 	@Override
-	public View getChildView(int groupPosition, final int childPosition,
+	public View getChildView(final int groupPosition, final int childPosition,
 			boolean isLastChild, View convertView, ViewGroup parent) {
 
-		final ViewHolder holder;
+		ViewHolder holder = null;
 
 		if (convertView == null) {
-			convertView = inflater.inflate(R.layout.row_marketplace, null);
 			holder = new ViewHolder();
+			convertView = inflater.inflate(R.layout.row_marketplace, null);
 			holder.tvTitleChild = (TextView) convertView
 					.findViewById(R.id.tvTitle);
 			holder.tvNoAds = (FontableTextView) convertView
@@ -61,10 +84,31 @@ public class MyExpandableAdapter extends BaseExpandableListAdapter {
 		} else {
 			holder = (ViewHolder) convertView.getTag();
 		}
-		Category cat = getChild(groupPosition, childPosition);
+		Category cat = (Category) getChild(groupPosition, childPosition);
 		holder.tvDescription.setText(cat.mDescription);
 		holder.tvNoAds.setText(cat.mTotalAds + " Ads");
 		holder.tvTitleChild.setText(cat.mTitle);
+		// final ArrayList<Feature> features = (ArrayList<Feature>)
+		// getChild(groupPosition, childPosition);
+		// RelateAdapter mRelateAdapter = new RelateAdapter(this._context,
+		// features);
+		// ((HorizontalListView) convertView).setAdapter(mRelateAdapter);
+		// ((HorizontalListView) convertView)
+		// .setOnItemClickListener(new OnItemClickListener() {
+		//
+		// @Override
+		// public void onItemClick(AdapterView<?> arg0,
+		// View arg1, int arg2, long arg3) {
+		// Intent i = new Intent(
+		// MyExpandableAdapter.this._context,
+		// DetailActivity.class);
+		// i.putExtra(
+		// Const.ADS_ID,
+		// features.get(arg2).getAid());
+		// MyExpandableAdapter.this._context
+		// .startActivity(i);
+		// }
+		// });
 		return convertView;
 	}
 
@@ -79,7 +123,8 @@ public class MyExpandableAdapter extends BaseExpandableListAdapter {
 					.findViewById(R.id.btnViewAll);
 			holder.tvTitleGroup = (TextView) convertView
 					.findViewById(R.id.tvTitle);
-
+			holder.lvFeature = (HorizontalListView) convertView
+					.findViewById(R.id.hlvFeature);
 			convertView.setTag(holder);
 		} else {
 			holder = (ViewHolder) convertView.getTag();
@@ -99,6 +144,22 @@ public class MyExpandableAdapter extends BaseExpandableListAdapter {
 			}
 		});
 		holder.tvTitleGroup.setText(group.mTitle);
+		final ArrayList<Feature> features = group.mFeatures;
+		RelateAdapter mRelateAdapter = new RelateAdapter(this._context,
+				features);
+		holder.lvFeature.setAdapter(mRelateAdapter);
+		holder.lvFeature.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+					long arg3) {
+				Intent i = new Intent(MyExpandableAdapter.this._context,
+						DetailActivity.class);
+				i.putExtra(Const.ADS_ID, features.get(arg2).getAid());
+				MyExpandableAdapter.this._context.startActivity(i);
+			}
+		});
+
 		ExpandableListView eLV = (ExpandableListView) parent;
 		eLV.expandGroup(groupPosition);
 		return convertView;
@@ -120,7 +181,7 @@ public class MyExpandableAdapter extends BaseExpandableListAdapter {
 	}
 
 	@Override
-	public Category getChild(int groupPosition, int childPosititon) {
+	public Object getChild(int groupPosition, int childPosititon) {
 		return this._listDataHeader.get(groupPosition).mCategories
 				.get(childPosititon);
 	}
@@ -158,4 +219,63 @@ public class MyExpandableAdapter extends BaseExpandableListAdapter {
 	public interface ClickViewAll {
 		public void onViewAllClick(String groupId, String grouptitle);
 	}
+
+	private class RelateAdapter extends BaseAdapter {
+
+		private class ViewHolder {
+			public TextView tvTitle;
+			public ImageView image;
+			public TextView tvPrice;
+		}
+
+		ArrayList<Feature> listAds;
+		Context mContext;
+
+		public RelateAdapter(Context context, ArrayList<Feature> cars) {
+			super();
+			listAds = cars;
+			mContext = context;
+		}
+
+		@Override
+		public View getView(int position, View convertView, ViewGroup parent) {
+			final ViewHolder holder;
+			if (convertView == null) {
+				convertView = LayoutInflater.from(mContext).inflate(
+						R.layout.row_feature, null);
+				holder = new ViewHolder();
+				holder.tvTitle = (TextView) convertView
+						.findViewById(R.id.tvTitle);
+				holder.image = (ImageView) convertView.findViewById(R.id.image);
+				holder.tvPrice = (TextView) convertView.findViewById(R.id.tvPrice);
+				convertView.setTag(holder);
+			} else {
+				holder = (ViewHolder) convertView.getTag();
+			}
+			Feature ads = getItem(position);
+			imageLoader.displayImage(ads.getPicture(), holder.image, options);
+			holder.tvTitle.setText(ads.getTitle());
+			holder.tvPrice.setText(ads.getPrice());
+			return convertView;
+		}
+
+		@Override
+		public int getCount() {
+			// TODO Auto-generated method stub
+			return listAds.size();
+		}
+
+		@Override
+		public Feature getItem(int arg0) {
+			// TODO Auto-generated method stub
+			return listAds.get(arg0);
+		}
+
+		@Override
+		public long getItemId(int arg0) {
+			// TODO Auto-generated method stub
+			return arg0;
+		}
+	}
+
 }
