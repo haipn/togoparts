@@ -1,5 +1,7 @@
 package sg.togoparts.login;
 
+import java.util.ArrayList;
+
 import sg.togoparts.login.ResultLogin.ResultValue;
 
 public class Profile {
@@ -31,8 +33,8 @@ public class Profile {
 		public String Return;
 		public Info info;
 		public Ratings ratings;
-		public Quota quota;
-		public PostingPack postingpack;
+		public ArrayList<Value> quota;
+		public ArrayList<Value> postingpack;
 	}
 
 	public class Info {
@@ -41,25 +43,14 @@ public class Profile {
 	}
 
 	public class Ratings {
-		public String Positive;
-		public String Neutral;
-		public String Negative;
+		public int Positive;
+		public int Neutral;
+		public int Negative;
 	}
 
-	public class Quota {
-		public String FreeAds;
-		public String FreeAdsMax;
-		public String FreeAdsLeft;
-		public String PaidAds;
-		public String CommAds;
-		public String TCreds;
-	}
-
-	public class PostingPack {
-		public String AdsPosted;// (Label: Ads Posted)
-		public String AdsQuota;// Label: Ads Quota)
-		public String AdsBalance;// ": 11, (Label: Ads Balance)
-		public String TCreds;// ": "56" (Label: TCredits balance)
+	public class Value {
+		public String label;
+		public int value;
 	}
 
 }

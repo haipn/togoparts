@@ -116,8 +116,18 @@
     <string name="merge_account">Merge Account</string>
     <string name="msg_signin">Please login to view your ads</string>
     <string name="title_profile">Profile page</string>
-	<string name="label_comment">Ad comments</string>
-	<string name="label_view_all_comment">View %d more earlier comments</string>
+    <string name="label_comment">Ad comments</string>
+    <string name="label_view_all_comment">View %d more earlier comments</string>
+    <string name="note_priority_ad">Get your Used Item sorted above all Free Ads.</string>
+    <string name="note_newitem_ad">Make a Profit selling New Items and get sorted above all Priority Ads.</string>
+	<string name="details">Details</string>
+	<string name="category">Category</string>
+	<string name="item">Item</string>
+	<string name="contact_info">Contact Info &amp; Location</string>
+	<string name="my_ads_quota">My Ads Quota</string>
+	<string name="submit">Submit</string>
+	<string name="title_postad">Posting</string>
+	<string name="title_section">Sections</string>
     <string-array name="label_quota">
         <item>Free Ads Posted</item>
         <item>Free Ads Quota</item>

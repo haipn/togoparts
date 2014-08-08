@@ -69,136 +69,12 @@
                 android:layout_height="0dp"
                 android:layout_weight="1" >
 
-                <TableLayout
+                <GridView
+                    android:id="@+id/gvInfo"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="0.5"
-                    android:paddingRight="5dp"
-                    android:stretchColumns="0" >
-
-                    <TableRow
-                        android:id="@+id/tableRow1"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.33" >
-
-                        <sg.togoparts.gallery.FontableTextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/label_free_ads_posted"
-                            android:textSize="12sp" />
-
-                        <sg.togoparts.gallery.FontableTextView
-                            android:id="@+id/tvFreeAdPost"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textColor="@color/orange"
-                            android:textSize="12sp" />
-                    </TableRow>
-
-                    <TableRow
-                        android:id="@+id/tableRow2"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.33" >
-
-                        <sg.togoparts.gallery.FontableTextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/label_free_ads_quota"
-                            android:textSize="12sp" />
-
-                        <sg.togoparts.gallery.FontableTextView
-                            android:id="@+id/tvQuota"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textColor="@color/orange"
-                            android:textSize="12sp" />
-                    </TableRow>
-
-                    <TableRow
-                        android:id="@+id/tableRow3"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.33" >
-
-                        <sg.togoparts.gallery.FontableTextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/label_free_ads_balance"
-                            android:textSize="12sp" />
-
-                        <sg.togoparts.gallery.FontableTextView
-                            android:id="@+id/tvFreeAdsBalance"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textColor="@color/orange"
-                            android:textSize="12sp" />
-                    </TableRow>
-                </TableLayout>
-
-                <TableLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.5" >
-
-                    <TableRow
-                        android:id="@+id/tableRow6"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.33" >
-
-                        <sg.togoparts.gallery.FontableTextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/label_priority_ads_posted"
-                            android:textSize="12sp" />
-
-                        <sg.togoparts.gallery.FontableTextView
-                            android:id="@+id/tvPriorityAdsPosted"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textColor="@color/orange"
-                            android:textSize="12sp" />
-                    </TableRow>
-
-                    <TableRow
-                        android:id="@+id/tableRow7"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.33" >
-
-                        <sg.togoparts.gallery.FontableTextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/label_new_items_ads"
-                            android:textSize="12sp" />
-
-                        <sg.togoparts.gallery.FontableTextView
-                            android:id="@+id/tvNewItemsAds"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textColor="@color/orange"
-                            android:textSize="12sp" />
-                    </TableRow>
-
-                    <TableRow
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.33" >
-
-                        <sg.togoparts.gallery.FontableTextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textSize="12sp" />
-
-                        <sg.togoparts.gallery.FontableTextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textColor="@color/orange"
-                            android:textSize="12sp" />
-                    </TableRow>
-                </TableLayout>
+                    android:numColumns="2" >
+                </GridView>
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
@@ -247,12 +123,12 @@
                     android:layout_height="match_parent" >
                 </com.handmark.pulltorefresh.library.PullToRefreshListView>
 
-<!--                 <ProgressBar -->
-<!--                     android:id="@+id/progressbar" -->
-<!--                     android:layout_width="fill_parent" -->
-<!--                     android:layout_height="wrap_content" -->
-<!--                     android:layout_alignParentBottom="true" -->
-<!--                     android:layout_centerHorizontal="true" /> -->
+                <!-- <ProgressBar -->
+                <!-- android:id="@+id/progressbar" -->
+                <!-- android:layout_width="fill_parent" -->
+                <!-- android:layout_height="wrap_content" -->
+                <!-- android:layout_alignParentBottom="true" -->
+                <!-- android:layout_centerHorizontal="true" /> -->
             </RelativeLayout>
         </LinearLayout>
     </LinearLayout>

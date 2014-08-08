@@ -11,11 +11,13 @@ import sg.togoparts.R;
 import sg.togoparts.app.Const;
 import sg.togoparts.app.MyVolley;
 import sg.togoparts.gallery.FontableTextView;
+import sg.togoparts.gallery.InfoAdapter;
 import sg.togoparts.gallery.SearchResultAdapter;
 import sg.togoparts.json.GsonRequest;
 import sg.togoparts.json.SearchResult;
 import sg.togoparts.json.SearchResult.AdsResult;
 import sg.togoparts.login.Profile.ProfileValue;
+import sg.togoparts.login.Profile.Value;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -27,6 +29,7 @@ import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -46,20 +49,21 @@ public class ProfileFragment extends Fragment_Main {
 	private PullToRefreshListView mLvResult;
 	private TextView mTvNoShortlist;
 	private ArrayList<AdsResult> mResult;
-	private int mPageId ;
+	private int mPageId;
 	private int mPageTotal;
 	protected boolean enableLoadMore;
 	private String mStringTitle = "";
 
 	private HeaderView headerView;
 	private String mQuery;
-	
-	
+
 	private ImageView mImvAvatar;
 	private TextView mTvPositive;
 	private TextView mTvNeutral;
 	private TextView mTvNegative;
-	
+	private GridView mGvInfo;
+	private InfoAdapter mInfoAdapter;
+	private ArrayList<Value> mListValue;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -67,7 +71,8 @@ public class ProfileFragment extends Fragment_Main {
 		if (Const.isLogin(getActivity())) {
 			View rootView = inflater
 					.inflate(R.layout.profile, container, false);
-			mLvResult = (PullToRefreshListView) rootView.findViewById(R.id.lvSearchResult);
+			mLvResult = (PullToRefreshListView) rootView
+					.findViewById(R.id.lvSearchResult);
 			mTvNoShortlist = (TextView) rootView.findViewById(R.id.tvNoResult);
 			mAdapter = new SearchResultAdapter(getActivity(), mResult);
 			mLvResult.setAdapter(mAdapter);
@@ -104,11 +109,15 @@ public class ProfileFragment extends Fragment_Main {
 				}
 
 			});
-			
+
 			mImvAvatar = (ImageView) rootView.findViewById(R.id.imvAvatar);
 			mTvPositive = (TextView) rootView.findViewById(R.id.tvPositive);
 			mTvNeutral = (TextView) rootView.findViewById(R.id.tvNeutral);
 			mTvNegative = (TextView) rootView.findViewById(R.id.tvNegative);
+
+			mGvInfo = (GridView) rootView.findViewById(R.id.gvInfo);
+			mInfoAdapter = new InfoAdapter(getActivity(), mListValue);
+			mGvInfo.setAdapter(mInfoAdapter);
 			return rootView;
 		} else {
 			TextView rootView = new FontableTextView(getActivity());
@@ -140,16 +149,17 @@ public class ProfileFragment extends Fragment_Main {
 			mQuery = Const.URL_GET_MY_ADS;
 			getProfile();
 			mResult = new ArrayList<AdsResult>();
+			mListValue = new ArrayList<Profile.Value>();
 		}
-		
+
 		super.onCreate(savedInstanceState);
 	}
 
 	private void getProfile() {
 		Log.d("haipn",
 				"url:"
-						+ String.format(Const.URL_GET_PROFILE,
-								Const.getSessionId(getActivity())));
+						+ (Const.URL_GET_PROFILE + Const
+								.getSessionId(getActivity())));
 		headerView.setProgressVisible(View.VISIBLE);
 		RequestQueue queue = MyVolley.getRequestQueue();
 		GsonRequest<Profile> myReq = new GsonRequest<Profile>(Method.POST,
@@ -175,7 +185,8 @@ public class ProfileFragment extends Fragment_Main {
 				if (response.Result.Return.equals("expired")) {
 					processExpired();
 				} else if (response.Result.Return.equals("success")) {
-					mQuery = String.format(Const.URL_GET_MY_ADS, response.Result.info.username);
+					mQuery = String.format(Const.URL_GET_MY_ADS,
+							response.Result.info.username);
 					updateProfile(response.Result);
 					loadMore();
 				}
@@ -184,11 +195,16 @@ public class ProfileFragment extends Fragment_Main {
 	}
 
 	protected void updateProfile(ProfileValue result) {
-		mTvNegative.setText(result.ratings.Negative);
-		mTvNeutral.setText(result.ratings.Neutral);
-		mTvPositive.setText(result.ratings.Positive);
+		mTvNegative.setText(result.ratings.Negative + "");
+		mTvNeutral.setText(result.ratings.Neutral + "");
+		mTvPositive.setText(result.ratings.Positive + "");
 		imageLoader.displayImage(result.info.picture, mImvAvatar);
-		
+		if (result.quota != null)
+			mListValue.addAll(result.quota);
+		else if (result.postingpack != null)
+			mListValue.addAll(result.postingpack);
+		mInfoAdapter.notifyDataSetChanged();
+		Const.setGridViewHeightBasedOnChildren(mGvInfo);
 	}
 
 	protected void processExpired() {

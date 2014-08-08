@@ -258,7 +258,6 @@ public class DetailActivity extends FragmentActivity implements
 		});
 
 		// mIvLoading.setAnimation(getResources().getAnimation(android.R.animator.));
-		createHeader();
 		mTvTitle = (TextView) findViewById(R.id.tvTitle);
 		mTvPrice = (TextView) findViewById(R.id.tvPrice);
 		mTvPriceDiff = (TextView) findViewById(R.id.tvPriceDiff);
@@ -708,6 +707,8 @@ public class DetailActivity extends FragmentActivity implements
 
 		mListAttribute.addAll(res.Attributes);
 		mAttributeAdapter.notifyDataSetChanged();
+		Const.setGridViewHeightBasedOnChildren(mGvAttribute);
+		
 		if (res.mTotalMessages == 0) {
 			mLlMessage.setVisibility(View.GONE);
 		} else {
@@ -726,6 +727,7 @@ public class DetailActivity extends FragmentActivity implements
 			}
 
 			mMsgAdapter.notifyDataSetChanged();
+			Const.setListViewHeightBasedOnChildren(mLvMessage);
 		}
 		startAnimation();
 	}

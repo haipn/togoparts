@@ -1,7 +1,7 @@
 package sg.togoparts;
 
 import sg.togoparts.app.Const;
-import sg.togoparts.login.FSActivity_PostAd;
+import sg.togoparts.login.PostAdActivity;
 import sg.togoparts.login.FSActivity_Profile;
 import android.app.AlertDialog;
 import android.app.TabActivity;
@@ -71,7 +71,7 @@ public class TabsActivityMain extends TabActivity implements AdListener {
 				.setContent(intent);
 		tabHost.addTab(spec);
 
-		intent = new Intent().setClass(this, FSActivity_PostAd.class);
+		intent = new Intent().setClass(this, PostAdActivity.class);
 		spec = tabHost
 				.newTabSpec("3")
 				.setIndicator(null,

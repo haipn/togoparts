@@ -1,8 +1,267 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical" >
-    
+    android:layout_height="match_parent" >
+
+    <include
+        android:id="@+id/header"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        layout="@layout/new_actionbar" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="8dp" >
+
+                <RadioGroup
+                    android:id="@+id/radioGroup1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal" >
+
+                    <RadioButton
+                        android:id="@+id/rdoFreeAd"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".33"
+                        android:button="@drawable/radio_free_ad"
+                        android:checked="true" />
+
+                    <RadioButton
+                        android:id="@+id/rdoPriorityAd"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".33"
+                        android:button="@drawable/radio_priority_ad" />
+
+                    <RadioButton
+                        android:id="@+id/rdoNewItemAd"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".33"
+                        android:button="@drawable/radio_newitem_ad" />
+                </RadioGroup>
+
+                <TextView
+                    android:id="@+id/tvNote"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:paddingTop="8dp"
+                    android:text="@string/note_newitem_ad" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:baselineAligned="false"
+                    android:orientation="horizontal"
+                    android:paddingTop="10dp" >
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.33"
+                        android:gravity="center_horizontal|top"
+                        android:orientation="vertical" >
+
+                        <ImageView
+                            android:id="@+id/imv1"
+                            android:layout_width="@dimen/image_thumb_postad"
+                            android:layout_height="@dimen/image_thumb_postad"
+                            android:src="@drawable/unselected_pic" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_horizontal"
+                            android:text="Cover Pic" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.33"
+                        android:gravity="center_horizontal|top"
+                        android:orientation="vertical" >
+
+                        <ImageView
+                            android:id="@+id/imv2"
+                            android:layout_width="@dimen/image_thumb_postad"
+                            android:layout_height="@dimen/image_thumb_postad"
+                            android:src="@drawable/unselected_pic" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.33"
+                        android:gravity="center_horizontal|top"
+                        android:orientation="vertical" >
+
+                        <ImageView
+                            android:id="@+id/imv3"
+                            android:layout_width="@dimen/image_thumb_postad"
+                            android:layout_height="@dimen/image_thumb_postad"
+                            android:src="@drawable/unselected_pic" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:baselineAligned="false"
+                    android:orientation="horizontal"
+                    android:paddingTop="10dp" >
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.33"
+                        android:gravity="center_horizontal|top"
+                        android:orientation="vertical" >
+
+                        <ImageView
+                            android:id="@+id/imv4"
+                            android:layout_width="@dimen/image_thumb_postad"
+                            android:layout_height="@dimen/image_thumb_postad"
+                            android:src="@drawable/unselected_pic" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.33"
+                        android:gravity="center_horizontal|top"
+                        android:orientation="vertical" >
+
+                        <ImageView
+                            android:id="@+id/imv5"
+                            android:layout_width="@dimen/image_thumb_postad"
+                            android:layout_height="@dimen/image_thumb_postad"
+                            android:src="@drawable/unselected_pic" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.33"
+                        android:gravity="center_horizontal|top"
+                        android:orientation="vertical" >
+
+                        <ImageView
+                            android:id="@+id/imv6"
+                            android:layout_width="@dimen/image_thumb_postad"
+                            android:layout_height="@dimen/image_thumb_postad"
+                            android:src="@drawable/unselected_pic" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@color/normal_gray"
+                android:padding="10dp"
+                android:text="@string/details"
+                android:textAppearance="@android:style/TextAppearance.Large" />
+
+            <TextView
+                android:id="@+id/tvCategory"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/textview_postad"
+                android:drawableLeft="@drawable/category_icon"
+                android:drawablePadding="10dp"
+                android:padding="10dp"
+                android:text="@string/category"
+                android:textAppearance="@android:style/TextAppearance.Medium" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.75dp"
+                android:background="@color/gray" />
+
+            <TextView
+                android:id="@+id/tvItem"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/textview_postad"
+                android:drawableLeft="@drawable/item_icon"
+                android:drawablePadding="10dp"
+                android:padding="10dp"
+                android:text="@string/item"
+                android:textAppearance="@android:style/TextAppearance.Medium" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.75dp"
+                android:background="@color/gray" />
+
+            <TextView
+                android:id="@+id/tvPrice"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/textview_postad"
+                android:drawableLeft="@drawable/price_icon"
+                android:drawablePadding="10dp"
+                android:padding="10dp"
+                android:text="@string/price"
+                android:textAppearance="@android:style/TextAppearance.Medium" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.75dp"
+                android:background="@color/gray" />
+
+            <TextView
+                android:id="@+id/tvContact"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/textview_postad"
+                android:drawableLeft="@drawable/contactinfo_icon"
+                android:drawablePadding="10dp"
+                android:padding="10dp"
+                android:text="@string/contact_info"
+                android:textAppearance="@android:style/TextAppearance.Medium" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/normal_gray"
+                android:padding="10dp"
+                android:text="@string/my_ads_quota"
+                android:textAppearance="@android:style/TextAppearance.Large" />
+
+            <GridView
+                android:id="@+id/gvInfo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:numColumns="3" >
+            </GridView>
+
+            <Button
+                android:id="@+id/btnSubmit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:background="@drawable/btn_click"
+                android:text="@string/submit"
+                android:textAppearance="@android:style/TextAppearance.Large"
+                android:textColor="@android:color/white" />
+        </LinearLayout>
+    </ScrollView>
 
 </LinearLayout>

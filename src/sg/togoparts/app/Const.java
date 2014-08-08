@@ -7,6 +7,12 @@ import java.security.NoSuchAlgorithmException;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
+import android.widget.GridView;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 
 public class Const {
 	public static final String GA_PROPERTY_ID = "UA-479713-13";
@@ -51,6 +57,11 @@ public class Const {
 	public static String URL_GET_MY_ADS = "http://www.togoparts.com/iphone_ws/mp_list_ads.php?profilename=%s";
 	public static String URL_GET_PROFILE = "https://www.togoparts.com/iphone_ws/user-profile.php?source=android";
 	public static String URL_SESSION_REFRESH = "https://www.togoparts.com/iphone_ws/user-session-refresh.php?source=android";
+	public static String URL_POST_AD_ONLOAD = "https://www.togoparts.com/iphone_ws/mp-postad-requirements.php?debugcode=n1vJuAis&source=android";
+	public static String URL_GET_SECTION = "https://www.togoparts.com/iphone_ws/get-option-values.php?source=android&section=1";
+	public static String URL_GET_CATEGORY = "https://www.togoparts.com/iphone_ws/get-option-values.php?source=android&category=1&cid=%d";
+	public static String URL_GET_SUBCATEGORY = "https://www.togoparts.com/iphone_ws/get-option-values.php?source=android&subcat=1&cid=%d&gid=%d";
+
 	public static boolean isAppExitable = false;
 
 	/**
@@ -162,4 +173,52 @@ public class Const {
 		edit.commit();
 	}
 
+	public static void setListViewHeightBasedOnChildren(ListView listView) {
+		ListAdapter listAdapter = listView.getAdapter();
+		if (listAdapter == null) {
+			// pre-condition
+			return;
+		}
+
+		int totalHeight = listView.getPaddingTop()
+				+ listView.getPaddingBottom();
+		for (int i = 0; i < listAdapter.getCount(); i++) {
+			View listItem = listAdapter.getView(i, null, listView);
+			if (listItem instanceof ViewGroup) {
+				listItem.setLayoutParams(new LayoutParams(
+						LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+			}
+			listItem.measure(0, 0);
+			totalHeight += listItem.getMeasuredHeight();
+		}
+
+		ViewGroup.LayoutParams params = listView.getLayoutParams();
+		params.height = totalHeight
+				+ (listView.getDividerHeight() * (listAdapter.getCount() - 1));
+		listView.setLayoutParams(params);
+	}
+
+	public static void setGridViewHeightBasedOnChildren(GridView listView) {
+		ListAdapter listAdapter = listView.getAdapter();
+		if (listAdapter == null) {
+			// pre-condition
+			return;
+		}
+
+		int totalHeight = listView.getPaddingTop()
+				+ listView.getPaddingBottom();
+		for (int i = 0; i < listAdapter.getCount(); i++) {
+			View listItem = listAdapter.getView(i, null, listView);
+			if (listItem instanceof ViewGroup) {
+				listItem.setLayoutParams(new LayoutParams(
+						LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+			}
+			listItem.measure(0, 0);
+			totalHeight += listItem.getMeasuredHeight();
+		}
+
+		ViewGroup.LayoutParams params = listView.getLayoutParams();
+		params.height = totalHeight / 2 + 50;
+		listView.setLayoutParams(params);
+	}
 }

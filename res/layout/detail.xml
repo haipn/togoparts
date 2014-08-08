@@ -222,7 +222,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="top"
-                        android:paddingBottom="10dp"
                         android:paddingTop="5dp" >
 
                         <!-- <com.agsi.togopart.gallery.FontableTextView -->
@@ -257,7 +256,7 @@
                         android:layout_height="wrap_content"
                         android:horizontalSpacing="10dp"
                         android:numColumns="2"
-                        android:verticalSpacing="10dp" >
+                        android:verticalSpacing="0dp" >
                     </GridView>
 
                     <LinearLayout
@@ -578,7 +577,6 @@
                             android:layout_height="wrap_content" >
 
                             <sg.togoparts.gallery.FontableTextView
-                                android:id="@+id/textView1"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentLeft="true"
