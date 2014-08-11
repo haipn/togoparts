@@ -139,6 +139,15 @@
 	
 	<string name="title_item_info">Item Info</string>
 	<string name="next">Next</string>
+	<string name="save">Save</string>
+	<string name="label_condition">Condition</string>
+	<string name="label_warranty">Warranty left</string>
+	<string name="label_per_ten">/10</string>
+	<string name="label_colour">Colour</string>
+	<string name="label_weight">Weight</string>
+	<string name="label_gram">Grams</string>
+	<string name="label_other_links">Other links</string>
+	<string name="label_months">Months</string>
     <string-array name="label_quota">
         <item>Free Ads Posted</item>
         <item>Free Ads Quota</item>
