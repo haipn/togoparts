@@ -1,4 +1,4 @@
-package sg.togoparts.login;
+package sg.togoparts.json;
 
 public class ResultLogin {
 	public ResultValue Result;

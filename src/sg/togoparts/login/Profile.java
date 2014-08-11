@@ -2,7 +2,7 @@ package sg.togoparts.login;
 
 import java.util.ArrayList;
 
-import sg.togoparts.login.ResultLogin.ResultValue;
+import sg.togoparts.json.ResultLogin.ResultValue;
 
 public class Profile {
 	// {

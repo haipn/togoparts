@@ -14,6 +14,7 @@ import sg.togoparts.gallery.FontableTextView;
 import sg.togoparts.gallery.InfoAdapter;
 import sg.togoparts.gallery.SearchResultAdapter;
 import sg.togoparts.json.GsonRequest;
+import sg.togoparts.json.ResultLogin;
 import sg.togoparts.json.SearchResult;
 import sg.togoparts.json.SearchResult.AdsResult;
 import sg.togoparts.login.Profile.ProfileValue;

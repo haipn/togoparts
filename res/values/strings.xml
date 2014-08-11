@@ -128,6 +128,17 @@
 	<string name="submit">Submit</string>
 	<string name="title_postad">Posting</string>
 	<string name="title_section">Sections</string>
+	<string name="title_category">Category</string>
+	<string name="title_sub_category">Sub Category</string>
+	
+	<string name="brand">Brand</string>
+	<string name="model">Model</string>
+	<string name="ad_title">Ad title</string>
+	<string name="ad_discipline">Ad Discipline</string>
+	<string name="ad_description">Ad Description</string>
+	
+	<string name="title_item_info">Item Info</string>
+	<string name="next">Next</string>
     <string-array name="label_quota">
         <item>Free Ads Posted</item>
         <item>Free Ads Quota</item>

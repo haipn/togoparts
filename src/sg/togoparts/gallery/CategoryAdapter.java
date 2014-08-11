@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import sg.togoparts.R;
 import sg.togoparts.json.AdsDetail.Attribute;
+import sg.togoparts.json.CategoryResult.Category;
 import sg.togoparts.json.ListPromos.Promos;
 import sg.togoparts.json.SectionResult.Section;
 import android.content.Context;
@@ -21,12 +22,12 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 
-public class SectionAdapter extends BaseAdapter {
+public class CategoryAdapter extends BaseAdapter {
 
 	Context mContext;
-	ArrayList<Section> mListResult;
+	ArrayList<Category> mListResult;
 
-	public SectionAdapter(Context context, ArrayList<Section> result) {
+	public CategoryAdapter(Context context, ArrayList<Category> result) {
 		super();
 		mContext = context;
 		mListResult = result;
@@ -39,7 +40,7 @@ public class SectionAdapter extends BaseAdapter {
 	}
 
 	@Override
-	public Section getItem(int arg0) {
+	public Category getItem(int arg0) {
 		// TODO Auto-generated method stub
 		return mListResult.get(arg0);
 	}
@@ -63,8 +64,8 @@ public class SectionAdapter extends BaseAdapter {
 		} else {
 			holder = (ViewHolder) convertView.getTag();
 		}
-		Section promos = getItem(position);
-		holder.label.setText(promos.data.title);
+		Category promos = getItem(position);
+		holder.label.setText(promos.title);
 		return convertView;
 	}
 
