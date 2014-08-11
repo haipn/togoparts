@@ -1,5 +1,10 @@
 package sg.togoparts.login;
 
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 import sg.togoparts.HeaderView;
 import sg.togoparts.R;
 import sg.togoparts.json.PostAd;
@@ -10,6 +15,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RadioButton;
@@ -78,13 +84,15 @@ public class PostAdActivity extends Activity {
 	private ImageButton mBtnSearch;
 	private ImageView mIvLogo;
 	private TextView mTvTitleHeader;
-	private PostAd mPosAd;
+	private PostAd mPostAd;
 
+	
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.post_ad);
-		mPosAd = new PostAd();
+		mPostAd = new PostAd();
 		createHeader();
 		init();
 		setListener();
@@ -140,23 +148,23 @@ public class PostAdActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				Intent i = new Intent(PostAdActivity.this, ItemInfo.class);
-				i.putExtra(BRAND, mPosAd.getBrand());
-				i.putExtra(ITEM_YEAR, mPosAd.getItem_year());
-				i.putExtra(ITEM, mPosAd.getItem());
-				i.putExtra(TITLE, mPosAd.getTitle());
-				i.putExtra(TRANSTYPE, mPosAd.getTranstype());
-				i.putExtra(DESCRIPTION, mPosAd.getDescription());
-				i.putExtra(D_MTB, mPosAd.isD_mtb());
-				i.putExtra(D_BMX, mPosAd.isD_bmx());
-				i.putExtra(D_COMMUTE, mPosAd.isD_commute());
-				i.putExtra(D_FOLDING, mPosAd.isD_folding());
-				i.putExtra(D_OTHERS, mPosAd.isD_others());
-				i.putExtra(D_ROAD, mPosAd.isD_road());
-				i.putExtra(SIZE, mPosAd.getSize());
-				i.putExtra(COLOUR, mPosAd.getColour());
-				i.putExtra(WEIGHT, mPosAd.getWeight());
-				i.putExtra(CONDITION, mPosAd.getCondition());
-				i.putExtra(WARRANTY, mPosAd.getWarranty());
+				i.putExtra(BRAND, mPostAd.getBrand());
+				i.putExtra(ITEM_YEAR, mPostAd.getItem_year());
+				i.putExtra(ITEM, mPostAd.getItem());
+				i.putExtra(TITLE, mPostAd.getTitle());
+				i.putExtra(TRANSTYPE, mPostAd.getTranstype());
+				i.putExtra(DESCRIPTION, mPostAd.getDescription());
+				i.putExtra(D_MTB, mPostAd.isD_mtb());
+				i.putExtra(D_BMX, mPostAd.isD_bmx());
+				i.putExtra(D_COMMUTE, mPostAd.isD_commute());
+				i.putExtra(D_FOLDING, mPostAd.isD_folding());
+				i.putExtra(D_OTHERS, mPostAd.isD_others());
+				i.putExtra(D_ROAD, mPostAd.isD_road());
+				i.putExtra(SIZE, mPostAd.getSize());
+				i.putExtra(COLOUR, mPostAd.getColour());
+				i.putExtra(WEIGHT, mPostAd.getWeight());
+				i.putExtra(CONDITION, mPostAd.getCondition());
+				i.putExtra(WARRANTY, mPostAd.getWarranty());
 				i.putExtra(PICTURELINK, PICTURELINK);
 				
 				startActivityForResult(i, REQUEST_ITEM);
@@ -167,10 +175,10 @@ public class PostAdActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				Intent i = new Intent(PostAdActivity.this, Price.class);
-				i.putExtra(PRICE, mPosAd.getPrice());
-				i.putExtra(PRICETYPE,mPosAd.getPricetype());
-				i.putExtra(ORIGINAL_PRICE, mPosAd.getOriginal_price());
-				i.putExtra(CLEARANCE, mPosAd.isClearance());
+				i.putExtra(PRICE, mPostAd.getPrice());
+				i.putExtra(PRICETYPE,mPostAd.getPricetype());
+				i.putExtra(ORIGINAL_PRICE, mPostAd.getOriginal_price());
+				i.putExtra(CLEARANCE, mPostAd.isClearance());
 				startActivityForResult(i, REQUEST_PRICE);
 				
 			}
@@ -181,16 +189,16 @@ public class PostAdActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				Intent i = new Intent(PostAdActivity.this, ContactInfo.class);
-				i.putExtra(CITY, mPosAd.getCity());
-				i.putExtra(REGION, mPosAd.getRegion());
-				i.putExtra(COUNTRY, mPosAd.getCountry());
-				i.putExtra(POSTALCODE, mPosAd.getPostalcode());
-				i.putExtra(ADDRESS, mPosAd.getAddress());
-				i.putExtra(LAT, mPosAd.getLatitude());
-				i.putExtra(LONGITUDE, mPosAd.getLongitude());
-				i.putExtra(CONTACTNO, mPosAd.getContactno());
-				i.putExtra(CONTACTPERSON, mPosAd.getContactperson());
-				i.putExtra(TIME_TO_CONTACT, mPosAd.getTime_to_contact());
+				i.putExtra(CITY, mPostAd.getCity());
+				i.putExtra(REGION, mPostAd.getRegion());
+				i.putExtra(COUNTRY, mPostAd.getCountry());
+				i.putExtra(POSTALCODE, mPostAd.getPostalcode());
+				i.putExtra(ADDRESS, mPostAd.getAddress());
+				i.putExtra(LAT, mPostAd.getLatitude());
+				i.putExtra(LONGITUDE, mPostAd.getLongitude());
+				i.putExtra(CONTACTNO, mPostAd.getContactno());
+				i.putExtra(CONTACTPERSON, mPostAd.getContactperson());
+				i.putExtra(TIME_TO_CONTACT, mPostAd.getTime_to_contact());
 				startActivityForResult(i, REQUEST_CONTACT);
 				
 			}
@@ -205,33 +213,33 @@ public class PostAdActivity extends Activity {
 		case REQUEST_CATEGORY:
 			if (resultCode == RESULT_OK) {
 				
-				mPosAd.setSection(data.getIntExtra(SECTION, 0));
-				mPosAd.setCat(data.getIntExtra(CAT, 0));
-				mPosAd.setSub_cat(data.getIntExtra(SUB_CAT, 0));
+				mPostAd.setSection(data.getIntExtra(SECTION, 0));
+				mPostAd.setCat(data.getIntExtra(CAT, 0));
+				mPostAd.setSub_cat(data.getIntExtra(SUB_CAT, 0));
 				
-				Log.d("haipn", "Section:" + mPosAd.getSection() +  ", category:" + mPosAd.getCat() + ", sub cat:" + mPosAd.getSub_cat());
+				Log.d("haipn", "Section:" + mPostAd.getSection() +  ", category:" + mPostAd.getCat() + ", sub cat:" + mPostAd.getSub_cat());
 			}
 			break;
 		case REQUEST_ITEM: 
 			if (resultCode == RESULT_OK) {
-				mPosAd.setBrand(data.getStringExtra(BRAND));
-				mPosAd.setItem_year(data.getStringExtra(ITEM_YEAR));
-				mPosAd.setItem(data.getStringExtra(ITEM));
-				mPosAd.setTitle(data.getStringExtra(TITLE));
-				mPosAd.setTranstype(data.getIntExtra(TRANSTYPE, 1));
-				mPosAd.setDescription(data.getStringExtra(DESCRIPTION));
-				mPosAd.setD_bmx(data.getBooleanExtra(D_BMX, false));
-				mPosAd.setD_commute(data.getBooleanExtra(D_COMMUTE, false));
-				mPosAd.setD_folding(data.getBooleanExtra(D_FOLDING, false));
-				mPosAd.setD_mtb(data.getBooleanExtra(D_MTB, false));
-				mPosAd.setD_others(data.getBooleanExtra(D_OTHERS, false));
-				mPosAd.setD_road(data.getBooleanExtra(D_ROAD, false));
-				mPosAd.setSize(data.getStringExtra(SIZE));
-				mPosAd.setColour(data.getStringExtra(COLOUR));
-				mPosAd.setWeight(data.getIntExtra(WEIGHT, 0));
-				mPosAd.setCondition(data.getIntExtra(CONDITION, 0));
-				mPosAd.setWarranty(data.getIntExtra(WARRANTY, 0));
-				mPosAd.setPicturelink(data.getStringExtra(PICTURELINK));
+				mPostAd.setBrand(data.getStringExtra(BRAND));
+				mPostAd.setItem_year(data.getStringExtra(ITEM_YEAR));
+				mPostAd.setItem(data.getStringExtra(ITEM));
+				mPostAd.setTitle(data.getStringExtra(TITLE));
+				mPostAd.setTranstype(data.getIntExtra(TRANSTYPE, 1));
+				mPostAd.setDescription(data.getStringExtra(DESCRIPTION));
+				mPostAd.setD_bmx(data.getBooleanExtra(D_BMX, false));
+				mPostAd.setD_commute(data.getBooleanExtra(D_COMMUTE, false));
+				mPostAd.setD_folding(data.getBooleanExtra(D_FOLDING, false));
+				mPostAd.setD_mtb(data.getBooleanExtra(D_MTB, false));
+				mPostAd.setD_others(data.getBooleanExtra(D_OTHERS, false));
+				mPostAd.setD_road(data.getBooleanExtra(D_ROAD, false));
+				mPostAd.setSize(data.getStringExtra(SIZE));
+				mPostAd.setColour(data.getStringExtra(COLOUR));
+				mPostAd.setWeight(data.getIntExtra(WEIGHT, 0));
+				mPostAd.setCondition(data.getIntExtra(CONDITION, 0));
+				mPostAd.setWarranty(data.getIntExtra(WARRANTY, 0));
+				mPostAd.setPicturelink(data.getStringExtra(PICTURELINK));
 			}
 			break;
 		case REQUEST_PRICE:
@@ -243,6 +251,8 @@ public class PostAdActivity extends Activity {
 		}
 	}
 
+	
+	
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 

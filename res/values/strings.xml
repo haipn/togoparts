@@ -148,6 +148,7 @@
 	<string name="label_gram">Grams</string>
 	<string name="label_other_links">Other links</string>
 	<string name="label_months">Months</string>
+	<string name="title_more_ad_detail">More Ad Details</string>
     <string-array name="label_quota">
         <item>Free Ads Posted</item>
         <item>Free Ads Quota</item>
