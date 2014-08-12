@@ -4,7 +4,7 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="image_thumb">100dp</dimen>
-    <dimen name="image_thumb_postad">70dp</dimen>
+    <dimen name="image_thumb_postad">80dp</dimen>
     <dimen name="image_thumb_small">50dp</dimen>
     <dimen name="image_home">160dp</dimen>
     <dimen name="image_slide">200dp</dimen>

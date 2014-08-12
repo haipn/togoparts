@@ -707,7 +707,7 @@ public class DetailActivity extends FragmentActivity implements
 
 		mListAttribute.addAll(res.Attributes);
 		mAttributeAdapter.notifyDataSetChanged();
-		Const.setGridViewHeightBasedOnChildren(mGvAttribute);
+		Const.setGridViewHeightBasedOnChildren(mGvAttribute, 2);
 		
 		if (res.mTotalMessages == 0) {
 			mLlMessage.setVisibility(View.GONE);

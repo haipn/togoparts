@@ -1,6 +1,5 @@
 package sg.togoparts.login;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -8,16 +7,13 @@ import sg.togoparts.HeaderView;
 import sg.togoparts.R;
 import sg.togoparts.app.Const;
 import sg.togoparts.app.MyVolley;
+import sg.togoparts.gallery.InfoAdapter;
 import sg.togoparts.json.GsonRequest;
 import sg.togoparts.json.PostAd;
 import sg.togoparts.json.PostAdOnLoadResult;
+import sg.togoparts.json.PostAdOnLoadResult.ResultValue;
 import sg.togoparts.json.ResultLogin;
-import sg.togoparts.json.SearchResult.AdsResult;
 import sg.togoparts.login.MyDialogFragment.OnSelectAction;
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -27,16 +23,20 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
+import com.android.volley.Request.Method;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.Request.Method;
 import com.android.volley.Response.Listener;
+import com.android.volley.VolleyError;
 import com.aviary.android.feather.FeatherActivity;
 import com.aviary.android.feather.library.Constants;
 
@@ -86,14 +86,20 @@ public class PostAdActivity extends FragmentActivity implements
 	public static final String ADPIC4 = "adpic4";
 	public static final String ADPIC5 = "adpic5";
 	public static final String ADPIC6 = "adpic6";
+
+	// Request code in activity for result
 	public static final int REQUEST_CATEGORY = 0;
 	public static final int REQUEST_ITEM = 1;
 	public static final int REQUEST_PRICE = 2;
 	public static final int REQUEST_CONTACT = 3;
-
 	private static final int REQUEST_CAMERA = 4;
 	private static final int REQUEST_GALLERY = 5;
 	private static final int REQUEST_AVIARY = 6;
+
+	// type post ad
+	private static final int MERCHANT = 2;
+	private static final int POSTINGPACK = 1;
+	private static final int QUOTA = 0;
 
 	private TextView mTvCategory;
 	private TextView mTvItem;
@@ -103,9 +109,11 @@ public class PostAdActivity extends FragmentActivity implements
 	private RadioButton mRdoFreeAd;
 	private RadioButton mRdoPriorityAd;
 	private RadioButton mRdoNewItemAd;
+	private TextView mTvNote;
 	private HeaderView headerView;
 	private ImageButton mBtnBack;
 	private ImageButton mBtnSearch;
+	private ProgressBar mProgress;
 	private ImageView mIvLogo;
 	private TextView mTvTitleHeader;
 
@@ -115,8 +123,11 @@ public class PostAdActivity extends FragmentActivity implements
 	private ImageView mImv4;
 	private ImageView mImv5;
 	private ImageView mImv6;
+	private GridView mGvInfo;
+	private TextView mTvInfo;
 	private int mIdSelect;
 	private PostAd mPostAd;
+	private int mTypePostAd;
 
 	public void launchInstaFiverr(Uri uri) {
 		//
@@ -136,25 +147,29 @@ public class PostAdActivity extends FragmentActivity implements
 		init();
 		setListener();
 		onLoad();
-		
+
 	}
+
 	private void onLoad() {
-		headerView.setProgressVisible(View.VISIBLE);
+		mProgress.setVisibility(View.VISIBLE);
 		RequestQueue queue = MyVolley.getRequestQueue();
-		GsonRequest<PostAdOnLoadResult> myReq = new GsonRequest<PostAdOnLoadResult>(Method.POST,
-				Const.URL_POST_AD_ONLOAD, PostAdOnLoadResult.class,
-				createProfileSuccessListener(), createMyReqErrorListener()) {
+		GsonRequest<PostAdOnLoadResult> myReq = new GsonRequest<PostAdOnLoadResult>(
+				Method.POST, Const.URL_POST_AD_ONLOAD,
+				PostAdOnLoadResult.class, createOnLoadSuccessListener(),
+				createMyReqErrorListener()) {
 			protected Map<String, String> getParams()
 					throws com.android.volley.AuthFailureError {
 				Map<String, String> params = new HashMap<String, String>();
-				params.put("session_id", Const.getSessionId(PostAdActivity.this));
+				params.put("session_id",
+						Const.getSessionId(PostAdActivity.this));
 				return params;
 			};
 		};
 		queue.add(myReq);
 	}
+
 	protected void processExpired() {
-		headerView.setProgressVisible(View.VISIBLE);
+		mProgress.setVisibility(View.VISIBLE);
 		RequestQueue queue = MyVolley.getRequestQueue();
 		GsonRequest<ResultLogin> myReq = new GsonRequest<ResultLogin>(
 				Method.POST, Const.URL_SESSION_REFRESH, ResultLogin.class,
@@ -163,15 +178,17 @@ public class PostAdActivity extends FragmentActivity implements
 			protected Map<String, String> getParams()
 					throws com.android.volley.AuthFailureError {
 				Map<String, String> params = new HashMap<String, String>();
-				params.put("session_id", Const.getSessionId(PostAdActivity.this));
+				params.put("session_id",
+						Const.getSessionId(PostAdActivity.this));
 				params.put("refresh_id", Const.getSHA256EncryptedString(Const
-						.getRefreshId(PostAdActivity.this) + ChooseLogin.CLIENT_ID));
+						.getRefreshId(PostAdActivity.this)
+						+ ChooseLogin.CLIENT_ID));
 				return params;
 			};
 		};
 		queue.add(myReq);
 	}
-	
+
 	private Listener<ResultLogin> createExpireSuccessListener() {
 		return new Response.Listener<ResultLogin>() {
 			@Override
@@ -180,7 +197,7 @@ public class PostAdActivity extends FragmentActivity implements
 					Const.writeSessionId(PostAdActivity.this,
 							response.Result.session_id,
 							response.Result.refresh_id);
-					headerView.setProgressVisible(View.GONE);
+					mProgress.setVisibility(View.GONE);
 					onLoad();
 				} else {
 					showError(response.Result.Message);
@@ -188,25 +205,72 @@ public class PostAdActivity extends FragmentActivity implements
 			}
 		};
 	}
+
 	protected void showError(String message) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
-	private Listener<PostAdOnLoadResult> createProfileSuccessListener() {
+	private Listener<PostAdOnLoadResult> createOnLoadSuccessListener() {
 		return new Response.Listener<PostAdOnLoadResult>() {
 
 			@Override
 			public void onResponse(PostAdOnLoadResult response) {
-				headerView.setProgressVisible(View.GONE);
+				mProgress.setVisibility(View.GONE);
 				Log.d("haipn", "profile response:" + response.Result.Return);
 				if (response.Result.Return.equals("expired")) {
 					processExpired();
 				} else if (response.Result.Return.equals("success")) {
+					onLoadProcess(response.Result);
+				} else if (response.Result.Return.equals("error")) {
+
 				}
 			}
 		};
 	}
+
+	protected void onLoadProcess(ResultValue result) {
+		InfoAdapter adapter = null;
+		if (result.merchant != null) {
+			mTvInfo.setText(R.string.merchant_pack_ads);
+			adapter = new InfoAdapter(this, result.merchant);
+			mTypePostAd = MERCHANT;
+		} else if (result.postingpack != null) {
+			mTvInfo.setText(R.string.posting_pack_ads);
+			adapter = new InfoAdapter(this, result.postingpack);
+			mTypePostAd = POSTINGPACK;
+		} else {
+			mTypePostAd = QUOTA;
+			adapter = new InfoAdapter(this, result.quota);
+		}
+
+		validationTypePost(result);
+		mGvInfo.setAdapter(adapter);
+		Const.setGridViewHeightBasedOnChildren(mGvInfo, 3);
+	}
+
+	private void validationTypePost(ResultValue ret) {
+		if (mTypePostAd == MERCHANT || mTypePostAd == POSTINGPACK) {
+			mRdoFreeAd.setEnabled(false);
+			mRdoPriorityAd.setEnabled(false);
+			mRdoNewItemAd.setEnabled(true);
+			mRdoNewItemAd.setChecked(true);
+			mTvNote.setText(R.string.note_newitem_ad);
+		} else {
+			if (ret.TCreds >= ret.min_newitem_cost) {
+				mRdoNewItemAd.setEnabled(true);
+			} else
+				mRdoNewItemAd.setEnabled(false);
+			if (ret.TCreds >= ret.min_priority_cost) {
+				mRdoPriorityAd.setEnabled(true);
+			} else
+				mRdoPriorityAd.setEnabled(false);
+			mRdoFreeAd.setEnabled(true);
+			mRdoFreeAd.setChecked(true);
+			mTvNote.setText("");
+		}
+	}
+
 	private Response.ErrorListener createMyReqErrorListener() {
 		return new Response.ErrorListener() {
 			@Override
@@ -215,11 +279,12 @@ public class PostAdActivity extends FragmentActivity implements
 			}
 		};
 	}
+
 	private void createHeader() {
 		mBtnBack = (ImageButton) findViewById(R.id.btnBack);
 		mBtnSearch = (ImageButton) findViewById(R.id.btnSearch);
 		findViewById(R.id.logo).setVisibility(View.GONE);
-
+		mProgress = (ProgressBar) findViewById(R.id.progress);
 		mTvTitleHeader = (TextView) findViewById(R.id.title);
 		mTvTitleHeader.setVisibility(View.VISIBLE);
 		mTvTitleHeader.setText(R.string.title_postad);
@@ -227,7 +292,7 @@ public class PostAdActivity extends FragmentActivity implements
 
 			@Override
 			public void onClick(View v) {
-				
+
 			}
 		});
 		mBtnSearch.setVisibility(View.VISIBLE);
@@ -243,7 +308,7 @@ public class PostAdActivity extends FragmentActivity implements
 		mRdoFreeAd = (RadioButton) findViewById(R.id.rdoFreeAd);
 		mRdoNewItemAd = (RadioButton) findViewById(R.id.rdoNewItemAd);
 		mRdoPriorityAd = (RadioButton) findViewById(R.id.rdoPriorityAd);
-
+		mTvNote = (TextView) findViewById(R.id.tvNote);
 		mTvCategory = (TextView) findViewById(R.id.tvCategory);
 		mTvItem = (TextView) findViewById(R.id.tvItem);
 		mTvPrice = (TextView) findViewById(R.id.tvPrice);
@@ -260,7 +325,10 @@ public class PostAdActivity extends FragmentActivity implements
 		mImv5.setOnClickListener(this);
 		mImv6 = (ImageView) findViewById(R.id.imv6);
 		mImv6.setOnClickListener(this);
-		
+
+		mGvInfo = (GridView) findViewById(R.id.gvInfo);
+		mTvInfo = (TextView) findViewById(R.id.tvInfo);
+
 	}
 
 	private void setListener() {
@@ -333,6 +401,59 @@ public class PostAdActivity extends FragmentActivity implements
 
 			}
 		});
+
+		mRdoFreeAd.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+
+			@Override
+			public void onCheckedChanged(CompoundButton arg0, boolean arg1) {
+				if (arg1) {
+					mTvNote.setText("");
+					mImv2.setEnabled(false);
+					mImv2.setImageResource(R.drawable.unselected_pic);
+					mImv3.setEnabled(false);
+					mImv3.setImageResource(R.drawable.unselected_pic);
+					mImv4.setEnabled(false);
+					mImv4.setImageResource(R.drawable.unselected_pic);
+					mImv5.setEnabled(false);
+					mImv5.setImageResource(R.drawable.unselected_pic);
+					mImv6.setEnabled(false);
+					mImv6.setImageResource(R.drawable.unselected_pic);
+				} else {
+					mImv2.setEnabled(true);
+					mImv2.setImageResource(R.drawable.upload_pic);
+					mImv3.setEnabled(true);
+					mImv3.setImageResource(R.drawable.upload_pic);
+					mImv4.setEnabled(true);
+					mImv4.setImageResource(R.drawable.upload_pic);
+					mImv5.setEnabled(true);
+					mImv5.setImageResource(R.drawable.upload_pic);
+					mImv6.setEnabled(true);
+					mImv6.setImageResource(R.drawable.upload_pic);
+				}
+			}
+		});
+
+		mRdoNewItemAd.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+
+			@Override
+			public void onCheckedChanged(CompoundButton buttonView,
+					boolean isChecked) {
+				if (isChecked) {
+					mTvNote.setText(R.string.note_newitem_ad);
+				}
+			}
+		});
+		mRdoPriorityAd
+				.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+
+					@Override
+					public void onCheckedChanged(CompoundButton buttonView,
+							boolean isChecked) {
+						if (isChecked) {
+							mTvNote.setText(R.string.note_priority_ad);
+						}
+					}
+				});
 	}
 
 	@Override

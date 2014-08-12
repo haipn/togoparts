@@ -205,7 +205,7 @@ public class ProfileFragment extends Fragment_Main {
 		else if (result.postingpack != null)
 			mListValue.addAll(result.postingpack);
 		mInfoAdapter.notifyDataSetChanged();
-		Const.setGridViewHeightBasedOnChildren(mGvInfo);
+		Const.setGridViewHeightBasedOnChildren(mGvInfo, 2);
 	}
 
 	protected void processExpired() {

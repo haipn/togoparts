@@ -125,6 +125,8 @@
     <string name="item">Item</string>
     <string name="contact_info">Contact Info &amp; Location</string>
     <string name="my_ads_quota">My Ads Quota</string>
+    <string name="posting_pack_ads">Posting Pack Ads Information</string>
+    <string name="merchant_pack_ads">Merchant Ads Information</string>
     <string name="submit">Submit</string>
     <string name="title_postad">Posting</string>
     <string name="title_section">Sections</string>

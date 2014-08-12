@@ -80,7 +80,7 @@
                             android:id="@+id/imv1"
                             android:layout_width="@dimen/image_thumb_postad"
                             android:layout_height="@dimen/image_thumb_postad"
-                            android:src="@drawable/unselected_pic" />
+                            android:src="@drawable/upload_pic" />
 
                         <TextView
                             android:layout_width="match_parent"
@@ -242,6 +242,7 @@
                 android:layout_height="wrap_content"
                 android:background="@color/normal_gray"
                 android:padding="10dp"
+                android:id="@+id/tvInfo"
                 android:text="@string/my_ads_quota"
                 android:textAppearance="@android:style/TextAppearance.Large" />
 
