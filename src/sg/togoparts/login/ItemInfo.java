@@ -31,7 +31,6 @@ import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.ViewFlipper;
 import android.widget.ViewSwitcher;
 
 import com.android.volley.Request.Method;

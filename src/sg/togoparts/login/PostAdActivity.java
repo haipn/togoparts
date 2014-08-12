@@ -1,27 +1,47 @@
 package sg.togoparts.login;
 
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.Map;
 
 import sg.togoparts.HeaderView;
 import sg.togoparts.R;
+import sg.togoparts.app.Const;
+import sg.togoparts.app.MyVolley;
+import sg.togoparts.json.GsonRequest;
 import sg.togoparts.json.PostAd;
+import sg.togoparts.json.PostAdOnLoadResult;
+import sg.togoparts.json.ResultLogin;
+import sg.togoparts.json.SearchResult.AdsResult;
+import sg.togoparts.login.MyDialogFragment.OnSelectAction;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
-public class PostAdActivity extends Activity {
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.Request.Method;
+import com.android.volley.Response.Listener;
+import com.aviary.android.feather.FeatherActivity;
+import com.aviary.android.feather.library.Constants;
+
+public class PostAdActivity extends FragmentActivity implements
+		View.OnClickListener, OnSelectAction {
 
 	public static final String AID = "aid";
 	public static final String ADTYPE = "adtype";
@@ -71,6 +91,10 @@ public class PostAdActivity extends Activity {
 	public static final int REQUEST_PRICE = 2;
 	public static final int REQUEST_CONTACT = 3;
 
+	private static final int REQUEST_CAMERA = 4;
+	private static final int REQUEST_GALLERY = 5;
+	private static final int REQUEST_AVIARY = 6;
+
 	private TextView mTvCategory;
 	private TextView mTvItem;
 	private TextView mTvPrice;
@@ -84,10 +108,25 @@ public class PostAdActivity extends Activity {
 	private ImageButton mBtnSearch;
 	private ImageView mIvLogo;
 	private TextView mTvTitleHeader;
+
+	private ImageView mImv1;
+	private ImageView mImv2;
+	private ImageView mImv3;
+	private ImageView mImv4;
+	private ImageView mImv5;
+	private ImageView mImv6;
+	private int mIdSelect;
 	private PostAd mPostAd;
 
-	
-	
+	public void launchInstaFiverr(Uri uri) {
+		//
+		Intent newIntent = new Intent(this, FeatherActivity.class);
+		newIntent.setData(uri);
+		newIntent.putExtra(Constants.EXTRA_IN_API_KEY_SECRET,
+				"6cedc33767b3b37c");
+		startActivityForResult(newIntent, REQUEST_AVIARY);
+	}
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -96,8 +135,86 @@ public class PostAdActivity extends Activity {
 		createHeader();
 		init();
 		setListener();
+		onLoad();
+		
+	}
+	private void onLoad() {
+		headerView.setProgressVisible(View.VISIBLE);
+		RequestQueue queue = MyVolley.getRequestQueue();
+		GsonRequest<PostAdOnLoadResult> myReq = new GsonRequest<PostAdOnLoadResult>(Method.POST,
+				Const.URL_POST_AD_ONLOAD, PostAdOnLoadResult.class,
+				createProfileSuccessListener(), createMyReqErrorListener()) {
+			protected Map<String, String> getParams()
+					throws com.android.volley.AuthFailureError {
+				Map<String, String> params = new HashMap<String, String>();
+				params.put("session_id", Const.getSessionId(PostAdActivity.this));
+				return params;
+			};
+		};
+		queue.add(myReq);
+	}
+	protected void processExpired() {
+		headerView.setProgressVisible(View.VISIBLE);
+		RequestQueue queue = MyVolley.getRequestQueue();
+		GsonRequest<ResultLogin> myReq = new GsonRequest<ResultLogin>(
+				Method.POST, Const.URL_SESSION_REFRESH, ResultLogin.class,
+				createExpireSuccessListener(), createMyReqErrorListener()) {
+
+			protected Map<String, String> getParams()
+					throws com.android.volley.AuthFailureError {
+				Map<String, String> params = new HashMap<String, String>();
+				params.put("session_id", Const.getSessionId(PostAdActivity.this));
+				params.put("refresh_id", Const.getSHA256EncryptedString(Const
+						.getRefreshId(PostAdActivity.this) + ChooseLogin.CLIENT_ID));
+				return params;
+			};
+		};
+		queue.add(myReq);
+	}
+	
+	private Listener<ResultLogin> createExpireSuccessListener() {
+		return new Response.Listener<ResultLogin>() {
+			@Override
+			public void onResponse(ResultLogin response) {
+				if (response.Result.Return.equals("success")) {
+					Const.writeSessionId(PostAdActivity.this,
+							response.Result.session_id,
+							response.Result.refresh_id);
+					headerView.setProgressVisible(View.GONE);
+					onLoad();
+				} else {
+					showError(response.Result.Message);
+				}
+			}
+		};
+	}
+	protected void showError(String message) {
+		// TODO Auto-generated method stub
+		
 	}
 
+	private Listener<PostAdOnLoadResult> createProfileSuccessListener() {
+		return new Response.Listener<PostAdOnLoadResult>() {
+
+			@Override
+			public void onResponse(PostAdOnLoadResult response) {
+				headerView.setProgressVisible(View.GONE);
+				Log.d("haipn", "profile response:" + response.Result.Return);
+				if (response.Result.Return.equals("expired")) {
+					processExpired();
+				} else if (response.Result.Return.equals("success")) {
+				}
+			}
+		};
+	}
+	private Response.ErrorListener createMyReqErrorListener() {
+		return new Response.ErrorListener() {
+			@Override
+			public void onErrorResponse(VolleyError error) {
+				Log.d("haipn", "error:" + error.networkResponse);
+			}
+		};
+	}
 	private void createHeader() {
 		mBtnBack = (ImageButton) findViewById(R.id.btnBack);
 		mBtnSearch = (ImageButton) findViewById(R.id.btnSearch);
@@ -110,6 +227,7 @@ public class PostAdActivity extends Activity {
 
 			@Override
 			public void onClick(View v) {
+				
 			}
 		});
 		mBtnSearch.setVisibility(View.VISIBLE);
@@ -130,7 +248,19 @@ public class PostAdActivity extends Activity {
 		mTvItem = (TextView) findViewById(R.id.tvItem);
 		mTvPrice = (TextView) findViewById(R.id.tvPrice);
 		mTvContact = (TextView) findViewById(R.id.tvContact);
-
+		mImv1 = (ImageView) findViewById(R.id.imv1);
+		mImv1.setOnClickListener(this);
+		mImv2 = (ImageView) findViewById(R.id.imv2);
+		mImv2.setOnClickListener(this);
+		mImv3 = (ImageView) findViewById(R.id.imv3);
+		mImv3.setOnClickListener(this);
+		mImv4 = (ImageView) findViewById(R.id.imv4);
+		mImv4.setOnClickListener(this);
+		mImv5 = (ImageView) findViewById(R.id.imv5);
+		mImv5.setOnClickListener(this);
+		mImv6 = (ImageView) findViewById(R.id.imv6);
+		mImv6.setOnClickListener(this);
+		
 	}
 
 	private void setListener() {
@@ -144,7 +274,7 @@ public class PostAdActivity extends Activity {
 			}
 		});
 		mTvItem.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 				Intent i = new Intent(PostAdActivity.this, ItemInfo.class);
@@ -166,26 +296,26 @@ public class PostAdActivity extends Activity {
 				i.putExtra(CONDITION, mPostAd.getCondition());
 				i.putExtra(WARRANTY, mPostAd.getWarranty());
 				i.putExtra(PICTURELINK, PICTURELINK);
-				
+
 				startActivityForResult(i, REQUEST_ITEM);
 			}
 		});
 		mTvPrice.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 				Intent i = new Intent(PostAdActivity.this, Price.class);
 				i.putExtra(PRICE, mPostAd.getPrice());
-				i.putExtra(PRICETYPE,mPostAd.getPricetype());
+				i.putExtra(PRICETYPE, mPostAd.getPricetype());
 				i.putExtra(ORIGINAL_PRICE, mPostAd.getOriginal_price());
 				i.putExtra(CLEARANCE, mPostAd.isClearance());
 				startActivityForResult(i, REQUEST_PRICE);
-				
+
 			}
 		});
-		
+
 		mTvContact.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 				Intent i = new Intent(PostAdActivity.this, ContactInfo.class);
@@ -200,7 +330,7 @@ public class PostAdActivity extends Activity {
 				i.putExtra(CONTACTPERSON, mPostAd.getContactperson());
 				i.putExtra(TIME_TO_CONTACT, mPostAd.getTime_to_contact());
 				startActivityForResult(i, REQUEST_CONTACT);
-				
+
 			}
 		});
 	}
@@ -212,15 +342,17 @@ public class PostAdActivity extends Activity {
 		switch (requestCode) {
 		case REQUEST_CATEGORY:
 			if (resultCode == RESULT_OK) {
-				
+
 				mPostAd.setSection(data.getIntExtra(SECTION, 0));
 				mPostAd.setCat(data.getIntExtra(CAT, 0));
 				mPostAd.setSub_cat(data.getIntExtra(SUB_CAT, 0));
-				
-				Log.d("haipn", "Section:" + mPostAd.getSection() +  ", category:" + mPostAd.getCat() + ", sub cat:" + mPostAd.getSub_cat());
+
+				Log.d("haipn", "Section:" + mPostAd.getSection()
+						+ ", category:" + mPostAd.getCat() + ", sub cat:"
+						+ mPostAd.getSub_cat());
 			}
 			break;
-		case REQUEST_ITEM: 
+		case REQUEST_ITEM:
 			if (resultCode == RESULT_OK) {
 				mPostAd.setBrand(data.getStringExtra(BRAND));
 				mPostAd.setItem_year(data.getStringExtra(ITEM_YEAR));
@@ -243,16 +375,71 @@ public class PostAdActivity extends Activity {
 			}
 			break;
 		case REQUEST_PRICE:
+			if (resultCode == RESULT_OK) {
+				mPostAd.setPrice(data.getIntExtra(PRICE, 0));
+				mPostAd.setOriginal_price(data.getIntExtra(ORIGINAL_PRICE, 0));
+				mPostAd.setClearance(data.getBooleanExtra(CLEARANCE, false));
+				mPostAd.setPricetype(data.getIntExtra(PRICETYPE, 3));
+			}
 			break;
 		case REQUEST_CONTACT:
+			if (resultCode == RESULT_OK) {
+				mPostAd.setCity(data.getStringExtra(CITY));
+				mPostAd.setRegion(data.getStringExtra(REGION));
+				mPostAd.setCountry(data.getStringExtra(COUNTRY));
+				mPostAd.setPostalcode(data.getStringExtra(POSTALCODE));
+				mPostAd.setAddress(data.getStringExtra(ADDRESS));
+				mPostAd.setLatitude(data.getDoubleExtra(LAT, 0));
+				mPostAd.setLongitude(data.getDoubleExtra(LONGITUDE, 0));
+				mPostAd.setContactno(data.getStringExtra(CONTACTNO));
+				mPostAd.setContactperson(data.getStringExtra(CONTACTPERSON));
+				mPostAd.setTime_to_contact(data.getIntExtra(TIME_TO_CONTACT, 0));
+			}
+			break;
+		case REQUEST_CAMERA:
+			if (resultCode == RESULT_OK) {
+				Uri imageUri = data.getData();
+				launchInstaFiverr(imageUri);
+			}
+			break;
+		case REQUEST_GALLERY:
+			if (resultCode == RESULT_OK) {
+				Uri imageUri = data.getData();
+				launchInstaFiverr(imageUri);
+			}
+			break;
+		case REQUEST_AVIARY:
+			if (resultCode == RESULT_OK) {
+				Uri mImageUri = data.getData();
+				switch (mIdSelect) {
+				case 1:
+					mImv1.setImageURI(mImageUri);
+					break;
+				case 2:
+					mImv2.setImageURI(mImageUri);
+					break;
+				case 3:
+					mImv3.setImageURI(mImageUri);
+					break;
+				case 4:
+					mImv4.setImageURI(mImageUri);
+					break;
+				case 5:
+					mImv5.setImageURI(mImageUri);
+					break;
+				case 6:
+					mImv6.setImageURI(mImageUri);
+					break;
+				default:
+					break;
+				}
+			}
 			break;
 		default:
 			break;
 		}
 	}
 
-	
-	
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 
@@ -265,4 +452,45 @@ public class PostAdActivity extends Activity {
 		}
 		return super.onKeyDown(keyCode, event);
 	}
+
+	@Override
+	public void onClick(View v) {
+		switch (v.getId()) {
+		case R.id.imv1:
+			mIdSelect = 1;
+			break;
+		case R.id.imv2:
+			mIdSelect = 2;
+			break;
+		case R.id.imv3:
+			mIdSelect = 3;
+			break;
+		case R.id.imv4:
+			mIdSelect = 4;
+			break;
+		case R.id.imv5:
+			mIdSelect = 5;
+			break;
+		case R.id.imv6:
+			mIdSelect = 6;
+			break;
+		}
+		DialogFragment newFragment = new MyDialogFragment(this);
+		newFragment.show(getSupportFragmentManager(), "dialog");
+	}
+
+	@Override
+	public void onCaptureSelect() {
+		Intent cameraIntent = new Intent(
+				android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+		startActivityForResult(cameraIntent, REQUEST_CAMERA);
+	}
+
+	@Override
+	public void onPickSelect() {
+		Intent i = new Intent(Intent.ACTION_PICK,
+				android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+		startActivityForResult(i, REQUEST_GALLERY);
+	}
+
 }

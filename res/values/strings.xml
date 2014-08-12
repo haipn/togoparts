@@ -120,35 +120,83 @@
     <string name="label_view_all_comment">View %d more earlier comments</string>
     <string name="note_priority_ad">Get your Used Item sorted above all Free Ads.</string>
     <string name="note_newitem_ad">Make a Profit selling New Items and get sorted above all Priority Ads.</string>
-	<string name="details">Details</string>
-	<string name="category">Category</string>
-	<string name="item">Item</string>
-	<string name="contact_info">Contact Info &amp; Location</string>
-	<string name="my_ads_quota">My Ads Quota</string>
-	<string name="submit">Submit</string>
-	<string name="title_postad">Posting</string>
-	<string name="title_section">Sections</string>
-	<string name="title_category">Category</string>
-	<string name="title_sub_category">Sub Category</string>
-	
-	<string name="brand">Brand</string>
-	<string name="model">Model</string>
-	<string name="ad_title">Ad title</string>
-	<string name="ad_discipline">Ad Discipline</string>
-	<string name="ad_description">Ad Description</string>
-	
-	<string name="title_item_info">Item Info</string>
-	<string name="next">Next</string>
-	<string name="save">Save</string>
-	<string name="label_condition">Condition</string>
-	<string name="label_warranty">Warranty left</string>
-	<string name="label_per_ten">/10</string>
-	<string name="label_colour">Colour</string>
-	<string name="label_weight">Weight</string>
-	<string name="label_gram">Grams</string>
-	<string name="label_other_links">Other links</string>
-	<string name="label_months">Months</string>
-	<string name="title_more_ad_detail">More Ad Details</string>
+    <string name="details">Details</string>
+    <string name="category">Category</string>
+    <string name="item">Item</string>
+    <string name="contact_info">Contact Info &amp; Location</string>
+    <string name="my_ads_quota">My Ads Quota</string>
+    <string name="submit">Submit</string>
+    <string name="title_postad">Posting</string>
+    <string name="title_section">Sections</string>
+    <string name="title_category">Category</string>
+    <string name="title_sub_category">Sub Category</string>
+    <string name="brand">Brand</string>
+    <string name="model">Model</string>
+    <string name="ad_title">Ad title</string>
+    <string name="ad_discipline">Ad Discipline</string>
+    <string name="ad_description">Ad Description</string>
+    <string name="title_item_info">Item Info</string>
+    <string name="next">Next</string>
+    <string name="save">Save</string>
+    <string name="label_condition">Condition</string>
+    <string name="label_warranty">Warranty left</string>
+    <string name="label_per_ten">/10</string>
+    <string name="label_colour">Colour</string>
+    <string name="label_weight">Weight</string>
+    <string name="label_gram">Grams</string>
+    <string name="label_other_links">Other links</string>
+    <string name="label_months">Months</string>
+    <string name="title_more_ad_detail">More Ad Details</string>
+    <string name="label_price">Price</string>
+    <string name="label_sgd">SGD:</string>
+    <string name="label_firm_neg">Firm / Neg</string>
+    <string name="label_original_price">Original price</string>
+    <string name="label_clearance">CLEARANCE</string>
+    <string name="label_contact_person">Contact Person</string>
+    <string name="label_contact_number">Contact Number</string>
+    <string name="label_besttime">Best Time to Call</string>
+
+    <!-- Message location -->
+    <string name="connected">Client connected</string>
+    <string name="connection_error_code_unknown">Unknown connection error code:  %1$d</string>
+    <string name="connection_failed">Connection failed</string>
+    <string name="disconnected">Client disconnected</string>
+    <string name="get_address">Get Address</string>
+    <string name="get_location">Get Location</string>
+    <string name="illegal_argument_exception">        Illegal arguments: Latitude %1$.8f Longitude %2$.8f</string>
+    <string name="invalid_action">Invalid intent action %1$s</string>
+    <string name="invalid_integer_id">Invalid integer request ID: %1$s</string>
+    <string name="IO_Exception_getFromLocation">IO Exception in Geocoder.getFromLocation()</string>
+    <string name="location_requested">Periodic updates requested</string>
+    <string name="location_updated">Location updated</string>
+    <string name="location_update_error">Location update failed</string>
+    <string name="location_update_error_detail">        Location update error. code %1$d message %2$s</string>
+    <string name="location_update_missing_update">        Location update error. No incoming location.</string>
+    <string name="location_updates_stopped">Periodic updates stopped</string>
+    <string name="log_new_location">New location: %1$s</string>
+    <string name="no_address_found">No address found for location</string>
+    <string name="no_connection">No connection: Cannot request location</string>
+    <string name="no_geocoder_available">Cannot get address. No geocoder available.</string>
+    <string name="no_location_available">Location not available</string>
+    <string name="resolved">Error resolved. Please re-try operation.</string>
+    <string name="no_resolution">Google Play services: unable to resolve connection error.</string>
+    <string name="periodic_update_stop">Stopping periodic updates</string>
+    <string name="play_services_available">Google Play services is available</string>
+    <string name="request_location_updates_in_progress">Can\'t request location updates, previous request hasn\'t finished</string>
+    <string name="select_action">Select action</string>
+
+    <string-array name="actions">
+        <item>Capture image from camera</item>
+        <item>Pick image from gallery</item>
+    </string-array>
+    <string-array name="best_time">
+        <item>Anytime</item>
+        <item>Morning</item>
+        <item>Afternoon</item>
+        <item>After 7pm</item>
+        <item>SMS/WhatsApp only</item>
+        <item>Private Message only</item>
+    </string-array>
     <string-array name="label_quota">
         <item>Free Ads Posted</item>
         <item>Free Ads Quota</item>

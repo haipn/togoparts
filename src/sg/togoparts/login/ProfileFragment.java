@@ -164,7 +164,7 @@ public class ProfileFragment extends Fragment_Main {
 		headerView.setProgressVisible(View.VISIBLE);
 		RequestQueue queue = MyVolley.getRequestQueue();
 		GsonRequest<Profile> myReq = new GsonRequest<Profile>(Method.POST,
-				Const.URL_GET_PROFILE, Profile.class,
+				Const.URL_POST_AD_ONLOAD, Profile.class,
 				createProfileSuccessListener(), createMyReqErrorListener()) {
 			protected Map<String, String> getParams()
 					throws com.android.volley.AuthFailureError {
