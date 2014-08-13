@@ -54,10 +54,18 @@ public class Price extends Activity {
 			@Override
 			public void onClick(View v) {
 				Intent i = getIntent();
-				int price = Integer.valueOf(mEdtPrice.getText().toString());
+				int price;
+				if (mEdtPrice.getText().toString().length() > 0)
+					price = Integer.valueOf(mEdtPrice.getText().toString());
+				else
+					price = 0;
 				i.putExtra(PostAdActivity.PRICE, price);
-				int original = Integer.valueOf(mEdtOriginalPrice.getText()
-						.toString());
+				int original;
+				if (mEdtOriginalPrice.getText().toString().length() > 0)
+					original = Integer.valueOf(mEdtOriginalPrice.getText()
+							.toString());
+				else
+					original = 0;
 				i.putExtra(PostAdActivity.ORIGINAL_PRICE, original);
 				i.putExtra(PostAdActivity.PRICETYPE,
 						listPricetype.get(mSpnPriceType.getSelectedItem()));

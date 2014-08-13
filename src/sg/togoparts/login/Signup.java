@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import sg.togoparts.R;
-import sg.togoparts.TabsActivityMain;
 import sg.togoparts.app.Const;
 import sg.togoparts.app.MyVolley;
 import sg.togoparts.json.GsonRequest;
@@ -26,6 +25,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request.Method;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -41,7 +41,7 @@ public class Signup extends FragmentActivity {
 
 	private TextView mTvName;
 	private TextView mTvEmail;
-	
+
 	private Spinner mSpnCountry;
 	private EditText mEdtUsername;
 	private Button mBtnSignup;
@@ -91,24 +91,26 @@ public class Signup extends FragmentActivity {
 
 			}
 		});
-		
+
 		mSpnCountry.setOnItemSelectedListener(new OnItemSelectedListener() {
 
 			@Override
 			public void onItemSelected(AdapterView<?> parent, View view,
 					int position, long id) {
-				Log.d("haipn", "spiner country:" + (String)mSpnCountry.getSelectedItem());
+				Log.d("haipn",
+						"spiner country:"
+								+ (String) mSpnCountry.getSelectedItem());
 			}
 
 			@Override
 			public void onNothingSelected(AdapterView<?> parent) {
 				// TODO Auto-generated method stub
-				
+
 			}
 		});
-		
+
 		mDialog = new ErrorDialog();
-		mProgressDialog = new ProgressDialog(this); 
+		mProgressDialog = new ProgressDialog(this);
 	}
 
 	private void signup() {
@@ -118,8 +120,7 @@ public class Signup extends FragmentActivity {
 				Method.POST, Const.URL_SIGNUP, ResultLogin.class,
 				createSignupSuccessListener(), createMyReqErrorListener()) {
 
-			protected Map<String, String> getParams()
-					throws com.android.volley.AuthFailureError {
+			protected Map<String, String> getParams() throws AuthFailureError {
 				Map<String, String> params = new HashMap<String, String>();
 				params.put("FBid", mFbId);
 				params.put("FBemail", mFbEmail);
@@ -142,9 +143,8 @@ public class Signup extends FragmentActivity {
 					Const.writeSessionId(Signup.this,
 							response.Result.session_id,
 							response.Result.refresh_id);
-					Toast.makeText(Signup.this,
-							"Signup Account successful", Toast.LENGTH_LONG)
-							.show();
+					Toast.makeText(Signup.this, "Signup Account successful",
+							Toast.LENGTH_LONG).show();
 					mProgressDialog.dismiss();
 					setResult(RESULT_OK);
 					finish();
@@ -183,6 +183,7 @@ public class Signup extends FragmentActivity {
 		mDialog.setMessage(msg);
 		mDialog.show(getSupportFragmentManager(), "error");
 	}
+
 	public class Country {
 		public CountryList Result;
 

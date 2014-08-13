@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
 
     <include
         android:id="@+id/header"
@@ -238,11 +238,11 @@
                 android:textAppearance="@android:style/TextAppearance.Medium" />
 
             <TextView
+                android:id="@+id/tvInfo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/normal_gray"
                 android:padding="10dp"
-                android:id="@+id/tvInfo"
                 android:text="@string/my_ads_quota"
                 android:textAppearance="@android:style/TextAppearance.Large" />
 
@@ -250,7 +250,9 @@
                 android:id="@+id/gvInfo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:numColumns="3" >
+                android:numColumns="3"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp" >
             </GridView>
 
             <Button

@@ -1,7 +1,22 @@
 package sg.togoparts.login;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.mime.HttpMultipartMode;
+import org.apache.http.entity.mime.MultipartEntity;
+import org.apache.http.entity.mime.MultipartEntityBuilder;
+import org.apache.http.entity.mime.content.FileBody;
+import org.apache.http.entity.mime.content.StringBody;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.util.EntityUtils;
 
 import sg.togoparts.HeaderView;
 import sg.togoparts.R;
@@ -9,20 +24,26 @@ import sg.togoparts.app.Const;
 import sg.togoparts.app.MyVolley;
 import sg.togoparts.gallery.InfoAdapter;
 import sg.togoparts.json.GsonRequest;
+import sg.togoparts.json.MultipartRequest;
 import sg.togoparts.json.PostAd;
 import sg.togoparts.json.PostAdOnLoadResult;
 import sg.togoparts.json.PostAdOnLoadResult.ResultValue;
 import sg.togoparts.json.ResultLogin;
 import sg.togoparts.login.MyDialogFragment.OnSelectAction;
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.GridView;
@@ -32,6 +53,7 @@ import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request.Method;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -42,7 +64,7 @@ import com.aviary.android.feather.library.Constants;
 
 public class PostAdActivity extends FragmentActivity implements
 		View.OnClickListener, OnSelectAction {
-
+	public static final String SESSION_ID = "session_id";
 	public static final String AID = "aid";
 	public static final String ADTYPE = "adtype";
 	public static final String CITY = "city";
@@ -125,6 +147,7 @@ public class PostAdActivity extends FragmentActivity implements
 	private ImageView mImv6;
 	private GridView mGvInfo;
 	private TextView mTvInfo;
+	private Button mBtnSubmit;
 	private int mIdSelect;
 	private PostAd mPostAd;
 	private int mTypePostAd;
@@ -134,7 +157,7 @@ public class PostAdActivity extends FragmentActivity implements
 		Intent newIntent = new Intent(this, FeatherActivity.class);
 		newIntent.setData(uri);
 		newIntent.putExtra(Constants.EXTRA_IN_API_KEY_SECRET,
-				"6cedc33767b3b37c");
+				"72ef1fcfae120bfa");
 		startActivityForResult(newIntent, REQUEST_AVIARY);
 	}
 
@@ -157,8 +180,7 @@ public class PostAdActivity extends FragmentActivity implements
 				Method.POST, Const.URL_POST_AD_ONLOAD,
 				PostAdOnLoadResult.class, createOnLoadSuccessListener(),
 				createMyReqErrorListener()) {
-			protected Map<String, String> getParams()
-					throws com.android.volley.AuthFailureError {
+			protected Map<String, String> getParams() throws AuthFailureError {
 				Map<String, String> params = new HashMap<String, String>();
 				params.put("session_id",
 						Const.getSessionId(PostAdActivity.this));
@@ -175,8 +197,7 @@ public class PostAdActivity extends FragmentActivity implements
 				Method.POST, Const.URL_SESSION_REFRESH, ResultLogin.class,
 				createExpireSuccessListener(), createMyReqErrorListener()) {
 
-			protected Map<String, String> getParams()
-					throws com.android.volley.AuthFailureError {
+			protected Map<String, String> getParams() throws AuthFailureError {
 				Map<String, String> params = new HashMap<String, String>();
 				params.put("session_id",
 						Const.getSessionId(PostAdActivity.this));
@@ -328,7 +349,7 @@ public class PostAdActivity extends FragmentActivity implements
 
 		mGvInfo = (GridView) findViewById(R.id.gvInfo);
 		mTvInfo = (TextView) findViewById(R.id.tvInfo);
-
+		mBtnSubmit = (Button) findViewById(R.id.btnSubmit);
 	}
 
 	private void setListener() {
@@ -454,6 +475,7 @@ public class PostAdActivity extends FragmentActivity implements
 						}
 					}
 				});
+		mBtnSubmit.setOnClickListener(new OnPostAdClick());
 	}
 
 	@Override
@@ -471,6 +493,8 @@ public class PostAdActivity extends FragmentActivity implements
 				Log.d("haipn", "Section:" + mPostAd.getSection()
 						+ ", category:" + mPostAd.getCat() + ", sub cat:"
 						+ mPostAd.getSub_cat());
+				mTvCategory.setCompoundDrawablesWithIntrinsicBounds(
+						R.drawable.category_icon, 0, R.drawable.tick, 0);
 			}
 			break;
 		case REQUEST_ITEM:
@@ -493,6 +517,8 @@ public class PostAdActivity extends FragmentActivity implements
 				mPostAd.setCondition(data.getIntExtra(CONDITION, 0));
 				mPostAd.setWarranty(data.getIntExtra(WARRANTY, 0));
 				mPostAd.setPicturelink(data.getStringExtra(PICTURELINK));
+				mTvItem.setCompoundDrawablesWithIntrinsicBounds(
+						R.drawable.item_icon, 0, R.drawable.tick, 0);
 			}
 			break;
 		case REQUEST_PRICE:
@@ -501,6 +527,8 @@ public class PostAdActivity extends FragmentActivity implements
 				mPostAd.setOriginal_price(data.getIntExtra(ORIGINAL_PRICE, 0));
 				mPostAd.setClearance(data.getBooleanExtra(CLEARANCE, false));
 				mPostAd.setPricetype(data.getIntExtra(PRICETYPE, 3));
+				mTvPrice.setCompoundDrawablesWithIntrinsicBounds(
+						R.drawable.price_icon, 0, R.drawable.tick, 0);
 			}
 			break;
 		case REQUEST_CONTACT:
@@ -514,7 +542,9 @@ public class PostAdActivity extends FragmentActivity implements
 				mPostAd.setLongitude(data.getDoubleExtra(LONGITUDE, 0));
 				mPostAd.setContactno(data.getStringExtra(CONTACTNO));
 				mPostAd.setContactperson(data.getStringExtra(CONTACTPERSON));
-				mPostAd.setTime_to_contact(data.getIntExtra(TIME_TO_CONTACT, 0));
+				mPostAd.setTime_to_contact(data.getStringExtra(TIME_TO_CONTACT));
+				mTvContact.setCompoundDrawablesWithIntrinsicBounds(
+						R.drawable.contactinfo_icon, 0, R.drawable.tick, 0);
 			}
 			break;
 		case REQUEST_CAMERA:
@@ -532,24 +562,32 @@ public class PostAdActivity extends FragmentActivity implements
 		case REQUEST_AVIARY:
 			if (resultCode == RESULT_OK) {
 				Uri mImageUri = data.getData();
+				String path = getRealPathFromURI(mImageUri);
+				Log.d("haipn", "path image:" + path);
 				switch (mIdSelect) {
 				case 1:
 					mImv1.setImageURI(mImageUri);
+					mPostAd.setAdpic1(path);
 					break;
 				case 2:
 					mImv2.setImageURI(mImageUri);
+					mPostAd.setAdpic2(path);
 					break;
 				case 3:
 					mImv3.setImageURI(mImageUri);
+					mPostAd.setAdpic3(path);
 					break;
 				case 4:
 					mImv4.setImageURI(mImageUri);
+					mPostAd.setAdpic4(path);
 					break;
 				case 5:
 					mImv5.setImageURI(mImageUri);
+					mPostAd.setAdpic5(path);
 					break;
 				case 6:
 					mImv6.setImageURI(mImageUri);
+					mPostAd.setAdpic6(path);
 					break;
 				default:
 					break;
@@ -558,6 +596,23 @@ public class PostAdActivity extends FragmentActivity implements
 			break;
 		default:
 			break;
+		}
+	}
+
+	public String getRealPathFromURI(Uri contentUri) {
+		Cursor cursor = null;
+		try {
+			String[] proj = { MediaStore.Images.Media.DATA };
+			cursor = getContentResolver().query(contentUri, proj, null, null,
+					null);
+			int column_index = cursor
+					.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+			cursor.moveToFirst();
+			return cursor.getString(column_index);
+		} finally {
+			if (cursor != null) {
+				cursor.close();
+			}
 		}
 	}
 
@@ -614,4 +669,291 @@ public class PostAdActivity extends FragmentActivity implements
 		startActivityForResult(i, REQUEST_GALLERY);
 	}
 
+	public String getAdtype() {
+		if (mRdoFreeAd.isChecked())
+			return "0";
+		if (mRdoNewItemAd.isChecked())
+			return "2";
+
+		if (mRdoPriorityAd.isChecked())
+			return "1";
+		return "0";
+
+	}
+
+	private Listener<PostAdResult> createPostAdSuccessListener() {
+		return new Response.Listener<PostAdResult>() {
+
+			@Override
+			public void onResponse(PostAdResult response) {
+				mProgress.setVisibility(View.INVISIBLE);
+			}
+		};
+	}
+
+	private String buildMultipartEntity(PostAd post)
+			throws ClientProtocolException, IOException {
+		HttpClient client = new DefaultHttpClient();
+
+		HttpPost httpPost = new HttpPost(Const.URL_POST_AD);
+
+		MultipartEntityBuilder builder = MultipartEntityBuilder.create();
+		builder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
+		builder.addTextBody(PostAdActivity.ADDRESS, post.getAddress());
+		File file1 = new File(post.getAdpic1());
+		
+		if (file1.exists()) {
+			builder.addPart(PostAdActivity.ADPIC1,
+					new FileBody(new File(post.getAdpic1())));
+			Log.d("haipn", "postad image 1:" + post.getAdpic1());
+		}
+		if (post.getAdpic2().length() > 0)
+			builder.addBinaryBody(PostAdActivity.ADPIC2,
+					new File(post.getAdpic2()));
+		if (post.getAdpic3().length() > 0)
+			builder.addBinaryBody(PostAdActivity.ADPIC3,
+					new File(post.getAdpic3()));
+		if (post.getAdpic4().length() > 0)
+			builder.addBinaryBody(PostAdActivity.ADPIC4,
+					new File(post.getAdpic4()));
+		if (post.getAdpic5().length() > 0)
+			builder.addBinaryBody(PostAdActivity.ADPIC5,
+					new File(post.getAdpic5()));
+		if (post.getAdpic6().length() > 0)
+			builder.addBinaryBody(PostAdActivity.ADPIC6,
+					new File(post.getAdpic6()));
+		builder.addTextBody(PostAdActivity.SESSION_ID, post.getSession_id());
+		builder.addTextBody(PostAdActivity.ADTYPE, post.getAdtype() + "");
+		builder.addTextBody(PostAdActivity.AID, post.getAid() + "");
+		builder.addTextBody(PostAdActivity.BRAND, post.getBrand());
+		builder.addTextBody(PostAdActivity.CAT, post.getCat() + "");
+		builder.addTextBody(PostAdActivity.CITY, post.getCity());
+		builder.addTextBody(PostAdActivity.CLEARANCE, post.isClearance() ? "1"
+				: "0");
+		builder.addTextBody(PostAdActivity.COLOUR, post.getColour());
+		builder.addTextBody(PostAdActivity.CONDITION, post.getCondition() + "");
+		builder.addTextBody(PostAdActivity.CONTACTNO, post.getContactno());
+		builder.addTextBody(PostAdActivity.CONTACTPERSON,
+				post.getContactperson());
+		builder.addTextBody(PostAdActivity.COUNTRY, post.getCountry());
+		builder.addTextBody(PostAdActivity.D_BMX, post.isD_bmx() ? "1" : "0");
+		builder.addTextBody(PostAdActivity.D_COMMUTE, post.isD_commute() ? "1"
+				: "0");
+		builder.addTextBody(PostAdActivity.D_FOLDING, post.isD_folding() ? "1"
+				: "0");
+		builder.addTextBody(PostAdActivity.D_MTB, post.isD_mtb() ? "1" : "0");
+		builder.addTextBody(PostAdActivity.D_OTHERS, post.isD_others() ? "1"
+				: "0");
+		builder.addTextBody(PostAdActivity.D_ROAD, post.isD_road() ? "1" : "0");
+		builder.addTextBody(PostAdActivity.DESCRIPTION, post.getDescription());
+		builder.addTextBody(PostAdActivity.ITEM, post.getItem());
+		builder.addTextBody(PostAdActivity.ITEM_YEAR, post.getItem_year());
+		builder.addTextBody(PostAdActivity.LAT, post.getLatitude() + "");
+		builder.addTextBody(PostAdActivity.LONGITUDE, post.getLongitude() + "");
+		builder.addTextBody(PostAdActivity.ORIGINAL_PRICE,
+				post.getOriginal_price() + "");
+		builder.addTextBody(PostAdActivity.PICTURELINK, post.getPicturelink());
+		builder.addTextBody(PostAdActivity.POSTALCODE, post.getPostalcode());
+		builder.addTextBody(PostAdActivity.PRICE, post.getPrice() + "");
+		builder.addTextBody(PostAdActivity.PRICETYPE, post.getPricetype() + "");
+		builder.addTextBody(PostAdActivity.REGION, post.getRegion());
+		builder.addTextBody(PostAdActivity.SECTION, post.getSection() + "");
+		builder.addTextBody(PostAdActivity.SIZE, post.getSize());
+		builder.addTextBody(PostAdActivity.SUB_CAT, post.getSub_cat() + "");
+		builder.addTextBody(PostAdActivity.TIME_TO_CONTACT,
+				post.getTime_to_contact());
+		builder.addTextBody(PostAdActivity.TITLE, post.getTitle());
+		builder.addTextBody(PostAdActivity.TRANSTYPE, post.getTranstype() + "");
+		builder.addTextBody(PostAdActivity.WARRANTY, post.getWarranty() + "");
+		builder.addTextBody(PostAdActivity.WEIGHT, post.getWeight() + "");
+		// builder.addTextBody(KEY_ROUTE_ID, mRouteId);
+		HttpEntity entity = builder.build();
+
+		httpPost.setEntity(entity);
+
+		HttpResponse response = client.execute(httpPost);
+
+		HttpEntity httpEntity = response.getEntity();
+
+		String result = EntityUtils.toString(httpEntity);
+		return result;
+	}
+
+	@SuppressWarnings("deprecation")
+	private String buildMultipartEntity1(PostAd post)
+			throws ClientProtocolException, IOException {
+		HttpClient client = new DefaultHttpClient();
+
+		HttpPost httpPost = new HttpPost(Const.URL_POST_AD);
+		MultipartEntity builder = new MultipartEntity(
+				HttpMultipartMode.BROWSER_COMPATIBLE);
+		// multipartEntity.addPart("Title", new StringBody("Title"));
+		// multipartEntity.addPart("Nick", new StringBody("Nick"));
+		// multipartEntity.addPart("Email", new StringBody("Email"));
+		// multipartEntity.addPart("Description", new
+		// StringBody(Settings.SHARE.TEXT));
+		// multipartEntity.addPart("Image", new FileBody(image));
+		// httppost.setEntity(multipartEntity);
+
+		// mHttpClient.execute(httppost
+		// MultipartEntityBuilder builder = MultipartEntityBuilder.create();
+		// builder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
+		builder.addPart(PostAdActivity.ADDRESS,
+				new StringBody(post.getAddress()));
+		if (post.getAdpic1().length() > 0)
+			builder.addPart(PostAdActivity.ADPIC1,
+					new FileBody(new File(post.getAdpic1())));
+		if (post.getAdpic2().length() > 0)
+			builder.addPart(PostAdActivity.ADPIC2,
+					new FileBody(new File(post.getAdpic2())));
+		if (post.getAdpic3().length() > 0)
+			builder.addPart(PostAdActivity.ADPIC3,
+					new FileBody(new File(post.getAdpic3())));
+		if (post.getAdpic4().length() > 0)
+			builder.addPart(PostAdActivity.ADPIC4,
+					new FileBody(new File(post.getAdpic4())));
+		if (post.getAdpic5().length() > 0)
+			builder.addPart(PostAdActivity.ADPIC5,
+					new FileBody(new File(post.getAdpic5())));
+		if (post.getAdpic6().length() > 0)
+			builder.addPart(PostAdActivity.ADPIC6,
+					new FileBody(new File(post.getAdpic6())));
+		builder.addPart(PostAdActivity.SESSION_ID,
+				new StringBody(post.getSession_id()));
+		builder.addPart(PostAdActivity.ADTYPE, new StringBody(post.getAdtype()
+				+ ""));
+		builder.addPart(PostAdActivity.AID, new StringBody(post.getAid() + ""));
+		builder.addPart(PostAdActivity.BRAND, new StringBody(post.getBrand()));
+		builder.addPart(PostAdActivity.CAT, new StringBody(post.getCat() + ""));
+		builder.addPart(PostAdActivity.CITY, new StringBody(post.getCity()));
+		builder.addPart(PostAdActivity.CLEARANCE,
+				new StringBody(post.isClearance() ? "1" : "0"));
+		builder.addPart(PostAdActivity.COLOUR, new StringBody(post.getColour()));
+		builder.addPart(PostAdActivity.CONDITION,
+				new StringBody(post.getCondition() + ""));
+		builder.addPart(PostAdActivity.CONTACTNO,
+				new StringBody(post.getContactno()));
+		builder.addPart(PostAdActivity.CONTACTPERSON,
+				new StringBody(post.getContactperson()));
+		builder.addPart(PostAdActivity.COUNTRY,
+				new StringBody(post.getCountry()));
+		builder.addPart(PostAdActivity.D_BMX, new StringBody(
+				post.isD_bmx() ? "1" : "0"));
+		builder.addPart(PostAdActivity.D_COMMUTE,
+				new StringBody(post.isD_commute() ? "1" : "0"));
+		builder.addPart(PostAdActivity.D_FOLDING,
+				new StringBody(post.isD_folding() ? "1" : "0"));
+		builder.addPart(PostAdActivity.D_MTB, new StringBody(
+				post.isD_mtb() ? "1" : "0"));
+		builder.addPart(PostAdActivity.D_OTHERS,
+				new StringBody(post.isD_others() ? "1" : "0"));
+		builder.addPart(PostAdActivity.D_ROAD, new StringBody(
+				post.isD_road() ? "1" : "0"));
+		builder.addPart(PostAdActivity.DESCRIPTION,
+				new StringBody(post.getDescription()));
+		builder.addPart(PostAdActivity.ITEM, new StringBody(post.getItem()));
+		builder.addPart(PostAdActivity.ITEM_YEAR,
+				new StringBody(post.getItem_year()));
+		builder.addPart(PostAdActivity.LAT, new StringBody(post.getLatitude()
+				+ ""));
+		builder.addPart(PostAdActivity.LONGITUDE,
+				new StringBody(post.getLongitude() + ""));
+		builder.addPart(PostAdActivity.ORIGINAL_PRICE,
+				new StringBody(post.getOriginal_price() + ""));
+		builder.addPart(PostAdActivity.PICTURELINK,
+				new StringBody(post.getPicturelink()));
+		builder.addPart(PostAdActivity.POSTALCODE,
+				new StringBody(post.getPostalcode()));
+		builder.addPart(PostAdActivity.PRICE, new StringBody(post.getPrice()
+				+ ""));
+		builder.addPart(PostAdActivity.PRICETYPE,
+				new StringBody(post.getPricetype() + ""));
+		builder.addPart(PostAdActivity.REGION, new StringBody(post.getRegion()));
+		builder.addPart(PostAdActivity.SECTION,
+				new StringBody(post.getSection() + ""));
+		builder.addPart(PostAdActivity.SIZE, new StringBody(post.getSize()));
+		builder.addPart(PostAdActivity.SUB_CAT,
+				new StringBody(post.getSub_cat() + ""));
+		builder.addPart(PostAdActivity.TIME_TO_CONTACT,
+				new StringBody(post.getTime_to_contact()));
+		builder.addPart(PostAdActivity.TITLE, new StringBody(post.getTitle()));
+		builder.addPart(PostAdActivity.TRANSTYPE,
+				new StringBody(post.getTranstype() + ""));
+		builder.addPart(PostAdActivity.WARRANTY,
+				new StringBody(post.getWarranty() + ""));
+		builder.addPart(PostAdActivity.WEIGHT, new StringBody(post.getWeight()
+				+ ""));
+		// builder.addTextBody(KEY_ROUTE_ID, mRouteId);
+		// HttpEntity entity = builder.build();
+
+		httpPost.setEntity(builder);
+
+		HttpResponse response = client.execute(httpPost);
+
+		HttpEntity httpEntity = response.getEntity();
+
+		String result = EntityUtils.toString(httpEntity);
+		return result;
+	}
+
+	public class OnPostAdClick implements View.OnClickListener {
+
+		@Override
+		public void onClick(View v) {
+			mPostAd.setSession_id(Const.getSessionId(PostAdActivity.this));
+			new FileUploadTask().execute(mPostAd);
+			// mProgress.setVisibility(View.VISIBLE);
+			// RequestQueue queue = MyVolley.getRequestQueue();
+			// MultipartRequest<PostAdResult> myReq = new
+			// MultipartRequest<PostAdResult>(
+			// Method.POST, Const.URL_POST_AD, PostAdResult.class,
+			// createPostAdSuccessListener(), createMyReqErrorListener(),
+			// mPostAd);
+			// queue.add(myReq);
+		}
+
+	}
+
+	private class FileUploadTask extends AsyncTask<PostAd, Integer, String> {
+
+		private ProgressDialog dialog;
+
+		@Override
+		protected void onPreExecute() {
+			dialog = new ProgressDialog(PostAdActivity.this);
+			dialog.setMessage("Uploading...");
+			dialog.setIndeterminate(true);
+			dialog.show();
+		}
+
+		@Override
+		protected String doInBackground(PostAd... arg0) {
+			try {
+				return buildMultipartEntity(arg0[0]);
+			} catch (ClientProtocolException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				return "error";
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				return "error IOexception";
+			}
+		}
+
+		@Override
+		protected void onProgressUpdate(Integer... progress) {
+		}
+
+		@Override
+		protected void onPostExecute(String result) {
+			try {
+				dialog.dismiss();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			Log.d("haipn", "upload :" + result);
+		}
+
+	}
 }

@@ -32,9 +32,9 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request.Method;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -82,34 +82,29 @@ public class ProfileFragment extends Fragment_Main {
 				@Override
 				public void onItemClick(AdapterView<?> arg0, View arg1,
 						int arg2, long arg3) {
-					Fragment fragment = new DetailFragment();
-					Bundle bundle = new Bundle();
-					bundle.putString(Const.ADS_ID, mResult.get(arg2).aid);
-					fragment.setArguments(bundle);
-					addFragment(fragment, true,
-							FragmentTransaction.TRANSIT_NONE);
+					
 				}
 			});
-			mLvResult.setOnScrollListener(new OnScrollListener() {
-
-				@Override
-				public void onScroll(AbsListView view, int firstVisibleItem,
-						int visibleItemCount, int totalItemCount) {
-					if (firstVisibleItem + visibleItemCount == totalItemCount
-							&& enableLoadMore) {
-						loadMore();
-						enableLoadMore = false;
-					}
-				}
-
-				@Override
-				public void onScrollStateChanged(AbsListView view,
-						int scrollState) {
-					// TODO Auto-generated method stub
-
-				}
-
-			});
+//			mLvResult.setOnScrollListener(new OnScrollListener() {
+//
+//				@Override
+//				public void onScroll(AbsListView view, int firstVisibleItem,
+//						int visibleItemCount, int totalItemCount) {
+//					if (firstVisibleItem + visibleItemCount == totalItemCount
+//							&& enableLoadMore) {
+//						loadMore();
+//						enableLoadMore = false;
+//					}
+//				}
+//
+//				@Override
+//				public void onScrollStateChanged(AbsListView view,
+//						int scrollState) {
+//					// TODO Auto-generated method stub
+//
+//				}
+//
+//			});
 
 			mImvAvatar = (ImageView) rootView.findViewById(R.id.imvAvatar);
 			mTvPositive = (TextView) rootView.findViewById(R.id.tvPositive);
@@ -164,10 +159,9 @@ public class ProfileFragment extends Fragment_Main {
 		headerView.setProgressVisible(View.VISIBLE);
 		RequestQueue queue = MyVolley.getRequestQueue();
 		GsonRequest<Profile> myReq = new GsonRequest<Profile>(Method.POST,
-				Const.URL_POST_AD_ONLOAD, Profile.class,
+				Const.URL_PROFILE, Profile.class,
 				createProfileSuccessListener(), createMyReqErrorListener()) {
-			protected Map<String, String> getParams()
-					throws com.android.volley.AuthFailureError {
+			protected Map<String, String> getParams() throws AuthFailureError {
 				Map<String, String> params = new HashMap<String, String>();
 				params.put("session_id", Const.getSessionId(getActivity()));
 				return params;
@@ -215,8 +209,7 @@ public class ProfileFragment extends Fragment_Main {
 				Method.POST, Const.URL_SESSION_REFRESH, ResultLogin.class,
 				createExpireSuccessListener(), createMyReqErrorListener()) {
 
-			protected Map<String, String> getParams()
-					throws com.android.volley.AuthFailureError {
+			protected Map<String, String> getParams() throws AuthFailureError {
 				Map<String, String> params = new HashMap<String, String>();
 				params.put("session_id", Const.getSessionId(getActivity()));
 				params.put("refresh_id", Const.getSHA256EncryptedString(Const

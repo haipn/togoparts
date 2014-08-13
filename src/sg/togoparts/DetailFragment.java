@@ -16,7 +16,6 @@ import sg.togoparts.json.GsonRequest;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.LinearGradient;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.app.Fragment;

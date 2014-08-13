@@ -24,6 +24,7 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request.Method;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -44,7 +45,6 @@ public class SectionActivity extends Activity {
 	private int mSessionId;
 	private int mCategoryId;
 	private int mSubCategoryId;
-	
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -56,13 +56,14 @@ public class SectionActivity extends Activity {
 		mLvSection = (ListView) findViewById(R.id.listView);
 		mAdapter = new SectionAdapter(this, mListSection);
 		mLvSection.setAdapter(mAdapter);
-		
+
 		mLvSection.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-				Intent i = new Intent(SectionActivity.this, CategoryActivity.class);
+				Intent i = new Intent(SectionActivity.this,
+						CategoryActivity.class);
 				mSessionId = mListSection.get(position).id;
 				i.putExtra(PostAdActivity.SECTION, mSessionId);
 				startActivityForResult(i, REQUEST_CATEGORY);
@@ -70,13 +71,13 @@ public class SectionActivity extends Activity {
 		});
 		mProgress.setVisibility(View.VISIBLE);
 		RequestQueue queue = MyVolley.getRequestQueue();
-		GsonRequest<SectionResult> myReq = new GsonRequest<SectionResult>(Method.POST,
-				Const.URL_GET_SECTION, SectionResult.class,
+		GsonRequest<SectionResult> myReq = new GsonRequest<SectionResult>(
+				Method.POST, Const.URL_GET_SECTION, SectionResult.class,
 				createProfileSuccessListener(), createMyReqErrorListener()) {
-			protected Map<String, String> getParams()
-					throws com.android.volley.AuthFailureError {
+			protected Map<String, String> getParams() throws AuthFailureError {
 				Map<String, String> params = new HashMap<String, String>();
-				params.put("session_id", Const.getSessionId(SectionActivity.this));
+				params.put("session_id",
+						Const.getSessionId(SectionActivity.this));
 				return params;
 			};
 		};
@@ -90,7 +91,8 @@ public class SectionActivity extends Activity {
 			public void onResponse(SectionResult response) {
 				mProgress.setVisibility(View.INVISIBLE);
 				if (response.Result != null && response.Result.Sections != null) {
-					Log.d("haipn", "list section lenght:" + response.Result.Sections.size());
+					Log.d("haipn", "list section lenght:"
+							+ response.Result.Sections.size());
 					mListSection.addAll(response.Result.Sections);
 					mAdapter.notifyDataSetChanged();
 				}
@@ -118,11 +120,12 @@ public class SectionActivity extends Activity {
 			finish();
 		}
 	}
+
 	private void createHeader() {
 		mBtnBack = (ImageButton) findViewById(R.id.btnBack);
-		findViewById(R.id.btnSearch).setVisibility(View.GONE);
+		findViewById(R.id.btnSearch).setVisibility(View.INVISIBLE);
 		findViewById(R.id.logo).setVisibility(View.GONE);
-		
+
 		mProgress = (ProgressBar) findViewById(R.id.progress);
 		mTvTitleHeader = (TextView) findViewById(R.id.title);
 		mTvTitleHeader.setVisibility(View.VISIBLE);

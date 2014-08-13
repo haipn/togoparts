@@ -1,8 +1,5 @@
 package sg.togoparts.login;
 
-import java.math.BigInteger;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -23,18 +20,14 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request.Method;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
-import com.sromku.simple.fb.Permission;
 import com.sromku.simple.fb.SimpleFacebook;
 import com.sromku.simple.fb.entities.Profile;
 import com.sromku.simple.fb.entities.Profile.Properties;
-import com.sromku.simple.fb.listeners.OnLoginListener;
-import com.sromku.simple.fb.listeners.OnLogoutListener;
 import com.sromku.simple.fb.listeners.OnProfileListener;
 
 public class LoginActivity extends FragmentActivity {
@@ -152,7 +145,7 @@ public class LoginActivity extends FragmentActivity {
 					createMyReqSuccessListener(), createMyReqErrorListener()) {
 
 				protected Map<String, String> getParams()
-						throws com.android.volley.AuthFailureError {
+						throws AuthFailureError {
 					Map<String, String> params = new HashMap<String, String>();
 					String key = pass + System.currentTimeMillis() / 1000
 							+ CLIENT_ID;
@@ -167,6 +160,7 @@ public class LoginActivity extends FragmentActivity {
 			queue.add(myReq);
 		}
 	}
+
 	private Response.Listener<ResultLogin> createMyReqSuccessListener() {
 		return new Response.Listener<ResultLogin>() {
 			@Override
@@ -213,8 +207,7 @@ public class LoginActivity extends FragmentActivity {
 				Method.POST, Const.URL_SIGNUP, ResultLogin.class,
 				createSignupSuccessListener(), createMyReqErrorListener()) {
 
-			protected Map<String, String> getParams()
-					throws com.android.volley.AuthFailureError {
+			protected Map<String, String> getParams() throws AuthFailureError {
 				Map<String, String> params = new HashMap<String, String>();
 				params.put("FBid", mProfileFb.getId());
 				params.put("FBemail", mProfileFb.getEmail());
@@ -236,8 +229,7 @@ public class LoginActivity extends FragmentActivity {
 				Method.POST, Const.URL_MERGE, ResultLogin.class,
 				createMergeSuccessListener(), createMyReqErrorListener()) {
 
-			protected Map<String, String> getParams()
-					throws com.android.volley.AuthFailureError {
+			protected Map<String, String> getParams() throws AuthFailureError {
 				Map<String, String> params = new HashMap<String, String>();
 				params.put("FBid", mProfileFb.getId());
 				params.put("FBemail", mProfileFb.getEmail());

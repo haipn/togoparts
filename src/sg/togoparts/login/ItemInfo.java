@@ -16,6 +16,7 @@ import sg.togoparts.json.ModelResult;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -81,6 +82,8 @@ public class ItemInfo extends Activity {
 	HashMap<String, Integer> listTranstype;
 	HashMap<String, String> listYear;
 	HashMap<String, String> listColour;
+	private BrandRunable mBrandRunnable;
+	private ModelRunable mModelRunnable;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -146,6 +149,9 @@ public class ItemInfo extends Activity {
 		mEdtWeight.setText(mWeight + "");
 		setListValues();
 		initSpinner();
+
+		mBrandRunnable = new BrandRunable();
+		mModelRunnable = new ModelRunable();
 	}
 
 	private void setListener() {
@@ -153,14 +159,9 @@ public class ItemInfo extends Activity {
 		mAtvBrand.addTextChangedListener(new TextWatcher() {
 
 			public void afterTextChanged(Editable s) {
-				mProgress.setVisibility(View.VISIBLE);
-				RequestQueue queue = MyVolley.getRequestQueue();
-				GsonRequest<BrandResult> brandReq = new GsonRequest<BrandResult>(
-						Method.GET, String.format(Const.URL_GET_BRAND,
-								s.toString()), BrandResult.class,
-						createBrandSuccessListener(),
-						createMyReqErrorListener());
-				queue.add(brandReq);
+				mBrandHandler.removeCallbacks(mBrandRunnable);
+				mBrandRunnable.setData(s.toString());
+				mBrandHandler.postDelayed(mBrandRunnable, 1500);
 			}
 
 			public void beforeTextChanged(CharSequence s, int start, int count,
@@ -177,14 +178,17 @@ public class ItemInfo extends Activity {
 			@Override
 			public void onFocusChange(View v, boolean hasFocus) {
 				if (hasFocus) {
-					mProgress.setVisibility(View.VISIBLE);
-					RequestQueue queue = MyVolley.getRequestQueue();
-					GsonRequest<BrandResult> brandReq = new GsonRequest<BrandResult>(
-							Method.GET, String.format(Const.URL_GET_BRAND,
-									mAtvBrand.getText().toString()),
-							BrandResult.class, createBrandSuccessListener(),
-							createMyReqErrorListener());
-					queue.add(brandReq);
+//					mProgress.setVisibility(View.VISIBLE);
+//					RequestQueue queue = MyVolley.getRequestQueue();
+//					GsonRequest<BrandResult> brandReq = new GsonRequest<BrandResult>(
+//							Method.GET, String.format(Const.URL_GET_BRAND,
+//									mAtvBrand.getText().toString()),
+//							BrandResult.class, createBrandSuccessListener(),
+//							createMyReqErrorListener());
+//					queue.add(brandReq);
+					mAtvBrand.showDropDown();
+				} else {
+					mBrandHandler.removeCallbacks(mBrandRunnable);
 				}
 
 			}
@@ -192,16 +196,9 @@ public class ItemInfo extends Activity {
 		mAtvModel.addTextChangedListener(new TextWatcher() {
 
 			public void afterTextChanged(Editable s) {
-				mProgress.setVisibility(View.VISIBLE);
-				RequestQueue queue = MyVolley.getRequestQueue();
-				GsonRequest<ModelResult> modelReq = new GsonRequest<ModelResult>(
-						Method.GET, String.format(Const.URL_GET_MODEL,
-								s.toString()), ModelResult.class,
-						createModelSuccessListener(),
-						createMyReqErrorListener());
-				queue.add(modelReq);
-
-				Log.d("haipn", "afterTextchange:" + s.toString());
+				mModelHandler.removeCallbacks(mModelRunnable);
+				mModelRunnable.setData(s.toString());
+				mModelHandler.postDelayed(mModelRunnable, 1500);
 			}
 
 			public void beforeTextChanged(CharSequence s, int start, int count,
@@ -217,14 +214,17 @@ public class ItemInfo extends Activity {
 			@Override
 			public void onFocusChange(View v, boolean hasFocus) {
 				if (hasFocus) {
-					mProgress.setVisibility(View.VISIBLE);
-					RequestQueue queue = MyVolley.getRequestQueue();
-					GsonRequest<ModelResult> modelReq = new GsonRequest<ModelResult>(
-							Method.GET, String.format(Const.URL_GET_MODEL,
-									mAtvModel.getText().toString()),
-							ModelResult.class, createModelSuccessListener(),
-							createMyReqErrorListener());
-					queue.add(modelReq);
+//					mProgress.setVisibility(View.VISIBLE);
+//					RequestQueue queue = MyVolley.getRequestQueue();
+//					GsonRequest<ModelResult> modelReq = new GsonRequest<ModelResult>(
+//							Method.GET, String.format(Const.URL_GET_MODEL,
+//									mAtvModel.getText().toString()),
+//							ModelResult.class, createModelSuccessListener(),
+//							createMyReqErrorListener());
+//					queue.add(modelReq);
+					mAtvModel.showDropDown();
+				} else {
+					mModelHandler.removeCallbacks(mModelRunnable);
 				}
 			}
 		});
@@ -281,6 +281,53 @@ public class ItemInfo extends Activity {
 				finish();
 			}
 		});
+	}
+
+	private Handler mModelHandler = new Handler();
+	private Handler mBrandHandler = new Handler();
+
+	private class ModelRunable implements Runnable {
+		String data;
+
+		public void setData(String s) {
+			data = s;
+		}
+
+		@Override
+		public void run() {
+			if (data != null && data.length() > 0) {
+				mProgress.setVisibility(View.VISIBLE);
+				RequestQueue queue = MyVolley.getRequestQueue();
+				GsonRequest<ModelResult> brandReq = new GsonRequest<ModelResult>(
+						Method.GET, String.format(Const.URL_GET_MODEL, data),
+						ModelResult.class, createModelSuccessListener(),
+						createMyReqErrorListener());
+				queue.add(brandReq);
+			}
+		}
+
+	}
+
+	private class BrandRunable implements Runnable {
+		String data;
+
+		public void setData(String s) {
+			data = s;
+		}
+
+		@Override
+		public void run() {
+			if (data != null && data.length() > 0) {
+				mProgress.setVisibility(View.VISIBLE);
+				RequestQueue queue = MyVolley.getRequestQueue();
+				GsonRequest<BrandResult> brandReq = new GsonRequest<BrandResult>(
+						Method.GET, String.format(Const.URL_GET_BRAND, data),
+						BrandResult.class, createBrandSuccessListener(),
+						createMyReqErrorListener());
+				queue.add(brandReq);
+			}
+		}
+
 	}
 
 	private void init() {
@@ -483,12 +530,16 @@ public class ItemInfo extends Activity {
 			public void onResponse(BrandResult response) {
 				mProgress.setVisibility(View.INVISIBLE);
 				if (response.Result != null && response.Result.Brands != null) {
-					adapterBrand.clear();
-					mListBrand = response.Result.Brands;
-					for (String item : mListBrand) {
-						adapterBrand.add(item);
-					}
-					adapterBrand.notifyDataSetChanged();
+//					adapterBrand.clear();
+//					mListBrand = response.Result.Brands;
+//					for (String item : mListBrand) {
+//						adapterBrand.add(item);
+//					}
+//					adapterBrand.notifyDataSetChanged();
+					adapterBrand = new ArrayAdapter<String>(ItemInfo.this,
+							android.R.layout.simple_dropdown_item_1line, response.Result.Brands);
+					adapterBrand.setNotifyOnChange(true);
+					mAtvBrand.setAdapter(adapterBrand);
 					mAtvBrand.showDropDown();
 				}
 			}
@@ -502,12 +553,16 @@ public class ItemInfo extends Activity {
 			public void onResponse(ModelResult response) {
 				mProgress.setVisibility(View.INVISIBLE);
 				if (response.Result != null && response.Result.Models != null) {
-					adapterModel.clear();
-					mListModel = response.Result.Models;
-					for (String item : mListModel) {
-						adapterModel.add(item);
-					}
-					adapterModel.notifyDataSetChanged();
+//					adapterModel.clear();
+//					mListModel = response.Result.Models;
+//					for (String item : mListModel) {
+//						adapterModel.add(item);
+//					}
+//					adapterModel.notifyDataSetChanged();
+					adapterModel = new ArrayAdapter<String>(ItemInfo.this,
+							android.R.layout.simple_dropdown_item_1line, response.Result.Models);
+					adapterModel.setNotifyOnChange(true);
+					mAtvModel.setAdapter(adapterModel);
 					mAtvModel.showDropDown();
 				}
 			}

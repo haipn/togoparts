@@ -3,11 +3,6 @@ package sg.togoparts;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.Request.Method;
-
 import sg.togoparts.app.Const;
 import sg.togoparts.app.MyVolley;
 import sg.togoparts.json.GsonRequest;
@@ -21,6 +16,12 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request.Method;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 
 public class MoreActivity extends Activity_Main {
 	TextView mTvSearchAds;
@@ -118,7 +119,7 @@ public class MoreActivity extends Activity_Main {
 				createMyReqSuccessListener(), createMyReqErrorListener()) {
 
 			protected Map<String, String> getParams()
-					throws com.android.volley.AuthFailureError {
+					throws AuthFailureError {
 				Map<String, String> params = new HashMap<String, String>();
 				String key = Const.getRefreshId(MoreActivity.this) + ChooseLogin.CLIENT_ID;
 				key = Const.getSHA256EncryptedString(key);

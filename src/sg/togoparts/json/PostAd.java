@@ -6,6 +6,7 @@ public class PostAd {
 
 	public PostAd() {
 		super();
+		session_id = "";
 		aid = 0;
 		adtype = 0;
 		city = "";
@@ -17,7 +18,7 @@ public class PostAd {
 		longitude = 0;
 		contactno = "";
 		contactperson = "";
-		time_to_contact = 0;
+		time_to_contact = "";
 		section = 0;
 		cat = 0;
 		sub_cat = 0;
@@ -51,6 +52,7 @@ public class PostAd {
 		adpic6 = "";
 	}
 
+	private String session_id;
 	private int aid;
 	private int adtype; // 0 - free (default), 1 - priority, 2 - new item
 
@@ -64,7 +66,7 @@ public class PostAd {
 	private double longitude;
 	private String contactno;
 	private String contactperson;
-	private int time_to_contact;
+	private String time_to_contact;
 
 	// /// From Category - All fields required
 	private int section;
@@ -193,11 +195,11 @@ public class PostAd {
 		this.contactperson = contactperson;
 	}
 
-	public int getTime_to_contact() {
+	public String getTime_to_contact() {
 		return time_to_contact;
 	}
 
-	public void setTime_to_contact(int time_to_contact) {
+	public void setTime_to_contact(String time_to_contact) {
 		this.time_to_contact = time_to_contact;
 	}
 
@@ -447,5 +449,13 @@ public class PostAd {
 
 	public void setAdpic6(String adpic6) {
 		this.adpic6 = adpic6;
+	}
+
+	public String getSession_id() {
+		return session_id;
+	}
+
+	public void setSession_id(String session_id) {
+		this.session_id = session_id;
 	}
 }

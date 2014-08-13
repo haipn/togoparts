@@ -237,7 +237,7 @@ public class DetailActivity extends FragmentActivity implements
 		mGvAttribute = (GridView) findViewById(R.id.gvAttribute);
 		mAttributeAdapter = new AttributeAdapter(this, mListAttribute);
 		mGvAttribute.setAdapter(mAttributeAdapter);
-		
+
 		mLvMessage = (ListView) findViewById(R.id.lvMessage);
 		mMsgAdapter = new MessageAdapter(this, mListMessage);
 		mLvMessage.setAdapter(mMsgAdapter);
@@ -705,10 +705,11 @@ public class DetailActivity extends FragmentActivity implements
 			mLlRelate.setVisibility(View.GONE);
 		}
 
-		mListAttribute.addAll(res.Attributes);
-		mAttributeAdapter.notifyDataSetChanged();
-		Const.setGridViewHeightBasedOnChildren(mGvAttribute, 2);
-		
+		if (res.Attributes != null) {
+			mListAttribute.addAll(res.Attributes);
+			mAttributeAdapter.notifyDataSetChanged();
+			Const.setGridViewHeightBasedOnChildren(mGvAttribute, 2);
+		}
 		if (res.mTotalMessages == 0) {
 			mLlMessage.setVisibility(View.GONE);
 		} else {

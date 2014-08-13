@@ -4,22 +4,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.Request.Method;
-import com.android.volley.Response.Listener;
-
 import sg.togoparts.R;
 import sg.togoparts.app.Const;
 import sg.togoparts.app.MyVolley;
 import sg.togoparts.gallery.CategoryAdapter;
-import sg.togoparts.gallery.SectionAdapter;
 import sg.togoparts.json.CategoryResult;
-import sg.togoparts.json.GsonRequest;
-import sg.togoparts.json.SectionResult;
 import sg.togoparts.json.CategoryResult.Category;
-import sg.togoparts.json.SectionResult.Section;
+import sg.togoparts.json.GsonRequest;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -27,11 +18,18 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.AdapterView.OnItemClickListener;
+
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request.Method;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.Response.Listener;
+import com.android.volley.VolleyError;
 
 public class CategoryActivity extends Activity {
 	protected static final int REQUEST_SUB_CATEGORY = 0;
@@ -74,7 +72,7 @@ public class CategoryActivity extends Activity {
 				Const.URL_GET_CATEGORY, mSectionId), CategoryResult.class,
 				createProfileSuccessListener(), createMyReqErrorListener()) {
 			protected Map<String, String> getParams()
-					throws com.android.volley.AuthFailureError {
+					throws AuthFailureError {
 				Map<String, String> params = new HashMap<String, String>();
 				params.put("session_id", Const.getSessionId(CategoryActivity.this));
 				return params;

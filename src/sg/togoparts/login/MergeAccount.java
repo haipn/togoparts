@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import sg.togoparts.R;
-import sg.togoparts.TabsActivityMain;
 import sg.togoparts.app.Const;
 import sg.togoparts.app.MyVolley;
 import sg.togoparts.json.GsonRequest;
@@ -21,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request.Method;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -104,8 +104,7 @@ public class MergeAccount extends FragmentActivity {
 				Method.POST, Const.URL_MERGE, ResultLogin.class,
 				createMergeSuccessListener(), createMyReqErrorListener()) {
 
-			protected Map<String, String> getParams()
-					throws com.android.volley.AuthFailureError {
+			protected Map<String, String> getParams() throws AuthFailureError {
 				Map<String, String> params = new HashMap<String, String>();
 				params.put("FBid", mFBid);
 				params.put("FBemail", mFBemail);
@@ -133,7 +132,7 @@ public class MergeAccount extends FragmentActivity {
 					mProgressDialog.dismiss();
 					setResult(RESULT_OK);
 					finish();
-					
+
 				} else {
 					showError(response.Result.Message);
 				}

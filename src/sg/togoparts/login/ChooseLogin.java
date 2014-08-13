@@ -27,6 +27,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request.Method;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -147,7 +148,7 @@ public class ChooseLogin extends FragmentActivity {
 					createMyReqErrorListener()) {
 
 				protected Map<String, String> getParams()
-						throws com.android.volley.AuthFailureError {
+						throws AuthFailureError {
 					Map<String, String> params = new HashMap<String, String>();
 					String key = pass + System.currentTimeMillis() / 1000
 							+ CLIENT_ID;
@@ -249,7 +250,7 @@ public class ChooseLogin extends FragmentActivity {
 					createLoginFbSuccessListener(), createMyReqErrorListener()) {
 
 				protected Map<String, String> getParams()
-						throws com.android.volley.AuthFailureError {
+						throws AuthFailureError {
 					Map<String, String> params = new HashMap<String, String>();
 					String tkey = id + System.currentTimeMillis() / 1000
 							+ CLIENT_ID;
