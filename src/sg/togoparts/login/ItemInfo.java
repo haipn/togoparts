@@ -23,6 +23,9 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -74,8 +77,6 @@ public class ItemInfo extends Activity {
 			mPictureLink;
 	int mTranstype, mWeight, mCondition, mWarranty;
 
-	ArrayList<String> mListBrand;
-	ArrayList<String> mListModel;
 	private ArrayAdapter<String> adapterBrand;
 	private ArrayAdapter<String> adapterModel;
 	HashMap<String, String> listSize;
@@ -84,6 +85,10 @@ public class ItemInfo extends Activity {
 	HashMap<String, String> listColour;
 	private BrandRunable mBrandRunnable;
 	private ModelRunable mModelRunnable;
+	private BrandWatcher brandWatcher;
+	private ModelWatcher modelWatcher;
+	protected boolean mEnableBrandWatcher = true;
+	protected boolean mEnableModelWatcher = true;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -144,32 +149,31 @@ public class ItemInfo extends Activity {
 			mAtvBrand.setText(mBrand);
 		if (mModel != null)
 			mAtvModel.setText(mModel);
-		mEdtWarranty.setText(mWarranty + "");
-		mEdtCondition.setText(mCondition + "");
-		mEdtWeight.setText(mWeight + "");
+		if (mWarranty > 0)
+			mEdtWarranty.setText(mWarranty + "");
+		if (mCondition > 0)
+			mEdtCondition.setText(mCondition + "");
+		if (mWeight > 0)
+			mEdtWeight.setText(mWeight + "");
 		setListValues();
 		initSpinner();
 
 		mBrandRunnable = new BrandRunable();
 		mModelRunnable = new ModelRunable();
+		brandWatcher = new BrandWatcher();
+		modelWatcher = new ModelWatcher();
 	}
 
 	private void setListener() {
 
-		mAtvBrand.addTextChangedListener(new TextWatcher() {
+		mAtvBrand.addTextChangedListener(brandWatcher);
+		mAtvBrand.setOnItemClickListener(new OnItemClickListener() {
 
-			public void afterTextChanged(Editable s) {
-				mBrandHandler.removeCallbacks(mBrandRunnable);
-				mBrandRunnable.setData(s.toString());
-				mBrandHandler.postDelayed(mBrandRunnable, 1500);
-			}
-
-			public void beforeTextChanged(CharSequence s, int start, int count,
-					int after) {
-			}
-
-			public void onTextChanged(CharSequence s, int start, int before,
-					int count) {
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				Log.d("haipn", "auto click:" + position);
+				mEnableBrandWatcher = false;
 			}
 		});
 
@@ -178,51 +182,31 @@ public class ItemInfo extends Activity {
 			@Override
 			public void onFocusChange(View v, boolean hasFocus) {
 				if (hasFocus) {
-//					mProgress.setVisibility(View.VISIBLE);
-//					RequestQueue queue = MyVolley.getRequestQueue();
-//					GsonRequest<BrandResult> brandReq = new GsonRequest<BrandResult>(
-//							Method.GET, String.format(Const.URL_GET_BRAND,
-//									mAtvBrand.getText().toString()),
-//							BrandResult.class, createBrandSuccessListener(),
-//							createMyReqErrorListener());
-//					queue.add(brandReq);
 					mAtvBrand.showDropDown();
+					mEnableBrandWatcher = true;
 				} else {
 					mBrandHandler.removeCallbacks(mBrandRunnable);
 				}
 
 			}
 		});
-		mAtvModel.addTextChangedListener(new TextWatcher() {
+		mAtvModel.addTextChangedListener(modelWatcher);
+		mAtvModel.setOnItemClickListener(new OnItemClickListener() {
 
-			public void afterTextChanged(Editable s) {
-				mModelHandler.removeCallbacks(mModelRunnable);
-				mModelRunnable.setData(s.toString());
-				mModelHandler.postDelayed(mModelRunnable, 1500);
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				mEnableModelWatcher = false;
 			}
 
-			public void beforeTextChanged(CharSequence s, int start, int count,
-					int after) {
-			}
-
-			public void onTextChanged(CharSequence s, int start, int before,
-					int count) {
-			}
 		});
 		mAtvModel.setOnFocusChangeListener(new OnFocusChangeListener() {
 
 			@Override
 			public void onFocusChange(View v, boolean hasFocus) {
 				if (hasFocus) {
-//					mProgress.setVisibility(View.VISIBLE);
-//					RequestQueue queue = MyVolley.getRequestQueue();
-//					GsonRequest<ModelResult> modelReq = new GsonRequest<ModelResult>(
-//							Method.GET, String.format(Const.URL_GET_MODEL,
-//									mAtvModel.getText().toString()),
-//							ModelResult.class, createModelSuccessListener(),
-//							createMyReqErrorListener());
-//					queue.add(modelReq);
 					mAtvModel.showDropDown();
+					mEnableModelWatcher = true;
 				} else {
 					mModelHandler.removeCallbacks(mModelRunnable);
 				}
@@ -283,6 +267,45 @@ public class ItemInfo extends Activity {
 		});
 	}
 
+	private class ModelWatcher implements TextWatcher {
+
+		public void afterTextChanged(Editable s) {
+			mModelHandler.removeCallbacks(mModelRunnable);
+			if (mEnableModelWatcher) {
+				mModelRunnable.setData(s.toString());
+				mModelHandler.postDelayed(mModelRunnable, 1500);
+			}
+		}
+
+		public void beforeTextChanged(CharSequence s, int start, int count,
+				int after) {
+		}
+
+		public void onTextChanged(CharSequence s, int start, int before,
+				int count) {
+		}
+	}
+
+	private class BrandWatcher implements TextWatcher {
+
+		public void afterTextChanged(Editable s) {
+			Log.d("haipn", "text change:" + s.toString());
+			mBrandHandler.removeCallbacks(mBrandRunnable);
+			if (mEnableBrandWatcher) {
+				mBrandRunnable.setData(s.toString());
+				mBrandHandler.postDelayed(mBrandRunnable, 1500);
+			}
+		}
+
+		public void beforeTextChanged(CharSequence s, int start, int count,
+				int after) {
+		}
+
+		public void onTextChanged(CharSequence s, int start, int before,
+				int count) {
+		}
+	}
+
 	private Handler mModelHandler = new Handler();
 	private Handler mBrandHandler = new Handler();
 
@@ -295,7 +318,7 @@ public class ItemInfo extends Activity {
 
 		@Override
 		public void run() {
-			if (data != null && data.length() > 0) {
+			if (data != null && data.length() > 0 && mEnableModelWatcher) {
 				mProgress.setVisibility(View.VISIBLE);
 				RequestQueue queue = MyVolley.getRequestQueue();
 				GsonRequest<ModelResult> brandReq = new GsonRequest<ModelResult>(
@@ -317,7 +340,7 @@ public class ItemInfo extends Activity {
 
 		@Override
 		public void run() {
-			if (data != null && data.length() > 0) {
+			if (data != null && data.length() > 0 && mEnableBrandWatcher) {
 				mProgress.setVisibility(View.VISIBLE);
 				RequestQueue queue = MyVolley.getRequestQueue();
 				GsonRequest<BrandResult> brandReq = new GsonRequest<BrandResult>(
@@ -332,19 +355,19 @@ public class ItemInfo extends Activity {
 
 	private void init() {
 		mAtvBrand = (AutoCompleteTextView) findViewById(R.id.atvBrand);
-		mListBrand = new ArrayList<String>();
-		adapterBrand = new ArrayAdapter<String>(ItemInfo.this,
-				android.R.layout.simple_dropdown_item_1line, mListBrand);
-		adapterBrand.setNotifyOnChange(true);
-		mAtvBrand.setAdapter(adapterBrand);
-
+		// mListBrand = new ArrayList<String>();
+		// adapterBrand = new ArrayAdapter<String>(ItemInfo.this,
+		// android.R.layout.simple_dropdown_item_1line, mListBrand);
+		// adapterBrand.setNotifyOnChange(true);
+		// mAtvBrand.setAdapter(adapterBrand);
+		//
 		mSpnYear = (Spinner) findViewById(R.id.spnYear);
 		mAtvModel = (AutoCompleteTextView) findViewById(R.id.atvModel);
-		mListModel = new ArrayList<String>();
-		adapterModel = new ArrayAdapter<String>(ItemInfo.this,
-				android.R.layout.simple_dropdown_item_1line, mListModel);
-		adapterModel.setNotifyOnChange(true);
-		mAtvModel.setAdapter(adapterModel);
+		// mListModel = new ArrayList<String>();
+		// adapterModel = new ArrayAdapter<String>(ItemInfo.this,
+		// android.R.layout.simple_dropdown_item_1line, mListModel);
+		// adapterModel.setNotifyOnChange(true);
+		// mAtvModel.setAdapter(adapterModel);
 
 		mSpnTranstype = (Spinner) findViewById(R.id.spnTranstype);
 		mEdtTitle = (EditText) findViewById(R.id.edtTitle);
@@ -530,14 +553,15 @@ public class ItemInfo extends Activity {
 			public void onResponse(BrandResult response) {
 				mProgress.setVisibility(View.INVISIBLE);
 				if (response.Result != null && response.Result.Brands != null) {
-//					adapterBrand.clear();
-//					mListBrand = response.Result.Brands;
-//					for (String item : mListBrand) {
-//						adapterBrand.add(item);
-//					}
-//					adapterBrand.notifyDataSetChanged();
+					// adapterBrand.clear();
+					// mListBrand = response.Result.Brands;
+					// for (String item : mListBrand) {
+					// adapterBrand.add(item);
+					// }
+					// adapterBrand.notifyDataSetChanged();
 					adapterBrand = new ArrayAdapter<String>(ItemInfo.this,
-							android.R.layout.simple_dropdown_item_1line, response.Result.Brands);
+							android.R.layout.simple_dropdown_item_1line,
+							response.Result.Brands);
 					adapterBrand.setNotifyOnChange(true);
 					mAtvBrand.setAdapter(adapterBrand);
 					mAtvBrand.showDropDown();
@@ -553,14 +577,15 @@ public class ItemInfo extends Activity {
 			public void onResponse(ModelResult response) {
 				mProgress.setVisibility(View.INVISIBLE);
 				if (response.Result != null && response.Result.Models != null) {
-//					adapterModel.clear();
-//					mListModel = response.Result.Models;
-//					for (String item : mListModel) {
-//						adapterModel.add(item);
-//					}
-//					adapterModel.notifyDataSetChanged();
+					// adapterModel.clear();
+					// mListModel = response.Result.Models;
+					// for (String item : mListModel) {
+					// adapterModel.add(item);
+					// }
+					// adapterModel.notifyDataSetChanged();
 					adapterModel = new ArrayAdapter<String>(ItemInfo.this,
-							android.R.layout.simple_dropdown_item_1line, response.Result.Models);
+							android.R.layout.simple_dropdown_item_1line,
+							response.Result.Models);
 					adapterModel.setNotifyOnChange(true);
 					mAtvModel.setAdapter(adapterModel);
 					mAtvModel.showDropDown();

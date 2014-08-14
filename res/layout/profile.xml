@@ -112,24 +112,18 @@
                 android:textSize="20sp"
                 android:visibility="gone" />
 
-            <RelativeLayout
+            <ListView
+                android:id="@+id/lvSearchResult"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1" >
+                android:layout_height="match_parent" >
+            </ListView>
 
-                <com.handmark.pulltorefresh.library.PullToRefreshListView
-                    android:id="@+id/lvSearchResult"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" >
-                </com.handmark.pulltorefresh.library.PullToRefreshListView>
-
-                <!-- <ProgressBar -->
-                <!-- android:id="@+id/progressbar" -->
-                <!-- android:layout_width="fill_parent" -->
-                <!-- android:layout_height="wrap_content" -->
-                <!-- android:layout_alignParentBottom="true" -->
-                <!-- android:layout_centerHorizontal="true" /> -->
-            </RelativeLayout>
+            <!-- <ProgressBar -->
+            <!-- android:id="@+id/progressbar" -->
+            <!-- android:layout_width="fill_parent" -->
+            <!-- android:layout_height="wrap_content" -->
+            <!-- android:layout_alignParentBottom="true" -->
+            <!-- android:layout_centerHorizontal="true" /> -->
         </LinearLayout>
     </LinearLayout>
 

@@ -10,6 +10,7 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.ContentType;
 import org.apache.http.entity.mime.HttpMultipartMode;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
@@ -699,12 +700,11 @@ public class PostAdActivity extends FragmentActivity implements
 
 		MultipartEntityBuilder builder = MultipartEntityBuilder.create();
 		builder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
-		builder.addTextBody(PostAdActivity.ADDRESS, post.getAddress());
+
 		File file1 = new File(post.getAdpic1());
-		
+
 		if (file1.exists()) {
-			builder.addPart(PostAdActivity.ADPIC1,
-					new FileBody(new File(post.getAdpic1())));
+			builder.addPart(PostAdActivity.ADPIC1, new FileBody(file1));
 			Log.d("haipn", "postad image 1:" + post.getAdpic1());
 		}
 		if (post.getAdpic2().length() > 0)
@@ -723,6 +723,7 @@ public class PostAdActivity extends FragmentActivity implements
 			builder.addBinaryBody(PostAdActivity.ADPIC6,
 					new File(post.getAdpic6()));
 		builder.addTextBody(PostAdActivity.SESSION_ID, post.getSession_id());
+		builder.addTextBody(PostAdActivity.ADDRESS, post.getAddress());
 		builder.addTextBody(PostAdActivity.ADTYPE, post.getAdtype() + "");
 		builder.addTextBody(PostAdActivity.AID, post.getAid() + "");
 		builder.addTextBody(PostAdActivity.BRAND, post.getBrand());
@@ -778,7 +779,7 @@ public class PostAdActivity extends FragmentActivity implements
 		String result = EntityUtils.toString(httpEntity);
 		return result;
 	}
-
+	
 	@SuppressWarnings("deprecation")
 	private String buildMultipartEntity1(PostAd post)
 			throws ClientProtocolException, IOException {
@@ -800,9 +801,12 @@ public class PostAdActivity extends FragmentActivity implements
 		// builder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
 		builder.addPart(PostAdActivity.ADDRESS,
 				new StringBody(post.getAddress()));
-		if (post.getAdpic1().length() > 0)
-			builder.addPart(PostAdActivity.ADPIC1,
-					new FileBody(new File(post.getAdpic1())));
+		File file1 = new File(post.getAdpic1());
+
+		if (file1.exists()) {
+			builder.addPart(PostAdActivity.ADPIC1, new FileBody(file1));
+			Log.d("haipn", "postad image 1:" + post.getAdpic1());
+		}
 		if (post.getAdpic2().length() > 0)
 			builder.addPart(PostAdActivity.ADPIC2,
 					new FileBody(new File(post.getAdpic2())));
@@ -913,7 +917,32 @@ public class PostAdActivity extends FragmentActivity implements
 		}
 
 	}
+	private String buildMultipartEntityTest(PostAd post)
+			throws ClientProtocolException, IOException {
+		HttpClient client = new DefaultHttpClient();
 
+		HttpPost httpPost = new HttpPost(Const.URL_POST_AD_TEST);
+
+		MultipartEntityBuilder builder = MultipartEntityBuilder.create();
+		builder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
+
+		File file1 = new File(post.getAdpic1());
+
+		if (file1.exists()) {
+			builder.addPart("image", new FileBody(file1));
+			Log.d("haipn", "test 1:" + post.getAdpic1());
+		}
+		HttpEntity entity = builder.build();
+
+		httpPost.setEntity(entity);
+
+		HttpResponse response = client.execute(httpPost);
+
+		HttpEntity httpEntity = response.getEntity();
+
+		String result = EntityUtils.toString(httpEntity);
+		return result;
+	}
 	private class FileUploadTask extends AsyncTask<PostAd, Integer, String> {
 
 		private ProgressDialog dialog;

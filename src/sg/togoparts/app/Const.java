@@ -52,7 +52,8 @@ public class Const {
 	public static String URL_MERGE = "https://www.togoparts.com/iphone_ws/fb-user-merge.php?source=android";
 	public static String URL_SIGNUP = "https://www.togoparts.com/iphone_ws/fb-user-new.php?source=android";
 	public static String URL_PROFILE = "https://www.togoparts.com/iphone_ws/user-profile.php?source=android";
-	public static String URL_POST_AD = "https://www.togoparts.com/iphone_ws/mp-postad.php?source=android";
+	public static String URL_POST_AD = "http://www.togoparts.com/iphone_ws/mp-postad.php?source=android";
+	public static String URL_POST_AD_TEST = "http://www.togoparts.com/iphone_ws/mp-postad-test.php";
 	public static String URL_GET_COUNTRYS = "http://www.togoparts.com/iphone_ws/get-dropdown-values.php?country=1";
 	public static String URL_GET_MY_ADS = "http://www.togoparts.com/iphone_ws/mp_list_ads.php?profilename=%s";
 	public static String URL_GET_PROFILE = "https://www.togoparts.com/iphone_ws/user-profile.php?source=android";

@@ -157,7 +157,7 @@
     <string name="label_contact_person">Contact Person</string>
     <string name="label_contact_number">Contact Number</string>
     <string name="label_besttime">Best Time to Call</string>
-
+	<string name="title_contact_info">Contact Info</string>
     <!-- Message location -->
     <string name="connected">Client connected</string>
     <string name="connection_error_code_unknown">Unknown connection error code:  %1$d</string>

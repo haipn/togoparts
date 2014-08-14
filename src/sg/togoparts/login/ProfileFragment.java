@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import sg.togoparts.DetailActivity;
 import sg.togoparts.DetailFragment;
 import sg.togoparts.Fragment_Main;
 import sg.togoparts.HeaderView;
@@ -19,6 +20,7 @@ import sg.togoparts.json.SearchResult;
 import sg.togoparts.json.SearchResult.AdsResult;
 import sg.togoparts.login.Profile.ProfileValue;
 import sg.togoparts.login.Profile.Value;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -32,6 +34,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.android.volley.AuthFailureError;
@@ -47,7 +50,7 @@ public class ProfileFragment extends Fragment_Main {
 	public static final String PAGE_ID = "&page_id=";
 	protected ImageLoader imageLoader = ImageLoader.getInstance();
 	protected SearchResultAdapter mAdapter;
-	private PullToRefreshListView mLvResult;
+	private ListView mLvResult;
 	private TextView mTvNoShortlist;
 	private ArrayList<AdsResult> mResult;
 	private int mPageId;
@@ -72,7 +75,7 @@ public class ProfileFragment extends Fragment_Main {
 		if (Const.isLogin(getActivity())) {
 			View rootView = inflater
 					.inflate(R.layout.profile, container, false);
-			mLvResult = (PullToRefreshListView) rootView
+			mLvResult = (ListView) rootView
 					.findViewById(R.id.lvSearchResult);
 			mTvNoShortlist = (TextView) rootView.findViewById(R.id.tvNoResult);
 			mAdapter = new SearchResultAdapter(getActivity(), mResult);
@@ -82,7 +85,9 @@ public class ProfileFragment extends Fragment_Main {
 				@Override
 				public void onItemClick(AdapterView<?> arg0, View arg1,
 						int arg2, long arg3) {
-					
+					Intent i = new Intent(getActivity(), DetailActivity.class);
+					i.putExtra(Const.ADS_ID, mResult.get(arg2).aid);
+					startActivity(i);
 				}
 			});
 //			mLvResult.setOnScrollListener(new OnScrollListener() {

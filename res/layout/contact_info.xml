@@ -56,13 +56,11 @@
             android:layout_height="wrap_content"
             android:text="@string/label_location" />
 
-        <EditText
+        <AutoCompleteTextView
             android:id="@+id/edtLocation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="number"
-            android:singleLine="true" >
-        </EditText>
+            android:singleLine="true" />
 
         <sg.togoparts.gallery.FontableButton
             android:id="@+id/btnSave"
