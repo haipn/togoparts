@@ -18,8 +18,11 @@ import sg.togoparts.json.GsonRequest;
 import sg.togoparts.json.ResultLogin;
 import sg.togoparts.json.SearchResult;
 import sg.togoparts.json.SearchResult.AdsResult;
+import sg.togoparts.login.AdProfileAdapter.QuickActionSelect;
 import sg.togoparts.login.Profile.ProfileValue;
 import sg.togoparts.login.Profile.Value;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -43,14 +46,16 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.Response.Listener;
 import com.android.volley.VolleyError;
+import com.fortysevendeg.swipelistview.BaseSwipeListViewListener;
+import com.fortysevendeg.swipelistview.SwipeListView;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
-public class ProfileFragment extends Fragment_Main {
+public class ProfileFragment extends Fragment_Main implements QuickActionSelect {
 	public static final String PAGE_ID = "&page_id=";
 	protected ImageLoader imageLoader = ImageLoader.getInstance();
-	protected SearchResultAdapter mAdapter;
-	private ListView mLvResult;
+	protected AdProfileAdapter mAdapter;
+	private SwipeListView mLvResult;
 	private TextView mTvNoShortlist;
 	private ArrayList<AdsResult> mResult;
 	private int mPageId;
@@ -75,41 +80,21 @@ public class ProfileFragment extends Fragment_Main {
 		if (Const.isLogin(getActivity())) {
 			View rootView = inflater
 					.inflate(R.layout.profile, container, false);
-			mLvResult = (ListView) rootView
+			mLvResult = (SwipeListView) rootView
 					.findViewById(R.id.lvSearchResult);
 			mTvNoShortlist = (TextView) rootView.findViewById(R.id.tvNoResult);
-			mAdapter = new SearchResultAdapter(getActivity(), mResult);
+			mAdapter = new AdProfileAdapter(getActivity(), mResult, this);
 			mLvResult.setAdapter(mAdapter);
-			mLvResult.setOnItemClickListener(new OnItemClickListener() {
-
+			mLvResult.setSwipeListViewListener(new BaseSwipeListViewListener() {
 				@Override
-				public void onItemClick(AdapterView<?> arg0, View arg1,
-						int arg2, long arg3) {
+				public void onClickFrontView(int position) {
+					super.onClickFrontView(position);
 					Intent i = new Intent(getActivity(), DetailActivity.class);
-					i.putExtra(Const.ADS_ID, mResult.get(arg2).aid);
+					i.putExtra(Const.ADS_ID, mResult.get(position).aid);
+					i.putExtra(Const.IS_MY_AD, true);
 					startActivity(i);
 				}
 			});
-//			mLvResult.setOnScrollListener(new OnScrollListener() {
-//
-//				@Override
-//				public void onScroll(AbsListView view, int firstVisibleItem,
-//						int visibleItemCount, int totalItemCount) {
-//					if (firstVisibleItem + visibleItemCount == totalItemCount
-//							&& enableLoadMore) {
-//						loadMore();
-//						enableLoadMore = false;
-//					}
-//				}
-//
-//				@Override
-//				public void onScrollStateChanged(AbsListView view,
-//						int scrollState) {
-//					// TODO Auto-generated method stub
-//
-//				}
-//
-//			});
 
 			mImvAvatar = (ImageView) rootView.findViewById(R.id.imvAvatar);
 			mTvPositive = (TextView) rootView.findViewById(R.id.tvPositive);
@@ -285,5 +270,111 @@ public class ProfileFragment extends Fragment_Main {
 		headerView.setTitleVisible(View.VISIBLE,
 				getString(R.string.title_profile));
 		headerView.setRightButton(View.INVISIBLE, null);
+	}
+
+	protected void repostAd() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void onRepostClick(String aid) {
+		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+		builder.setMessage(R.string.msg_repost_confirm)
+				.setIcon(android.R.drawable.ic_dialog_alert)
+				.setPositiveButton(android.R.string.ok,
+						new DialogInterface.OnClickListener() {
+
+							@Override
+							public void onClick(DialogInterface dialog,
+									int which) {
+								repostAd();
+								dialog.dismiss();
+							}
+						})
+				.setNegativeButton(android.R.string.cancel,
+						new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int id) {
+								dialog.dismiss();
+							}
+						});
+		// Create the AlertDialog object and return it
+		// builder.create().show();
+		builder.show();
+	}
+
+	@Override
+	public void onTakeDownClick(String aid) {
+		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+		builder.setMessage(R.string.msg_take_down_confirm)
+				.setIcon(android.R.drawable.ic_dialog_alert)
+				.setPositiveButton(android.R.string.ok,
+						new DialogInterface.OnClickListener() {
+
+							@Override
+							public void onClick(DialogInterface dialog,
+									int which) {
+								repostAd();
+							}
+						})
+				.setNegativeButton(android.R.string.cancel,
+						new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int id) {
+								dialog.dismiss();
+							}
+						});
+		// Create the AlertDialog object and return it
+		// builder.create().show();
+		builder.show();
+	}
+
+	@Override
+	public void onMarkAsSoldClick(String aid) {
+		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+		builder.setMessage(R.string.msg_mark_as_sold)
+				.setIcon(android.R.drawable.ic_dialog_alert)
+				.setPositiveButton(android.R.string.ok,
+						new DialogInterface.OnClickListener() {
+
+							@Override
+							public void onClick(DialogInterface dialog,
+									int which) {
+								repostAd();
+							}
+						})
+				.setNegativeButton(android.R.string.cancel,
+						new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int id) {
+								dialog.dismiss();
+							}
+						});
+		// Create the AlertDialog object and return it
+		// builder.create().show();
+		builder.show();
+	}
+
+	@Override
+	public void onRefreshClick(String aid) {
+		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+		builder.setMessage(R.string.msg_refresh_confirm)
+				.setIcon(android.R.drawable.ic_dialog_alert)
+				.setPositiveButton(android.R.string.ok,
+						new DialogInterface.OnClickListener() {
+
+							@Override
+							public void onClick(DialogInterface dialog,
+									int which) {
+								repostAd();
+							}
+						})
+				.setNegativeButton(android.R.string.cancel,
+						new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int id) {
+								dialog.dismiss();
+							}
+						});
+		// Create the AlertDialog object and return it
+		// builder.create().show();
+		builder.show();
 	}
 }

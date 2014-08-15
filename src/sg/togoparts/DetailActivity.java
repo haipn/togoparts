@@ -17,6 +17,7 @@ import sg.togoparts.json.AdsDetail.Message;
 import sg.togoparts.json.AdsDetail.Picture;
 import sg.togoparts.json.ContactLog;
 import sg.togoparts.json.GsonRequest;
+import sg.togoparts.login.PostAdActivity;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
@@ -151,6 +152,9 @@ public class DetailActivity extends FragmentActivity implements
 	private static final String SCREEN_LABEL = "Marketplace Ad Details";
 	protected static final String POST_BY = "Marketplace List Ads by User";
 	protected static final String SHARE = "Marketplace Share";
+	protected static final int REQUEST_EDIT_AD = 0;
+
+	private boolean isMyAd;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -167,6 +171,7 @@ public class DetailActivity extends FragmentActivity implements
 		frameAnimation.start();
 
 		mAdsId = getIntent().getStringExtra(Const.ADS_ID);
+		isMyAd = getIntent().getBooleanExtra(Const.IS_MY_AD, false);
 		Log.d("haipn", "id :" + mAdsId);
 		options = new DisplayImageOptions.Builder()
 				.resetViewBeforeLoading(true).cacheOnDisc(true)
@@ -343,10 +348,17 @@ public class DetailActivity extends FragmentActivity implements
 
 			@Override
 			public void onClick(View v) {
-				Intent i = new Intent(DetailActivity.this,
-						FSActivity_Search.class);
-				startActivity(i);
-				finish();
+				if (isMyAd) {
+					Intent i = new Intent(DetailActivity.this,
+							PostAdActivity.class);
+					i.putExtra(Const.ADS_ID, mAdsId);
+					startActivityForResult(i, REQUEST_EDIT_AD);
+				} else {
+					Intent i = new Intent(DetailActivity.this,
+							FSActivity_Search.class);
+					startActivity(i);
+					finish();
+				}
 			}
 		});
 	}

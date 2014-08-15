@@ -108,7 +108,13 @@ public class Signup extends FragmentActivity {
 
 			}
 		});
-
+		mBtnCancel.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				finish();
+			}
+		});
 		mDialog = new ErrorDialog();
 		mProgressDialog = new ProgressDialog(this);
 	}

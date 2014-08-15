@@ -25,8 +25,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:paddingTop="10dp"
             android:paddingBottom="10dp"
+            android:paddingTop="10dp"
             android:text="@string/label_merge"
             android:textSize="24sp" />
 
@@ -140,8 +140,8 @@
                 android:layout_weight=".5"
                 android:background="@drawable/btn_click"
                 android:text="@string/yes"
-                android:textSize="25sp"
-                android:textColor="@android:color/white" />
+                android:textColor="@android:color/white"
+                android:textSize="25sp" />
 
             <sg.togoparts.gallery.FontableButton
                 android:id="@+id/btnNo"
@@ -151,9 +151,15 @@
                 android:layout_weight=".5"
                 android:background="@drawable/btn_click"
                 android:text="@string/no"
-                android:textSize="25sp"
-                android:textColor="@android:color/white" />
+                android:textColor="@android:color/white"
+                android:textSize="25sp" />
         </LinearLayout>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitCenter"
+            android:src="@drawable/merge_infobox" />
     </LinearLayout>
 
 </LinearLayout>

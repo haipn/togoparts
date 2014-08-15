@@ -32,6 +32,7 @@ public class Const {
 	public static final String URL_BIKESHOP_DETAIL = "http://www.togoparts.com/iphone_ws/bs_details.php?source=android&sid=%s&lat=%s&long=%s";
 	public static final String LATITUDE = "latitude";
 	public static final String LONGITUDE = "longitude";
+	public static final String IS_MY_AD = "is my ad";
 
 	public static String URL_LIST_LASTEST_ADS = "http://www.togoparts.com/iphone_ws/mp_list_latest_ads.php?source=android";
 	public static String URL_LIST_CATEGORY = "http://www.togoparts.com/iphone_ws/mp_list_categories.php?source=android";
@@ -52,7 +53,7 @@ public class Const {
 	public static String URL_MERGE = "https://www.togoparts.com/iphone_ws/fb-user-merge.php?source=android";
 	public static String URL_SIGNUP = "https://www.togoparts.com/iphone_ws/fb-user-new.php?source=android";
 	public static String URL_PROFILE = "https://www.togoparts.com/iphone_ws/user-profile.php?source=android";
-	public static String URL_POST_AD = "http://www.togoparts.com/iphone_ws/mp-postad.php?source=android";
+	public static String URL_POST_AD = "https://www.togoparts.com/iphone_ws/mp-postad.php?source=android";
 	public static String URL_POST_AD_TEST = "http://www.togoparts.com/iphone_ws/mp-postad-test.php";
 	public static String URL_GET_COUNTRYS = "http://www.togoparts.com/iphone_ws/get-dropdown-values.php?country=1";
 	public static String URL_GET_MY_ADS = "http://www.togoparts.com/iphone_ws/mp_list_ads.php?profilename=%s";
@@ -64,6 +65,10 @@ public class Const {
 	public static String URL_GET_SUBCATEGORY = "https://www.togoparts.com/iphone_ws/get-option-values.php?source=android&subcat=1&cid=%d&gid=%d";
 	public static String URL_GET_BRAND = "https://www.togoparts.com/iphone_ws/get-option-values.php?source=android&brands=1&search=%s";
 	public static String URL_GET_MODEL = "https://www.togoparts.com/iphone_ws/get-option-values.php?source=android&models=1&search=%s";
+	public static String URL_AD_REFRESH = "https://www.togoparts.com/iphone_ws/mp-ad-refresh.php?source=android";
+	public static String URL_MARK_AS_SOLD = "https://www.togoparts.com/iphone_ws/mp-mark-ad.php?source=android";
+	public static String URL_AD_REPOST = "https://www.togoparts.com/iphone_ws/mp-ad-repost.php?source=android";
+	public static String URL_AD_TAKE_DOWN = "https://www.togoparts.com/iphone_ws/mp-mark-ad.php?source=android";
 	public static boolean isAppExitable = false;
 
 	/**

@@ -28,12 +28,16 @@ import sg.togoparts.json.GsonRequest;
 import sg.togoparts.json.MultipartRequest;
 import sg.togoparts.json.PostAd;
 import sg.togoparts.json.PostAdOnLoadResult;
+import sg.togoparts.json.PostAdOnLoadResult.AdDetails;
+import sg.togoparts.json.PostAdOnLoadResult.Picture;
 import sg.togoparts.json.PostAdOnLoadResult.ResultValue;
 import sg.togoparts.json.ResultLogin;
 import sg.togoparts.login.MyDialogFragment.OnSelectAction;
 import android.app.ProgressDialog;
+import android.app.TabActivity;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -62,6 +66,10 @@ import com.android.volley.Response.Listener;
 import com.android.volley.VolleyError;
 import com.aviary.android.feather.FeatherActivity;
 import com.aviary.android.feather.library.Constants;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.ImageScaleType;
+import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 
 public class PostAdActivity extends FragmentActivity implements
 		View.OnClickListener, OnSelectAction {
@@ -152,6 +160,10 @@ public class PostAdActivity extends FragmentActivity implements
 	private int mIdSelect;
 	private PostAd mPostAd;
 	private int mTypePostAd;
+	private String mAdId;
+	private boolean isEdit;
+	private DisplayImageOptions options;
+	protected ImageLoader imageLoader = ImageLoader.getInstance();
 
 	public void launchInstaFiverr(Uri uri) {
 		//
@@ -166,12 +178,22 @@ public class PostAdActivity extends FragmentActivity implements
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.post_ad);
+		mAdId = getIntent().getStringExtra(Const.ADS_ID);
 		mPostAd = new PostAd();
+		if (mAdId == null || mAdId.length() == 0) {
+			isEdit = false;
+		} else {
+			isEdit = true;
+		}
 		createHeader();
 		init();
 		setListener();
 		onLoad();
-
+		options = new DisplayImageOptions.Builder()
+				.resetViewBeforeLoading(true).cacheOnDisc(true)
+				.cacheInMemory(true).imageScaleType(ImageScaleType.EXACTLY)
+				.bitmapConfig(Bitmap.Config.RGB_565).considerExifParams(true)
+				.displayer(new FadeInBitmapDisplayer(300)).build();
 	}
 
 	private void onLoad() {
@@ -185,6 +207,9 @@ public class PostAdActivity extends FragmentActivity implements
 				Map<String, String> params = new HashMap<String, String>();
 				params.put("session_id",
 						Const.getSessionId(PostAdActivity.this));
+				if (isEdit) {
+					params.put("aid", mAdId);
+				}
 				return params;
 			};
 		};
@@ -269,6 +294,83 @@ public class PostAdActivity extends FragmentActivity implements
 		validationTypePost(result);
 		mGvInfo.setAdapter(adapter);
 		Const.setGridViewHeightBasedOnChildren(mGvInfo, 3);
+
+		if (isEdit) {
+			fillAdData(result.ad_details);
+		}
+	}
+
+	private void fillAdData(AdDetails ad) {
+		if (ad.adtype == 0) {
+			mRdoFreeAd.setChecked(true);
+		} else if (ad.adtype == 1)
+			mRdoPriorityAd.setChecked(true);
+		else
+			mRdoNewItemAd.setChecked(true);
+		mRdoFreeAd.setEnabled(false);
+		mRdoNewItemAd.setEnabled(false);
+		mRdoPriorityAd.setEnabled(false);
+		if (ad.picture != null && ad.picture.size() > 0) {
+			for (int i = 0; i < ad.picture.size(); i++) {
+				if (i == 0) {
+					imageLoader.displayImage(ad.picture.get(i).picture, mImv1,
+							options);
+				} else if (i == 1) {
+					imageLoader.displayImage(ad.picture.get(i).picture, mImv2,
+							options);
+				} else if (i == 2) {
+					imageLoader.displayImage(ad.picture.get(i).picture, mImv3,
+							options);
+				} else if (i == 3) {
+					imageLoader.displayImage(ad.picture.get(i).picture, mImv4,
+							options);
+				} else if (i == 4) {
+					imageLoader.displayImage(ad.picture.get(i).picture, mImv5,
+							options);
+				} else if (i == 5) {
+					imageLoader.displayImage(ad.picture.get(i).picture, mImv6,
+							options);
+				}
+			}
+		}
+
+		mTvCategory.setEnabled(false);
+		mPostAd.setAddress(ad.address);
+		mPostAd.setAdtype(ad.adtype);
+		mPostAd.setAid(Integer.valueOf(mAdId));
+		mPostAd.setBrand(ad.brand);
+		mPostAd.setCity(ad.city);
+		mPostAd.setColour(ad.colour);
+		mPostAd.setCondition(ad.condition);
+		mPostAd.setContactno(ad.contactno);
+		mPostAd.setContactperson(ad.contactperson);
+		mPostAd.setCountry(ad.country);
+		mPostAd.setD_bmx(ad.d_bmx == 1 ? true : false);
+		mPostAd.setD_commute(ad.d_commute == 1 ? true : false);
+		mPostAd.setD_folding(ad.d_folding == 1 ? true : false);
+		mPostAd.setD_mtb(ad.d_mtb == 1 ? true : false);
+		mPostAd.setD_others(ad.d_others == 1 ? true : false);
+		mPostAd.setD_road(ad.d_road == 1 ? true : false);
+		mPostAd.setDescription(ad.description);
+		mPostAd.setItem(ad.item);
+		mPostAd.setItem_year(ad.item_year + "");
+		mPostAd.setLatitude(Double.valueOf(ad.lat));
+		mPostAd.setLongitude(Double.valueOf(ad.longitude));
+		mPostAd.setOriginal_price(ad.original_price);
+		mPostAd.setPicturelink(ad.picturelink);
+		mPostAd.setPostalcode(ad.postalcode);
+		mPostAd.setWarranty(ad.warranty);
+		mPostAd.setWeight(ad.weight);
+		mPostAd.setTranstype(Integer.valueOf(ad.transtype));
+		mPostAd.setTitle(ad.title);
+		mPostAd.setTime_to_contact(ad.time_to_contact);
+		mPostAd.setSize(ad.size);
+		mPostAd.setRegion(ad.region);
+		mPostAd.setPrice(Integer.valueOf(ad.price));
+		mPostAd.setPricetype(ad.pricetype);
+		mPostAd.setSection(Integer.valueOf(ad.section));
+		mPostAd.setCat(Integer.valueOf(ad.cat));
+		mPostAd.setSub_cat(Integer.valueOf(ad.sub_cat));
 	}
 
 	private void validationTypePost(ResultValue ret) {
@@ -314,7 +416,13 @@ public class PostAdActivity extends FragmentActivity implements
 
 			@Override
 			public void onClick(View v) {
-
+				try {
+					TabActivity tabs = (TabActivity) getParent();
+					tabs.getTabHost().setCurrentTabByTag("1");
+				} catch (NullPointerException e) {
+					e.printStackTrace();
+					onBackPressed();
+				}
 			}
 		});
 		mBtnSearch.setVisibility(View.VISIBLE);
@@ -440,6 +548,7 @@ public class PostAdActivity extends FragmentActivity implements
 					mImv5.setImageResource(R.drawable.unselected_pic);
 					mImv6.setEnabled(false);
 					mImv6.setImageResource(R.drawable.unselected_pic);
+					mPostAd.setAdtype(0);
 				} else {
 					mImv2.setEnabled(true);
 					mImv2.setImageResource(R.drawable.upload_pic);
@@ -452,6 +561,7 @@ public class PostAdActivity extends FragmentActivity implements
 					mImv6.setEnabled(true);
 					mImv6.setImageResource(R.drawable.upload_pic);
 				}
+
 			}
 		});
 
@@ -462,7 +572,9 @@ public class PostAdActivity extends FragmentActivity implements
 					boolean isChecked) {
 				if (isChecked) {
 					mTvNote.setText(R.string.note_newitem_ad);
+					mPostAd.setAdtype(2);
 				}
+
 			}
 		});
 		mRdoPriorityAd
@@ -473,6 +585,7 @@ public class PostAdActivity extends FragmentActivity implements
 							boolean isChecked) {
 						if (isChecked) {
 							mTvNote.setText(R.string.note_priority_ad);
+							mPostAd.setAdtype(1);
 						}
 					}
 				});
@@ -621,11 +734,13 @@ public class PostAdActivity extends FragmentActivity implements
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
-			// Log.d("haipn" , "home key back");
-			// if (Const.isAppExitable) {
-			return false;
-			// } else
-			// return super.onKeyDown(keyCode, event);
+			try {
+				TabActivity tabs = (TabActivity) getParent();
+				tabs.getTabHost().setCurrentTabByTag("1");
+			} catch (NullPointerException e) {
+				e.printStackTrace();
+				finish();
+			}
 		}
 		return super.onKeyDown(keyCode, event);
 	}
@@ -707,21 +822,36 @@ public class PostAdActivity extends FragmentActivity implements
 			builder.addPart(PostAdActivity.ADPIC1, new FileBody(file1));
 			Log.d("haipn", "postad image 1:" + post.getAdpic1());
 		}
-		if (post.getAdpic2().length() > 0)
-			builder.addBinaryBody(PostAdActivity.ADPIC2,
-					new File(post.getAdpic2()));
-		if (post.getAdpic3().length() > 0)
-			builder.addBinaryBody(PostAdActivity.ADPIC3,
-					new File(post.getAdpic3()));
-		if (post.getAdpic4().length() > 0)
-			builder.addBinaryBody(PostAdActivity.ADPIC4,
-					new File(post.getAdpic4()));
-		if (post.getAdpic5().length() > 0)
-			builder.addBinaryBody(PostAdActivity.ADPIC5,
-					new File(post.getAdpic5()));
-		if (post.getAdpic6().length() > 0)
-			builder.addBinaryBody(PostAdActivity.ADPIC6,
-					new File(post.getAdpic6()));
+		File file2 = new File(post.getAdpic2());
+
+		if (file2.exists()) {
+			builder.addPart(PostAdActivity.ADPIC2, new FileBody(file2));
+			Log.d("haipn", "postad image 2:" + post.getAdpic2());
+		}
+		File file3 = new File(post.getAdpic3());
+
+		if (file3.exists()) {
+			builder.addPart(PostAdActivity.ADPIC3, new FileBody(file3));
+			Log.d("haipn", "postad image 3:" + post.getAdpic3());
+		}
+		File file4 = new File(post.getAdpic4());
+
+		if (file4.exists()) {
+			builder.addPart(PostAdActivity.ADPIC4, new FileBody(file4));
+			Log.d("haipn", "postad image 4:" + post.getAdpic4());
+		}
+		File file5 = new File(post.getAdpic5());
+
+		if (file5.exists()) {
+			builder.addPart(PostAdActivity.ADPIC5, new FileBody(file5));
+			Log.d("haipn", "postad image 5:" + post.getAdpic5());
+		}
+		File file6 = new File(post.getAdpic6());
+
+		if (file6.exists()) {
+			builder.addPart(PostAdActivity.ADPIC6, new FileBody(file6));
+			Log.d("haipn", "postad image 6:" + post.getAdpic6());
+		}
 		builder.addTextBody(PostAdActivity.SESSION_ID, post.getSession_id());
 		builder.addTextBody(PostAdActivity.ADDRESS, post.getAddress());
 		builder.addTextBody(PostAdActivity.ADTYPE, post.getAdtype() + "");
@@ -779,126 +909,6 @@ public class PostAdActivity extends FragmentActivity implements
 		String result = EntityUtils.toString(httpEntity);
 		return result;
 	}
-	
-	@SuppressWarnings("deprecation")
-	private String buildMultipartEntity1(PostAd post)
-			throws ClientProtocolException, IOException {
-		HttpClient client = new DefaultHttpClient();
-
-		HttpPost httpPost = new HttpPost(Const.URL_POST_AD);
-		MultipartEntity builder = new MultipartEntity(
-				HttpMultipartMode.BROWSER_COMPATIBLE);
-		// multipartEntity.addPart("Title", new StringBody("Title"));
-		// multipartEntity.addPart("Nick", new StringBody("Nick"));
-		// multipartEntity.addPart("Email", new StringBody("Email"));
-		// multipartEntity.addPart("Description", new
-		// StringBody(Settings.SHARE.TEXT));
-		// multipartEntity.addPart("Image", new FileBody(image));
-		// httppost.setEntity(multipartEntity);
-
-		// mHttpClient.execute(httppost
-		// MultipartEntityBuilder builder = MultipartEntityBuilder.create();
-		// builder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
-		builder.addPart(PostAdActivity.ADDRESS,
-				new StringBody(post.getAddress()));
-		File file1 = new File(post.getAdpic1());
-
-		if (file1.exists()) {
-			builder.addPart(PostAdActivity.ADPIC1, new FileBody(file1));
-			Log.d("haipn", "postad image 1:" + post.getAdpic1());
-		}
-		if (post.getAdpic2().length() > 0)
-			builder.addPart(PostAdActivity.ADPIC2,
-					new FileBody(new File(post.getAdpic2())));
-		if (post.getAdpic3().length() > 0)
-			builder.addPart(PostAdActivity.ADPIC3,
-					new FileBody(new File(post.getAdpic3())));
-		if (post.getAdpic4().length() > 0)
-			builder.addPart(PostAdActivity.ADPIC4,
-					new FileBody(new File(post.getAdpic4())));
-		if (post.getAdpic5().length() > 0)
-			builder.addPart(PostAdActivity.ADPIC5,
-					new FileBody(new File(post.getAdpic5())));
-		if (post.getAdpic6().length() > 0)
-			builder.addPart(PostAdActivity.ADPIC6,
-					new FileBody(new File(post.getAdpic6())));
-		builder.addPart(PostAdActivity.SESSION_ID,
-				new StringBody(post.getSession_id()));
-		builder.addPart(PostAdActivity.ADTYPE, new StringBody(post.getAdtype()
-				+ ""));
-		builder.addPart(PostAdActivity.AID, new StringBody(post.getAid() + ""));
-		builder.addPart(PostAdActivity.BRAND, new StringBody(post.getBrand()));
-		builder.addPart(PostAdActivity.CAT, new StringBody(post.getCat() + ""));
-		builder.addPart(PostAdActivity.CITY, new StringBody(post.getCity()));
-		builder.addPart(PostAdActivity.CLEARANCE,
-				new StringBody(post.isClearance() ? "1" : "0"));
-		builder.addPart(PostAdActivity.COLOUR, new StringBody(post.getColour()));
-		builder.addPart(PostAdActivity.CONDITION,
-				new StringBody(post.getCondition() + ""));
-		builder.addPart(PostAdActivity.CONTACTNO,
-				new StringBody(post.getContactno()));
-		builder.addPart(PostAdActivity.CONTACTPERSON,
-				new StringBody(post.getContactperson()));
-		builder.addPart(PostAdActivity.COUNTRY,
-				new StringBody(post.getCountry()));
-		builder.addPart(PostAdActivity.D_BMX, new StringBody(
-				post.isD_bmx() ? "1" : "0"));
-		builder.addPart(PostAdActivity.D_COMMUTE,
-				new StringBody(post.isD_commute() ? "1" : "0"));
-		builder.addPart(PostAdActivity.D_FOLDING,
-				new StringBody(post.isD_folding() ? "1" : "0"));
-		builder.addPart(PostAdActivity.D_MTB, new StringBody(
-				post.isD_mtb() ? "1" : "0"));
-		builder.addPart(PostAdActivity.D_OTHERS,
-				new StringBody(post.isD_others() ? "1" : "0"));
-		builder.addPart(PostAdActivity.D_ROAD, new StringBody(
-				post.isD_road() ? "1" : "0"));
-		builder.addPart(PostAdActivity.DESCRIPTION,
-				new StringBody(post.getDescription()));
-		builder.addPart(PostAdActivity.ITEM, new StringBody(post.getItem()));
-		builder.addPart(PostAdActivity.ITEM_YEAR,
-				new StringBody(post.getItem_year()));
-		builder.addPart(PostAdActivity.LAT, new StringBody(post.getLatitude()
-				+ ""));
-		builder.addPart(PostAdActivity.LONGITUDE,
-				new StringBody(post.getLongitude() + ""));
-		builder.addPart(PostAdActivity.ORIGINAL_PRICE,
-				new StringBody(post.getOriginal_price() + ""));
-		builder.addPart(PostAdActivity.PICTURELINK,
-				new StringBody(post.getPicturelink()));
-		builder.addPart(PostAdActivity.POSTALCODE,
-				new StringBody(post.getPostalcode()));
-		builder.addPart(PostAdActivity.PRICE, new StringBody(post.getPrice()
-				+ ""));
-		builder.addPart(PostAdActivity.PRICETYPE,
-				new StringBody(post.getPricetype() + ""));
-		builder.addPart(PostAdActivity.REGION, new StringBody(post.getRegion()));
-		builder.addPart(PostAdActivity.SECTION,
-				new StringBody(post.getSection() + ""));
-		builder.addPart(PostAdActivity.SIZE, new StringBody(post.getSize()));
-		builder.addPart(PostAdActivity.SUB_CAT,
-				new StringBody(post.getSub_cat() + ""));
-		builder.addPart(PostAdActivity.TIME_TO_CONTACT,
-				new StringBody(post.getTime_to_contact()));
-		builder.addPart(PostAdActivity.TITLE, new StringBody(post.getTitle()));
-		builder.addPart(PostAdActivity.TRANSTYPE,
-				new StringBody(post.getTranstype() + ""));
-		builder.addPart(PostAdActivity.WARRANTY,
-				new StringBody(post.getWarranty() + ""));
-		builder.addPart(PostAdActivity.WEIGHT, new StringBody(post.getWeight()
-				+ ""));
-		// builder.addTextBody(KEY_ROUTE_ID, mRouteId);
-		// HttpEntity entity = builder.build();
-
-		httpPost.setEntity(builder);
-
-		HttpResponse response = client.execute(httpPost);
-
-		HttpEntity httpEntity = response.getEntity();
-
-		String result = EntityUtils.toString(httpEntity);
-		return result;
-	}
 
 	public class OnPostAdClick implements View.OnClickListener {
 
@@ -917,6 +927,7 @@ public class PostAdActivity extends FragmentActivity implements
 		}
 
 	}
+
 	private String buildMultipartEntityTest(PostAd post)
 			throws ClientProtocolException, IOException {
 		HttpClient client = new DefaultHttpClient();
@@ -943,6 +954,7 @@ public class PostAdActivity extends FragmentActivity implements
 		String result = EntityUtils.toString(httpEntity);
 		return result;
 	}
+
 	private class FileUploadTask extends AsyncTask<PostAd, Integer, String> {
 
 		private ProgressDialog dialog;
