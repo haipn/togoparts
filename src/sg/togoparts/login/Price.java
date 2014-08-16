@@ -25,12 +25,16 @@ public class Price extends Activity {
 	int price, originalPrice, firmNeg;
 	boolean clearance;
 	HashMap<String, Integer> listPricetype;
+	public boolean mIsPostingPack;
+	private boolean mIsMerchant;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.price);
 		Intent i = getIntent();
+		mIsPostingPack = i.getBooleanExtra(PostAdActivity.POSTING_PACK, false);
+		mIsMerchant = i.getBooleanExtra(PostAdActivity.MERCHANT_PACK, false);
 		price = i.getIntExtra(PostAdActivity.PRICE, 0);
 		originalPrice = i.getIntExtra(PostAdActivity.ORIGINAL_PRICE, 0);
 		firmNeg = i.getIntExtra(PostAdActivity.PRICETYPE, 0);
@@ -42,10 +46,22 @@ public class Price extends Activity {
 		mBtnSave = (Button) findViewById(R.id.btnSave);
 		mCbClearance = (CheckBox) findViewById(R.id.cbClearance);
 
-		mEdtOriginalPrice.setText(originalPrice + "");
-		mEdtPrice.setText(price + "");
+		if (originalPrice != 0)
+			mEdtOriginalPrice.setText(originalPrice + "");
+		if (price != 0)
+			mEdtPrice.setText(price + "");
 		mCbClearance.setChecked(clearance);
 
+		if (mIsMerchant || mIsPostingPack) {
+			findViewById(R.id.llOriginalPrice).setVisibility(View.VISIBLE);
+		} else {
+			findViewById(R.id.llOriginalPrice).setVisibility(View.GONE);
+		}
+
+		if (mIsPostingPack)
+			findViewById(R.id.llClearance).setVisibility(View.VISIBLE);
+		else
+			findViewById(R.id.llClearance).setVisibility(View.GONE);
 		setListValues();
 		initSpinner();
 

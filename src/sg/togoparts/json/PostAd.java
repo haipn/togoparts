@@ -1,6 +1,8 @@
 package sg.togoparts.json;
 
-import com.google.ads.ai;
+import java.util.ArrayList;
+
+import sg.togoparts.json.PostAdOnLoadResult.Picture;
 
 public class PostAd {
 
@@ -106,7 +108,8 @@ public class PostAd {
 	private String adpic4;
 	private String adpic5;
 	private String adpic6;
-
+	
+	private ArrayList<Picture> mExistPics;
 	public int getAid() {
 		return aid;
 	}
@@ -457,5 +460,13 @@ public class PostAd {
 
 	public void setSession_id(String session_id) {
 		this.session_id = session_id;
+	}
+
+	public ArrayList<Picture> getmExistPics() {
+		return mExistPics;
+	}
+
+	public void setmExistPics(ArrayList<Picture> mExistPics) {
+		this.mExistPics = mExistPics;
 	}
 }

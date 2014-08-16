@@ -89,7 +89,7 @@ public class ItemInfo extends Activity {
 	private ModelWatcher modelWatcher;
 	protected boolean mEnableBrandWatcher = true;
 	protected boolean mEnableModelWatcher = true;
-
+	public boolean mIsEdit;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -114,6 +114,14 @@ public class ItemInfo extends Activity {
 
 	private void getValuesIntent() {
 		Intent i = getIntent();
+		mIsEdit = i.getBooleanExtra(PostAdActivity.EDIT_AD, false);
+		if (mIsEdit) {
+			mAtvBrand.setEnabled(false);
+			mAtvModel.setEnabled(false);
+			mSpnYear.setEnabled(false);
+			mEdtTitle.setEnabled(false);
+			mSpnTranstype.setEnabled(false);
+		}
 		mMtb = i.getBooleanExtra(PostAdActivity.D_MTB, false);
 		mRoad = i.getBooleanExtra(PostAdActivity.D_ROAD, false);
 		mCommute = i.getBooleanExtra(PostAdActivity.D_COMMUTE, false);

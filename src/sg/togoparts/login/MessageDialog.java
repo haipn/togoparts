@@ -8,6 +8,13 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 
 public class MessageDialog extends DialogFragment {
+	public MessageDialog(String mMessage) {
+		super();
+		this.mMessage = mMessage;
+	}
+	public MessageDialog() {
+		super();
+	}
 	public void setMessage(String msg) {
 		mMessage = msg;
 	}

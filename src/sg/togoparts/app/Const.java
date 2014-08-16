@@ -65,10 +65,7 @@ public class Const {
 	public static String URL_GET_SUBCATEGORY = "https://www.togoparts.com/iphone_ws/get-option-values.php?source=android&subcat=1&cid=%d&gid=%d";
 	public static String URL_GET_BRAND = "https://www.togoparts.com/iphone_ws/get-option-values.php?source=android&brands=1&search=%s";
 	public static String URL_GET_MODEL = "https://www.togoparts.com/iphone_ws/get-option-values.php?source=android&models=1&search=%s";
-	public static String URL_AD_REFRESH = "https://www.togoparts.com/iphone_ws/mp-ad-refresh.php?source=android";
-	public static String URL_MARK_AS_SOLD = "https://www.togoparts.com/iphone_ws/mp-mark-ad.php?source=android";
-	public static String URL_AD_REPOST = "https://www.togoparts.com/iphone_ws/mp-ad-repost.php?source=android";
-	public static String URL_AD_TAKE_DOWN = "https://www.togoparts.com/iphone_ws/mp-mark-ad.php?source=android";
+	public static String URL_MANAGE_AD = "https://www.togoparts.com/iphone_ws/mp-manage-ad.php?source=android";
 	public static boolean isAppExitable = false;
 
 	/**

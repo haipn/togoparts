@@ -10,6 +10,7 @@ import sg.togoparts.Fragment_Main;
 import sg.togoparts.HeaderView;
 import sg.togoparts.R;
 import sg.togoparts.app.Const;
+import sg.togoparts.app.ErrorInternetDialog;
 import sg.togoparts.app.MyVolley;
 import sg.togoparts.gallery.FontableTextView;
 import sg.togoparts.gallery.InfoAdapter;
@@ -113,12 +114,9 @@ public class ProfileFragment extends Fragment_Main implements QuickActionSelect 
 	}
 
 	protected void loadMore() {
-		if (mPageId >= mPageTotal)
-			return;
-		mPageId++;
 		RequestQueue queue = MyVolley.getRequestQueue();
 		GsonRequest<SearchResult> myReq = new GsonRequest<SearchResult>(
-				Method.GET, mQuery + PAGE_ID + mPageId, SearchResult.class,
+				Method.GET, mQuery, SearchResult.class,
 				createMyReqSuccessListener(), createMyReqErrorListener());
 		queue.add(myReq);
 	}
@@ -129,8 +127,6 @@ public class ProfileFragment extends Fragment_Main implements QuickActionSelect 
 		Log.d("haipn", "search result oncreate");
 		createHeader();
 		if (Const.isLogin(getActivity())) {
-			mPageId = 0;
-			mPageTotal = 1;
 			enableLoadMore = false;
 			mQuery = Const.URL_GET_MY_ADS;
 			getProfile();
@@ -139,6 +135,13 @@ public class ProfileFragment extends Fragment_Main implements QuickActionSelect 
 		}
 
 		super.onCreate(savedInstanceState);
+	}
+
+	@Override
+	public void onResume() {
+		mResult.clear();
+		loadMore();
+		super.onResume();
 	}
 
 	private void getProfile() {
@@ -174,6 +177,8 @@ public class ProfileFragment extends Fragment_Main implements QuickActionSelect 
 							response.Result.info.username);
 					updateProfile(response.Result);
 					loadMore();
+				} else {
+					showError(response.Result.Message);
 				}
 			}
 		};
@@ -229,8 +234,15 @@ public class ProfileFragment extends Fragment_Main implements QuickActionSelect 
 	}
 
 	protected void showError(String mesg) {
-		// TODO Auto-generated method stub
-
+		if (mesg != null) {
+			ErrorDialog dialog = new ErrorDialog(mesg);
+			dialog.show(getActivity().getSupportFragmentManager(),
+					"error dialog");
+		} else {
+			ErrorInternetDialog internet = new ErrorInternetDialog();
+			internet.show(getActivity().getSupportFragmentManager(),
+					"error internet");
+		}
 	}
 
 	private Response.Listener<SearchResult> createMyReqSuccessListener() {
@@ -240,8 +252,6 @@ public class ProfileFragment extends Fragment_Main implements QuickActionSelect 
 				if (response.ads != null && !response.ads.isEmpty()) {
 					mResult.addAll(response.ads);
 					mAdapter.notifyDataSetChanged();
-					mPageTotal = response.page_details.total_ads;
-					enableLoadMore = true;
 					mTvNoShortlist.setVisibility(View.GONE);
 					mLvResult.setVisibility(View.VISIBLE);
 
@@ -272,13 +282,25 @@ public class ProfileFragment extends Fragment_Main implements QuickActionSelect 
 		headerView.setRightButton(View.INVISIBLE, null);
 	}
 
-	protected void repostAd() {
-		// TODO Auto-generated method stub
-
+	protected void manageAd(final String action, final String aid) {
+		headerView.setProgressVisible(View.VISIBLE);
+		RequestQueue queue = MyVolley.getRequestQueue();
+		GsonRequest<ResultLogin> myReq = new GsonRequest<ResultLogin>(
+				Method.POST, Const.URL_MANAGE_AD, ResultLogin.class,
+				createManageSuccessListener(), createMyReqErrorListener()) {
+			protected Map<String, String> getParams() throws AuthFailureError {
+				Map<String, String> params = new HashMap<String, String>();
+				params.put("session_id", Const.getSessionId(getActivity()));
+				params.put("aid", aid);
+				params.put("action", action);
+				return params;
+			};
+		};
+		queue.add(myReq);
 	}
 
 	@Override
-	public void onRepostClick(String aid) {
+	public void onRepostClick(final String aid) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 		builder.setMessage(R.string.msg_repost_confirm)
 				.setIcon(android.R.drawable.ic_dialog_alert)
@@ -288,23 +310,23 @@ public class ProfileFragment extends Fragment_Main implements QuickActionSelect 
 							@Override
 							public void onClick(DialogInterface dialog,
 									int which) {
-								repostAd();
+								manageAd("repost", aid);
 								dialog.dismiss();
+								mLvResult.closeOpenedItems();
 							}
 						})
 				.setNegativeButton(android.R.string.cancel,
 						new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int id) {
 								dialog.dismiss();
+								mLvResult.closeOpenedItems();
 							}
 						});
-		// Create the AlertDialog object and return it
-		// builder.create().show();
 		builder.show();
 	}
 
 	@Override
-	public void onTakeDownClick(String aid) {
+	public void onTakeDownClick(final String aid) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 		builder.setMessage(R.string.msg_take_down_confirm)
 				.setIcon(android.R.drawable.ic_dialog_alert)
@@ -314,22 +336,23 @@ public class ProfileFragment extends Fragment_Main implements QuickActionSelect 
 							@Override
 							public void onClick(DialogInterface dialog,
 									int which) {
-								repostAd();
+								manageAd("takedown", aid);
+								dialog.dismiss();
+								mLvResult.closeOpenedItems();
 							}
 						})
 				.setNegativeButton(android.R.string.cancel,
 						new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int id) {
 								dialog.dismiss();
+								mLvResult.closeOpenedItems();
 							}
 						});
-		// Create the AlertDialog object and return it
-		// builder.create().show();
 		builder.show();
 	}
 
 	@Override
-	public void onMarkAsSoldClick(String aid) {
+	public void onMarkAsSoldClick(final String aid) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 		builder.setMessage(R.string.msg_mark_as_sold)
 				.setIcon(android.R.drawable.ic_dialog_alert)
@@ -339,22 +362,23 @@ public class ProfileFragment extends Fragment_Main implements QuickActionSelect 
 							@Override
 							public void onClick(DialogInterface dialog,
 									int which) {
-								repostAd();
+								manageAd("sold", aid);
+								dialog.dismiss();
+								mLvResult.closeOpenedItems();
 							}
 						})
 				.setNegativeButton(android.R.string.cancel,
 						new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int id) {
 								dialog.dismiss();
+								mLvResult.closeOpenedItems();
 							}
 						});
-		// Create the AlertDialog object and return it
-		// builder.create().show();
 		builder.show();
 	}
 
 	@Override
-	public void onRefreshClick(String aid) {
+	public void onRefreshClick(final String aid) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 		builder.setMessage(R.string.msg_refresh_confirm)
 				.setIcon(android.R.drawable.ic_dialog_alert)
@@ -364,17 +388,39 @@ public class ProfileFragment extends Fragment_Main implements QuickActionSelect 
 							@Override
 							public void onClick(DialogInterface dialog,
 									int which) {
-								repostAd();
+								manageAd("refresh", aid);
+								dialog.dismiss();
+								mLvResult.closeOpenedItems();
 							}
 						})
 				.setNegativeButton(android.R.string.cancel,
 						new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int id) {
 								dialog.dismiss();
+								mLvResult.closeOpenedItems();
 							}
 						});
-		// Create the AlertDialog object and return it
-		// builder.create().show();
 		builder.show();
+	}
+
+	private Listener<ResultLogin> createManageSuccessListener() {
+		return new Response.Listener<ResultLogin>() {
+
+			@Override
+			public void onResponse(ResultLogin response) {
+				headerView.setProgressVisible(View.GONE);
+				Log.d("haipn", "profile response:" + response.Result.Return);
+				if (response.Result.Return.equals("success")) {
+					mResult.clear();
+					loadMore();
+					MessageDialog success = new MessageDialog(
+							response.Result.Message);
+					success.show(getActivity().getSupportFragmentManager(),
+							"success");
+				} else {
+					showError(response.Result.Message);
+				}
+			}
+		};
 	}
 }

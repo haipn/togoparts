@@ -5,7 +5,7 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 
 import sg.togoparts.app.Const;
-import sg.togoparts.app.ErrorDialog;
+import sg.togoparts.app.ErrorInternetDialog;
 import sg.togoparts.app.MyVolley;
 import sg.togoparts.gallery.SearchResultAdapter;
 import sg.togoparts.json.GsonRequest;
@@ -372,7 +372,7 @@ public class SearchResultActivity extends FragmentActivity {
 				Log.d("haipn", "error:" + error.networkResponse);
 				FragmentTransaction ft = getSupportFragmentManager()
 						.beginTransaction();
-				ErrorDialog newFragment = new ErrorDialog();
+				ErrorInternetDialog newFragment = new ErrorInternetDialog();
 				newFragment.show(ft, "error dialog");
 				enableLoadMore = true;
 				mProgress.setVisibility(View.GONE);

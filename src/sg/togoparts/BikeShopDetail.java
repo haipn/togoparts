@@ -3,7 +3,7 @@ package sg.togoparts;
 import java.util.ArrayList;
 
 import sg.togoparts.app.Const;
-import sg.togoparts.app.ErrorDialog;
+import sg.togoparts.app.ErrorInternetDialog;
 import sg.togoparts.app.MyLocation;
 import sg.togoparts.app.MyLocation.LocationResult;
 import sg.togoparts.app.MyVolley;
@@ -784,7 +784,7 @@ public class BikeShopDetail extends FragmentActivity implements LocationResult,
 				Log.d("haipn", "error:" + error.networkResponse);
 				FragmentTransaction ft = getSupportFragmentManager()
 						.beginTransaction();
-				ErrorDialog newFragment = new ErrorDialog();
+				ErrorInternetDialog newFragment = new ErrorInternetDialog();
 				newFragment.show(ft, "error dialog");
 			}
 		};

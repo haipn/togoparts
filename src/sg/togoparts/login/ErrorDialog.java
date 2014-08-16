@@ -8,6 +8,16 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 
 public class ErrorDialog extends DialogFragment {
+
+	public ErrorDialog(String mMessage) {
+		super();
+		this.mMessage = mMessage;
+	}
+
+	public ErrorDialog() {
+		super();
+	}
+
 	public void setMessage(String msg) {
 		mMessage = msg;
 	}

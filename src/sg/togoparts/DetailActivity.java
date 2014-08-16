@@ -3,7 +3,7 @@ package sg.togoparts;
 import java.util.ArrayList;
 
 import sg.togoparts.app.Const;
-import sg.togoparts.app.ErrorDialog;
+import sg.togoparts.app.ErrorInternetDialog;
 import sg.togoparts.app.MyVolley;
 import sg.togoparts.app.SMSDialog;
 import sg.togoparts.app.SMSDialog.AlertPositiveListener;
@@ -344,6 +344,11 @@ public class DetailActivity extends FragmentActivity implements
 			}
 		});
 		mBtnSearch.setVisibility(View.VISIBLE);
+		if (isMyAd) {
+			mBtnSearch.setImageResource(android.R.drawable.ic_menu_edit);
+			mBtnSearch.setPadding(8, 8, 8, 8);
+			mBtnSearch.setBackgroundResource(R.drawable.btn_click);
+		}
 		mBtnSearch.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -362,7 +367,19 @@ public class DetailActivity extends FragmentActivity implements
 			}
 		});
 	}
-
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		// TODO Auto-generated method stub
+		super.onActivityResult(requestCode, resultCode, data);
+		if (requestCode == REQUEST_EDIT_AD && resultCode == RESULT_OK) {
+			
+			RequestQueue queue = MyVolley.getRequestQueue();
+			GsonRequest<AdsDetail> myReq = new GsonRequest<AdsDetail>(Method.GET,
+					String.format(Const.URL_ADS_DETAIL, mAdsId), AdsDetail.class,
+					createEditSuccessListener(), createMyReqErrorListener());
+			queue.add(myReq);
+		}
+	}
 	@Override
 	public void onStart() {
 		super.onStart();
@@ -742,7 +759,7 @@ public class DetailActivity extends FragmentActivity implements
 			mMsgAdapter.notifyDataSetChanged();
 			Const.setListViewHeightBasedOnChildren(mLvMessage);
 		}
-		startAnimation();
+		
 	}
 
 	private void startAnimation() {
@@ -792,11 +809,22 @@ public class DetailActivity extends FragmentActivity implements
 				Log.d("haipn", "sussecc");
 				initInterface();
 				fillData(response);
-
+				startAnimation();
 			}
 		};
 	}
-
+	private Response.Listener<AdsDetail> createEditSuccessListener() {
+		return new Response.Listener<AdsDetail>() {
+			@Override
+			public void onResponse(AdsDetail response) {
+				Log.d("haipn", "sussecc");
+				mListAttribute.clear();
+				mListMessage.clear();
+				mListRelateAds.clear();
+				fillData(response);
+			}
+		};
+	}
 	private Response.ErrorListener createMyReqErrorListener() {
 		return new Response.ErrorListener() {
 			@Override
@@ -804,7 +832,7 @@ public class DetailActivity extends FragmentActivity implements
 				Log.d("haipn", "error:" + error.networkResponse);
 				FragmentTransaction ft = getSupportFragmentManager()
 						.beginTransaction();
-				ErrorDialog newFragment = new ErrorDialog();
+				ErrorInternetDialog newFragment = new ErrorInternetDialog();
 				newFragment.show(ft, "error dialog");
 			}
 		};

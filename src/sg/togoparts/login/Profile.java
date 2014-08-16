@@ -35,6 +35,7 @@ public class Profile {
 		public Ratings ratings;
 		public ArrayList<Value> quota;
 		public ArrayList<Value> postingpack;
+		public String Message;
 	}
 
 	public class Info {

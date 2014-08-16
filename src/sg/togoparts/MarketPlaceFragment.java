@@ -3,7 +3,7 @@ package sg.togoparts;
 import java.util.ArrayList;
 
 import sg.togoparts.app.Const;
-import sg.togoparts.app.ErrorDialog;
+import sg.togoparts.app.ErrorInternetDialog;
 import sg.togoparts.app.MyVolley;
 import sg.togoparts.gallery.MyExpandableAdapter;
 import sg.togoparts.gallery.MyExpandableAdapter.ClickViewAll;
@@ -172,7 +172,7 @@ public class MarketPlaceFragment extends Fragment_Main implements ClickViewAll {
 				Log.d("haipn", "market place error");
 				FragmentTransaction ft = getActivity()
 						.getSupportFragmentManager().beginTransaction();
-				ErrorDialog newFragment = new ErrorDialog();
+				ErrorInternetDialog newFragment = new ErrorInternetDialog();
 				headerView.setProgressVisible(View.INVISIBLE);
 				newFragment.show(ft, "error dialog");
 			}

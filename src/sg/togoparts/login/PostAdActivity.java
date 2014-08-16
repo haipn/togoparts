@@ -66,6 +66,7 @@ import com.android.volley.Response.Listener;
 import com.android.volley.VolleyError;
 import com.aviary.android.feather.FeatherActivity;
 import com.aviary.android.feather.library.Constants;
+import com.google.gson.Gson;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.ImageScaleType;
@@ -131,6 +132,9 @@ public class PostAdActivity extends FragmentActivity implements
 	private static final int MERCHANT = 2;
 	private static final int POSTINGPACK = 1;
 	private static final int QUOTA = 0;
+	protected static final String EDIT_AD = "edit ad";
+	protected static final String POSTING_PACK = "posting pack";
+	protected static final String MERCHANT_PACK = "merchant pack";
 
 	private TextView mTvCategory;
 	private TextView mTvItem;
@@ -315,21 +319,27 @@ public class PostAdActivity extends FragmentActivity implements
 				if (i == 0) {
 					imageLoader.displayImage(ad.picture.get(i).picture, mImv1,
 							options);
+					mImv1.setTag(ad.picture.get(i).pid);
 				} else if (i == 1) {
 					imageLoader.displayImage(ad.picture.get(i).picture, mImv2,
 							options);
+					mImv2.setTag(ad.picture.get(i).pid);
 				} else if (i == 2) {
 					imageLoader.displayImage(ad.picture.get(i).picture, mImv3,
 							options);
+					mImv3.setTag(ad.picture.get(i).pid);
 				} else if (i == 3) {
 					imageLoader.displayImage(ad.picture.get(i).picture, mImv4,
 							options);
+					mImv4.setTag(ad.picture.get(i).pid);
 				} else if (i == 4) {
 					imageLoader.displayImage(ad.picture.get(i).picture, mImv5,
 							options);
+					mImv5.setTag(ad.picture.get(i).pid);
 				} else if (i == 5) {
 					imageLoader.displayImage(ad.picture.get(i).picture, mImv6,
 							options);
+					mImv6.setTag(ad.picture.get(i).pid);
 				}
 			}
 		}
@@ -371,6 +381,15 @@ public class PostAdActivity extends FragmentActivity implements
 		mPostAd.setSection(Integer.valueOf(ad.section));
 		mPostAd.setCat(Integer.valueOf(ad.cat));
 		mPostAd.setSub_cat(Integer.valueOf(ad.sub_cat));
+		mPostAd.setmExistPics(ad.picture);
+		mTvItem.setCompoundDrawablesWithIntrinsicBounds(R.drawable.item_icon,
+				0, R.drawable.tick, 0);
+		mTvPrice.setCompoundDrawablesWithIntrinsicBounds(R.drawable.price_icon,
+				0, R.drawable.tick, 0);
+		mTvContact.setCompoundDrawablesWithIntrinsicBounds(
+				R.drawable.contactinfo_icon, 0, R.drawable.tick, 0);
+		mTvCategory.setCompoundDrawablesWithIntrinsicBounds(
+				R.drawable.category_icon, 0, R.drawable.tick, 0);
 	}
 
 	private void validationTypePost(ResultValue ret) {
@@ -494,7 +513,9 @@ public class PostAdActivity extends FragmentActivity implements
 				i.putExtra(CONDITION, mPostAd.getCondition());
 				i.putExtra(WARRANTY, mPostAd.getWarranty());
 				i.putExtra(PICTURELINK, PICTURELINK);
-
+				i.putExtra(EDIT_AD, isEdit);
+				i.putExtra(POSTING_PACK, mTypePostAd == MERCHANT
+						|| mTypePostAd == POSTINGPACK);
 				startActivityForResult(i, REQUEST_ITEM);
 			}
 		});
@@ -507,6 +528,9 @@ public class PostAdActivity extends FragmentActivity implements
 				i.putExtra(PRICETYPE, mPostAd.getPricetype());
 				i.putExtra(ORIGINAL_PRICE, mPostAd.getOriginal_price());
 				i.putExtra(CLEARANCE, mPostAd.isClearance());
+				i.putExtra(EDIT_AD, isEdit);
+				i.putExtra(POSTING_PACK, mTypePostAd == POSTINGPACK);
+				i.putExtra(MERCHANT_PACK, mTypePostAd == MERCHANT);
 				startActivityForResult(i, REQUEST_PRICE);
 
 			}
@@ -527,6 +551,9 @@ public class PostAdActivity extends FragmentActivity implements
 				i.putExtra(CONTACTNO, mPostAd.getContactno());
 				i.putExtra(CONTACTPERSON, mPostAd.getContactperson());
 				i.putExtra(TIME_TO_CONTACT, mPostAd.getTime_to_contact());
+				i.putExtra(EDIT_AD, isEdit);
+				i.putExtra(POSTING_PACK, mTypePostAd == MERCHANT
+						|| mTypePostAd == POSTINGPACK);
 				startActivityForResult(i, REQUEST_CONTACT);
 
 			}
@@ -817,40 +844,65 @@ public class PostAdActivity extends FragmentActivity implements
 		builder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
 
 		File file1 = new File(post.getAdpic1());
-
+		String del_pics = "";
 		if (file1.exists()) {
 			builder.addPart(PostAdActivity.ADPIC1, new FileBody(file1));
 			Log.d("haipn", "postad image 1:" + post.getAdpic1());
+			if (isEdit && mImv1.getTag() != null) {
+				del_pics = del_pics + (String) mImv1.getTag() + ",";
+			}
 		}
 		File file2 = new File(post.getAdpic2());
 
 		if (file2.exists()) {
 			builder.addPart(PostAdActivity.ADPIC2, new FileBody(file2));
 			Log.d("haipn", "postad image 2:" + post.getAdpic2());
+			if (isEdit && mImv2.getTag() != null) {
+				del_pics = del_pics + (String) mImv2.getTag() + ",";
+			}
 		}
 		File file3 = new File(post.getAdpic3());
 
 		if (file3.exists()) {
 			builder.addPart(PostAdActivity.ADPIC3, new FileBody(file3));
 			Log.d("haipn", "postad image 3:" + post.getAdpic3());
+			if (isEdit && mImv3.getTag() != null) {
+				del_pics = del_pics + (String) mImv3.getTag() + ",";
+			}
 		}
 		File file4 = new File(post.getAdpic4());
 
 		if (file4.exists()) {
 			builder.addPart(PostAdActivity.ADPIC4, new FileBody(file4));
 			Log.d("haipn", "postad image 4:" + post.getAdpic4());
+			if (isEdit && mImv4.getTag() != null) {
+				del_pics = del_pics + (String) mImv4.getTag() + ",";
+			}
 		}
 		File file5 = new File(post.getAdpic5());
 
 		if (file5.exists()) {
 			builder.addPart(PostAdActivity.ADPIC5, new FileBody(file5));
 			Log.d("haipn", "postad image 5:" + post.getAdpic5());
+			if (isEdit && mImv5.getTag() != null) {
+				del_pics = del_pics + (String) mImv5.getTag() + ",";
+			}
 		}
 		File file6 = new File(post.getAdpic6());
 
 		if (file6.exists()) {
 			builder.addPart(PostAdActivity.ADPIC6, new FileBody(file6));
 			Log.d("haipn", "postad image 6:" + post.getAdpic6());
+			if (isEdit && mImv6.getTag() != null) {
+				del_pics = del_pics + (String) mImv6.getTag() + ",";
+			}
+		}
+		
+		if (isEdit && del_pics.length() > 0) {
+			builder.addTextBody("del_pids",
+					del_pics.substring(0, del_pics.length() - 1));
+			Log.d("haipn","del pids:" + del_pics);
+			Log.d("haipn", "del pids after: " + del_pics.substring(0, del_pics.length() - 1));
 		}
 		builder.addTextBody(PostAdActivity.SESSION_ID, post.getSession_id());
 		builder.addTextBody(PostAdActivity.ADDRESS, post.getAddress());
@@ -992,6 +1044,14 @@ public class PostAdActivity extends FragmentActivity implements
 				dialog.dismiss();
 			} catch (Exception e) {
 				e.printStackTrace();
+			}
+			Gson gson = new Gson();
+			ResultLogin res = gson.fromJson(result, ResultLogin.class);
+			if (res.Result.Return.equals("success")) {
+				setResult(RESULT_OK);
+				finish();
+			} else {
+				showError(res.Result.Message);
 			}
 			Log.d("haipn", "upload :" + result);
 		}

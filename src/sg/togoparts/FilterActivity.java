@@ -7,7 +7,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import sg.togoparts.app.Const;
-import sg.togoparts.app.ErrorDialog;
+import sg.togoparts.app.ErrorInternetDialog;
 import sg.togoparts.app.MyVolley;
 import sg.togoparts.json.GsonRequest;
 import sg.togoparts.json.ListCategories;
@@ -615,7 +615,7 @@ public class FilterActivity extends FragmentActivity {
 			public void onErrorResponse(VolleyError error) {
 				FragmentTransaction ft = getSupportFragmentManager()
 						.beginTransaction();
-				ErrorDialog newFragment = new ErrorDialog();
+				ErrorInternetDialog newFragment = new ErrorInternetDialog();
 				newFragment.show(ft, "error dialog");
 			}
 		};

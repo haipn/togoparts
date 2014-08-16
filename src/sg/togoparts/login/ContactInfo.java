@@ -20,6 +20,8 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -28,9 +30,6 @@ import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
-
-import com.google.android.gms.location.LocationClient;
-import com.google.android.gms.location.LocationRequest;
 
 public class ContactInfo extends FragmentActivity {
 
@@ -48,16 +47,6 @@ public class ContactInfo extends FragmentActivity {
 	String mContactNo, mContactPerson, mBestTime, mCity, mRegion, mCountry,
 			mPostalCode, mAddress;
 	double mLat, mLong;
-	// A request to connect to Location Services
-	private LocationRequest mLocationRequest;
-
-	// Stores the current instantiation of the location client in this object
-	private LocationClient mLocationClient;
-	/*
-	 * Note if updates have been turned on. Starts out as "false"; is set to
-	 * "true" in the method handleRequestSuccess of LocationUpdateReceiver.
-	 */
-	boolean mUpdatesRequested = false;
 
 	private ArrayAdapter<String> adapterLocation;
 	private BrandWatcher brandWatcher;
@@ -67,7 +56,8 @@ public class ContactInfo extends FragmentActivity {
 	private ProgressBar mProgress;
 	private TextView mTvTitleHeader;
 	public Handler mBrandHandler = new Handler();
-
+	public ArrayList<Address> mListAddress;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -101,7 +91,20 @@ public class ContactInfo extends FragmentActivity {
 
 			@Override
 			public void onClick(View v) {
-
+				
+				Intent data = getIntent();
+				data.putExtra(PostAdActivity.CONTACTNO, mEdtContactNo.getText().toString());
+				data.putExtra(PostAdActivity.CONTACTPERSON, mEdtContactPerson.getText().toString());
+				data.putExtra(PostAdActivity.TIME_TO_CONTACT, (String) mSpnBestTime.getSelectedItem());
+				data.putExtra(PostAdActivity.CITY, mCity);
+				data.putExtra(PostAdActivity.REGION, mRegion);
+				data.putExtra(PostAdActivity.COUNTRY, mCountry);
+				data.putExtra(PostAdActivity.POSTALCODE, mPostalCode);
+				data.putExtra(PostAdActivity.ADDRESS, mAddress);
+				data.putExtra(PostAdActivity.LAT, mLat);
+				data.putExtra(PostAdActivity.LONGITUDE, mLong);
+				setResult(RESULT_OK, data);
+				finish();
 			}
 		});
 
@@ -116,6 +119,26 @@ public class ContactInfo extends FragmentActivity {
 		mEnableBrandWatcher = true;
 		brandWatcher = new BrandWatcher();
 		mEdtLocation.addTextChangedListener(brandWatcher);
+		mEdtLocation.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				Address add = mListAddress.get(position);
+				if (add.getLocality() != null)
+					mCity = add.getLocality();
+				if (add.getAdminArea() != null)
+					mRegion = add.getAdminArea();
+				if (add.getAddressLine(0) != null)
+					mAddress = add.getAddressLine(0);
+				if (add.getPostalCode() != null) 
+					mPostalCode = add.getPostalCode();
+				if (add.getCountryName() != null) 
+					mCountry = add.getCountryName();
+				mLat = add.getLatitude();
+				mLong = add.getLongitude();
+			}
+		});
 	}
 
 	private void createHeader() {
@@ -293,17 +316,11 @@ public class ContactInfo extends FragmentActivity {
 		protected void onPostExecute(ArrayList<Address> address) {
 			mProgress.setVisibility(View.INVISIBLE);
 			if (address != null && address.size() > 0) {
-
+				mListAddress = address;
 				ArrayList<String> strings = new ArrayList<String>();
 				for (Address ad : address) {
-					String str = "";
-					for (int i = 0; i < ad.getMaxAddressLineIndex(); i++) {
-						// String str = ad.getAddressLine(0) + ", "
-						// + ad.getFeatureName() + ", "
-						// + ad.getPostalCode() + ","
-						// + ad.getThoroughfare() + ","
-						// + ad.getCountryName();
-						// strings.add(str);
+					String str = ad.getAddressLine(0);
+					for (int i = 1; i < ad.getMaxAddressLineIndex(); i++) {
 						str = str + "," + ad.getAddressLine(i);
 					}
 					strings.add(str);
