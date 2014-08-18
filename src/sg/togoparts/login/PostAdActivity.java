@@ -161,8 +161,8 @@ public class PostAdActivity extends FragmentActivity implements
 	private ImageView mImv4;
 	private ImageView mImv5;
 	private ImageView mImv6;
-	private GridView mGvInfo;
-	private TextView mTvInfo;
+//	private GridView mGvInfo;
+//	private TextView mTvInfo;
 	private Button mBtnSubmit;
 	private int mIdSelect;
 	private PostAd mPostAd;
@@ -292,22 +292,22 @@ public class PostAdActivity extends FragmentActivity implements
 	protected void onLoadProcess(ResultValue result) {
 		InfoAdapter adapter = null;
 		if (result.merchant != null) {
-			mTvInfo.setText(R.string.merchant_pack_ads);
-			adapter = new InfoAdapter(this, result.merchant);
+//			mTvInfo.setText(R.string.merchant_pack_ads);
+//			adapter = new InfoAdapter(this, result.merchant);
 			mTypePostAd = MERCHANT;
 		} else if (result.postingpack != null) {
-			mTvInfo.setText(R.string.posting_pack_ads);
-			adapter = new InfoAdapter(this, result.postingpack);
+//			mTvInfo.setText(R.string.posting_pack_ads);
+//			adapter = new InfoAdapter(this, result.postingpack);
 			mTypePostAd = POSTINGPACK;
 		} else {
 			mTypePostAd = QUOTA;
-			adapter = new InfoAdapter(this, result.quota);
+//			adapter = new InfoAdapter(this, result.quota);
 		}
 
 		validationTypePost(result);
-		mGvInfo.setAdapter(adapter);
+//		mGvInfo.setAdapter(adapter);
 
-		Const.setGridViewHeightBasedOnChildren(mGvInfo, 3, 0);
+//		Const.setGridViewHeightBasedOnChildren(mGvInfo, 3, 0);
 
 		if (isEdit) {
 			fillAdData(result.ad_details);
@@ -485,8 +485,8 @@ public class PostAdActivity extends FragmentActivity implements
 		mImv6 = (ImageView) findViewById(R.id.imv6);
 		mImv6.setOnClickListener(this);
 
-		mGvInfo = (GridView) findViewById(R.id.gvInfo);
-		mTvInfo = (TextView) findViewById(R.id.tvInfo);
+//		mGvInfo = (GridView) findViewById(R.id.gvInfo);
+//		mTvInfo = (TextView) findViewById(R.id.tvInfo);
 		mBtnSubmit = (Button) findViewById(R.id.btnSubmit);
 	}
 

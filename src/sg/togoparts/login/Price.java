@@ -89,6 +89,7 @@ public class Price extends Activity {
 	private void createHeader() {
 		mBtnBack = (ImageButton) findViewById(R.id.btnBack);
 		mBtnApply = (ImageButton) findViewById(R.id.btnSearch);
+		mBtnApply.setBackgroundResource(R.drawable.btn_apply_icon);
 		mBtnApply.setVisibility(View.VISIBLE);
 		findViewById(R.id.logo).setVisibility(View.INVISIBLE);
 		mBtnApply.setOnClickListener(new OnClickListener() {

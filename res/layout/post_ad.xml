@@ -29,29 +29,40 @@
                     android:id="@+id/radioGroup1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
                     android:orientation="horizontal" >
 
                     <RadioButton
                         android:id="@+id/rdoFreeAd"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight=".33"
+                        android:layout_gravity="left"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
                         android:button="@drawable/radio_free_ad"
-                        android:checked="true" />
+                        android:checked="true"
+                        android:visibility="visible" />
 
                     <RadioButton
                         android:id="@+id/rdoPriorityAd"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight=".33"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:visibility="visible"
                         android:button="@drawable/radio_priority_ad" />
 
                     <RadioButton
                         android:id="@+id/rdoNewItemAd"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight=".33"
-                        android:button="@drawable/radio_newitem_ad" />
+                        android:layout_gravity="right"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:button="@drawable/radio_newitem_ad"
+                        android:visibility="visible" />
                 </RadioGroup>
 
                 <sg.togoparts.gallery.FontableTextView
@@ -236,25 +247,25 @@
                 android:text="@string/contact_info"
                 android:textAppearance="@android:style/TextAppearance.Medium" />
 
-            <sg.togoparts.gallery.FontableTextView
-                android:id="@+id/tvInfo"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/normal_gray"
-                android:padding="10dp"
-                android:text="@string/my_ads_quota"
-                android:textAppearance="@android:style/TextAppearance.Large" />
+<!--             <sg.togoparts.gallery.FontableTextView -->
+<!--                 android:id="@+id/tvInfo" -->
+<!--                 android:layout_width="match_parent" -->
+<!--                 android:layout_height="wrap_content" -->
+<!--                 android:background="@color/normal_gray" -->
+<!--                 android:padding="10dp" -->
+<!--                 android:text="@string/my_ads_quota" -->
+<!--                 android:textAppearance="@android:style/TextAppearance.Large" /> -->
 
-            <GridView
-                android:id="@+id/gvInfo"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:numColumns="3"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp" >
-            </GridView>
+<!--             <GridView -->
+<!--                 android:id="@+id/gvInfo" -->
+<!--                 android:layout_width="match_parent" -->
+<!--                 android:layout_height="wrap_content" -->
+<!--                 android:numColumns="3" -->
+<!--                 android:paddingLeft="10dp" -->
+<!--                 android:paddingRight="10dp" > -->
+<!--             </GridView> -->
 
-            <Button
+            <sg.togoparts.gallery.FontableButton
                 android:id="@+id/btnSubmit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
