@@ -19,6 +19,7 @@ import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 
+import sg.togoparts.DetailActivity;
 import sg.togoparts.HeaderView;
 import sg.togoparts.R;
 import sg.togoparts.app.Const;
@@ -44,7 +45,9 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -181,6 +184,12 @@ public class PostAdActivity extends FragmentActivity implements
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+		if (!Const.isLogin(this)) {
+			startActivity(new Intent(this, ChooseLogin.class));
+			finish();
+			return;
+		} 
 		setContentView(R.layout.post_ad);
 		mAdId = getIntent().getStringExtra(Const.ADS_ID);
 		mPostAd = new PostAd();
@@ -297,7 +306,8 @@ public class PostAdActivity extends FragmentActivity implements
 
 		validationTypePost(result);
 		mGvInfo.setAdapter(adapter);
-		Const.setGridViewHeightBasedOnChildren(mGvInfo, 3);
+
+		Const.setGridViewHeightBasedOnChildren(mGvInfo, 3, 0);
 
 		if (isEdit) {
 			fillAdData(result.ad_details);
@@ -761,13 +771,12 @@ public class PostAdActivity extends FragmentActivity implements
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
-			try {
-				TabActivity tabs = (TabActivity) getParent();
-				tabs.getTabHost().setCurrentTabByTag("1");
-			} catch (NullPointerException e) {
-				e.printStackTrace();
-				finish();
-			}
+			TabActivity tabs = (TabActivity) getParent();
+			if (tabs != null)
+				return false;
+			else
+				return super.onKeyDown(keyCode, event);
+
 		}
 		return super.onKeyDown(keyCode, event);
 	}
@@ -897,12 +906,14 @@ public class PostAdActivity extends FragmentActivity implements
 				del_pics = del_pics + (String) mImv6.getTag() + ",";
 			}
 		}
-		
+
 		if (isEdit && del_pics.length() > 0) {
 			builder.addTextBody("del_pids",
 					del_pics.substring(0, del_pics.length() - 1));
-			Log.d("haipn","del pids:" + del_pics);
-			Log.d("haipn", "del pids after: " + del_pics.substring(0, del_pics.length() - 1));
+			Log.d("haipn", "del pids:" + del_pics);
+			Log.d("haipn",
+					"del pids after: "
+							+ del_pics.substring(0, del_pics.length() - 1));
 		}
 		builder.addTextBody(PostAdActivity.SESSION_ID, post.getSession_id());
 		builder.addTextBody(PostAdActivity.ADDRESS, post.getAddress());
@@ -1048,13 +1059,35 @@ public class PostAdActivity extends FragmentActivity implements
 			Gson gson = new Gson();
 			ResultLogin res = gson.fromJson(result, ResultLogin.class);
 			if (res.Result.Return.equals("success")) {
-				setResult(RESULT_OK);
-				finish();
+				if (isEdit) {
+					setResult(RESULT_OK);
+					finish();
+				} else {
+					resetAll();
+					Intent i = new Intent(PostAdActivity.this,
+							DetailActivity.class);
+					i.putExtra(Const.ADS_ID, res.Result.adid);
+					startActivity(i);
+				}
 			} else {
 				showError(res.Result.Message);
 			}
-			Log.d("haipn", "upload :" + result);
 		}
 
+	}
+
+	public void resetAll() {
+		mPostAd = new PostAd();
+		onLoad();
+		mRdoFreeAd.setChecked(true);
+		mImv1.setImageResource(R.drawable.upload_pic);
+		mTvContact.setCompoundDrawablesWithIntrinsicBounds(
+				R.drawable.contactinfo_icon, 0, 0, 0);
+		mTvCategory.setCompoundDrawablesWithIntrinsicBounds(
+				R.drawable.category_icon, 0, 0, 0);
+		mTvPrice.setCompoundDrawablesWithIntrinsicBounds(R.drawable.price_icon,
+				0, 0, 0);
+		mTvItem.setCompoundDrawablesWithIntrinsicBounds(R.drawable.item_icon,
+				0, 0, 0);
 	}
 }

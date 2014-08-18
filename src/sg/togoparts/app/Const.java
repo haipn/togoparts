@@ -203,7 +203,7 @@ public class Const {
 	}
 
 	public static void setGridViewHeightBasedOnChildren(GridView listView,
-			int columns) {
+			int columns, int value) {
 		ListAdapter listAdapter = listView.getAdapter();
 		if (listAdapter == null) {
 			// pre-condition
@@ -223,7 +223,7 @@ public class Const {
 		}
 
 		ViewGroup.LayoutParams params = listView.getLayoutParams();
-		params.height = totalHeight / columns + 100 / columns;
+		params.height = totalHeight / columns + value;
 		listView.setLayoutParams(params);
 	}
 }

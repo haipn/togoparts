@@ -29,6 +29,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -78,39 +79,31 @@ public class ProfileFragment extends Fragment_Main implements QuickActionSelect 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		if (Const.isLogin(getActivity())) {
-			View rootView = inflater
-					.inflate(R.layout.profile, container, false);
-			mLvResult = (SwipeListView) rootView
-					.findViewById(R.id.lvSearchResult);
-			mTvNoShortlist = (TextView) rootView.findViewById(R.id.tvNoResult);
-			mAdapter = new AdProfileAdapter(getActivity(), mResult, this);
-			mLvResult.setAdapter(mAdapter);
-			mLvResult.setSwipeListViewListener(new BaseSwipeListViewListener() {
-				@Override
-				public void onClickFrontView(int position) {
-					super.onClickFrontView(position);
-					Intent i = new Intent(getActivity(), DetailActivity.class);
-					i.putExtra(Const.ADS_ID, mResult.get(position).aid);
-					i.putExtra(Const.IS_MY_AD, true);
-					startActivity(i);
-				}
-			});
+		View rootView = inflater.inflate(R.layout.profile, container, false);
+		mLvResult = (SwipeListView) rootView.findViewById(R.id.lvSearchResult);
+		mTvNoShortlist = (TextView) rootView.findViewById(R.id.tvNoResult);
+		mAdapter = new AdProfileAdapter(getActivity(), mResult, this);
+		mLvResult.setAdapter(mAdapter);
+		mLvResult.setSwipeListViewListener(new BaseSwipeListViewListener() {
+			@Override
+			public void onClickFrontView(int position) {
+				super.onClickFrontView(position);
+				Intent i = new Intent(getActivity(), DetailActivity.class);
+				i.putExtra(Const.ADS_ID, mResult.get(position).aid);
+				i.putExtra(Const.IS_MY_AD, true);
+				startActivity(i);
+			}
+		});
 
-			mImvAvatar = (ImageView) rootView.findViewById(R.id.imvAvatar);
-			mTvPositive = (TextView) rootView.findViewById(R.id.tvPositive);
-			mTvNeutral = (TextView) rootView.findViewById(R.id.tvNeutral);
-			mTvNegative = (TextView) rootView.findViewById(R.id.tvNegative);
+		mImvAvatar = (ImageView) rootView.findViewById(R.id.imvAvatar);
+		mTvPositive = (TextView) rootView.findViewById(R.id.tvPositive);
+		mTvNeutral = (TextView) rootView.findViewById(R.id.tvNeutral);
+		mTvNegative = (TextView) rootView.findViewById(R.id.tvNegative);
 
-			mGvInfo = (GridView) rootView.findViewById(R.id.gvInfo);
-			mInfoAdapter = new InfoAdapter(getActivity(), mListValue);
-			mGvInfo.setAdapter(mInfoAdapter);
-			return rootView;
-		} else {
-			TextView rootView = new FontableTextView(getActivity());
-			rootView.setText(R.string.msg_signin);
-			return rootView;
-		}
+		mGvInfo = (GridView) rootView.findViewById(R.id.gvInfo);
+		mInfoAdapter = new InfoAdapter(getActivity(), mListValue);
+		mGvInfo.setAdapter(mInfoAdapter);
+		return rootView;
 	}
 
 	protected void loadMore() {
@@ -139,7 +132,7 @@ public class ProfileFragment extends Fragment_Main implements QuickActionSelect 
 
 	@Override
 	public void onResume() {
-		mResult.clear();
+
 		loadMore();
 		super.onResume();
 	}
@@ -173,8 +166,9 @@ public class ProfileFragment extends Fragment_Main implements QuickActionSelect 
 				if (response.Result.Return.equals("expired")) {
 					processExpired();
 				} else if (response.Result.Return.equals("success")) {
-					mQuery = String.format(Const.URL_GET_MY_ADS,
-							response.Result.info.username);
+					String username = response.Result.info.username;
+					mQuery = String.format(Const.URL_GET_MY_ADS, username);
+					headerView.setTitleVisible(View.VISIBLE, username);
 					updateProfile(response.Result);
 					loadMore();
 				} else {
@@ -194,7 +188,7 @@ public class ProfileFragment extends Fragment_Main implements QuickActionSelect 
 		else if (result.postingpack != null)
 			mListValue.addAll(result.postingpack);
 		mInfoAdapter.notifyDataSetChanged();
-		Const.setGridViewHeightBasedOnChildren(mGvInfo, 2);
+		Const.setGridViewHeightBasedOnChildren(mGvInfo, 2, 0);
 	}
 
 	protected void processExpired() {
@@ -250,6 +244,7 @@ public class ProfileFragment extends Fragment_Main implements QuickActionSelect 
 			@Override
 			public void onResponse(SearchResult response) {
 				if (response.ads != null && !response.ads.isEmpty()) {
+					mResult.clear();
 					mResult.addAll(response.ads);
 					mAdapter.notifyDataSetChanged();
 					mTvNoShortlist.setVisibility(View.GONE);

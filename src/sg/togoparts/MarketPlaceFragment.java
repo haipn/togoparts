@@ -115,6 +115,11 @@ public class MarketPlaceFragment extends Fragment_Main implements ClickViewAll {
 	@Override
 	public void onResume() {
 		super.onResume();
+		RequestQueue queue = MyVolley.getRequestQueue();
+		GsonRequest<MpListCategories> myReq = new GsonRequest<MpListCategories>(
+				Method.GET, Const.URL_LIST_CATEGORY, MpListCategories.class,
+				createMyReqSuccessListener(), createMyReqErrorListener());
+		queue.add(myReq);
 		AdView adview = (AdView) getActivity().findViewById(R.id.adView);
 		AdRequest re = new AdRequest();
 		adview.loadAd(re);
@@ -123,11 +128,7 @@ public class MarketPlaceFragment extends Fragment_Main implements ClickViewAll {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		setRetainInstance(true);
-		RequestQueue queue = MyVolley.getRequestQueue();
-		GsonRequest<MpListCategories> myReq = new GsonRequest<MpListCategories>(
-				Method.GET, Const.URL_LIST_CATEGORY, MpListCategories.class,
-				createMyReqSuccessListener(), createMyReqErrorListener());
-		queue.add(myReq);
+		
 		mGroups = new ArrayList<Group>();
 		createHeader();
 		super.onCreate(savedInstanceState);

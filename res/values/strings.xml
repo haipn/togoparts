@@ -132,6 +132,7 @@
     <string name="title_section">Sections</string>
     <string name="title_category">Category</string>
     <string name="title_sub_category">Sub Category</string>
+    <string name="title_price">Price</string>
     <string name="brand">Brand</string>
     <string name="model">Model</string>
     <string name="ad_title">Ad title</string>

@@ -3,6 +3,7 @@ package sg.togoparts.json;
 public class ResultLogin {
 	public ResultValue Result;
 	public class ResultValue {
+		public String adid;
 		public String Return;
 		public String Userid;
 		public String refresh_id;

@@ -26,8 +26,9 @@
                 android:orientation="vertical"
                 android:padding="10dp" >
 
-                <TextView
+                <sg.togoparts.gallery.FontableTextView
                     android:id="@+id/textView1"
+                    style="@style/LabelBlack"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/brand" />
@@ -56,7 +57,8 @@
                         android:paddingRight="5dp" />
                 </LinearLayout>
 
-                <TextView
+                <sg.togoparts.gallery.FontableTextView
+                    style="@style/LabelBlack"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/model" />
@@ -70,21 +72,24 @@
                 <Spinner
                     android:id="@+id/spnTranstype"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginTop="5dp" />
 
-                <TextView
+                <sg.togoparts.gallery.FontableTextView
+                    style="@style/LabelBlack"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/ad_title" />
 
-                <EditText
+                <sg.togoparts.gallery.FontableEditText
                     android:id="@+id/edtTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:singleLine="true" >
-                </EditText>
+                    android:singleLine="true" />
 
-                <TextView
+                <sg.togoparts.gallery.FontableTextView
+                    style="@style/LabelBlack"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/ad_discipline" />
@@ -168,7 +173,7 @@
                         </LinearLayout>
                     </LinearLayout>
 
-                    <TextView
+                    <sg.togoparts.gallery.FontableTextView
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:gravity="center"
@@ -192,12 +197,13 @@
                     </LinearLayout>
                 </LinearLayout>
 
-                <TextView
+                <sg.togoparts.gallery.FontableTextView
+                    style="@style/LabelBlack"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/ad_description" />
 
-                <EditText
+                <sg.togoparts.gallery.FontableEditText
                     android:id="@+id/edtDescription"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -226,7 +232,8 @@
                 android:orientation="vertical"
                 android:padding="10dp" >
 
-                <TextView
+                <sg.togoparts.gallery.FontableTextView
+                    style="@style/LabelBlack"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/label_size" />
@@ -236,7 +243,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
-                <TextView
+                <sg.togoparts.gallery.FontableTextView
+                    style="@style/LabelBlack"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/label_colour" />
@@ -246,7 +254,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
-                <TextView
+                <sg.togoparts.gallery.FontableTextView
+                    style="@style/LabelBlack"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/label_weight" />
@@ -256,20 +265,21 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal" >
 
-                    <EditText
+                    <sg.togoparts.gallery.FontableEditText
                         android:id="@+id/edtWeight"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:inputType="number" />
 
-                    <TextView
+                    <sg.togoparts.gallery.FontableTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/label_gram" />
                 </LinearLayout>
 
-                <TextView
+                <sg.togoparts.gallery.FontableTextView
+                    style="@style/LabelBlack"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/label_condition" />
@@ -279,21 +289,22 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal" >
 
-                    <EditText
+                    <sg.togoparts.gallery.FontableEditText
                         android:id="@+id/edtCondition"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:maxLength="2"
-                        android:inputType="number" />
+                        android:inputType="number"
+                        android:maxLength="2" />
 
-                    <TextView
+                    <sg.togoparts.gallery.FontableTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/label_per_ten" />
                 </LinearLayout>
 
-                <TextView
+                <sg.togoparts.gallery.FontableTextView
+                    style="@style/LabelBlack"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/label_warranty" />
@@ -303,26 +314,27 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal" >
 
-                    <EditText
+                    <sg.togoparts.gallery.FontableEditText
                         android:id="@+id/edtWarranty"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:maxLength="2"
-                        android:inputType="number" />
+                        android:inputType="number"
+                        android:maxLength="2" />
 
-                    <TextView
+                    <sg.togoparts.gallery.FontableTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/label_months" />
                 </LinearLayout>
 
-                <TextView
+                <sg.togoparts.gallery.FontableTextView
+                    style="@style/LabelBlack"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/label_other_links" />
 
-                <EditText
+                <sg.togoparts.gallery.FontableEditText
                     android:id="@+id/edtOtherLinks"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -333,6 +345,7 @@
                     android:id="@+id/btnSave"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
                     android:background="@drawable/btn_click"
                     android:text="@string/save"
                     android:textColor="@android:color/white"

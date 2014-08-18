@@ -33,6 +33,7 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -737,7 +738,10 @@ public class DetailActivity extends FragmentActivity implements
 		if (res.Attributes != null) {
 			mListAttribute.addAll(res.Attributes);
 			mAttributeAdapter.notifyDataSetChanged();
-			Const.setGridViewHeightBasedOnChildren(mGvAttribute, 2);
+			int value = (int) TypedValue.applyDimension(
+					TypedValue.COMPLEX_UNIT_DIP, 20, getResources()
+							.getDisplayMetrics());
+			Const.setGridViewHeightBasedOnChildren(mGvAttribute, 2, value);
 		}
 		if (res.mTotalMessages == 0) {
 			mLlMessage.setVisibility(View.GONE);

@@ -48,8 +48,8 @@ public class AboutActivity extends FragmentActivity {
 	}
 
 	private void createHeader() {
-		findViewById(R.id.btnBack).setVisibility(View.GONE);
-		findViewById(R.id.btnSearch).setVisibility(View.GONE);
+		findViewById(R.id.btnBack).setVisibility(View.INVISIBLE);
+		findViewById(R.id.btnSearch).setVisibility(View.INVISIBLE);
 		findViewById(R.id.logo).setVisibility(View.VISIBLE);
 
 		findViewById(R.id.title).setVisibility(View.GONE);

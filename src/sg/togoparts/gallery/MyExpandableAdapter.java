@@ -49,6 +49,8 @@ public class MyExpandableAdapter extends BaseExpandableListAdapter {
 		inflater = ((Activity) _context).getLayoutInflater();
 		mViewAll = view;
 		options = new DisplayImageOptions.Builder()
+				.showImageForEmptyUri(R.drawable.nophoto)
+				.showImageOnFail(R.drawable.nophoto)
 				.resetViewBeforeLoading(true).cacheOnDisc(true)
 				.imageScaleType(ImageScaleType.EXACTLY_STRETCHED)
 				.bitmapConfig(Bitmap.Config.RGB_565).considerExifParams(true)
@@ -247,7 +249,8 @@ public class MyExpandableAdapter extends BaseExpandableListAdapter {
 				holder.tvTitle = (TextView) convertView
 						.findViewById(R.id.tvTitle);
 				holder.image = (ImageView) convertView.findViewById(R.id.image);
-				holder.tvPrice = (TextView) convertView.findViewById(R.id.tvPrice);
+				holder.tvPrice = (TextView) convertView
+						.findViewById(R.id.tvPrice);
 				convertView.setTag(holder);
 			} else {
 				holder = (ViewHolder) convertView.getTag();

@@ -47,7 +47,7 @@ public class ItemInfo extends Activity {
 	private ImageButton mBtnBack;
 	private TextView mTvTitleHeader;
 	private ProgressBar mProgress;
-
+	private ImageButton mBtnNextTop;
 	AutoCompleteTextView mAtvBrand;
 	Spinner mSpnYear;
 	AutoCompleteTextView mAtvModel;
@@ -90,6 +90,7 @@ public class ItemInfo extends Activity {
 	protected boolean mEnableBrandWatcher = true;
 	protected boolean mEnableModelWatcher = true;
 	public boolean mIsEdit;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -225,8 +226,7 @@ public class ItemInfo extends Activity {
 
 			@Override
 			public void onClick(View v) {
-				mSwitcher.showNext();
-				mTvTitleHeader.setText(R.string.title_more_ad_detail);
+				nextScreen();
 			}
 		});
 
@@ -234,43 +234,7 @@ public class ItemInfo extends Activity {
 
 			@Override
 			public void onClick(View arg0) {
-				Intent data = getIntent();
-				data.putExtra(PostAdActivity.D_MTB, mCbMtb.isChecked());
-				data.putExtra(PostAdActivity.D_ROAD, mCbRoad.isChecked());
-				data.putExtra(PostAdActivity.D_COMMUTE, mCbCommute.isChecked());
-				data.putExtra(PostAdActivity.D_FOLDING, mCbFolding.isChecked());
-				data.putExtra(PostAdActivity.D_BMX, mCbBmx.isChecked());
-				data.putExtra(PostAdActivity.D_OTHERS, mCbOther.isChecked());
-
-				data.putExtra(PostAdActivity.BRAND, mAtvBrand.getText()
-						.toString());
-				data.putExtra(PostAdActivity.ITEM, mAtvModel.getText()
-						.toString());
-				data.putExtra(PostAdActivity.TITLE, mEdtTitle.getText()
-						.toString());
-				data.putExtra(PostAdActivity.DESCRIPTION, mEdtDescription
-						.getText().toString());
-
-				data.putExtra(PostAdActivity.ITEM_YEAR,
-						listYear.get(mSpnYear.getSelectedItem()));
-				int trans = listTranstype.get(mSpnTranstype.getSelectedItem());
-				data.putExtra(PostAdActivity.TRANSTYPE, trans);
-				data.putExtra(PostAdActivity.SIZE,
-						listSize.get(mSpnSize.getSelectedItem()));
-				data.putExtra(PostAdActivity.COLOUR,
-						listColour.get(mSpnColour.getSelectedItem()));
-				data.putExtra(PostAdActivity.PICTURELINK, mEdtPictureLink
-						.getText().toString());
-				int weight = Integer.valueOf(mEdtWeight.getText().toString());
-				data.putExtra(PostAdActivity.WEIGHT, weight);
-				int warranty = Integer.valueOf(mEdtWarranty.getText()
-						.toString());
-				data.putExtra(PostAdActivity.WARRANTY, warranty);
-				int condition = Integer.valueOf(mEdtCondition.getText()
-						.toString());
-				data.putExtra(PostAdActivity.CONDITION, condition);
-				setResult(RESULT_OK, data);
-				finish();
+				saveButton();
 			}
 		});
 	}
@@ -403,7 +367,16 @@ public class ItemInfo extends Activity {
 
 	private void createHeader() {
 		mBtnBack = (ImageButton) findViewById(R.id.btnBack);
-		findViewById(R.id.btnSearch).setVisibility(View.INVISIBLE);
+		mBtnNextTop = (ImageButton) findViewById(R.id.btnSearch);
+		mBtnNextTop.setVisibility(View.VISIBLE);
+		mBtnNextTop.setBackgroundResource(R.drawable.btn_next);
+		mBtnNextTop.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				nextScreen();
+			}
+		});
 		findViewById(R.id.logo).setVisibility(View.INVISIBLE);
 
 		mProgress = (ProgressBar) findViewById(R.id.progress);
@@ -418,7 +391,7 @@ public class ItemInfo extends Activity {
 					setResult(RESULT_CANCELED);
 					onBackPressed();
 				} else {
-					mSwitcher.showPrevious();
+					previouScreen();
 				}
 			}
 		});
@@ -426,9 +399,9 @@ public class ItemInfo extends Activity {
 
 	private void setListValues() {
 		listSize = new LinkedHashMap<String, String>();
-		listColour = new HashMap<String, String>();
-		listTranstype = new HashMap<String, Integer>();
-		listYear = new HashMap<String, String>();
+		listColour = new LinkedHashMap<String, String>();
+		listTranstype = new LinkedHashMap<String, Integer>();
+		listYear = new LinkedHashMap<String, String>();
 
 		listSize.put("All", "");
 		listSize.put("N-A", "na");
@@ -461,7 +434,7 @@ public class ItemInfo extends Activity {
 
 		Calendar cal = Calendar.getInstance();
 		int year = cal.get(Calendar.YEAR);
-		for (int i = 0; i < 20; i++) {
+		for (int i = 0; i <= 20; i++) {
 			listYear.put(String.valueOf(year - i), String.valueOf(year - i));
 		}
 
@@ -550,7 +523,7 @@ public class ItemInfo extends Activity {
 		if (mSwitcher.getDisplayedChild() == 0)
 			super.onBackPressed();
 		else {
-			mSwitcher.showPrevious();
+			previouScreen();
 		}
 	}
 
@@ -610,6 +583,67 @@ public class ItemInfo extends Activity {
 				mProgress.setVisibility(View.INVISIBLE);
 			}
 		};
+	}
+
+	private void nextScreen() {
+		mSwitcher.showNext();
+		mTvTitleHeader.setText(R.string.title_more_ad_detail);
+		mBtnNextTop.setBackgroundResource(R.drawable.btn_apply_icon);
+		mBtnNextTop.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				saveButton();
+			}
+		});
+	}
+
+	private void previouScreen() {
+		mSwitcher.showPrevious();
+		mTvTitleHeader.setText(R.string.title_item_info);
+		mBtnNextTop.setBackgroundResource(R.drawable.btn_next);
+		mBtnNextTop.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				nextScreen();
+			}
+		});
+	}
+
+	private void saveButton() {
+		Intent data = getIntent();
+		data.putExtra(PostAdActivity.D_MTB, mCbMtb.isChecked());
+		data.putExtra(PostAdActivity.D_ROAD, mCbRoad.isChecked());
+		data.putExtra(PostAdActivity.D_COMMUTE, mCbCommute.isChecked());
+		data.putExtra(PostAdActivity.D_FOLDING, mCbFolding.isChecked());
+		data.putExtra(PostAdActivity.D_BMX, mCbBmx.isChecked());
+		data.putExtra(PostAdActivity.D_OTHERS, mCbOther.isChecked());
+
+		data.putExtra(PostAdActivity.BRAND, mAtvBrand.getText().toString());
+		data.putExtra(PostAdActivity.ITEM, mAtvModel.getText().toString());
+		data.putExtra(PostAdActivity.TITLE, mEdtTitle.getText().toString());
+		data.putExtra(PostAdActivity.DESCRIPTION, mEdtDescription.getText()
+				.toString());
+
+		data.putExtra(PostAdActivity.ITEM_YEAR,
+				listYear.get(mSpnYear.getSelectedItem()));
+		int trans = listTranstype.get(mSpnTranstype.getSelectedItem());
+		data.putExtra(PostAdActivity.TRANSTYPE, trans);
+		data.putExtra(PostAdActivity.SIZE,
+				listSize.get(mSpnSize.getSelectedItem()));
+		data.putExtra(PostAdActivity.COLOUR,
+				listColour.get(mSpnColour.getSelectedItem()));
+		data.putExtra(PostAdActivity.PICTURELINK, mEdtPictureLink.getText()
+				.toString());
+		int weight = Integer.valueOf(mEdtWeight.getText().toString());
+		data.putExtra(PostAdActivity.WEIGHT, weight);
+		int warranty = Integer.valueOf(mEdtWarranty.getText().toString());
+		data.putExtra(PostAdActivity.WARRANTY, warranty);
+		int condition = Integer.valueOf(mEdtCondition.getText().toString());
+		data.putExtra(PostAdActivity.CONDITION, condition);
+		setResult(RESULT_OK, data);
+		finish();
 	}
 
 }

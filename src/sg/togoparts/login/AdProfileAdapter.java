@@ -185,7 +185,7 @@ public class AdProfileAdapter extends BaseAdapter {
 		} else {
 
 			holder.newItem.setVisibility(View.INVISIBLE);
-			
+
 			holder.btnRepost.setVisibility(View.GONE);
 			holder.btnMarkAsSold.setVisibility(View.VISIBLE);
 			holder.btnRefresh.setVisibility(View.VISIBLE);
@@ -203,14 +203,16 @@ public class AdProfileAdapter extends BaseAdapter {
 		} else {
 			holder.special.setVisibility(View.GONE);
 		}
-		if (ads.adstatus != null && ads.adstatus.equalsIgnoreCase("sold")) {
-			holder.status.setText("Sold");
-			holder.status.setTextColor(mContext.getResources().getColor(
-					R.color.red));
-		} else {
-			holder.status.setText(ads.adstatus);
+		holder.status.setText(ads.adstatus);
+		if (ads.adstatus != null
+				&& (ads.adstatus.equalsIgnoreCase("available")
+						|| ads.adstatus.equalsIgnoreCase("looking") || ads.adstatus
+							.equalsIgnoreCase("for exchange"))) {
 			holder.status.setTextColor(mContext.getResources().getColor(
 					R.color.green));
+		} else {
+			holder.status.setTextColor(mContext.getResources().getColor(
+					R.color.red));
 		}
 		holder.viewCount.setText(ads.ad_views);
 

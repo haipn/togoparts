@@ -2,6 +2,7 @@ package sg.togoparts.login;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import sg.togoparts.R;
@@ -14,7 +15,10 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 public class Price extends Activity {
 	EditText mEdtPrice;
@@ -27,11 +31,17 @@ public class Price extends Activity {
 	HashMap<String, Integer> listPricetype;
 	public boolean mIsPostingPack;
 	private boolean mIsMerchant;
+	private ImageButton mBtnBack;
+	private ImageButton mBtnApply;
+	
+	private ProgressBar mProgress;
+	private TextView mTvTitleHeader;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.price);
+		createHeader();
 		Intent i = getIntent();
 		mIsPostingPack = i.getBooleanExtra(PostAdActivity.POSTING_PACK, false);
 		mIsMerchant = i.getBooleanExtra(PostAdActivity.MERCHANT_PACK, false);
@@ -52,9 +62,12 @@ public class Price extends Activity {
 			mEdtPrice.setText(price + "");
 		mCbClearance.setChecked(clearance);
 
+		
 		if (mIsMerchant || mIsPostingPack) {
+			findViewById(R.id.tvLabelOriginal).setVisibility(View.VISIBLE);
 			findViewById(R.id.llOriginalPrice).setVisibility(View.VISIBLE);
 		} else {
+			findViewById(R.id.tvLabelOriginal).setVisibility(View.GONE);
 			findViewById(R.id.llOriginalPrice).setVisibility(View.GONE);
 		}
 
@@ -69,29 +82,35 @@ public class Price extends Activity {
 
 			@Override
 			public void onClick(View v) {
-				Intent i = getIntent();
-				int price;
-				if (mEdtPrice.getText().toString().length() > 0)
-					price = Integer.valueOf(mEdtPrice.getText().toString());
-				else
-					price = 0;
-				i.putExtra(PostAdActivity.PRICE, price);
-				int original;
-				if (mEdtOriginalPrice.getText().toString().length() > 0)
-					original = Integer.valueOf(mEdtOriginalPrice.getText()
-							.toString());
-				else
-					original = 0;
-				i.putExtra(PostAdActivity.ORIGINAL_PRICE, original);
-				i.putExtra(PostAdActivity.PRICETYPE,
-						listPricetype.get(mSpnPriceType.getSelectedItem()));
-				i.putExtra(PostAdActivity.CLEARANCE, mCbClearance.isChecked());
-				setResult(RESULT_OK, i);
-				finish();
+				saveButton();
 			}
 		});
 	}
+	private void createHeader() {
+		mBtnBack = (ImageButton) findViewById(R.id.btnBack);
+		mBtnApply = (ImageButton) findViewById(R.id.btnSearch);
+		mBtnApply.setVisibility(View.VISIBLE);
+		findViewById(R.id.logo).setVisibility(View.INVISIBLE);
+		mBtnApply.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				saveButton();
+			}
+		});
+		mProgress = (ProgressBar) findViewById(R.id.progress);
+		mTvTitleHeader = (TextView) findViewById(R.id.title);
+		mTvTitleHeader.setVisibility(View.VISIBLE);
+		mTvTitleHeader.setText(R.string.title_price);
+		mBtnBack.setOnClickListener(new OnClickListener() {
 
+			@Override
+			public void onClick(View v) {
+				setResult(RESULT_CANCELED);
+				onBackPressed();
+			}
+		});
+	}
 	private void initSpinner() {
 		int i = 0, d = 0;
 
@@ -114,9 +133,30 @@ public class Price extends Activity {
 
 	private void setListValues() {
 
-		listPricetype = new HashMap<String, Integer>();
+		listPricetype = new LinkedHashMap<String, Integer>();
 		listPricetype.put("Do not specify", 3);
 		listPricetype.put("Firm", 1);
 		listPricetype.put("Negotiable", 2);
+	}
+	private void saveButton() {
+		Intent i = getIntent();
+		int price;
+		if (mEdtPrice.getText().toString().length() > 0)
+			price = Integer.valueOf(mEdtPrice.getText().toString());
+		else
+			price = 0;
+		i.putExtra(PostAdActivity.PRICE, price);
+		int original;
+		if (mEdtOriginalPrice.getText().toString().length() > 0)
+			original = Integer.valueOf(mEdtOriginalPrice.getText()
+					.toString());
+		else
+			original = 0;
+		i.putExtra(PostAdActivity.ORIGINAL_PRICE, original);
+		i.putExtra(PostAdActivity.PRICETYPE,
+				listPricetype.get(mSpnPriceType.getSelectedItem()));
+		i.putExtra(PostAdActivity.CLEARANCE, mCbClearance.isChecked());
+		setResult(RESULT_OK, i);
+		finish();
 	}
 }

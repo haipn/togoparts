@@ -16,32 +16,33 @@
         android:orientation="vertical"
         android:padding="10dp" >
 
-        <TextView
+        <sg.togoparts.gallery.FontableTextView
+            style="@style/LabelBlack"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/label_contact_person" />
 
-        <EditText
+        <sg.togoparts.gallery.FontableEditText
             android:id="@+id/edtContactPerson"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:singleLine="true" >
-        </EditText>
+            android:singleLine="true" />
 
-        <TextView
+        <sg.togoparts.gallery.FontableTextView
+            style="@style/LabelBlack"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/label_contact_number" />
 
-        <EditText
+        <sg.togoparts.gallery.FontableEditText
             android:id="@+id/edtContactNo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="number"
-            android:singleLine="true" >
-        </EditText>
+            android:singleLine="true" />
 
-        <TextView
+        <sg.togoparts.gallery.FontableTextView
+            style="@style/LabelBlack"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/label_besttime" />
@@ -51,7 +52,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
-        <TextView
+        <sg.togoparts.gallery.FontableTextView
+            style="@style/LabelBlack"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/label_location" />
@@ -68,6 +70,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/btn_click"
             android:text="@string/save"
+            android:layout_marginTop="10dp"
             android:textColor="@android:color/white"
             android:textSize="20sp" />
     </LinearLayout>
