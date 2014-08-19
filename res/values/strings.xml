@@ -115,7 +115,7 @@
     <string name="fb_signup">Facebook Signup</string>
     <string name="merge_account">Merge Account</string>
     <string name="msg_signin">Please login to view your ads</string>
-    <string name="title_profile">Profile page</string>
+    <string name="title_profile">Manage Ads</string>
     <string name="label_comment">Ad comments</string>
     <string name="label_view_all_comment">View %d more earlier comments</string>
     <string name="note_priority_ad">Get your Used Item sorted above all Free Ads.</string>
@@ -191,6 +191,10 @@
 	<string name="msg_take_down_confirm">Do you want to take down ad?</string>
 	<string name="msg_refresh_confirm">Do you want to refresh ad?</string>
 	<string name="msg_mark_as_sold">Do you want to mark ad as sold?</string>
+	<string name="msg_purchase">Purchase Tcredits to post this as a %s ad</string>
+	<string name="msg_input_title">Ad title is required.</string>
+	<string name="msg_input_description">Ad description is required.</string>
+	<string name="msg_confirm_cancel">Are you sure want to cancel posting this Ad?\nAll details and photos will not be saved</string>
     <string-array name="actions">
         <item>Capture image from camera</item>
         <item>Pick image from gallery</item>

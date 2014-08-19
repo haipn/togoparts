@@ -749,7 +749,6 @@ public class DetailActivity extends FragmentActivity implements
 			mLlMessage.setVisibility(View.VISIBLE);
 			if (res.mTotalMessages > 3) {
 				mTvViewAllMsg.setVisibility(View.VISIBLE);
-				;
 				mTvViewAllMsg
 						.setText(getString(R.string.label_view_all_comment,
 								res.mTotalMessages - 3));

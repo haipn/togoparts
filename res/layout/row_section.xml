@@ -4,8 +4,9 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <TextView
+    <sg.togoparts.gallery.FontableTextView
         android:id="@+id/textview"
+        style="@android:style/TextAppearance.Medium"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="10dp"

@@ -84,6 +84,11 @@
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
         </activity>
+         <activity
+            android:name="sg.togoparts.login.FSActivity_PostAd"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" >
+        </activity>
         <activity
             android:name="sg.togoparts.Splash"
             android:screenOrientation="portrait"

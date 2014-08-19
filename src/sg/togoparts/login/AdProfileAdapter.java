@@ -210,6 +210,22 @@ public class AdProfileAdapter extends BaseAdapter {
 							.equalsIgnoreCase("for exchange"))) {
 			holder.status.setTextColor(mContext.getResources().getColor(
 					R.color.green));
+			if (ads.adstatus.equalsIgnoreCase("available")) {
+				if (ads.adtype.equalsIgnoreCase("for sale"))
+					holder.btnMarkAsSold
+							.setBackgroundResource(R.drawable.mark_as_sold);
+				else if (ads.adtype.equalsIgnoreCase("free")) {
+					holder.btnMarkAsSold
+							.setBackgroundResource(R.drawable.mark_as_given);
+				}
+			} else if (ads.adstatus.equalsIgnoreCase("looking")) {
+				holder.btnMarkAsSold
+						.setBackgroundResource(R.drawable.mark_as_found);
+			} else if (ads.adstatus.equalsIgnoreCase("for exchange")) {
+				holder.btnMarkAsSold
+						.setBackgroundResource(R.drawable.mark_as_exchange);
+			}
+
 		} else {
 			holder.status.setTextColor(mContext.getResources().getColor(
 					R.color.red));

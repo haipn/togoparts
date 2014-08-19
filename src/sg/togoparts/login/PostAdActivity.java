@@ -10,12 +10,9 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.ContentType;
 import org.apache.http.entity.mime.HttpMultipartMode;
-import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.entity.mime.content.FileBody;
-import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 
@@ -26,16 +23,17 @@ import sg.togoparts.app.Const;
 import sg.togoparts.app.MyVolley;
 import sg.togoparts.gallery.InfoAdapter;
 import sg.togoparts.json.GsonRequest;
-import sg.togoparts.json.MultipartRequest;
 import sg.togoparts.json.PostAd;
 import sg.togoparts.json.PostAdOnLoadResult;
 import sg.togoparts.json.PostAdOnLoadResult.AdDetails;
-import sg.togoparts.json.PostAdOnLoadResult.Picture;
 import sg.togoparts.json.PostAdOnLoadResult.ResultValue;
 import sg.togoparts.json.ResultLogin;
 import sg.togoparts.login.MyDialogFragment.OnSelectAction;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.app.TabActivity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -45,16 +43,13 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
-import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -161,8 +156,8 @@ public class PostAdActivity extends FragmentActivity implements
 	private ImageView mImv4;
 	private ImageView mImv5;
 	private ImageView mImv6;
-//	private GridView mGvInfo;
-//	private TextView mTvInfo;
+	// private GridView mGvInfo;
+	// private TextView mTvInfo;
 	private Button mBtnSubmit;
 	private int mIdSelect;
 	private PostAd mPostAd;
@@ -171,6 +166,7 @@ public class PostAdActivity extends FragmentActivity implements
 	private boolean isEdit;
 	private DisplayImageOptions options;
 	protected ImageLoader imageLoader = ImageLoader.getInstance();
+	private ResultValue mResultValue;
 
 	public void launchInstaFiverr(Uri uri) {
 		//
@@ -185,11 +181,6 @@ public class PostAdActivity extends FragmentActivity implements
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		if (!Const.isLogin(this)) {
-			startActivity(new Intent(this, ChooseLogin.class));
-			finish();
-			return;
-		} 
 		setContentView(R.layout.post_ad);
 		mAdId = getIntent().getStringExtra(Const.ADS_ID);
 		mPostAd = new PostAd();
@@ -281,6 +272,7 @@ public class PostAdActivity extends FragmentActivity implements
 				if (response.Result.Return.equals("expired")) {
 					processExpired();
 				} else if (response.Result.Return.equals("success")) {
+					mResultValue = response.Result;
 					onLoadProcess(response.Result);
 				} else if (response.Result.Return.equals("error")) {
 
@@ -292,22 +284,22 @@ public class PostAdActivity extends FragmentActivity implements
 	protected void onLoadProcess(ResultValue result) {
 		InfoAdapter adapter = null;
 		if (result.merchant != null) {
-//			mTvInfo.setText(R.string.merchant_pack_ads);
-//			adapter = new InfoAdapter(this, result.merchant);
+			// mTvInfo.setText(R.string.merchant_pack_ads);
+			// adapter = new InfoAdapter(this, result.merchant);
 			mTypePostAd = MERCHANT;
 		} else if (result.postingpack != null) {
-//			mTvInfo.setText(R.string.posting_pack_ads);
-//			adapter = new InfoAdapter(this, result.postingpack);
+			// mTvInfo.setText(R.string.posting_pack_ads);
+			// adapter = new InfoAdapter(this, result.postingpack);
 			mTypePostAd = POSTINGPACK;
 		} else {
 			mTypePostAd = QUOTA;
-//			adapter = new InfoAdapter(this, result.quota);
+			// adapter = new InfoAdapter(this, result.quota);
 		}
 
 		validationTypePost(result);
-//		mGvInfo.setAdapter(adapter);
+		// mGvInfo.setAdapter(adapter);
 
-//		Const.setGridViewHeightBasedOnChildren(mGvInfo, 3, 0);
+		// Const.setGridViewHeightBasedOnChildren(mGvInfo, 3, 0);
 
 		if (isEdit) {
 			fillAdData(result.ad_details);
@@ -410,15 +402,15 @@ public class PostAdActivity extends FragmentActivity implements
 			mRdoNewItemAd.setChecked(true);
 			mTvNote.setText(R.string.note_newitem_ad);
 		} else {
-			if (ret.TCreds >= ret.min_newitem_cost) {
-				mRdoNewItemAd.setEnabled(true);
-			} else
-				mRdoNewItemAd.setEnabled(false);
-			if (ret.TCreds >= ret.min_priority_cost) {
-				mRdoPriorityAd.setEnabled(true);
-			} else
-				mRdoPriorityAd.setEnabled(false);
-			mRdoFreeAd.setEnabled(true);
+			// if (ret.TCreds >= ret.min_newitem_cost) {
+			// mRdoNewItemAd.setEnabled(true);
+			// } else
+			// mRdoNewItemAd.setEnabled(false);
+			// if (ret.TCreds >= ret.min_priority_cost) {
+			// mRdoPriorityAd.setEnabled(true);
+			// } else
+			// mRdoPriorityAd.setEnabled(false);
+			// mRdoFreeAd.setEnabled(true);
 			mRdoFreeAd.setChecked(true);
 			mTvNote.setText("");
 		}
@@ -435,7 +427,9 @@ public class PostAdActivity extends FragmentActivity implements
 
 	private void createHeader() {
 		mBtnBack = (ImageButton) findViewById(R.id.btnBack);
+		mBtnBack.setBackgroundResource(R.drawable.btn_cancel);
 		mBtnSearch = (ImageButton) findViewById(R.id.btnSearch);
+		mBtnSearch.setVisibility(View.INVISIBLE);
 		findViewById(R.id.logo).setVisibility(View.GONE);
 		mProgress = (ProgressBar) findViewById(R.id.progress);
 		mTvTitleHeader = (TextView) findViewById(R.id.title);
@@ -445,22 +439,29 @@ public class PostAdActivity extends FragmentActivity implements
 
 			@Override
 			public void onClick(View v) {
-				try {
-					TabActivity tabs = (TabActivity) getParent();
-					tabs.getTabHost().setCurrentTabByTag("1");
-				} catch (NullPointerException e) {
-					e.printStackTrace();
-					onBackPressed();
-				}
+				showConfirmDialog();
 			}
 		});
-		mBtnSearch.setVisibility(View.VISIBLE);
-		mBtnSearch.setOnClickListener(new OnClickListener() {
+	}
 
-			@Override
-			public void onClick(View v) {
-			}
-		});
+	protected void showConfirmDialog() {
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setMessage(R.string.msg_confirm_cancel)
+				.setIcon(android.R.drawable.ic_dialog_info)
+				.setNegativeButton(android.R.string.cancel,
+						new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int id) {
+								dialog.dismiss();
+							}
+						})
+				.setPositiveButton(android.R.string.ok,
+						new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int id) {
+								dialog.dismiss();
+								onBackPressed();
+							}
+						});
+		builder.create().show();
 	}
 
 	private void init() {
@@ -485,8 +486,8 @@ public class PostAdActivity extends FragmentActivity implements
 		mImv6 = (ImageView) findViewById(R.id.imv6);
 		mImv6.setOnClickListener(this);
 
-//		mGvInfo = (GridView) findViewById(R.id.gvInfo);
-//		mTvInfo = (TextView) findViewById(R.id.tvInfo);
+		// mGvInfo = (GridView) findViewById(R.id.gvInfo);
+		// mTvInfo = (TextView) findViewById(R.id.tvInfo);
 		mBtnSubmit = (Button) findViewById(R.id.btnSubmit);
 	}
 
@@ -608,8 +609,18 @@ public class PostAdActivity extends FragmentActivity implements
 			public void onCheckedChanged(CompoundButton buttonView,
 					boolean isChecked) {
 				if (isChecked) {
-					mTvNote.setText(R.string.note_newitem_ad);
-					mPostAd.setAdtype(2);
+					if (mResultValue.TCreds >= mResultValue.min_newitem_cost) {
+						mTvNote.setText(R.string.note_newitem_ad);
+						mPostAd.setAdtype(2);
+					} else {
+						AlertTcredDialog dialog = new AlertTcredDialog(
+								getString(R.string.msg_purchase, "New Item"));
+						dialog.show(getSupportFragmentManager(),
+								"new item confirm");
+						buttonView.setChecked(false);
+						mRdoFreeAd.setChecked(true);
+					}
+
 				}
 
 			}
@@ -621,8 +632,18 @@ public class PostAdActivity extends FragmentActivity implements
 					public void onCheckedChanged(CompoundButton buttonView,
 							boolean isChecked) {
 						if (isChecked) {
-							mTvNote.setText(R.string.note_priority_ad);
-							mPostAd.setAdtype(1);
+							if (mResultValue.TCreds >= mResultValue.min_priority_cost) {
+								mTvNote.setText(R.string.note_priority_ad);
+								mPostAd.setAdtype(1);
+							} else {
+								AlertTcredDialog dialog = new AlertTcredDialog(
+										getString(R.string.msg_purchase,
+												"Priority"));
+								dialog.show(getSupportFragmentManager(),
+										"priority confirm");
+								buttonView.setChecked(false);
+								mRdoFreeAd.setChecked(true);
+							}
 						}
 					}
 				});
@@ -771,12 +792,8 @@ public class PostAdActivity extends FragmentActivity implements
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
-			TabActivity tabs = (TabActivity) getParent();
-			if (tabs != null)
-				return false;
-			else
-				return super.onKeyDown(keyCode, event);
-
+			showConfirmDialog();
+			return false;
 		}
 		return super.onKeyDown(keyCode, event);
 	}
@@ -1090,4 +1107,38 @@ public class PostAdActivity extends FragmentActivity implements
 		mTvItem.setCompoundDrawablesWithIntrinsicBounds(R.drawable.item_icon,
 				0, 0, 0);
 	}
+
+	public class AlertTcredDialog extends DialogFragment {
+		public AlertTcredDialog(String mMessage) {
+			super();
+			this.mMessage = mMessage;
+		}
+
+		public AlertTcredDialog() {
+			super();
+		}
+
+		public void setMessage(String msg) {
+			mMessage = msg;
+		}
+
+		String mMessage;
+
+		public Dialog onCreateDialog(Bundle savedInstanceState) {
+			// Use the Builder class for convenient dialog construction
+			AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+			builder.setMessage(mMessage)
+					.setIcon(android.R.drawable.ic_dialog_info)
+					.setPositiveButton(android.R.string.ok,
+							new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog,
+										int id) {
+									dialog.dismiss();
+									mRdoFreeAd.setChecked(true);
+								}
+							});
+			return builder.create();
+		}
+	}
+
 }

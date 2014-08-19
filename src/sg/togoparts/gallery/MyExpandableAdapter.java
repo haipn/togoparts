@@ -256,7 +256,11 @@ public class MyExpandableAdapter extends BaseExpandableListAdapter {
 				holder = (ViewHolder) convertView.getTag();
 			}
 			Feature ads = getItem(position);
-			imageLoader.displayImage(ads.getPicture(), holder.image, options);
+			Object tag = holder.image.getTag();
+			if (tag == null || !tag.equals(ads.getPicture())) {
+				imageLoader.displayImage(ads.getPicture(), holder.image, options);
+				holder.image.setTag(ads.getPicture());
+			}
 			holder.tvTitle.setText(ads.getTitle());
 			holder.tvPrice.setText(ads.getPrice());
 			return convertView;

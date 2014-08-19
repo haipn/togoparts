@@ -1,6 +1,5 @@
 package sg.togoparts.login;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -25,16 +24,18 @@ import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ViewSwitcher;
 
 import com.android.volley.Request.Method;
@@ -68,7 +69,7 @@ public class ItemInfo extends Activity {
 	Spinner mSpnSize;
 	Spinner mSpnColour;
 	EditText mEdtWeight;
-	EditText mEdtCondition;
+	Spinner mSpnCondition;
 	EditText mEdtWarranty;
 	EditText mEdtPictureLink;
 	Button mBtnSave;
@@ -83,6 +84,7 @@ public class ItemInfo extends Activity {
 	HashMap<String, Integer> listTranstype;
 	HashMap<String, String> listYear;
 	HashMap<String, String> listColour;
+	HashMap<String, Integer> listCondition;
 	private BrandRunable mBrandRunnable;
 	private ModelRunable mModelRunnable;
 	private BrandWatcher brandWatcher;
@@ -160,8 +162,6 @@ public class ItemInfo extends Activity {
 			mAtvModel.setText(mModel);
 		if (mWarranty > 0)
 			mEdtWarranty.setText(mWarranty + "");
-		if (mCondition > 0)
-			mEdtCondition.setText(mCondition + "");
 		if (mWeight > 0)
 			mEdtWeight.setText(mWeight + "");
 		setListValues();
@@ -235,6 +235,83 @@ public class ItemInfo extends Activity {
 			@Override
 			public void onClick(View arg0) {
 				saveButton();
+			}
+		});
+
+		mCbBmx.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+
+			@Override
+			public void onCheckedChanged(CompoundButton buttonView,
+					boolean isChecked) {
+				if (isChecked)
+					mCbOther.setChecked(false);
+			}
+		});
+
+		mCbCommute.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+
+			@Override
+			public void onCheckedChanged(CompoundButton buttonView,
+					boolean isChecked) {
+				if (isChecked)
+					mCbOther.setChecked(false);
+			}
+		});
+
+		mCbFolding.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+
+			@Override
+			public void onCheckedChanged(CompoundButton buttonView,
+					boolean isChecked) {
+				if (isChecked)
+					mCbOther.setChecked(false);
+			}
+		});
+
+		mCbMtb.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+
+			@Override
+			public void onCheckedChanged(CompoundButton buttonView,
+					boolean isChecked) {
+				if (isChecked)
+					mCbOther.setChecked(false);
+			}
+		});
+
+		mCbOther.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+
+			@Override
+			public void onCheckedChanged(CompoundButton buttonView,
+					boolean isChecked) {
+				if (isChecked) {
+					mCbBmx.setChecked(false);
+					mCbCommute.setChecked(false);
+					mCbFolding.setChecked(false);
+					mCbMtb.setChecked(false);
+					mCbRoad.setChecked(false);
+				}
+			}
+		});
+
+		mCbRoad.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+
+			@Override
+			public void onCheckedChanged(CompoundButton buttonView,
+					boolean isChecked) {
+				if (isChecked)
+					mCbOther.setChecked(false);
+			}
+		});
+
+		mBtnSelectAll.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				mCbBmx.setChecked(true);
+				mCbCommute.setChecked(true);
+				mCbFolding.setChecked(true);
+				mCbMtb.setChecked(true);
+				mCbRoad.setChecked(true);
 			}
 		});
 	}
@@ -357,7 +434,7 @@ public class ItemInfo extends Activity {
 
 		mSpnSize = (Spinner) findViewById(R.id.spnSize);
 		mSpnColour = (Spinner) findViewById(R.id.spnColour);
-		mEdtCondition = (EditText) findViewById(R.id.edtCondition);
+		mSpnCondition = (Spinner) findViewById(R.id.spnCondition);
 		mEdtPictureLink = (EditText) findViewById(R.id.edtOtherLinks);
 		mEdtWarranty = (EditText) findViewById(R.id.edtWarranty);
 		mEdtWeight = (EditText) findViewById(R.id.edtWeight);
@@ -402,6 +479,7 @@ public class ItemInfo extends Activity {
 		listColour = new LinkedHashMap<String, String>();
 		listTranstype = new LinkedHashMap<String, Integer>();
 		listYear = new LinkedHashMap<String, String>();
+		listCondition = new LinkedHashMap<String, Integer>();
 
 		listSize.put("All", "");
 		listSize.put("N-A", "na");
@@ -442,6 +520,11 @@ public class ItemInfo extends Activity {
 		listTranstype.put("Want to Buy", 2);
 		listTranstype.put("Free", 3);
 		listTranstype.put("Exchange + Cash", 4);
+
+		listCondition.put("Choose condition", 0);
+		for (int i = 1; i <= 10; i++) {
+			listCondition.put(String.valueOf(i), i);
+		}
 	}
 
 	public void initSpinner() {
@@ -515,6 +598,24 @@ public class ItemInfo extends Activity {
 				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		mSpnTranstype.setAdapter(adtTranstype);
 		mSpnTranstype.setSelection(d);
+
+		i = d = 0;
+
+		ArrayAdapter<String> adtCondition = new ArrayAdapter<String>(this,
+				R.layout.spinner_text);
+		Iterator itCondition = listCondition.entrySet().iterator();
+		while (itCondition.hasNext()) {
+			Map.Entry pairs = (Map.Entry) itCondition.next();
+			adtCondition.add((String) pairs.getKey());
+			if (mCondition == (Integer) pairs.getValue()) {
+				d = i;
+			}
+			i++;
+		}
+		adtCondition
+				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		mSpnCondition.setAdapter(adtCondition);
+		mSpnCondition.setSelection(d);
 	}
 
 	@Override
@@ -586,6 +687,19 @@ public class ItemInfo extends Activity {
 	}
 
 	private void nextScreen() {
+		if (mEdtTitle.getText().length() == 0) {
+			Toast.makeText(this, R.string.msg_input_title, Toast.LENGTH_LONG)
+					.show();
+			mEdtTitle.requestFocus();
+			return;
+		}
+
+		if (mEdtDescription.getText().length() == 0) {
+			Toast.makeText(this, R.string.msg_input_description,
+					Toast.LENGTH_LONG).show();
+			mEdtDescription.requestFocus();
+			return;
+		}
 		mSwitcher.showNext();
 		mTvTitleHeader.setText(R.string.title_more_ad_detail);
 		mBtnNextTop.setBackgroundResource(R.drawable.btn_apply_icon);
@@ -640,7 +754,7 @@ public class ItemInfo extends Activity {
 		data.putExtra(PostAdActivity.WEIGHT, weight);
 		int warranty = Integer.valueOf(mEdtWarranty.getText().toString());
 		data.putExtra(PostAdActivity.WARRANTY, warranty);
-		int condition = Integer.valueOf(mEdtCondition.getText().toString());
+		int condition = listCondition.get(mSpnCondition.getSelectedItem());
 		data.putExtra(PostAdActivity.CONDITION, condition);
 		setResult(RESULT_OK, data);
 		finish();

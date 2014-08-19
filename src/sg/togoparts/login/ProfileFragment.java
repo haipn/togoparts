@@ -122,7 +122,7 @@ public class ProfileFragment extends Fragment_Main implements QuickActionSelect 
 		if (Const.isLogin(getActivity())) {
 			enableLoadMore = false;
 			mQuery = Const.URL_GET_MY_ADS;
-			getProfile();
+			
 			mResult = new ArrayList<AdsResult>();
 			mListValue = new ArrayList<Profile.Value>();
 		}
@@ -132,8 +132,7 @@ public class ProfileFragment extends Fragment_Main implements QuickActionSelect 
 
 	@Override
 	public void onResume() {
-
-		loadMore();
+		getProfile();
 		super.onResume();
 	}
 
@@ -183,8 +182,10 @@ public class ProfileFragment extends Fragment_Main implements QuickActionSelect 
 		mTvNeutral.setText(result.ratings.Neutral + "");
 		mTvPositive.setText(result.ratings.Positive + "");
 		imageLoader.displayImage(result.info.picture, mImvAvatar);
-		if (result.quota != null)
+		mListValue.clear();
+		if (result.quota != null) {
 			mListValue.addAll(result.quota);
+		}
 		else if (result.postingpack != null)
 			mListValue.addAll(result.postingpack);
 		mInfoAdapter.notifyDataSetChanged();
@@ -270,7 +271,7 @@ public class ProfileFragment extends Fragment_Main implements QuickActionSelect 
 
 	private void createHeader() {
 		headerView = (HeaderView) getActivity();
-		headerView.setLeftButton(View.VISIBLE);
+		headerView.setLeftButton(View.GONE);
 		headerView.setLogoVisible(View.GONE);
 		headerView.setTitleVisible(View.VISIBLE,
 				getString(R.string.title_profile));
@@ -407,7 +408,7 @@ public class ProfileFragment extends Fragment_Main implements QuickActionSelect 
 				Log.d("haipn", "profile response:" + response.Result.Return);
 				if (response.Result.Return.equals("success")) {
 					mResult.clear();
-					loadMore();
+					getProfile();
 					MessageDialog success = new MessageDialog(
 							response.Result.Message);
 					success.show(getActivity().getSupportFragmentManager(),

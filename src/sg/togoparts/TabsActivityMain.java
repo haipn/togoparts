@@ -1,6 +1,8 @@
 package sg.togoparts;
 
 import sg.togoparts.app.Const;
+import sg.togoparts.login.ChooseLogin;
+import sg.togoparts.login.FSActivity_PostAd;
 import sg.togoparts.login.PostAdActivity;
 import sg.togoparts.login.FSActivity_Profile;
 import android.app.AlertDialog;
@@ -46,15 +48,6 @@ public class TabsActivityMain extends TabActivity implements AdListener {
 		TabHost.TabSpec spec;
 		Intent intent;
 
-		// try
-		// {
-		// tabHost.getTabWidget().setDividerDrawable(R.drawable.footer_divider);
-		// }
-		// catch (Exception e)
-		// {
-		//
-		// }
-
 		intent = new Intent().setClass(this, FSActivity_Home.class);
 		spec = tabHost
 				.newTabSpec("1")
@@ -71,26 +64,25 @@ public class TabsActivityMain extends TabActivity implements AdListener {
 				.setContent(intent);
 		tabHost.addTab(spec);
 
-		intent = new Intent().setClass(this, PostAdActivity.class);
+		intent = new Intent().setClass(this, FSActivity_PostAd.class);
 		spec = tabHost
 				.newTabSpec("3")
 				.setIndicator(null,
 						getResources().getDrawable(R.drawable.tab_sell))
 				.setContent(intent);
 		tabHost.addTab(spec);
-		
-		
+
 		intent = new Intent().setClass(this, FSActivity_BikeShop.class);
 		Bundle b = getIntent().getExtras();
 		if (b == null) {
 			b = new Bundle();
 			b.putString(FilterBikeShop.AREA, "");
 			b.putString(FilterBikeShop.BIKESHOP_NAME, "");
-			b.putString(FilterBikeShop.SORT_BY,"0");
+			b.putString(FilterBikeShop.SORT_BY, "0");
 			b.putBoolean(FilterBikeShop.MECHANIC, false);
 			b.putBoolean(FilterBikeShop.OPENNOW, false);
 		}
-		
+
 		intent.putExtras(b);
 		spec = tabHost
 				.newTabSpec("4")
@@ -98,7 +90,7 @@ public class TabsActivityMain extends TabActivity implements AdListener {
 						getResources().getDrawable(R.drawable.tab_bikeshop))
 				.setContent(intent);
 		tabHost.addTab(spec);
-		
+
 		intent = new Intent().setClass(this, MoreActivity.class);
 		spec = tabHost
 				.newTabSpec("5")
@@ -106,8 +98,7 @@ public class TabsActivityMain extends TabActivity implements AdListener {
 						getResources().getDrawable(R.drawable.tab_more))
 				.setContent(intent);
 		tabHost.addTab(spec);
-		
-		
+
 		getTabWidget().setStripEnabled(false);
 
 		tabHost.setOnTabChangedListener(new OnTabChangeListener() {
@@ -118,20 +109,34 @@ public class TabsActivityMain extends TabActivity implements AdListener {
 						TabsActivityMain.this).getTracker(Const.GA_PROPERTY_ID);
 
 				if (tabId.equals("1")) {
-					tracker.set(Fields.SCREEN_NAME, "Home");
+					tracker.set(Fields.SCREEN_NAME,
+							"Marketplace List Categories");
 					Const.isAppExitable = true;
 				} else {
-					if (tabId.equals("2"))
-						tracker.set(Fields.SCREEN_NAME,
-								"Marketplace List Categories");
-					else if (tabId.equals("3")) {
-						tracker.set(Fields.SCREEN_NAME,
-								"Marketplace Shortlisted Ads");
-					} else if (tabId.equals("4")){
-						tracker.set(Fields.SCREEN_NAME,
-								"Bikeshop Listing");
+					if (tabId.equals("2")) {
+						if (Const.isLogin(TabsActivityMain.this))
+							tracker.set(Fields.SCREEN_NAME, "Profile");
+
+						else {
+							startActivity(new Intent(TabsActivityMain.this,
+									ChooseLogin.class));
+							tabHost.setCurrentTabByTag("1");
+						}
+					} else if (tabId.equals("3")) {
+
+						if (Const.isLogin(TabsActivityMain.this)) {
+							tracker.set(Fields.SCREEN_NAME, "Post Ad");
+							startActivity(new Intent(TabsActivityMain.this,
+									PostAdActivity.class));
+
+						} else
+							startActivity(new Intent(TabsActivityMain.this,
+									ChooseLogin.class));
+						tabHost.setCurrentTabByTag("1");
+					} else if (tabId.equals("4")) {
+						tracker.set(Fields.SCREEN_NAME, "Bikeshop Listing");
 					} else {
-						
+
 					}
 					Const.isAppExitable = false;
 				}

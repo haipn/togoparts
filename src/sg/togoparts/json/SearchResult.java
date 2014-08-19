@@ -25,6 +25,7 @@ public class SearchResult {
 		public String ad_views;
 		public String msg_sent;
 		public String adstatus;
+		public String adtype;
 		public String listinglabel;
 		public Special special;
 		public String postedby;

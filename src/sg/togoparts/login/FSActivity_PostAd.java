@@ -9,13 +9,13 @@ import sg.togoparts.Activity_Main;
 import sg.togoparts.R;
 import sg.togoparts.app.Const;
 
-public class FSActivity_Profile extends Activity_Main {
+public class FSActivity_PostAd extends Activity_Main {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		if (Const.isLogin(this))
-			addFragment(new ProfileFragment(), false,
-					FragmentTransaction.TRANSIT_NONE);
+//		if (Const.isLogin(this))
+//			startActivity(new Intent(this, PostAdActivity.class));
+		
 //		else {
 //			startActivity(new Intent(this, ChooseLogin.class));
 //			

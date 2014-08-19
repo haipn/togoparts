@@ -57,7 +57,7 @@ public class ContactInfo extends FragmentActivity {
 	private TextView mTvTitleHeader;
 	public Handler mBrandHandler = new Handler();
 	public ArrayList<Address> mListAddress;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -91,11 +91,14 @@ public class ContactInfo extends FragmentActivity {
 
 			@Override
 			public void onClick(View v) {
-				
+
 				Intent data = getIntent();
-				data.putExtra(PostAdActivity.CONTACTNO, mEdtContactNo.getText().toString());
-				data.putExtra(PostAdActivity.CONTACTPERSON, mEdtContactPerson.getText().toString());
-				data.putExtra(PostAdActivity.TIME_TO_CONTACT, (String) mSpnBestTime.getSelectedItem());
+				data.putExtra(PostAdActivity.CONTACTNO, mEdtContactNo.getText()
+						.toString());
+				data.putExtra(PostAdActivity.CONTACTPERSON, mEdtContactPerson
+						.getText().toString());
+				data.putExtra(PostAdActivity.TIME_TO_CONTACT,
+						(String) mSpnBestTime.getSelectedItem());
 				data.putExtra(PostAdActivity.CITY, mCity);
 				data.putExtra(PostAdActivity.REGION, mRegion);
 				data.putExtra(PostAdActivity.COUNTRY, mCountry);
@@ -131,9 +134,9 @@ public class ContactInfo extends FragmentActivity {
 					mRegion = add.getAdminArea();
 				if (add.getAddressLine(0) != null)
 					mAddress = add.getAddressLine(0);
-				if (add.getPostalCode() != null) 
+				if (add.getPostalCode() != null)
 					mPostalCode = add.getPostalCode();
-				if (add.getCountryName() != null) 
+				if (add.getCountryName() != null)
 					mCountry = add.getCountryName();
 				mLat = add.getLatitude();
 				mLong = add.getLongitude();
@@ -163,9 +166,8 @@ public class ContactInfo extends FragmentActivity {
 	private void initSpinner() {
 		int d = 0;
 		ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
-				this, R.array.best_time,
-				android.R.layout.simple_spinner_dropdown_item);
-
+				this, R.array.best_time, R.layout.spinner_text);
+		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		String[] bests = getResources().getStringArray(R.array.best_time);
 		for (int i = 0; i < bests.length; i++) {
 			if (mBestTime.equals(bests[i])) {

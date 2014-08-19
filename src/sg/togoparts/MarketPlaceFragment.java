@@ -105,7 +105,13 @@ public class MarketPlaceFragment extends Fragment_Main implements ClickViewAll {
 	public void onStart() {
 		super.onStart();
 		Log.d("haipn", "onstart marketplace");
-
+		
+		RequestQueue queue = MyVolley.getRequestQueue();
+		GsonRequest<MpListCategories> myReq = new GsonRequest<MpListCategories>(
+				Method.GET, Const.URL_LIST_CATEGORY, MpListCategories.class,
+				createMyReqSuccessListener(), createMyReqErrorListener());
+		queue.add(myReq);
+		
 		Tracker tracker = GoogleAnalytics.getInstance(getActivity())
 				.getTracker(Const.GA_PROPERTY_ID);
 		tracker.set(Fields.SCREEN_NAME, SCREEN_LABEL);
@@ -115,11 +121,8 @@ public class MarketPlaceFragment extends Fragment_Main implements ClickViewAll {
 	@Override
 	public void onResume() {
 		super.onResume();
-		RequestQueue queue = MyVolley.getRequestQueue();
-		GsonRequest<MpListCategories> myReq = new GsonRequest<MpListCategories>(
-				Method.GET, Const.URL_LIST_CATEGORY, MpListCategories.class,
-				createMyReqSuccessListener(), createMyReqErrorListener());
-		queue.add(myReq);
+		Log.d("haipn", "On resume marketplace");
+		
 		AdView adview = (AdView) getActivity().findViewById(R.id.adView);
 		AdRequest re = new AdRequest();
 		adview.loadAd(re);
@@ -159,6 +162,7 @@ public class MarketPlaceFragment extends Fragment_Main implements ClickViewAll {
 		return new Response.Listener<MpListCategories>() {
 			@Override
 			public void onResponse(MpListCategories response) {
+				mGroups.clear();
 				mGroups.addAll(response.mGroupList);
 				mAdapter.notifyDataSetChanged();
 				headerView.setProgressVisible(View.INVISIBLE);
