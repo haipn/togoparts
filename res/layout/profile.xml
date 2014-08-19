@@ -31,7 +31,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
                 android:text="@string/label_rating"
-                android:textColor="@color/orange"
+                android:textColor="@android:color/black"
                 android:textSize="22sp" />
 
             <LinearLayout
@@ -84,15 +84,15 @@
         android:orientation="vertical"
         android:padding="5dp" >
 
-        <sg.togoparts.gallery.FontableTextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/share_button_bg"
-            android:padding="8dp"
-            android:text="@string/label_my_ads"
-            android:textColor="@android:color/white"
-            android:textSize="30sp"
-            android:textStyle="bold" />
+<!--         <sg.togoparts.gallery.FontableTextView -->
+<!--             android:layout_width="match_parent" -->
+<!--             android:layout_height="wrap_content" -->
+<!--             android:background="@drawable/share_button_bg" -->
+<!--             android:padding="8dp" -->
+<!--             android:text="@string/label_my_ads" -->
+<!--             android:textColor="@android:color/white" -->
+<!--             android:textSize="30sp" -->
+<!--             android:textStyle="bold" /> -->
 
         <LinearLayout
             android:layout_width="match_parent"

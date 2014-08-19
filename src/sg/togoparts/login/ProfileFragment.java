@@ -72,6 +72,7 @@ public class ProfileFragment extends Fragment_Main implements QuickActionSelect 
 	private TextView mTvPositive;
 	private TextView mTvNeutral;
 	private TextView mTvNegative;
+	private TextView mTvUsername;
 	private GridView mGvInfo;
 	private InfoAdapter mInfoAdapter;
 	private ArrayList<Value> mListValue;
@@ -99,7 +100,9 @@ public class ProfileFragment extends Fragment_Main implements QuickActionSelect 
 		mTvPositive = (TextView) rootView.findViewById(R.id.tvPositive);
 		mTvNeutral = (TextView) rootView.findViewById(R.id.tvNeutral);
 		mTvNegative = (TextView) rootView.findViewById(R.id.tvNegative);
-
+		mTvUsername = (TextView) rootView.findViewById(R.id.tvUserName);
+		
+		
 		mGvInfo = (GridView) rootView.findViewById(R.id.gvInfo);
 		mInfoAdapter = new InfoAdapter(getActivity(), mListValue);
 		mGvInfo.setAdapter(mInfoAdapter);
@@ -167,7 +170,7 @@ public class ProfileFragment extends Fragment_Main implements QuickActionSelect 
 				} else if (response.Result.Return.equals("success")) {
 					String username = response.Result.info.username;
 					mQuery = String.format(Const.URL_GET_MY_ADS, username);
-					headerView.setTitleVisible(View.VISIBLE, username);
+					mTvUsername.setText(username);
 					updateProfile(response.Result);
 					loadMore();
 				} else {
