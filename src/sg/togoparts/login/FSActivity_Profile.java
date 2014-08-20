@@ -13,13 +13,12 @@ public class FSActivity_Profile extends Activity_Main {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		if (Const.isLogin(this))
-			addFragment(new ProfileFragment(), false,
-					FragmentTransaction.TRANSIT_NONE);
-//		else {
-//			startActivity(new Intent(this, ChooseLogin.class));
-//			
-//		}
+		addFragment(new ProfileFragment(), false,
+				FragmentTransaction.TRANSIT_NONE);
+		// else {
+		// startActivity(new Intent(this, ChooseLogin.class));
+		//
+		// }
 	}
 
 	void addFragment(Fragment fragment, boolean addToBackStack, int transition) {

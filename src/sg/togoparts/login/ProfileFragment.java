@@ -5,16 +5,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 import sg.togoparts.DetailActivity;
-import sg.togoparts.DetailFragment;
 import sg.togoparts.Fragment_Main;
 import sg.togoparts.HeaderView;
 import sg.togoparts.R;
 import sg.togoparts.app.Const;
 import sg.togoparts.app.ErrorInternetDialog;
 import sg.togoparts.app.MyVolley;
-import sg.togoparts.gallery.FontableTextView;
 import sg.togoparts.gallery.InfoAdapter;
-import sg.togoparts.gallery.SearchResultAdapter;
 import sg.togoparts.json.GsonRequest;
 import sg.togoparts.json.ResultLogin;
 import sg.togoparts.json.SearchResult;
@@ -26,20 +23,12 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
-import android.widget.AbsListView.OnScrollListener;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.android.volley.AuthFailureError;
@@ -50,7 +39,6 @@ import com.android.volley.Response.Listener;
 import com.android.volley.VolleyError;
 import com.fortysevendeg.swipelistview.BaseSwipeListViewListener;
 import com.fortysevendeg.swipelistview.SwipeListView;
-import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 public class ProfileFragment extends Fragment_Main implements QuickActionSelect {
@@ -81,8 +69,23 @@ public class ProfileFragment extends Fragment_Main implements QuickActionSelect 
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.profile, container, false);
+
+		View header = inflater.inflate(R.layout.header_profile, null, false);
+
 		mLvResult = (SwipeListView) rootView.findViewById(R.id.lvSearchResult);
 		mTvNoShortlist = (TextView) rootView.findViewById(R.id.tvNoResult);
+
+		mImvAvatar = (ImageView) header.findViewById(R.id.imvAvatar);
+		mTvPositive = (TextView) header.findViewById(R.id.tvPositive);
+		mTvNeutral = (TextView) header.findViewById(R.id.tvNeutral);
+		mTvNegative = (TextView) header.findViewById(R.id.tvNegative);
+		mTvUsername = (TextView) header.findViewById(R.id.tvUserName);
+
+		mGvInfo = (GridView) header.findViewById(R.id.gvInfo);
+		mInfoAdapter = new InfoAdapter(getActivity(), mListValue);
+		mGvInfo.setAdapter(mInfoAdapter);
+		mLvResult.addHeaderView(header);
+
 		mAdapter = new AdProfileAdapter(getActivity(), mResult, this);
 		mLvResult.setAdapter(mAdapter);
 		mLvResult.setSwipeListViewListener(new BaseSwipeListViewListener() {
@@ -95,17 +98,6 @@ public class ProfileFragment extends Fragment_Main implements QuickActionSelect 
 				startActivity(i);
 			}
 		});
-
-		mImvAvatar = (ImageView) rootView.findViewById(R.id.imvAvatar);
-		mTvPositive = (TextView) rootView.findViewById(R.id.tvPositive);
-		mTvNeutral = (TextView) rootView.findViewById(R.id.tvNeutral);
-		mTvNegative = (TextView) rootView.findViewById(R.id.tvNegative);
-		mTvUsername = (TextView) rootView.findViewById(R.id.tvUserName);
-		
-		
-		mGvInfo = (GridView) rootView.findViewById(R.id.gvInfo);
-		mInfoAdapter = new InfoAdapter(getActivity(), mListValue);
-		mGvInfo.setAdapter(mInfoAdapter);
 		return rootView;
 	}
 
@@ -125,7 +117,6 @@ public class ProfileFragment extends Fragment_Main implements QuickActionSelect 
 		if (Const.isLogin(getActivity())) {
 			enableLoadMore = false;
 			mQuery = Const.URL_GET_MY_ADS;
-			
 			mResult = new ArrayList<AdsResult>();
 			mListValue = new ArrayList<Profile.Value>();
 		}
@@ -152,6 +143,7 @@ public class ProfileFragment extends Fragment_Main implements QuickActionSelect 
 			protected Map<String, String> getParams() throws AuthFailureError {
 				Map<String, String> params = new HashMap<String, String>();
 				params.put("session_id", Const.getSessionId(getActivity()));
+				params.put("AccessToken", Const.getTokenFb(getActivity()));
 				return params;
 			};
 		};
@@ -188,8 +180,7 @@ public class ProfileFragment extends Fragment_Main implements QuickActionSelect 
 		mListValue.clear();
 		if (result.quota != null) {
 			mListValue.addAll(result.quota);
-		}
-		else if (result.postingpack != null)
+		} else if (result.postingpack != null)
 			mListValue.addAll(result.postingpack);
 		mInfoAdapter.notifyDataSetChanged();
 		Const.setGridViewHeightBasedOnChildren(mGvInfo, 2, 0);
@@ -232,14 +223,18 @@ public class ProfileFragment extends Fragment_Main implements QuickActionSelect 
 	}
 
 	protected void showError(String mesg) {
-		if (mesg != null) {
-			ErrorDialog dialog = new ErrorDialog(mesg);
-			dialog.show(getActivity().getSupportFragmentManager(),
-					"error dialog");
-		} else {
-			ErrorInternetDialog internet = new ErrorInternetDialog();
-			internet.show(getActivity().getSupportFragmentManager(),
-					"error internet");
+		try {
+			if (mesg != null) {
+				ErrorDialog dialog = new ErrorDialog(mesg);
+				dialog.show(getActivity().getSupportFragmentManager(),
+						"error dialog");
+			} else {
+				ErrorInternetDialog internet = new ErrorInternetDialog();
+				internet.show(getActivity().getSupportFragmentManager(),
+						"error internet");
+			}
+		} catch (IllegalStateException e) {
+			e.printStackTrace();
 		}
 	}
 
@@ -253,10 +248,8 @@ public class ProfileFragment extends Fragment_Main implements QuickActionSelect 
 					mAdapter.notifyDataSetChanged();
 					mTvNoShortlist.setVisibility(View.GONE);
 					mLvResult.setVisibility(View.VISIBLE);
-
 				} else {
 					mTvNoShortlist.setVisibility(View.VISIBLE);
-					mLvResult.setVisibility(View.GONE);
 				}
 				// mLvResult.setAdapter(mAdapter);
 			}
@@ -351,9 +344,9 @@ public class ProfileFragment extends Fragment_Main implements QuickActionSelect 
 	}
 
 	@Override
-	public void onMarkAsSoldClick(final String aid) {
+	public void onMarkAsSoldClick(final String aid, String type) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-		builder.setMessage(R.string.msg_mark_as_sold)
+		builder.setMessage(getString(R.string.msg_mark_as_sold, type))
 				.setIcon(android.R.drawable.ic_dialog_alert)
 				.setPositiveButton(android.R.string.ok,
 						new DialogInterface.OnClickListener() {

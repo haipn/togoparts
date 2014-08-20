@@ -1,124 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:ads="http://schemas.android.com/apk/lib/com.google.ads"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/splash_background"
+    android:layout_height="wrap_content"
     android:orientation="vertical" >
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:padding="8dp" >
+   
 
-        <ImageView
-            android:id="@+id/imvAvatar"
-            android:layout_width="@dimen/image_thumb"
-            android:layout_height="@dimen/image_thumb"
-            android:src="@drawable/nophoto" />
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:layout_weight="1"
-            android:orientation="vertical" >
-
-            <sg.togoparts.gallery.FontableTextView
-                android:id="@+id/tvUserName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
-                android:text="@string/label_rating"
-                android:textColor="@android:color/black"
-                android:textSize="22sp" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp" >
-
-                <sg.togoparts.gallery.FontableTextView
-                    android:id="@+id/tvPositive"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.33"
-                    android:drawableLeft="@drawable/plus_icon"
-                    android:drawablePadding="4dp" />
-
-                <sg.togoparts.gallery.FontableTextView
-                    android:id="@+id/tvNeutral"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.33"
-                    android:drawableLeft="@drawable/grey_icon"
-                    android:drawablePadding="4dp" />
-
-                <sg.togoparts.gallery.FontableTextView
-                    android:id="@+id/tvNegative"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.33"
-                    android:drawableLeft="@drawable/minus_icon"
-                    android:drawablePadding="4dp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" >
-
-                <GridView
-                    android:id="@+id/gvInfo"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:numColumns="2" >
-                </GridView>
-            </LinearLayout>
-        </LinearLayout>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="5dp" >
-
-<!--         <sg.togoparts.gallery.FontableTextView -->
-<!--             android:layout_width="match_parent" -->
-<!--             android:layout_height="wrap_content" -->
-<!--             android:background="@drawable/share_button_bg" -->
-<!--             android:padding="8dp" -->
-<!--             android:text="@string/label_my_ads" -->
-<!--             android:textColor="@android:color/white" -->
-<!--             android:textSize="30sp" -->
-<!--             android:textStyle="bold" /> -->
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:orientation="vertical" >
-
-            <sg.togoparts.gallery.FontableTextView
-                android:id="@+id/tvNoResult"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_margin="8dp"
-                android:gravity="center"
-                android:text="@string/no_result_found"
-                android:textSize="20sp"
-                android:visibility="gone" />
-
-            <!-- <ProgressBar -->
-            <!-- android:id="@+id/progressbar" -->
-            <!-- android:layout_width="fill_parent" -->
-            <!-- android:layout_height="wrap_content" -->
-            <!-- android:layout_alignParentBottom="true" -->
-            <!-- android:layout_centerHorizontal="true" /> -->
-        </LinearLayout>
-    </LinearLayout>
+    <!-- <ProgressBar -->
+    <!-- android:id="@+id/progressbar" -->
+    <!-- android:layout_width="fill_parent" -->
+    <!-- android:layout_height="wrap_content" -->
+    <!-- android:layout_alignParentBottom="true" -->
+    <!-- android:layout_centerHorizontal="true" /> -->
 
     <com.fortysevendeg.swipelistview.SwipeListView
         xmlns:swipe="http://schemas.android.com/apk/res-auto"
@@ -132,6 +25,16 @@
         swipe:swipeFrontView="@+id/front"
         swipe:swipeMode="both"
         swipe:swipeOpenOnLongPress="true" />
+     <sg.togoparts.gallery.FontableTextView
+        android:id="@+id/tvNoResult"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="8dp"
+        android:gravity="center"
+        android:text="@string/no_result_found"
+        android:textSize="20sp"
+        android:visibility="gone" />
     <!-- <ListView -->
     <!-- android:id="@+id/lvSearchResult" -->
     <!-- android:layout_width="match_parent" -->

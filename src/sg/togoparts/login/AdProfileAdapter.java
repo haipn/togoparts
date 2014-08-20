@@ -7,6 +7,7 @@ import sg.togoparts.json.SearchResult.AdsResult;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -17,7 +18,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.fortysevendeg.swipelistview.SwipeListView;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.ImageScaleType;
@@ -37,12 +37,13 @@ public class AdProfileAdapter extends BaseAdapter {
 
 		public void onTakeDownClick(String aid);
 
-		public void onMarkAsSoldClick(String aid);
+		public void onMarkAsSoldClick(String aid, String type);
 
 		public void onRefreshClick(String aid);
 	}
 
 	QuickActionSelect mCallback;
+	private String type;
 
 	public AdProfileAdapter(Context context, ArrayList<AdsResult> result,
 			QuickActionSelect callback) {
@@ -126,12 +127,12 @@ public class AdProfileAdapter extends BaseAdapter {
 		} else {
 			holder = (ViewHolder) convertView.getTag();
 		}
-		((SwipeListView) parent).recycle(convertView, position);
-		setDataAds(holder, ads);
+		// ((SwipeListView) parent).recycle(convertView, position);
+		boolean enable = setDataAds(holder, ads);
 		return convertView;
 	}
 
-	private void setDataAds(ViewHolder holder, final AdsResult ads) {
+	private boolean setDataAds(ViewHolder holder, final AdsResult ads) {
 		// normal row
 		holder.llAdView.setVisibility(View.GONE);
 		holder.llMain.setVisibility(View.VISIBLE);
@@ -157,28 +158,12 @@ public class AdProfileAdapter extends BaseAdapter {
 						android.R.color.black));
 				holder.newItem.setBackgroundColor(mContext.getResources()
 						.getColor(R.color.yellow));
-				holder.btnRepost.setVisibility(View.GONE);
-				holder.btnMarkAsSold.setVisibility(View.VISIBLE);
-				holder.btnRefresh.setVisibility(View.VISIBLE);
-				holder.btnTakeDown.setVisibility(View.GONE);
+
 			} else if (ads.listinglabel.equalsIgnoreCase("new item")) {
 				holder.newItem.setTextColor(mContext.getResources().getColor(
 						android.R.color.white));
 				holder.newItem.setBackgroundColor(mContext.getResources()
 						.getColor(R.color.dark_blue));
-				if (ads.adstatus != null
-						&& ads.adstatus.equalsIgnoreCase("expired")) {
-					holder.btnRepost.setVisibility(View.VISIBLE);
-					holder.btnMarkAsSold.setVisibility(View.GONE);
-					holder.btnRefresh.setVisibility(View.GONE);
-					holder.btnTakeDown.setVisibility(View.GONE);
-
-				} else {
-					holder.btnRepost.setVisibility(View.GONE);
-					holder.btnMarkAsSold.setVisibility(View.GONE);
-					holder.btnRefresh.setVisibility(View.VISIBLE);
-					holder.btnTakeDown.setVisibility(View.VISIBLE);
-				}
 			}
 			holder.newItem.setText(ads.listinglabel);
 			holder.newItem.setVisibility(View.VISIBLE);
@@ -186,10 +171,6 @@ public class AdProfileAdapter extends BaseAdapter {
 
 			holder.newItem.setVisibility(View.INVISIBLE);
 
-			holder.btnRepost.setVisibility(View.GONE);
-			holder.btnMarkAsSold.setVisibility(View.VISIBLE);
-			holder.btnRefresh.setVisibility(View.VISIBLE);
-			holder.btnTakeDown.setVisibility(View.GONE);
 		}
 		holder.price.setText(ads.price);
 		// holder.priority.setText()
@@ -210,57 +191,102 @@ public class AdProfileAdapter extends BaseAdapter {
 							.equalsIgnoreCase("for exchange"))) {
 			holder.status.setTextColor(mContext.getResources().getColor(
 					R.color.green));
-			if (ads.adstatus.equalsIgnoreCase("available")) {
-				if (ads.adtype.equalsIgnoreCase("for sale"))
-					holder.btnMarkAsSold
-							.setBackgroundResource(R.drawable.mark_as_sold);
-				else if (ads.adtype.equalsIgnoreCase("free")) {
-					holder.btnMarkAsSold
-							.setBackgroundResource(R.drawable.mark_as_given);
-				}
-			} else if (ads.adstatus.equalsIgnoreCase("looking")) {
-				holder.btnMarkAsSold
-						.setBackgroundResource(R.drawable.mark_as_found);
-			} else if (ads.adstatus.equalsIgnoreCase("for exchange")) {
-				holder.btnMarkAsSold
-						.setBackgroundResource(R.drawable.mark_as_exchange);
-			}
 
 		} else {
 			holder.status.setTextColor(mContext.getResources().getColor(
 					R.color.red));
 		}
 		holder.viewCount.setText(ads.ad_views);
-
-		holder.btnMarkAsSold.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				mCallback.onMarkAsSoldClick(ads.aid);
+		type = "";
+		if (ads.listinglabel.equalsIgnoreCase("new item")) {
+			if (ads.adstatus.equalsIgnoreCase("available")
+					&& ads.adtype.equalsIgnoreCase("for sale")) {
+				holder.btnMarkAsSold.setVisibility(View.VISIBLE);
+				holder.btnRefresh.setVisibility(View.VISIBLE);
+				holder.btnRepost.setVisibility(View.GONE);
+				holder.btnTakeDown.setVisibility(View.VISIBLE);
+			} else if (ads.adstatus.equalsIgnoreCase("sold")) {
+				holder.btnMarkAsSold.setVisibility(View.GONE);
+				holder.btnRefresh.setVisibility(View.VISIBLE);
+				holder.btnRepost.setVisibility(View.GONE);
+				holder.btnTakeDown.setVisibility(View.VISIBLE);
+			} else if (ads.adstatus.equalsIgnoreCase("expired")) {
+				holder.btnMarkAsSold.setVisibility(View.GONE);
+				holder.btnRefresh.setVisibility(View.GONE);
+				holder.btnRepost.setVisibility(View.VISIBLE);
+				holder.btnTakeDown.setVisibility(View.GONE);
 			}
-		});
-		holder.btnTakeDown.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				mCallback.onTakeDownClick(ads.aid);
+			holder.btnMarkAsSold.setBackgroundResource(R.drawable.mark_as_sold);
+			type = "Sold";
+		} else {
+			if (ads.adstatus.equalsIgnoreCase("available")) {
+				if (ads.adtype.equalsIgnoreCase("for sale")) {
+					holder.btnMarkAsSold
+							.setBackgroundResource(R.drawable.mark_as_sold);
+					type = "Sold";
+				} else if (ads.adtype.equalsIgnoreCase("free")) {
+					holder.btnMarkAsSold
+							.setBackgroundResource(R.drawable.mark_as_given);
+					type = "Given";
+				}
+				holder.btnMarkAsSold.setVisibility(View.VISIBLE);
+				holder.btnRefresh.setVisibility(View.VISIBLE);
+				holder.btnRepost.setVisibility(View.GONE);
+				holder.btnTakeDown.setVisibility(View.GONE);
+			} else if (ads.adstatus.equalsIgnoreCase("looking")) {
+				holder.btnMarkAsSold
+						.setBackgroundResource(R.drawable.mark_as_found);
+				type = "Found";
+				holder.btnMarkAsSold.setVisibility(View.VISIBLE);
+				holder.btnRefresh.setVisibility(View.VISIBLE);
+				holder.btnRepost.setVisibility(View.GONE);
+				holder.btnTakeDown.setVisibility(View.GONE);
+			} else if (ads.adstatus.equalsIgnoreCase("for exchange")) {
+				holder.btnMarkAsSold
+						.setBackgroundResource(R.drawable.mark_as_exchange);
+				type = "Exchanged";
+				holder.btnMarkAsSold.setVisibility(View.VISIBLE);
+				holder.btnRefresh.setVisibility(View.VISIBLE);
+				holder.btnRepost.setVisibility(View.GONE);
+				holder.btnTakeDown.setVisibility(View.GONE);
+			} else {
+				holder.btnMarkAsSold.setVisibility(View.GONE);
+				holder.btnRefresh.setVisibility(View.GONE);
+				holder.btnRepost.setVisibility(View.GONE);
+				holder.btnTakeDown.setVisibility(View.GONE);
 			}
-		});
-		holder.btnRepost.setOnClickListener(new OnClickListener() {
 
-			@Override
-			public void onClick(View v) {
-				mCallback.onRepostClick(ads.aid);
-			}
-		});
-		holder.btnRefresh.setOnClickListener(new OnClickListener() {
+			holder.btnMarkAsSold.setOnClickListener(new OnClickListener() {
 
-			@Override
-			public void onClick(View v) {
-				mCallback.onRefreshClick(ads.aid);
-			}
-		});
+				@Override
+				public void onClick(View v) {
+					Log.d("haipn","type = " + type);
+					mCallback.onMarkAsSoldClick(ads.aid, type);
+				}
+			});
+			holder.btnTakeDown.setOnClickListener(new OnClickListener() {
 
+				@Override
+				public void onClick(View v) {
+					mCallback.onTakeDownClick(ads.aid);
+				}
+			});
+			holder.btnRepost.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					mCallback.onRepostClick(ads.aid);
+				}
+			});
+			holder.btnRefresh.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					mCallback.onRefreshClick(ads.aid);
+				}
+			});
+		}
+		return true;
 	}
 
 	class ViewHolder {

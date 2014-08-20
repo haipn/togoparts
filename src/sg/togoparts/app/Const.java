@@ -1,13 +1,13 @@
 package sg.togoparts.app;
 
-import java.math.BigInteger;
 import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.util.Log;
 import android.view.View;
+import android.view.View.MeasureSpec;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.GridView;
@@ -66,6 +66,7 @@ public class Const {
 	public static String URL_GET_BRAND = "https://www.togoparts.com/iphone_ws/get-option-values.php?source=android&brands=1&search=%s";
 	public static String URL_GET_MODEL = "https://www.togoparts.com/iphone_ws/get-option-values.php?source=android&models=1&search=%s";
 	public static String URL_MANAGE_AD = "https://www.togoparts.com/iphone_ws/mp-manage-ad.php?source=android";
+	public static String URL_ALL_MESSAGE = "https://www.togoparts.com/iphone_ws/mp_ad_comments.php?source=android&aid=%s";
 	public static boolean isAppExitable = false;
 
 	/**
@@ -161,12 +162,22 @@ public class Const {
 				REFRESH_ID, "");
 		return session_id;
 	}
-
+	public static String getTokenFb(Context context) {
+		String token = getTogoPartsPreferences(context).getString(
+				ACCESS_TOKEN, "");
+		return token;
+	}
 	public static void writeSessionId(Context context, String session_id,
 			String refresh_id) {
 		Editor edit = getTogoPartsPreferences(context).edit();
 		edit.putString(SESSION_ID, session_id);
 		edit.putString(REFRESH_ID, refresh_id);
+		edit.commit();
+	}
+
+	public static void writeAccessTokenFb(Context context, String token) {
+		Editor edit = getTogoPartsPreferences(context).edit();
+		edit.putString(ACCESS_TOKEN, token);
 		edit.commit();
 	}
 
@@ -188,11 +199,12 @@ public class Const {
 				+ listView.getPaddingBottom();
 		for (int i = 0; i < listAdapter.getCount(); i++) {
 			View listItem = listAdapter.getView(i, null, listView);
-			if (listItem instanceof ViewGroup) {
-				listItem.setLayoutParams(new LayoutParams(
-						LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
-			}
+//			if (listItem instanceof ViewGroup) {
+//				listItem.setLayoutParams(new LayoutParams(
+//						LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+//			}
 			listItem.measure(0, 0);
+			Log.d("haipn", "measuare height:" + listItem.getMeasuredHeight());
 			totalHeight += listItem.getMeasuredHeight();
 		}
 
@@ -200,8 +212,29 @@ public class Const {
 		params.height = totalHeight
 				+ (listView.getDividerHeight() * (listAdapter.getCount() - 1));
 		listView.setLayoutParams(params);
+		listView.requestLayout();
 	}
-
+	public static void setListViewHeightBasedOnChildren1(ListView listView) {
+	    ListAdapter listAdapter = listView.getAdapter();
+	    if (listAdapter == null) {
+	        return;
+	    }
+	    int desiredWidth = MeasureSpec.makeMeasureSpec(listView.getWidth(), MeasureSpec.AT_MOST);
+	    int totalHeight = 0;
+	    View view = null;
+	    for (int i = 0; i < listAdapter.getCount(); i++) {
+	        view = listAdapter.getView(i, view, listView);
+	        if (i == 0) {
+	            view.setLayoutParams(new ViewGroup.LayoutParams(desiredWidth, LayoutParams.WRAP_CONTENT));
+	        }
+	        view.measure(desiredWidth, MeasureSpec.UNSPECIFIED);
+	        totalHeight += view.getMeasuredHeight();
+	    }
+	    ViewGroup.LayoutParams params = listView.getLayoutParams();
+	    params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
+	    listView.setLayoutParams(params);
+	    listView.requestLayout();
+	}
 	public static void setGridViewHeightBasedOnChildren(GridView listView,
 			int columns, int value) {
 		ListAdapter listAdapter = listView.getAdapter();
@@ -216,7 +249,7 @@ public class Const {
 			View listItem = listAdapter.getView(i, null, listView);
 			if (listItem instanceof ViewGroup) {
 				listItem.setLayoutParams(new LayoutParams(
-						LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+						LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 			}
 			listItem.measure(0, 0);
 			totalHeight += listItem.getMeasuredHeight();

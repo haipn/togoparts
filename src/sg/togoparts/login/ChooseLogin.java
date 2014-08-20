@@ -69,8 +69,7 @@ public class ChooseLogin extends FragmentActivity {
 		setContentView(R.layout.choose_login);
 		try {
 			PackageInfo info = getPackageManager().getPackageInfo(
-					"sg.togoparts",
-					PackageManager.GET_SIGNATURES);
+					"sg.togoparts", PackageManager.GET_SIGNATURES);
 			for (Signature signature : info.signatures) {
 				MessageDigest md = MessageDigest.getInstance("SHA");
 				md.update(signature.toByteArray());
@@ -235,6 +234,8 @@ public class ChooseLogin extends FragmentActivity {
 					+ profile.getEmail() + ","
 					+ mSimpleFacebook.getSession().getAccessToken());
 			mProfileFb = profile;
+			Const.writeAccessTokenFb(ChooseLogin.this, mSimpleFacebook
+					.getSession().getAccessToken());
 			loginFB(profile.getId(), profile.getEmail(), mSimpleFacebook
 					.getSession().getAccessToken());
 		}

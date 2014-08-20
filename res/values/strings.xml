@@ -129,6 +129,7 @@
     <string name="merchant_pack_ads">Merchant Ads Information</string>
     <string name="submit">Submit</string>
     <string name="title_postad">Posting</string>
+    <string name="title_all_comment">All Comments</string>
     <string name="title_section">Sections</string>
     <string name="title_category">Category</string>
     <string name="title_sub_category">Sub Category</string>
@@ -187,10 +188,10 @@
     <string name="play_services_available">Google Play services is available</string>
     <string name="request_location_updates_in_progress">Can\'t request location updates, previous request hasn\'t finished</string>
     <string name="select_action">Select action</string>
-	<string name="msg_repost_confirm">Do you want to repost ad?</string>
-	<string name="msg_take_down_confirm">Do you want to take down ad?</string>
-	<string name="msg_refresh_confirm">Do you want to refresh ad?</string>
-	<string name="msg_mark_as_sold">Do you want to mark ad as sold?</string>
+	<string name="msg_repost_confirm">Repost Ad?</string>
+	<string name="msg_take_down_confirm">Take Down Ad?</string>
+	<string name="msg_refresh_confirm">Refresh Ad?</string>
+	<string name="msg_mark_as_sold">Mark ad as %s?</string>
 	<string name="msg_purchase">Purchase Tcredits to post this as a %s ad</string>
 	<string name="msg_input_title">Ad title is required.</string>
 	<string name="msg_input_description">Ad description is required.</string>

@@ -56,7 +56,7 @@ public class InfoAdapter extends BaseAdapter {
 
 		if (convertView == null) {
 			convertView = LayoutInflater.from(mContext).inflate(
-					R.layout.row_attribute, null);
+					R.layout.row_info, null);
 			holder = new ViewHolder();
 			holder.label = (TextView) convertView.findViewById(R.id.tvLabel);
 			holder.value = (TextView) convertView

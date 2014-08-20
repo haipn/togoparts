@@ -33,7 +33,7 @@
             android:background="@drawable/refresh"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
-            android:visibility="gone" >
+            android:visibility="visible" >
         </Button>
 
         <Button
@@ -43,7 +43,7 @@
             android:background="@drawable/repostad_button"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
-            android:visibility="gone" >
+            android:visibility="visible" >
         </Button>
     </LinearLayout>
 

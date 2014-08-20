@@ -9,7 +9,6 @@ import sg.togoparts.app.SMSDialog;
 import sg.togoparts.app.SMSDialog.AlertPositiveListener;
 import sg.togoparts.gallery.AttributeAdapter;
 import sg.togoparts.gallery.HorizontalListView;
-import sg.togoparts.gallery.MessageAdapter;
 import sg.togoparts.json.Ads;
 import sg.togoparts.json.AdsDetail;
 import sg.togoparts.json.AdsDetail.Attribute;
@@ -17,6 +16,7 @@ import sg.togoparts.json.AdsDetail.Message;
 import sg.togoparts.json.AdsDetail.Picture;
 import sg.togoparts.json.ContactLog;
 import sg.togoparts.json.GsonRequest;
+import sg.togoparts.login.MessageActivity;
 import sg.togoparts.login.PostAdActivity;
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -48,7 +48,6 @@ import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -134,9 +133,9 @@ public class DetailActivity extends FragmentActivity implements
 	private RelateAdapter mRelateAdapter;
 	private ArrayList<Ads> mListRelateAds;
 
-	private ListView mLvMessage;
+	// private ListView mLvMessage;
 	private ArrayList<Message> mListMessage;
-	private MessageAdapter mMsgAdapter;
+	// private MessageAdapter mMsgAdapter;
 	private LinearLayout mLlMessage;
 	private TextView mTvViewAllMsg;
 
@@ -244,12 +243,13 @@ public class DetailActivity extends FragmentActivity implements
 		mAttributeAdapter = new AttributeAdapter(this, mListAttribute);
 		mGvAttribute.setAdapter(mAttributeAdapter);
 
-		mLvMessage = (ListView) findViewById(R.id.lvMessage);
-		mMsgAdapter = new MessageAdapter(this, mListMessage);
-		mLvMessage.setAdapter(mMsgAdapter);
+		// mLvMessage = (ListView) findViewById(R.id.lvMessage);
+		// mMsgAdapter = new MessageAdapter(this, mListMessage);
+		// mLvMessage.setAdapter(mMsgAdapter);
 		mLlMessage = (LinearLayout) findViewById(R.id.llComment);
 		mTvViewAllMsg = (TextView) findViewById(R.id.tvViewAllComment);
-
+		
+		
 		mRelateAdapter = new RelateAdapter(this, mListRelateAds);
 		mHlRelate.setAdapter(mRelateAdapter);
 		mHlRelate.setOnItemClickListener(new OnItemClickListener() {
@@ -368,19 +368,22 @@ public class DetailActivity extends FragmentActivity implements
 			}
 		});
 	}
+
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		// TODO Auto-generated method stub
 		super.onActivityResult(requestCode, resultCode, data);
 		if (requestCode == REQUEST_EDIT_AD && resultCode == RESULT_OK) {
-			
+
 			RequestQueue queue = MyVolley.getRequestQueue();
-			GsonRequest<AdsDetail> myReq = new GsonRequest<AdsDetail>(Method.GET,
-					String.format(Const.URL_ADS_DETAIL, mAdsId), AdsDetail.class,
-					createEditSuccessListener(), createMyReqErrorListener());
+			GsonRequest<AdsDetail> myReq = new GsonRequest<AdsDetail>(
+					Method.GET, String.format(Const.URL_ADS_DETAIL, mAdsId),
+					AdsDetail.class, createEditSuccessListener(),
+					createMyReqErrorListener());
 			queue.add(myReq);
 		}
 	}
+
 	@Override
 	public void onStart() {
 		super.onStart();
@@ -746,23 +749,57 @@ public class DetailActivity extends FragmentActivity implements
 		if (res.mTotalMessages == 0) {
 			mLlMessage.setVisibility(View.GONE);
 		} else {
+			
 			mLlMessage.setVisibility(View.VISIBLE);
 			if (res.mTotalMessages > 3) {
 				mTvViewAllMsg.setVisibility(View.VISIBLE);
 				mTvViewAllMsg
 						.setText(getString(R.string.label_view_all_comment,
 								res.mTotalMessages - 3));
-				mListMessage.addAll(res.mListMessages.subList(0, 2));
+				mTvViewAllMsg.setOnClickListener(new OnClickListener() {
+					
+					@Override
+					public void onClick(View v) {
+						Intent i = new Intent(DetailActivity.this, MessageActivity.class);
+						i.putExtra(Const.ADS_ID, res.mAdid);
+						startActivity(i);
+					}
+				});
 			} else {
 				mTvViewAllMsg.setVisibility(View.GONE);
-				mListMessage.addAll(res.mListMessages);
 
 			}
-
-			mMsgAdapter.notifyDataSetChanged();
-			Const.setListViewHeightBasedOnChildren(mLvMessage);
+			mListMessage.addAll(res.mListMessages);
+			createListMessage();
+			// mMsgAdapter.notifyDataSetChanged();
+			// Const.setListViewHeightBasedOnChildren(mLvMessage);
 		}
-		
+
+	}
+
+	private void createListMessage() {
+		for (int i = 0; i < mListMessage.size(); i++) {
+			View convertView = LayoutInflater.from(this).inflate(
+					R.layout.row_comment, null);
+			TextView user = (TextView) convertView.findViewById(R.id.tvUser);
+			TextView comment = (TextView) convertView
+					.findViewById(R.id.tvComment);
+			TextView datepost = (TextView) convertView
+					.findViewById(R.id.tvDate);
+			ImageView thumb = (ImageView) convertView
+					.findViewById(R.id.imvAvatar);
+			Message promos = mListMessage.get(i);
+			user.setText(promos.username);
+			comment.setText(promos.message);
+			datepost.setText(promos.datesent);
+			imageLoader.displayImage(promos.picture, thumb, options);
+
+			mLlMessage.addView(convertView);
+			View line = LayoutInflater.from(this)
+					.inflate(R.layout.separate, null);
+
+			mLlMessage.addView(line);
+		}
 	}
 
 	private void startAnimation() {
@@ -816,6 +853,7 @@ public class DetailActivity extends FragmentActivity implements
 			}
 		};
 	}
+
 	private Response.Listener<AdsDetail> createEditSuccessListener() {
 		return new Response.Listener<AdsDetail>() {
 			@Override
@@ -828,6 +866,7 @@ public class DetailActivity extends FragmentActivity implements
 			}
 		};
 	}
+
 	private Response.ErrorListener createMyReqErrorListener() {
 		return new Response.ErrorListener() {
 			@Override

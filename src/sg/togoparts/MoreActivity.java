@@ -22,6 +22,8 @@ import com.android.volley.Request.Method;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.sromku.simple.fb.SimpleFacebook;
+import com.sromku.simple.fb.listeners.OnLogoutListener;
 
 public class MoreActivity extends Activity_Main {
 	TextView mTvSearchAds;
@@ -29,12 +31,13 @@ public class MoreActivity extends Activity_Main {
 	TextView mTvAbout;
 	TextView mTvShortlist;
 	TextView mTvLoginOrLogout;
+	protected SimpleFacebook mSimpleFacebook;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.more_activity);
-
+		mSimpleFacebook = SimpleFacebook.getInstance(this);
 		createHeader();
 		mTvSearchAds = (TextView) findViewById(R.id.tvAdsSearch);
 		mTvSearchShop = (TextView) findViewById(R.id.tvShopSearch);
@@ -79,7 +82,8 @@ public class MoreActivity extends Activity_Main {
 			@Override
 			public void onClick(View v) {
 
-				Intent i = new Intent(MoreActivity.this, FSActivity_ShortList.class);
+				Intent i = new Intent(MoreActivity.this,
+						FSActivity_ShortList.class);
 				startActivity(i);
 			}
 		});
@@ -111,6 +115,19 @@ public class MoreActivity extends Activity_Main {
 		});
 	}
 
+	@Override
+	protected void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+		mSimpleFacebook = SimpleFacebook.getInstance(this);
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		mSimpleFacebook.onActivityResult(this, requestCode, resultCode, data);
+	}
+
 	protected void logout() {
 		RequestQueue queue = MyVolley.getRequestQueue();
 
@@ -118,10 +135,10 @@ public class MoreActivity extends Activity_Main {
 				Method.POST, Const.URL_LOGOUT, ResultLogin.class,
 				createMyReqSuccessListener(), createMyReqErrorListener()) {
 
-			protected Map<String, String> getParams()
-					throws AuthFailureError {
+			protected Map<String, String> getParams() throws AuthFailureError {
 				Map<String, String> params = new HashMap<String, String>();
-				String key = Const.getRefreshId(MoreActivity.this) + ChooseLogin.CLIENT_ID;
+				String key = Const.getRefreshId(MoreActivity.this)
+						+ ChooseLogin.CLIENT_ID;
 				key = Const.getSHA256EncryptedString(key);
 				params.put("session_id", Const.getSessionId(MoreActivity.this));
 				params.put("refresh_id", key);
@@ -130,19 +147,49 @@ public class MoreActivity extends Activity_Main {
 		};
 		queue.add(myReq);
 
+		// logout listener
+
+		mSimpleFacebook.logout(onLogoutListener);
 	}
+
+	OnLogoutListener onLogoutListener = new OnLogoutListener() {
+		@Override
+		public void onLogout() {
+			Log.i("haipn", "Facebook You are logged out");
+		}
+
+		@Override
+		public void onThinking() {
+			// TODO Auto-generated method stub
+
+		}
+
+		@Override
+		public void onException(Throwable throwable) {
+			// TODO Auto-generated method stub
+
+		}
+
+		@Override
+		public void onFail(String reason) {
+			// TODO Auto-generated method stub
+
+		}
+	};
 
 	private Response.Listener<ResultLogin> createMyReqSuccessListener() {
 		return new Response.Listener<ResultLogin>() {
 			@Override
 			public void onResponse(ResultLogin response) {
 				Log.d("haipn", "response success:" + response.Result.Return);
-				Toast.makeText(MoreActivity.this, "Logout successful", Toast.LENGTH_LONG).show();
+				Toast.makeText(MoreActivity.this, "Logout successful",
+						Toast.LENGTH_LONG).show();
 				Const.deleteSessionId(MoreActivity.this);
+				Const.writeAccessTokenFb(MoreActivity.this, "");
 				mTvLoginOrLogout.setText(R.string.label_login);
 				mTvLoginOrLogout.setCompoundDrawablesWithIntrinsicBounds(
 						R.drawable.login_icon, 0, 0, 0);
-				
+
 			}
 		};
 	}

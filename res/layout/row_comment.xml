@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="100dp"
+    android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:padding="10dp" >
+    android:padding="5dp" >
 
     <ImageView
         android:id="@+id/imvAvatar"
@@ -13,12 +13,12 @@
 
     <LinearLayout
         android:layout_width="0dp"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_weight="1"
         android:orientation="vertical" >
 
-        <TextView
+        <sg.togoparts.gallery.FontableTextView
             android:id="@+id/tvUser"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -26,15 +26,16 @@
             android:text="TextView"
             android:textColor="@android:color/black" />
 
-        <TextView
+        <sg.togoparts.gallery.FontableTextView
             android:id="@+id/tvComment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:lines="2"
+            android:singleLine="false"
             android:text="TextView"
             android:textColor="@color/gray" />
 
-        <TextView
+        <sg.togoparts.gallery.FontableTextView
+            android:drawableLeft="@drawable/clock_2"
             android:id="@+id/tvDate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
