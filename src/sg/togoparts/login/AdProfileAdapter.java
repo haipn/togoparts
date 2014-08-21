@@ -43,7 +43,6 @@ public class AdProfileAdapter extends BaseAdapter {
 	}
 
 	QuickActionSelect mCallback;
-	private String type;
 
 	public AdProfileAdapter(Context context, ArrayList<AdsResult> result,
 			QuickActionSelect callback) {
@@ -197,7 +196,6 @@ public class AdProfileAdapter extends BaseAdapter {
 					R.color.red));
 		}
 		holder.viewCount.setText(ads.ad_views);
-		type = "";
 		if (ads.listinglabel.equalsIgnoreCase("new item")) {
 			if (ads.adstatus.equalsIgnoreCase("available")
 					&& ads.adtype.equalsIgnoreCase("for sale")) {
@@ -217,17 +215,17 @@ public class AdProfileAdapter extends BaseAdapter {
 				holder.btnTakeDown.setVisibility(View.GONE);
 			}
 			holder.btnMarkAsSold.setBackgroundResource(R.drawable.mark_as_sold);
-			type = "Sold";
+			holder.btnMarkAsSold.setTag("Sold");
 		} else {
 			if (ads.adstatus.equalsIgnoreCase("available")) {
 				if (ads.adtype.equalsIgnoreCase("for sale")) {
 					holder.btnMarkAsSold
 							.setBackgroundResource(R.drawable.mark_as_sold);
-					type = "Sold";
+					holder.btnMarkAsSold.setTag("Sold");
 				} else if (ads.adtype.equalsIgnoreCase("free")) {
 					holder.btnMarkAsSold
 							.setBackgroundResource(R.drawable.mark_as_given);
-					type = "Given";
+					holder.btnMarkAsSold.setTag("Given");
 				}
 				holder.btnMarkAsSold.setVisibility(View.VISIBLE);
 				holder.btnRefresh.setVisibility(View.VISIBLE);
@@ -236,7 +234,7 @@ public class AdProfileAdapter extends BaseAdapter {
 			} else if (ads.adstatus.equalsIgnoreCase("looking")) {
 				holder.btnMarkAsSold
 						.setBackgroundResource(R.drawable.mark_as_found);
-				type = "Found";
+				holder.btnMarkAsSold.setTag("Found");
 				holder.btnMarkAsSold.setVisibility(View.VISIBLE);
 				holder.btnRefresh.setVisibility(View.VISIBLE);
 				holder.btnRepost.setVisibility(View.GONE);
@@ -244,7 +242,7 @@ public class AdProfileAdapter extends BaseAdapter {
 			} else if (ads.adstatus.equalsIgnoreCase("for exchange")) {
 				holder.btnMarkAsSold
 						.setBackgroundResource(R.drawable.mark_as_exchange);
-				type = "Exchanged";
+				holder.btnMarkAsSold.setTag("Exchanged");
 				holder.btnMarkAsSold.setVisibility(View.VISIBLE);
 				holder.btnRefresh.setVisibility(View.VISIBLE);
 				holder.btnRepost.setVisibility(View.GONE);
@@ -255,37 +253,36 @@ public class AdProfileAdapter extends BaseAdapter {
 				holder.btnRepost.setVisibility(View.GONE);
 				holder.btnTakeDown.setVisibility(View.GONE);
 			}
-
-			holder.btnMarkAsSold.setOnClickListener(new OnClickListener() {
-
-				@Override
-				public void onClick(View v) {
-					Log.d("haipn","type = " + type);
-					mCallback.onMarkAsSoldClick(ads.aid, type);
-				}
-			});
-			holder.btnTakeDown.setOnClickListener(new OnClickListener() {
-
-				@Override
-				public void onClick(View v) {
-					mCallback.onTakeDownClick(ads.aid);
-				}
-			});
-			holder.btnRepost.setOnClickListener(new OnClickListener() {
-
-				@Override
-				public void onClick(View v) {
-					mCallback.onRepostClick(ads.aid);
-				}
-			});
-			holder.btnRefresh.setOnClickListener(new OnClickListener() {
-
-				@Override
-				public void onClick(View v) {
-					mCallback.onRefreshClick(ads.aid);
-				}
-			});
 		}
+		holder.btnMarkAsSold.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				String type = (String) v.getTag();
+				mCallback.onMarkAsSoldClick(ads.aid, type);
+			}
+		});
+		holder.btnTakeDown.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				mCallback.onTakeDownClick(ads.aid);
+			}
+		});
+		holder.btnRepost.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				mCallback.onRepostClick(ads.aid);
+			}
+		});
+		holder.btnRefresh.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				mCallback.onRefreshClick(ads.aid);
+			}
+		});
 		return true;
 	}
 

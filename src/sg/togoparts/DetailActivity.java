@@ -23,6 +23,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.Point;
 import android.graphics.drawable.AnimationDrawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -33,7 +34,7 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.Log;
-import android.util.TypedValue;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -49,6 +50,9 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.TableLayout;
+import android.widget.TableRow;
+import android.widget.TableRow.LayoutParams;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -97,7 +101,6 @@ public class DetailActivity extends FragmentActivity implements
 	private TextView mTvAdType;
 
 	private TextView mTvDescription;
-	private TextView mTvSize;
 	private TextView mTvPostebyAndPostTime;
 	private TextView mTvAllPostedBy;
 	private ImageView mIvShopLogo;
@@ -124,9 +127,10 @@ public class DetailActivity extends FragmentActivity implements
 	private LinearLayout mLlAddress;
 	private LinearLayout mLlRelate;
 
-	private GridView mGvAttribute;
-	private AttributeAdapter mAttributeAdapter;
-	private ArrayList<Attribute> mListAttribute;
+//	private GridView mGvAttribute;
+	private TableLayout mTlAttribute;
+//	private AttributeAdapter mAttributeAdapter;
+//	private ArrayList<Attribute> mListAttribute;
 
 	private String mAdsId;
 
@@ -153,7 +157,7 @@ public class DetailActivity extends FragmentActivity implements
 	protected static final String POST_BY = "Marketplace List Ads by User";
 	protected static final String SHARE = "Marketplace Share";
 	protected static final int REQUEST_EDIT_AD = 0;
-
+	private int mWidthScreen;
 	private boolean isMyAd;
 
 	@Override
@@ -179,7 +183,7 @@ public class DetailActivity extends FragmentActivity implements
 				.bitmapConfig(Bitmap.Config.RGB_565).considerExifParams(true)
 				.displayer(new FadeInBitmapDisplayer(300)).build();
 		mListRelateAds = new ArrayList<Ads>();
-		mListAttribute = new ArrayList<AdsDetail.Attribute>();
+//		mListAttribute = new ArrayList<AdsDetail.Attribute>();
 		mListMessage = new ArrayList<AdsDetail.Message>();
 
 		RequestQueue queue = MyVolley.getRequestQueue();
@@ -213,11 +217,12 @@ public class DetailActivity extends FragmentActivity implements
 		mTvAdType = (TextView) findViewById(R.id.tvAdTypes);
 
 		mTvDescription = (TextView) findViewById(R.id.tvDescription);
-		mTvSize = (TextView) findViewById(R.id.tvSize);
 		mTvPostebyAndPostTime = (TextView) findViewById(R.id.tvPostebyAndPostTime);
 		mTvAllPostedBy = (TextView) findViewById(R.id.btnAllPostedBy);
 		mIvShopLogo = (ImageView) findViewById(R.id.imvShopLogo);
-
+		mTvPositive = (TextView) findViewById(R.id.tvPositive);
+		mTvNeutral = (TextView) findViewById(R.id.tvNeutral);
+		mTvNegative = (TextView) findViewById(R.id.tvNegative);
 		mTvShopOrContact = (TextView) findViewById(R.id.tvShopOrContact);
 		mTvNameContact = (TextView) findViewById(R.id.tvNameContact);
 		mTvContactNo = (TextView) findViewById(R.id.tvContactNo);
@@ -236,79 +241,18 @@ public class DetailActivity extends FragmentActivity implements
 		mLlAddress = (LinearLayout) findViewById(R.id.llAddress);
 		mLlContactNo = (LinearLayout) findViewById(R.id.llContactNo);
 		mLlShop = (LinearLayout) findViewById(R.id.llShop);
-		mLlSize = (LinearLayout) findViewById(R.id.llSize);
 		mLlRelate = (LinearLayout) findViewById(R.id.llRelate);
 
-		mGvAttribute = (GridView) findViewById(R.id.gvAttribute);
-		mAttributeAdapter = new AttributeAdapter(this, mListAttribute);
-		mGvAttribute.setAdapter(mAttributeAdapter);
+//		mGvAttribute = (GridView) findViewById(R.id.gvAttribute);
+//		mAttributeAdapter = new AttributeAdapter(this, mListAttribute);
+//		mGvAttribute.setAdapter(mAttributeAdapter);
 
+		mTlAttribute = (TableLayout) findViewById(R.id.tlAttribute);
 		// mLvMessage = (ListView) findViewById(R.id.lvMessage);
 		// mMsgAdapter = new MessageAdapter(this, mListMessage);
 		// mLvMessage.setAdapter(mMsgAdapter);
 		mLlMessage = (LinearLayout) findViewById(R.id.llComment);
 		mTvViewAllMsg = (TextView) findViewById(R.id.tvViewAllComment);
-		
-		
-		mRelateAdapter = new RelateAdapter(this, mListRelateAds);
-		mHlRelate.setAdapter(mRelateAdapter);
-		mHlRelate.setOnItemClickListener(new OnItemClickListener() {
-
-			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
-					long arg3) {
-				Intent i = new Intent(DetailActivity.this, DetailActivity.class);
-				i.putExtra(Const.ADS_ID, mListRelateAds.get(arg2).getAdsId());
-				startActivity(i);
-			}
-		});
-
-		// mIvLoading.setAnimation(getResources().getAnimation(android.R.animator.));
-		mTvTitle = (TextView) findViewById(R.id.tvTitle);
-		mTvPrice = (TextView) findViewById(R.id.tvPrice);
-		mTvPriceDiff = (TextView) findViewById(R.id.tvPriceDiff);
-		mTvFirm = (TextView) findViewById(R.id.tvFirm);
-
-		mTvAddShortList = (TextView) findViewById(R.id.btnAddShortList);
-		mTvShare = (TextView) findViewById(R.id.btnShare);
-		mPagerImage = (ViewPager) findViewById(R.id.pager);
-		mBtnLeft = (ImageButton) findViewById(R.id.btnLeft);
-		mBtnRight = (ImageButton) findViewById(R.id.btnRight);
-		mTvSold = (TextView) findViewById(R.id.tvSold);
-
-		mTvSpecial = (TextView) findViewById(R.id.tvSpecial);
-		mTvListingLabel = (TextView) findViewById(R.id.tvListinglabel);
-		// mTvPriority = (TextView) findViewById(R.id.tvPriority);
-		mTvAdType = (TextView) findViewById(R.id.tvAdTypes);
-
-		mTvDescription = (TextView) findViewById(R.id.tvDescription);
-		mTvSize = (TextView) findViewById(R.id.tvSize);
-		mTvPostebyAndPostTime = (TextView) findViewById(R.id.tvPostebyAndPostTime);
-		mTvPositive = (TextView) findViewById(R.id.tvPositive);
-		mTvNeutral = (TextView) findViewById(R.id.tvNeutral);
-		mTvNegative = (TextView) findViewById(R.id.tvNegative);
-
-		mTvAllPostedBy = (TextView) findViewById(R.id.btnAllPostedBy);
-		mIvShopLogo = (ImageView) findViewById(R.id.imvShopLogo);
-
-		mTvShopOrContact = (TextView) findViewById(R.id.tvShopOrContact);
-		mTvNameContact = (TextView) findViewById(R.id.tvNameContact);
-		mTvContactNo = (TextView) findViewById(R.id.tvContactNo);
-		mTvAddress = (TextView) findViewById(R.id.tvAddress);
-
-		mTvViewCount = (TextView) findViewById(R.id.tvViewCount);
-		mTvMailCount = (TextView) findViewById(R.id.tvMailCount);
-		mTvSMS = (TextView) findViewById(R.id.tvSMS);
-		mTvCall = (TextView) findViewById(R.id.tvCall);
-		// mTvEmail = (TextView) findViewById(R.id.tvEmail);
-
-		mHlRelate = (HorizontalListView) findViewById(R.id.hlvRelate);
-
-		mLlAddress = (LinearLayout) findViewById(R.id.llAddress);
-		mLlContactNo = (LinearLayout) findViewById(R.id.llContactNo);
-		mLlShop = (LinearLayout) findViewById(R.id.llShop);
-		mLlSize = (LinearLayout) findViewById(R.id.llSize);
-		mLlRelate = (LinearLayout) findViewById(R.id.llRelate);
 
 		mRelateAdapter = new RelateAdapter(this, mListRelateAds);
 		mHlRelate.setAdapter(mRelateAdapter);
@@ -323,6 +267,22 @@ public class DetailActivity extends FragmentActivity implements
 			}
 		});
 
+		mRelateAdapter = new RelateAdapter(this, mListRelateAds);
+		mHlRelate.setAdapter(mRelateAdapter);
+		mHlRelate.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+					long arg3) {
+				Intent i = new Intent(DetailActivity.this, DetailActivity.class);
+				i.putExtra(Const.ADS_ID, mListRelateAds.get(arg2).getAdsId());
+				startActivity(i);
+			}
+		});
+		Display display = getWindowManager().getDefaultDisplay();
+		Point size = new Point();
+		display.getSize(size);
+		mWidthScreen = size.x;
 	}
 
 	private void createHeader() {
@@ -489,14 +449,15 @@ public class DetailActivity extends FragmentActivity implements
 		}
 
 		if (res.mAdStatus != null && !res.mAdStatus.isEmpty()) {
-			if (res.mAdStatus.equalsIgnoreCase("sold")
-					|| res.mAdStatus.equalsIgnoreCase("found")
-					|| res.mAdStatus.equalsIgnoreCase("given")
-					|| res.mAdStatus.equalsIgnoreCase("exchanged")) {
+			if (res.mAdStatus.equalsIgnoreCase("available")
+					|| res.mAdStatus.equalsIgnoreCase("looking")
+					|| res.mAdStatus.equalsIgnoreCase("for exchange")) {
+				mTvSold.setVisibility(View.GONE);
+				mBtnSearch.setVisibility(View.VISIBLE);
+			} else {
 				mTvSold.setText(res.mAdStatus);
 				mTvSold.setVisibility(View.VISIBLE);
-			} else {
-				mTvSold.setVisibility(View.GONE);
+				mBtnSearch.setVisibility(View.GONE);
 			}
 		} else {
 			mTvSold.setVisibility(View.GONE);
@@ -557,19 +518,23 @@ public class DetailActivity extends FragmentActivity implements
 		res.mDescription = res.mDescription.replace("\\n",
 				System.getProperty("line.separator"));
 		mTvDescription.setText(res.mDescription);
-		if (res.mSize != null && !res.mSize.isEmpty())
-			mTvSize.setText(res.mSize);
-		else
-			mLlSize.setVisibility(View.GONE);
 		mTvPostebyAndPostTime.setText(res.mPostedByDetails.mUserName + " on "
 				+ res.mDateposted);
 		mTvAllPostedBy.setText(getString(R.string.label_all_postby,
 				res.mPostedByDetails.mUserName));
 
 		if (res.mPostedByDetails.mRatings != null) {
+			mTvPositive.setVisibility(View.VISIBLE);
+			mTvNeutral.setVisibility(View.VISIBLE);
+			mTvNegative.setVisibility(View.VISIBLE);
 			mTvPositive.setText(res.mPostedByDetails.mRatings.Positive + "");
 			mTvNeutral.setText(res.mPostedByDetails.mRatings.Neutral + "");
 			mTvNegative.setText(res.mPostedByDetails.mRatings.Negative + "");
+		} else {
+			mTvPositive.setVisibility(View.GONE);
+			mTvNeutral.setVisibility(View.GONE);
+			mTvNegative.setVisibility(View.GONE);
+
 		}
 		mTvAllPostedBy.setOnClickListener(new OnClickListener() {
 
@@ -739,17 +704,19 @@ public class DetailActivity extends FragmentActivity implements
 		}
 
 		if (res.Attributes != null) {
-			mListAttribute.addAll(res.Attributes);
-			mAttributeAdapter.notifyDataSetChanged();
-			int value = (int) TypedValue.applyDimension(
-					TypedValue.COMPLEX_UNIT_DIP, 20, getResources()
-							.getDisplayMetrics());
-			Const.setGridViewHeightBasedOnChildren(mGvAttribute, 2, value);
+			// mListAttribute.addAll(res.Attributes);
+			// mAttributeAdapter.notifyDataSetChanged();
+			// int value = (int) TypedValue.applyDimension(
+			// TypedValue.COMPLEX_UNIT_DIP, 30, getResources()
+			// .getDisplayMetrics());
+			// Const.setGridViewHeightBasedOnChildren(mGvAttribute, 2, value);
+
+			addAtribute(res.Attributes);
 		}
 		if (res.mTotalMessages == 0) {
 			mLlMessage.setVisibility(View.GONE);
 		} else {
-			
+
 			mLlMessage.setVisibility(View.VISIBLE);
 			if (res.mTotalMessages > 3) {
 				mTvViewAllMsg.setVisibility(View.VISIBLE);
@@ -757,10 +724,11 @@ public class DetailActivity extends FragmentActivity implements
 						.setText(getString(R.string.label_view_all_comment,
 								res.mTotalMessages - 3));
 				mTvViewAllMsg.setOnClickListener(new OnClickListener() {
-					
+
 					@Override
 					public void onClick(View v) {
-						Intent i = new Intent(DetailActivity.this, MessageActivity.class);
+						Intent i = new Intent(DetailActivity.this,
+								MessageActivity.class);
 						i.putExtra(Const.ADS_ID, res.mAdid);
 						startActivity(i);
 					}
@@ -775,6 +743,34 @@ public class DetailActivity extends FragmentActivity implements
 			// Const.setListViewHeightBasedOnChildren(mLvMessage);
 		}
 
+	}
+
+	private void addAtribute(ArrayList<Attribute> attributes) {
+		for (int i = 0; i < attributes.size(); i = i + 2) {
+			TableRow row = new TableRow(this);
+			View column1 = LayoutInflater.from(this).inflate(
+					R.layout.row_attribute, null);
+			TextView label1 = (TextView) column1.findViewById(R.id.tvLabel);
+			TextView value1 = (TextView) column1.findViewById(R.id.tvValue);
+			Attribute att1 = attributes.get(i);
+
+			label1.setText(att1.label);
+			value1.setText(att1.value);
+			row.addView(column1, new LayoutParams(mWidthScreen / 2,
+					LayoutParams.WRAP_CONTENT));
+			if (i + 1 < attributes.size()) {
+				View column2 = LayoutInflater.from(this).inflate(
+						R.layout.row_attribute, null);
+				TextView label2 = (TextView) column2.findViewById(R.id.tvLabel);
+				TextView value2 = (TextView) column2.findViewById(R.id.tvValue);
+				Attribute att2 = attributes.get(i + 1);
+				label2.setText(att2.label);
+				value2.setText(att2.value);
+				row.addView(column2, new LayoutParams(mWidthScreen / 2,
+						LayoutParams.WRAP_CONTENT));
+			}
+			mTlAttribute.addView(row);
+		}
 	}
 
 	private void createListMessage() {
@@ -795,8 +791,8 @@ public class DetailActivity extends FragmentActivity implements
 			imageLoader.displayImage(promos.picture, thumb, options);
 
 			mLlMessage.addView(convertView);
-			View line = LayoutInflater.from(this)
-					.inflate(R.layout.separate, null);
+			View line = LayoutInflater.from(this).inflate(R.layout.separate,
+					null);
 
 			mLlMessage.addView(line);
 		}
@@ -859,7 +855,6 @@ public class DetailActivity extends FragmentActivity implements
 			@Override
 			public void onResponse(AdsDetail response) {
 				Log.d("haipn", "sussecc");
-				mListAttribute.clear();
 				mListMessage.clear();
 				mListRelateAds.clear();
 				fillData(response);

@@ -250,40 +250,20 @@
                             android:textIsSelectable="true" />
                     </LinearLayout>
 
+                    <TableLayout
+                        android:id="@+id/tlAttribute"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" >
+                    </TableLayout>
+
                     <GridView
                         android:id="@+id/gvAttribute"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:horizontalSpacing="10dp"
+                        android:layout_height="match_parent"
+                        android:horizontalSpacing="1dp"
                         android:numColumns="2"
-                        android:verticalSpacing="0dp" >
+                        android:verticalSpacing="1dp" >
                     </GridView>
-
-                    <LinearLayout
-                        android:id="@+id/llSize"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="top"
-                        android:paddingTop="5dp" >
-
-                        <sg.togoparts.gallery.FontableTextView
-                            android:layout_width="80dp"
-                            android:layout_height="fill_parent"
-                            android:layout_marginBottom="5dp"
-                            android:layout_marginRight="5dp"
-                            android:gravity="left|top"
-                            android:text="@string/label_size"
-                            android:textSize="22sp" />
-
-                        <sg.togoparts.gallery.FontableTextView
-                            android:id="@+id/tvSize"
-                            android:layout_width="0dp"
-                            android:layout_height="fill_parent"
-                            android:layout_weight="1"
-                            android:gravity="left|top"
-                            android:text="Medium Text"
-                            android:textAppearance="?android:attr/textAppearanceMedium" />
-                    </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -323,25 +303,34 @@
                                     android:id="@+id/tvPositive"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:layout_gravity="center_vertical"
                                     android:layout_weight="0.33"
                                     android:drawableLeft="@drawable/plus_icon"
-                                    android:drawablePadding="4dp" />
+                                    android:drawablePadding="4dp"
+                                    android:gravity="center_vertical"
+                                    android:textAppearance="?android:attr/textAppearanceMedium" />
 
                                 <sg.togoparts.gallery.FontableTextView
                                     android:id="@+id/tvNeutral"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:layout_gravity="center_vertical"
                                     android:layout_weight="0.33"
                                     android:drawableLeft="@drawable/grey_icon"
-                                    android:drawablePadding="4dp" />
+                                    android:drawablePadding="4dp"
+                                    android:gravity="center_vertical"
+                                    android:textAppearance="?android:attr/textAppearanceMedium" />
 
                                 <sg.togoparts.gallery.FontableTextView
                                     android:id="@+id/tvNegative"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:layout_gravity="center_vertical"
                                     android:layout_weight="0.33"
                                     android:drawableLeft="@drawable/minus_icon"
-                                    android:drawablePadding="4dp" />
+                                    android:drawablePadding="4dp"
+                                    android:gravity="center_vertical"
+                                    android:textAppearance="?android:attr/textAppearanceMedium" />
                             </LinearLayout>
 
                             <sg.togoparts.gallery.FontableTextView
@@ -574,7 +563,8 @@
 
                         <RelativeLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content" >
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="5dp" >
 
                             <sg.togoparts.gallery.FontableTextView
                                 android:layout_width="wrap_content"
@@ -597,12 +587,6 @@
                                 android:textAppearance="?android:attr/textAppearanceMedium"
                                 android:textColor="@android:color/black" />
                         </RelativeLayout>
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="0.5dp"
-                            android:background="@drawable/gray" >
-                        </View>
 
                         <!-- <ListView -->
                         <!-- android:id="@+id/lvMessage" -->

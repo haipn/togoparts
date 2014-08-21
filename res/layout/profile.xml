@@ -32,7 +32,7 @@
         android:layout_gravity="center"
         android:layout_margin="8dp"
         android:gravity="center"
-        android:text="@string/no_result_found"
+        android:text="@string/msg_no_ads"
         android:textSize="20sp"
         android:visibility="gone" />
     <!-- <ListView -->

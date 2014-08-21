@@ -750,9 +750,22 @@ public class ItemInfo extends Activity {
 				listColour.get(mSpnColour.getSelectedItem()));
 		data.putExtra(PostAdActivity.PICTURELINK, mEdtPictureLink.getText()
 				.toString());
-		int weight = Integer.valueOf(mEdtWeight.getText().toString());
+
+		int weight;
+		try {
+			weight = Integer.valueOf(mEdtWeight.getText().toString());
+		} catch (NumberFormatException e) {
+			e.printStackTrace();
+			weight = 0;
+		}
 		data.putExtra(PostAdActivity.WEIGHT, weight);
-		int warranty = Integer.valueOf(mEdtWarranty.getText().toString());
+		int warranty;
+		try {
+			warranty = Integer.valueOf(mEdtWarranty.getText().toString());
+		} catch (NumberFormatException e) {
+			e.printStackTrace();
+			warranty = 0;
+		}
 		data.putExtra(PostAdActivity.WARRANTY, warranty);
 		int condition = listCondition.get(mSpnCondition.getSelectedItem());
 		data.putExtra(PostAdActivity.CONDITION, condition);

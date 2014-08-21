@@ -44,7 +44,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0.33"
                     android:drawableLeft="@drawable/plus_icon"
-                    android:drawablePadding="4dp" />
+                    android:drawablePadding="4dp"
+                    android:textAppearance="?android:attr/textAppearanceLarge" />
 
                 <sg.togoparts.gallery.FontableTextView
                     android:id="@+id/tvNeutral"
@@ -52,7 +53,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0.33"
                     android:drawableLeft="@drawable/grey_icon"
-                    android:drawablePadding="4dp" />
+                    android:drawablePadding="4dp"
+                    android:textAppearance="?android:attr/textAppearanceLarge" />
 
                 <sg.togoparts.gallery.FontableTextView
                     android:id="@+id/tvNegative"
@@ -60,7 +62,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0.33"
                     android:drawableLeft="@drawable/minus_icon"
-                    android:drawablePadding="4dp" />
+                    android:drawablePadding="4dp"
+                    android:textAppearance="?android:attr/textAppearanceLarge" />
             </LinearLayout>
 
             <LinearLayout

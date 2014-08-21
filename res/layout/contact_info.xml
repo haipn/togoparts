@@ -58,8 +58,9 @@
             android:layout_height="wrap_content"
             android:text="@string/label_location" />
 
-        <AutoCompleteTextView
+        <sg.togoparts.gallery.FontableTextView
             android:id="@+id/edtLocation"
+            style="@android:style/Widget.EditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:singleLine="true" />

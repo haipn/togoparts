@@ -22,25 +22,31 @@
             android:id="@+id/tvUser"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="2dp"
             android:singleLine="true"
             android:text="TextView"
+            android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@android:color/black" />
 
         <sg.togoparts.gallery.FontableTextView
             android:id="@+id/tvComment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="2dp"
             android:singleLine="false"
             android:text="TextView"
+            android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@color/gray" />
 
         <sg.togoparts.gallery.FontableTextView
-            android:drawableLeft="@drawable/clock_2"
             android:id="@+id/tvDate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="2dp"
+            android:drawableLeft="@drawable/clock_2"
             android:singleLine="true"
             android:text="TextView"
+            android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@android:color/black" />
     </LinearLayout>
 

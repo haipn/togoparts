@@ -92,8 +92,9 @@ public class ProfileFragment extends Fragment_Main implements QuickActionSelect 
 			@Override
 			public void onClickFrontView(int position) {
 				super.onClickFrontView(position);
+				Log.d("haipn", "position:" + position);
 				Intent i = new Intent(getActivity(), DetailActivity.class);
-				i.putExtra(Const.ADS_ID, mResult.get(position).aid);
+				i.putExtra(Const.ADS_ID, mResult.get(position - 1).aid);
 				i.putExtra(Const.IS_MY_AD, true);
 				startActivity(i);
 			}
@@ -403,7 +404,6 @@ public class ProfileFragment extends Fragment_Main implements QuickActionSelect 
 				headerView.setProgressVisible(View.GONE);
 				Log.d("haipn", "profile response:" + response.Result.Return);
 				if (response.Result.Return.equals("success")) {
-					mResult.clear();
 					getProfile();
 					MessageDialog success = new MessageDialog(
 							response.Result.Message);

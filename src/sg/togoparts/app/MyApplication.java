@@ -73,8 +73,7 @@ public class MyApplication extends Application {
 
 		// initialize facebook configuration
 		Permission[] permissions = new Permission[] {
-				Permission.PUBLIC_PROFILE, Permission.USER_GROUPS,
-				Permission.USER_ABOUT_ME, Permission.USER_BIRTHDAY };
+				Permission.PUBLIC_PROFILE, Permission.USER_ABOUT_ME };
 		SimpleFacebookConfiguration configuration = new SimpleFacebookConfiguration.Builder()
 				.setAppId(APP_ID).setNamespace(APP_NAMESPACE)
 				.setPermissions(permissions)

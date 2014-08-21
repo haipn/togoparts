@@ -162,11 +162,13 @@ public class Const {
 				REFRESH_ID, "");
 		return session_id;
 	}
+
 	public static String getTokenFb(Context context) {
-		String token = getTogoPartsPreferences(context).getString(
-				ACCESS_TOKEN, "");
+		String token = getTogoPartsPreferences(context).getString(ACCESS_TOKEN,
+				"");
 		return token;
 	}
+
 	public static void writeSessionId(Context context, String session_id,
 			String refresh_id) {
 		Editor edit = getTogoPartsPreferences(context).edit();
@@ -199,10 +201,10 @@ public class Const {
 				+ listView.getPaddingBottom();
 		for (int i = 0; i < listAdapter.getCount(); i++) {
 			View listItem = listAdapter.getView(i, null, listView);
-//			if (listItem instanceof ViewGroup) {
-//				listItem.setLayoutParams(new LayoutParams(
-//						LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
-//			}
+			// if (listItem instanceof ViewGroup) {
+			// listItem.setLayoutParams(new LayoutParams(
+			// LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+			// }
 			listItem.measure(0, 0);
 			Log.d("haipn", "measuare height:" + listItem.getMeasuredHeight());
 			totalHeight += listItem.getMeasuredHeight();
@@ -214,27 +216,32 @@ public class Const {
 		listView.setLayoutParams(params);
 		listView.requestLayout();
 	}
+
 	public static void setListViewHeightBasedOnChildren1(ListView listView) {
-	    ListAdapter listAdapter = listView.getAdapter();
-	    if (listAdapter == null) {
-	        return;
-	    }
-	    int desiredWidth = MeasureSpec.makeMeasureSpec(listView.getWidth(), MeasureSpec.AT_MOST);
-	    int totalHeight = 0;
-	    View view = null;
-	    for (int i = 0; i < listAdapter.getCount(); i++) {
-	        view = listAdapter.getView(i, view, listView);
-	        if (i == 0) {
-	            view.setLayoutParams(new ViewGroup.LayoutParams(desiredWidth, LayoutParams.WRAP_CONTENT));
-	        }
-	        view.measure(desiredWidth, MeasureSpec.UNSPECIFIED);
-	        totalHeight += view.getMeasuredHeight();
-	    }
-	    ViewGroup.LayoutParams params = listView.getLayoutParams();
-	    params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
-	    listView.setLayoutParams(params);
-	    listView.requestLayout();
+		ListAdapter listAdapter = listView.getAdapter();
+		if (listAdapter == null) {
+			return;
+		}
+		int desiredWidth = MeasureSpec.makeMeasureSpec(listView.getWidth(),
+				MeasureSpec.AT_MOST);
+		int totalHeight = 0;
+		View view = null;
+		for (int i = 0; i < listAdapter.getCount(); i++) {
+			view = listAdapter.getView(i, view, listView);
+			if (i == 0) {
+				view.setLayoutParams(new ViewGroup.LayoutParams(desiredWidth,
+						LayoutParams.WRAP_CONTENT));
+			}
+			view.measure(desiredWidth, MeasureSpec.UNSPECIFIED);
+			totalHeight += view.getMeasuredHeight();
+		}
+		ViewGroup.LayoutParams params = listView.getLayoutParams();
+		params.height = totalHeight
+				+ (listView.getDividerHeight() * (listAdapter.getCount() - 1));
+		listView.setLayoutParams(params);
+		listView.requestLayout();
 	}
+
 	public static void setGridViewHeightBasedOnChildren(GridView listView,
 			int columns, int value) {
 		ListAdapter listAdapter = listView.getAdapter();
@@ -245,18 +252,35 @@ public class Const {
 
 		int totalHeight = listView.getPaddingTop()
 				+ listView.getPaddingBottom();
-		for (int i = 0; i < listAdapter.getCount(); i++) {
+		for (int i = 0; i < listAdapter.getCount(); i = i + columns) {
+			int height = 0;
 			View listItem = listAdapter.getView(i, null, listView);
 			if (listItem instanceof ViewGroup) {
 				listItem.setLayoutParams(new LayoutParams(
-						LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+						LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
 			}
+			View listItem2;
 			listItem.measure(0, 0);
-			totalHeight += listItem.getMeasuredHeight();
+			try {
+				listItem2 = listAdapter.getView(i + 1, null, listView);
+				if (listItem2 instanceof ViewGroup) {
+					listItem2.setLayoutParams(new LayoutParams(
+							LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+				}
+				listItem2.measure(0, 0);
+				height = listItem.getMeasuredHeight() > listItem2
+						.getMeasuredHeight() ? listItem.getMeasuredHeight()
+						: listItem2.getMeasuredHeight();
+			} catch (IndexOutOfBoundsException e) {
+				height = listItem.getMeasuredHeight();
+				e.printStackTrace();
+			}
+
+			totalHeight += height;
 		}
 
 		ViewGroup.LayoutParams params = listView.getLayoutParams();
-		params.height = totalHeight / columns + value;
+		params.height = totalHeight;
 		listView.setLayoutParams(params);
 	}
 }
