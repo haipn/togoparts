@@ -32,7 +32,6 @@ import sg.togoparts.login.MyDialogFragment.OnSelectAction;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
-import android.app.TabActivity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -1085,6 +1084,7 @@ public class PostAdActivity extends FragmentActivity implements
 							DetailActivity.class);
 					i.putExtra(Const.ADS_ID, res.Result.adid);
 					startActivity(i);
+					finish();
 				}
 			} else {
 				showError(res.Result.Message);

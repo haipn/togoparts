@@ -38,7 +38,7 @@
         android:layout_margin="10dp"
         android:id="@+id/hlvFeature"
         android:layout_width="match_parent"
-        android:layout_height="150dp" >
+        android:layout_height="160dp" >
     </sg.togoparts.gallery.HorizontalListView>
 
 </LinearLayout>

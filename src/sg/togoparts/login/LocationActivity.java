@@ -10,10 +10,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Address;
-import android.location.Criteria;
 import android.location.Geocoder;
 import android.location.Location;
-import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -31,7 +29,16 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-public class LocationActivity extends Activity {
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesClient;
+import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.location.LocationClient;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
+
+public class LocationActivity extends Activity implements LocationListener,
+		GooglePlayServicesClient.ConnectionCallbacks,
+		GooglePlayServicesClient.OnConnectionFailedListener {
 	public static double lowerLeftLatitude = 1.1663552;
 	public static double lowerLeftLongitude = 103.6065099;
 	public static double upperRightLatitude = 1.4707717;
@@ -51,13 +58,19 @@ public class LocationActivity extends Activity {
 	EditText mEdtLocation;
 	ListView mLvLocation;
 
+	// A request to connect to Location Services
+	private LocationRequest mLocationRequest;
+
+	// Stores the current instantiation of the location client in this object
+	private LocationClient mLocationClient;
+	boolean mUpdatesRequested = false;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.location_activity);
-		new GetAddressTask(LocationActivity.this).execute("");
 
 		createHeader();
 		mEdtLocation = (EditText) findViewById(R.id.edtLocation);
@@ -108,6 +121,73 @@ public class LocationActivity extends Activity {
 				finish();
 			}
 		});
+
+		// Create a new global location parameters object
+		mLocationRequest = LocationRequest.create();
+
+		/*
+		 * Set the update interval
+		 */
+		mLocationRequest
+				.setInterval(LocationUtils.UPDATE_INTERVAL_IN_MILLISECONDS);
+
+		// Use high accuracy
+		mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+
+		// Set the interval ceiling to one minute
+		mLocationRequest
+				.setFastestInterval(LocationUtils.FAST_INTERVAL_CEILING_IN_MILLISECONDS);
+
+		// Note that location updates are off until the user turns them on
+		mUpdatesRequested = true;
+
+		/*
+		 * Create a new location client, using the enclosing class to handle
+		 * callbacks.
+		 */
+		mLocationClient = new LocationClient(this, this, this);
+		
+	}
+	 public void startUpdates() {
+	        mUpdatesRequested = true;
+
+	        if (servicesConnected()) {
+	            startPeriodicUpdates();
+	        }
+	    }
+	/*
+	 * Called when the Activity is restarted, even before it becomes visible.
+	 */
+	@Override
+	public void onStart() {
+
+		super.onStart();
+
+		/*
+		 * Connect the client. Don't re-start any requests here; instead, wait
+		 * for onResume()
+		 */
+		mLocationClient.connect();
+		
+
+	}
+
+	/*
+	 * Called when the Activity is no longer visible at all. Stop updates and
+	 * disconnect.
+	 */
+	@Override
+	public void onStop() {
+
+		// If the client is connected
+		if (mLocationClient.isConnected()) {
+			stopPeriodicUpdates();
+		}
+
+		// After disconnect() is called, the client is considered "dead".
+		mLocationClient.disconnect();
+
+		super.onStop();
 	}
 
 	private void createHeader() {
@@ -167,6 +247,40 @@ public class LocationActivity extends Activity {
 	}
 
 	/**
+	 * Verify that Google Play services is available before making a request.
+	 * 
+	 * @return true if Google Play services is available, otherwise false
+	 */
+	private boolean servicesConnected() {
+
+		// Check that Google Play services is available
+		int resultCode = GooglePlayServicesUtil
+				.isGooglePlayServicesAvailable(this);
+
+		// If Google Play services is available
+		if (ConnectionResult.SUCCESS == resultCode) {
+			// In debug mode, log the status
+			Log.d(LocationUtils.APPTAG,
+					getString(R.string.play_services_available));
+
+			// Continue
+			return true;
+			// Google Play services was not available for some reason
+		} else {
+			// Display an error dialog
+			// Dialog dialog = GooglePlayServicesUtil.getErrorDialog(resultCode,
+			// this, 0);
+			// if (dialog != null) {
+			// ErrorDialogFragment errorFragment = new ErrorDialogFragment();
+			// errorFragment.setDialog(dialog);
+			// errorFragment.show(getSupportFragmentManager(),
+			// LocationUtils.APPTAG);
+			// }
+			return false;
+		}
+	}
+
+	/**
 	 * An AsyncTask that calls getFromLocation() in the background. The class
 	 * uses the following generic types: Location - A
 	 * {@link android.location.Location} object containing the current location,
@@ -220,15 +334,17 @@ public class LocationActivity extends Activity {
 				 * most 1 address.
 				 */
 				if (location.length() == 0) {
-					LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-					Criteria criteria = new Criteria();
-					String bestProvider = locationManager.getBestProvider(
-							criteria, false);
-					Location myLocation = locationManager
-							.getLastKnownLocation(bestProvider);
-					addresses = geocoder.getFromLocation(
-							myLocation.getLatitude(),
-							myLocation.getLongitude(), 10);
+					if (servicesConnected()) {
+
+						// Get the current location
+						Location currentLocation = mLocationClient
+								.getLastLocation();
+						if (currentLocation == null)
+							return null;
+						addresses = geocoder.getFromLocation(
+								currentLocation.getLatitude(),
+								currentLocation.getLongitude(), MAX_VALUE);
+					}
 				} else {
 
 					addresses = geocoder.getFromLocationName(location,
@@ -298,4 +414,56 @@ public class LocationActivity extends Activity {
 			}
 		}
 	}
+
+	@Override
+	public void onConnectionFailed(ConnectionResult result) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void onConnected(Bundle connectionHint) {
+		if (mUpdatesRequested) {
+			startPeriodicUpdates();
+			new GetAddressTask(this).execute("");
+		}
+	}
+
+	@Override
+	public void onDisconnected() {
+		// TODO Auto-generated method stub
+
+	}
+
+	/**
+	 * Report location updates to the UI.
+	 * 
+	 * @param location
+	 *            The updated location.
+	 */
+	@Override
+	public void onLocationChanged(Location location) {
+
+		// Report to the UI that the location was updated
+
+		// In the UI, set the latitude and longitude to the value received
+	}
+
+	/**
+	 * In response to a request to start updates, send a request to Location
+	 * Services
+	 */
+	private void startPeriodicUpdates() {
+
+		mLocationClient.requestLocationUpdates(mLocationRequest, this);
+	}
+
+	/**
+	 * In response to a request to stop updates, send a request to Location
+	 * Services
+	 */
+	private void stopPeriodicUpdates() {
+		mLocationClient.removeLocationUpdates(this);
+	}
+
 }

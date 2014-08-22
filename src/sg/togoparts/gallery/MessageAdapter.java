@@ -4,13 +4,11 @@ import java.util.ArrayList;
 
 import sg.togoparts.R;
 import sg.togoparts.json.AdsDetail.Message;
-import sg.togoparts.json.ListPromos.Promos;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;

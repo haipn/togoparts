@@ -3,7 +3,6 @@ package sg.togoparts.gallery;
 import java.util.ArrayList;
 
 import sg.togoparts.R;
-import sg.togoparts.json.BikeShop;
 import sg.togoparts.json.BikeShop.PinAd;
 import sg.togoparts.json.SearchResult.AdsResult;
 import android.app.Activity;

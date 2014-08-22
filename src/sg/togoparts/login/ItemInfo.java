@@ -634,7 +634,8 @@ public class ItemInfo extends Activity {
 			@Override
 			public void onResponse(BrandResult response) {
 				mProgress.setVisibility(View.INVISIBLE);
-				if (response.Result != null && response.Result.Brands != null) {
+				if (response != null && response.Result != null
+						&& response.Result.Brands != null) {
 					// adapterBrand.clear();
 					// mListBrand = response.Result.Brands;
 					// for (String item : mListBrand) {
@@ -658,7 +659,8 @@ public class ItemInfo extends Activity {
 			@Override
 			public void onResponse(ModelResult response) {
 				mProgress.setVisibility(View.INVISIBLE);
-				if (response.Result != null && response.Result.Models != null) {
+				if (response != null && response.Result != null
+						&& response.Result.Models != null) {
 					// adapterModel.clear();
 					// mListModel = response.Result.Models;
 					// for (String item : mListModel) {

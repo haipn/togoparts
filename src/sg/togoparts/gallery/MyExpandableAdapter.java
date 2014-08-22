@@ -3,15 +3,9 @@ package sg.togoparts.gallery;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.assist.ImageScaleType;
-import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
-
 import sg.togoparts.DetailActivity;
 import sg.togoparts.R;
 import sg.togoparts.app.Const;
-import sg.togoparts.json.Ads;
 import sg.togoparts.json.Category;
 import sg.togoparts.json.Feature;
 import sg.togoparts.json.Group;
@@ -24,12 +18,17 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.AdapterView.OnItemClickListener;
+
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.ImageScaleType;
+import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 
 public class MyExpandableAdapter extends BaseExpandableListAdapter {
 

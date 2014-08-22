@@ -1,31 +1,13 @@
 package sg.togoparts.login;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-
-import com.sromku.simple.fb.entities.Post;
-
 import sg.togoparts.R;
-import android.content.Context;
 import android.content.Intent;
-import android.location.Address;
-import android.location.Geocoder;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -113,6 +95,17 @@ public class ContactInfo extends FragmentActivity {
 			public void onClick(View v) {
 				Intent i = new Intent(ContactInfo.this, LocationActivity.class);
 				startActivityForResult(i, REQUEST_LOCATION);
+			}
+		});
+		
+		mEdtLocation.setOnFocusChangeListener(new OnFocusChangeListener() {
+			
+			@Override
+			public void onFocusChange(View v, boolean hasFocus) {
+				if (hasFocus) {
+					Intent i = new Intent(ContactInfo.this, LocationActivity.class);
+					startActivityForResult(i, REQUEST_LOCATION);
+				}
 			}
 		});
 		

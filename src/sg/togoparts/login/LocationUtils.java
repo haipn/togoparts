@@ -16,8 +16,6 @@
 
 package sg.togoparts.login;
 
-import android.content.Context;
-import android.location.Location;
 
 /**
  * Defines app-wide constants and utilities

@@ -7,7 +7,6 @@ import sg.togoparts.app.ErrorInternetDialog;
 import sg.togoparts.app.MyVolley;
 import sg.togoparts.app.SMSDialog;
 import sg.togoparts.app.SMSDialog.AlertPositiveListener;
-import sg.togoparts.gallery.AttributeAdapter;
 import sg.togoparts.gallery.HorizontalListView;
 import sg.togoparts.json.Ads;
 import sg.togoparts.json.AdsDetail;
@@ -45,7 +44,6 @@ import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
-import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -334,7 +332,6 @@ public class DetailActivity extends FragmentActivity implements
 		// TODO Auto-generated method stub
 		super.onActivityResult(requestCode, resultCode, data);
 		if (requestCode == REQUEST_EDIT_AD && resultCode == RESULT_OK) {
-
 			RequestQueue queue = MyVolley.getRequestQueue();
 			GsonRequest<AdsDetail> myReq = new GsonRequest<AdsDetail>(
 					Method.GET, String.format(Const.URL_ADS_DETAIL, mAdsId),
@@ -746,6 +743,9 @@ public class DetailActivity extends FragmentActivity implements
 	}
 
 	private void addAtribute(ArrayList<Attribute> attributes) {
+		View line = LayoutInflater.from(this).inflate(R.layout.separate,
+				null);
+		mTlAttribute.addView(line);
 		for (int i = 0; i < attributes.size(); i = i + 2) {
 			TableRow row = new TableRow(this);
 			View column1 = LayoutInflater.from(this).inflate(
@@ -771,6 +771,9 @@ public class DetailActivity extends FragmentActivity implements
 			}
 			mTlAttribute.addView(row);
 		}
+		View line2 = LayoutInflater.from(this).inflate(R.layout.separate,
+				null);
+		mTlAttribute.addView(line2);
 	}
 
 	private void createListMessage() {
@@ -857,6 +860,7 @@ public class DetailActivity extends FragmentActivity implements
 				Log.d("haipn", "sussecc");
 				mListMessage.clear();
 				mListRelateAds.clear();
+				mTlAttribute.removeAllViews();
 				fillData(response);
 			}
 		};

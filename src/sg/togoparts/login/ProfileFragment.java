@@ -115,20 +115,19 @@ public class ProfileFragment extends Fragment_Main implements QuickActionSelect 
 		// setRetainInstance(true);
 		Log.d("haipn", "search result oncreate");
 		createHeader();
-		if (Const.isLogin(getActivity())) {
-			enableLoadMore = false;
-			mQuery = Const.URL_GET_MY_ADS;
-			mResult = new ArrayList<AdsResult>();
-			mListValue = new ArrayList<Profile.Value>();
-		}
+		// if (Const.isLogin(getActivity())) {
+		enableLoadMore = false;
+		mQuery = Const.URL_GET_MY_ADS;
+		mResult = new ArrayList<AdsResult>();
+		mListValue = new ArrayList<Profile.Value>();
+		// }
 
 		super.onCreate(savedInstanceState);
 	}
-
 	@Override
-	public void onResume() {
+	public void onStart() {
 		getProfile();
-		super.onResume();
+		super.onStart();
 	}
 
 	private void getProfile() {
@@ -243,15 +242,14 @@ public class ProfileFragment extends Fragment_Main implements QuickActionSelect 
 		return new Response.Listener<SearchResult>() {
 			@Override
 			public void onResponse(SearchResult response) {
+				mResult.clear();
 				if (response.ads != null && !response.ads.isEmpty()) {
-					mResult.clear();
 					mResult.addAll(response.ads);
-					mAdapter.notifyDataSetChanged();
 					mTvNoShortlist.setVisibility(View.GONE);
-					mLvResult.setVisibility(View.VISIBLE);
 				} else {
 					mTvNoShortlist.setVisibility(View.VISIBLE);
 				}
+				mAdapter.notifyDataSetChanged();
 				// mLvResult.setAdapter(mAdapter);
 			}
 		};

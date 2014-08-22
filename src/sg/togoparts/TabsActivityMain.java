@@ -3,8 +3,8 @@ package sg.togoparts;
 import sg.togoparts.app.Const;
 import sg.togoparts.login.ChooseLogin;
 import sg.togoparts.login.FSActivity_PostAd;
-import sg.togoparts.login.PostAdActivity;
 import sg.togoparts.login.FSActivity_Profile;
+import sg.togoparts.login.PostAdActivity;
 import android.app.AlertDialog;
 import android.app.TabActivity;
 import android.content.DialogInterface;
@@ -132,7 +132,7 @@ public class TabsActivityMain extends TabActivity implements AdListener {
 						} else
 							startActivity(new Intent(TabsActivityMain.this,
 									ChooseLogin.class));
-						tabHost.setCurrentTabByTag("1");
+						tabHost.setCurrentTabByTag("2");
 					} else if (tabId.equals("4")) {
 						tracker.set(Fields.SCREEN_NAME, "Bikeshop Listing");
 					} else {

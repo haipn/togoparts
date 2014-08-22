@@ -2,11 +2,8 @@ package sg.togoparts.app;
 
 import java.io.File;
 
-import sg.togoparts.Splash;
-
 import android.app.Application;
 
-import com.facebook.SessionDefaultAudience;
 import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiscCache;
 import com.nostra13.universalimageloader.cache.disc.naming.HashCodeFileNameGenerator;
 import com.nostra13.universalimageloader.cache.memory.impl.LruMemoryCache;
@@ -73,7 +70,8 @@ public class MyApplication extends Application {
 
 		// initialize facebook configuration
 		Permission[] permissions = new Permission[] {
-				Permission.PUBLIC_PROFILE, Permission.USER_ABOUT_ME };
+				Permission.PUBLIC_PROFILE, Permission.EMAIL,
+				Permission.USER_FRIENDS, Permission.USER_BIRTHDAY };
 		SimpleFacebookConfiguration configuration = new SimpleFacebookConfiguration.Builder()
 				.setAppId(APP_ID).setNamespace(APP_NAMESPACE)
 				.setPermissions(permissions)
