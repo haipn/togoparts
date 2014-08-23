@@ -135,6 +135,7 @@
     <string name="title_sub_category">Sub Category</string>
     <string name="title_price">Price</string>
     <string name="brand">Brand</string>
+    <string name="year">Year</string>
     <string name="model">Model</string>
     <string name="ad_title">Ad title</string>
     <string name="ad_discipline">Ad Discipline</string>
@@ -195,9 +196,9 @@
     <string name="msg_purchase">Purchase Tcredits to post this as a %s ad</string>
     <string name="msg_input_title">Ad title is required.</string>
     <string name="msg_input_description">Ad description is required.</string>
-    <string name="msg_confirm_cancel">Are you sure want to cancel posting this Ad?\nAll details and photos will not be saved</string>
+    <string name="msg_confirm_cancel">Are you sure you want to cancel editing this Ad? All photos and changes will not be saved.</string>
     <string name="msg_no_ads">You have not posted any ads</string>
-
+	<string name="label_no_action">Ad already marked as %s</string>
     <string-array name="actions">
         <item>Capture image from camera</item>
         <item>Pick image from gallery</item>

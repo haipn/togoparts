@@ -447,6 +447,7 @@ public class PostAdActivity extends FragmentActivity implements
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setMessage(R.string.msg_confirm_cancel)
 				.setIcon(android.R.drawable.ic_dialog_info)
+				.setTitle("Confirm Cancellation")
 				.setNegativeButton(android.R.string.cancel,
 						new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int id) {
@@ -941,7 +942,10 @@ public class PostAdActivity extends FragmentActivity implements
 		builder.addTextBody(PostAdActivity.CLEARANCE, post.isClearance() ? "1"
 				: "0");
 		builder.addTextBody(PostAdActivity.COLOUR, post.getColour());
-		builder.addTextBody(PostAdActivity.CONDITION, post.getCondition() + "");
+		builder.addTextBody(
+				PostAdActivity.CONDITION,
+				post.getCondition() == 0 ? "" : String.valueOf(post
+						.getCondition()));
 		builder.addTextBody(PostAdActivity.CONTACTNO, post.getContactno());
 		builder.addTextBody(PostAdActivity.CONTACTPERSON,
 				post.getContactperson());
