@@ -350,7 +350,7 @@ public class LocationActivity extends Activity implements LocationListener,
 					addresses = geocoder.getFromLocationName(location,
 							MAX_VALUE, lowerLeftLatitude, lowerLeftLongitude,
 							upperRightLatitude, upperRightLongitude);
-//				}
+				}
 				// Catch network or other I/O problems.
 			} catch (IOException exception1) {
 
