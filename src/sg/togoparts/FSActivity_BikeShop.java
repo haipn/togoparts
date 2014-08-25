@@ -36,7 +36,6 @@ import com.android.volley.Request.Method;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.google.ads.AdView;
 import com.google.analytics.tracking.android.Fields;
 import com.google.analytics.tracking.android.GoogleAnalytics;
 import com.google.analytics.tracking.android.MapBuilder;
@@ -97,8 +96,8 @@ public class FSActivity_BikeShop extends FragmentActivity implements
 
 	@Override
 	public void onResume() {
-		AdView adview = (AdView) findViewById(R.id.adView);
-		adview.setVisibility(View.GONE);
+//		AdView adview = (AdView) findViewById(R.id.adView);
+//		adview.setVisibility(View.GONE);
 		// AdRequest re = new AdRequest();
 		// adview.loadAd(re);
 		super.onResume();

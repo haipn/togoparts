@@ -206,7 +206,7 @@ public class AdProfileAdapter extends BaseAdapter {
 				holder.btnTakeDown.setVisibility(View.VISIBLE);
 			} else if (ads.adstatus.equalsIgnoreCase("sold")) {
 				holder.btnMarkAsSold.setVisibility(View.GONE);
-				holder.btnRefresh.setVisibility(View.VISIBLE);
+				holder.btnRefresh.setVisibility(View.GONE);
 				holder.btnRepost.setVisibility(View.GONE);
 				holder.btnTakeDown.setVisibility(View.VISIBLE);
 			} else if (ads.adstatus.equalsIgnoreCase("expired")) {

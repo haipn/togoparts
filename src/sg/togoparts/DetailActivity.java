@@ -22,7 +22,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.Point;
 import android.graphics.drawable.AnimationDrawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -32,8 +31,8 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -125,10 +124,10 @@ public class DetailActivity extends FragmentActivity implements
 	private LinearLayout mLlAddress;
 	private LinearLayout mLlRelate;
 
-//	private GridView mGvAttribute;
+	// private GridView mGvAttribute;
 	private TableLayout mTlAttribute;
-//	private AttributeAdapter mAttributeAdapter;
-//	private ArrayList<Attribute> mListAttribute;
+	// private AttributeAdapter mAttributeAdapter;
+	// private ArrayList<Attribute> mListAttribute;
 
 	private String mAdsId;
 
@@ -181,7 +180,7 @@ public class DetailActivity extends FragmentActivity implements
 				.bitmapConfig(Bitmap.Config.RGB_565).considerExifParams(true)
 				.displayer(new FadeInBitmapDisplayer(300)).build();
 		mListRelateAds = new ArrayList<Ads>();
-//		mListAttribute = new ArrayList<AdsDetail.Attribute>();
+		// mListAttribute = new ArrayList<AdsDetail.Attribute>();
 		mListMessage = new ArrayList<AdsDetail.Message>();
 
 		RequestQueue queue = MyVolley.getRequestQueue();
@@ -241,9 +240,9 @@ public class DetailActivity extends FragmentActivity implements
 		mLlShop = (LinearLayout) findViewById(R.id.llShop);
 		mLlRelate = (LinearLayout) findViewById(R.id.llRelate);
 
-//		mGvAttribute = (GridView) findViewById(R.id.gvAttribute);
-//		mAttributeAdapter = new AttributeAdapter(this, mListAttribute);
-//		mGvAttribute.setAdapter(mAttributeAdapter);
+		// mGvAttribute = (GridView) findViewById(R.id.gvAttribute);
+		// mAttributeAdapter = new AttributeAdapter(this, mListAttribute);
+		// mGvAttribute.setAdapter(mAttributeAdapter);
 
 		mTlAttribute = (TableLayout) findViewById(R.id.tlAttribute);
 		// mLvMessage = (ListView) findViewById(R.id.lvMessage);
@@ -277,10 +276,8 @@ public class DetailActivity extends FragmentActivity implements
 				startActivity(i);
 			}
 		});
-		Display display = getWindowManager().getDefaultDisplay();
-		Point size = new Point();
-		display.getSize(size);
-		mWidthScreen = size.x;
+		DisplayMetrics metrics = getResources().getDisplayMetrics();
+		mWidthScreen = metrics.widthPixels;
 	}
 
 	private void createHeader() {
@@ -743,8 +740,7 @@ public class DetailActivity extends FragmentActivity implements
 	}
 
 	private void addAtribute(ArrayList<Attribute> attributes) {
-		View line = LayoutInflater.from(this).inflate(R.layout.separate,
-				null);
+		View line = LayoutInflater.from(this).inflate(R.layout.separate, null);
 		mTlAttribute.addView(line);
 		for (int i = 0; i < attributes.size(); i = i + 2) {
 			TableRow row = new TableRow(this);
@@ -771,8 +767,7 @@ public class DetailActivity extends FragmentActivity implements
 			}
 			mTlAttribute.addView(row);
 		}
-		View line2 = LayoutInflater.from(this).inflate(R.layout.separate,
-				null);
+		View line2 = LayoutInflater.from(this).inflate(R.layout.separate, null);
 		mTlAttribute.addView(line2);
 	}
 

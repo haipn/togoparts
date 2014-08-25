@@ -39,6 +39,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
@@ -71,6 +72,7 @@ import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 
 public class PostAdActivity extends FragmentActivity implements
 		View.OnClickListener, OnSelectAction {
+
 	public static final String SESSION_ID = "session_id";
 	public static final String AID = "aid";
 	public static final String ADTYPE = "adtype";
@@ -132,6 +134,8 @@ public class PostAdActivity extends FragmentActivity implements
 	protected static final String EDIT_AD = "edit ad";
 	protected static final String POSTING_PACK = "posting pack";
 	protected static final String MERCHANT_PACK = "merchant pack";
+	private static final String FILE_PATH = Environment.getExternalStorageDirectory() 
+			+ "/temp.jpg";
 
 	private TextView mTvCategory;
 	private TextView mTvItem;
@@ -721,7 +725,7 @@ public class PostAdActivity extends FragmentActivity implements
 			break;
 		case REQUEST_CAMERA:
 			if (resultCode == RESULT_OK) {
-				Uri imageUri = data.getData();
+				Uri imageUri = Uri.fromFile(new File(FILE_PATH));
 				launchInstaFiverr(imageUri);
 			}
 			break;
@@ -826,8 +830,27 @@ public class PostAdActivity extends FragmentActivity implements
 
 	@Override
 	public void onCaptureSelect() {
+		File file = new File(FILE_PATH);
+		if (!file.exists()) {
+			try {
+				file.createNewFile();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		} else {
+			file.delete();
+			try {
+				file.createNewFile();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		Intent cameraIntent = new Intent(
 				android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+		cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT,
+				Uri.fromFile(file));
 		startActivityForResult(cameraIntent, REQUEST_CAMERA);
 	}
 

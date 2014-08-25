@@ -34,6 +34,7 @@ import com.google.analytics.tracking.android.Tracker;
 
 @SuppressWarnings("deprecation")
 public class TabsActivityMain extends TabActivity implements AdListener {
+	public static final String TAB_NAME = "tab name";
 	private DfpAdView dfpAdView;
 	RelativeLayout rlAdMain;
 	boolean isAdShown = false;
