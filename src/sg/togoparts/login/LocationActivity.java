@@ -219,22 +219,22 @@ public class LocationActivity extends Activity {
 				 * latitude and longitude of the current location. Return at
 				 * most 1 address.
 				 */
-				if (location.length() == 0) {
-					LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-					Criteria criteria = new Criteria();
-					String bestProvider = locationManager.getBestProvider(
-							criteria, false);
-					Location myLocation = locationManager
-							.getLastKnownLocation(bestProvider);
-					addresses = geocoder.getFromLocation(
-							myLocation.getLatitude(),
-							myLocation.getLongitude(), 10);
-				} else {
+//				if (location.length() == 0) {
+//					LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+//					Criteria criteria = new Criteria();
+//					String bestProvider = locationManager.getBestProvider(
+//							criteria, false);
+//					Location myLocation = locationManager
+//							.getLastKnownLocation(bestProvider);
+//					addresses = geocoder.getFromLocation(
+//							myLocation.getLatitude(),
+//							myLocation.getLongitude(), 10);
+//				} else {
 
 					addresses = geocoder.getFromLocationName(location,
 							MAX_VALUE, lowerLeftLatitude, lowerLeftLongitude,
 							upperRightLatitude, upperRightLongitude);
-				}
+//				}
 				// Catch network or other I/O problems.
 			} catch (IOException exception1) {
 
