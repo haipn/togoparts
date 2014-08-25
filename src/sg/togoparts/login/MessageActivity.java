@@ -1,38 +1,30 @@
 package sg.togoparts.login;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-
-import com.android.volley.AuthFailureError;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.Request.Method;
-import com.android.volley.Response.Listener;
 
 import sg.togoparts.R;
 import sg.togoparts.app.Const;
 import sg.togoparts.app.MyVolley;
 import sg.togoparts.gallery.MessageAdapter;
-import sg.togoparts.gallery.SectionAdapter;
+import sg.togoparts.json.AdsDetail.Message;
 import sg.togoparts.json.AllComment;
 import sg.togoparts.json.GsonRequest;
-import sg.togoparts.json.SectionResult;
-import sg.togoparts.json.AdsDetail.Message;
-import sg.togoparts.json.SectionResult.Section;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.AdapterView.OnItemClickListener;
+
+import com.android.volley.Request.Method;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.Response.Listener;
+import com.android.volley.VolleyError;
 
 public class MessageActivity extends FragmentActivity {
 	private ImageButton mBtnBack;

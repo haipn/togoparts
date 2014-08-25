@@ -26,7 +26,7 @@ public class PostAd {
 		sub_cat = 0;
 		brand = "";
 		item = "";
-		item_year = "2014";
+		item_year = "";
 		title = "";
 		transtype = 0;
 		description = "";

@@ -8,6 +8,7 @@ import sg.togoparts.app.MyVolley;
 import sg.togoparts.json.GsonRequest;
 import sg.togoparts.json.ResultLogin;
 import sg.togoparts.login.ChooseLogin;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -32,7 +33,7 @@ public class MoreActivity extends Activity_Main {
 	TextView mTvShortlist;
 	TextView mTvLoginOrLogout;
 	protected SimpleFacebook mSimpleFacebook;
-
+	ProgressDialog mProgressDialog;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -96,13 +97,14 @@ public class MoreActivity extends Activity_Main {
 			mTvLoginOrLogout.setCompoundDrawablesWithIntrinsicBounds(
 					R.drawable.login_icon, 0, 0, 0);
 		}
-
+		mProgressDialog = new ProgressDialog(this);
 		mTvLoginOrLogout.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 				if (Const.isLogin(MoreActivity.this)) {
 					logout();
+					mProgressDialog.show();
 				} else {
 					Intent i = new Intent(MoreActivity.this, ChooseLogin.class);
 					i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -189,7 +191,7 @@ public class MoreActivity extends Activity_Main {
 				mTvLoginOrLogout.setText(R.string.label_login);
 				mTvLoginOrLogout.setCompoundDrawablesWithIntrinsicBounds(
 						R.drawable.login_icon, 0, 0, 0);
-
+				mProgressDialog.dismiss();
 			}
 		};
 	}

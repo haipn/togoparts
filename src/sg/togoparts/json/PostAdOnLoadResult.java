@@ -2,9 +2,9 @@ package sg.togoparts.json;
 
 import java.util.ArrayList;
 
-import com.google.gson.annotations.SerializedName;
-
 import sg.togoparts.login.Profile.Value;
+
+import com.google.gson.annotations.SerializedName;
 
 public class PostAdOnLoadResult {
 	public ResultValue Result;

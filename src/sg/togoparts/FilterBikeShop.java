@@ -5,11 +5,6 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import com.google.analytics.tracking.android.Fields;
-import com.google.analytics.tracking.android.GoogleAnalytics;
-import com.google.analytics.tracking.android.MapBuilder;
-import com.google.analytics.tracking.android.Tracker;
-
 import sg.togoparts.app.Const;
 import sg.togoparts.app.MyLocation;
 import android.content.Intent;
@@ -30,6 +25,11 @@ import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import com.google.analytics.tracking.android.Fields;
+import com.google.analytics.tracking.android.GoogleAnalytics;
+import com.google.analytics.tracking.android.MapBuilder;
+import com.google.analytics.tracking.android.Tracker;
 
 public class FilterBikeShop extends FragmentActivity {
 

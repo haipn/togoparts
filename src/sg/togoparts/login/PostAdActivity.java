@@ -32,7 +32,6 @@ import sg.togoparts.login.MyDialogFragment.OnSelectAction;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
-import android.app.TabActivity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -40,6 +39,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
@@ -72,6 +72,7 @@ import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 
 public class PostAdActivity extends FragmentActivity implements
 		View.OnClickListener, OnSelectAction {
+
 	public static final String SESSION_ID = "session_id";
 	public static final String AID = "aid";
 	public static final String ADTYPE = "adtype";
@@ -133,6 +134,8 @@ public class PostAdActivity extends FragmentActivity implements
 	protected static final String EDIT_AD = "edit ad";
 	protected static final String POSTING_PACK = "posting pack";
 	protected static final String MERCHANT_PACK = "merchant pack";
+	private static final String FILE_PATH = Environment.getExternalStorageDirectory() 
+			+ "/temp.jpg";
 
 	private TextView mTvCategory;
 	private TextView mTvItem;
@@ -448,6 +451,7 @@ public class PostAdActivity extends FragmentActivity implements
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setMessage(R.string.msg_confirm_cancel)
 				.setIcon(android.R.drawable.ic_dialog_info)
+				.setTitle("Confirm Cancellation")
 				.setNegativeButton(android.R.string.cancel,
 						new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int id) {
@@ -721,7 +725,7 @@ public class PostAdActivity extends FragmentActivity implements
 			break;
 		case REQUEST_CAMERA:
 			if (resultCode == RESULT_OK) {
-				Uri imageUri = data.getData();
+				Uri imageUri = Uri.fromFile(new File(FILE_PATH));
 				launchInstaFiverr(imageUri);
 			}
 			break;
@@ -826,8 +830,27 @@ public class PostAdActivity extends FragmentActivity implements
 
 	@Override
 	public void onCaptureSelect() {
+		File file = new File(FILE_PATH);
+		if (!file.exists()) {
+			try {
+				file.createNewFile();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		} else {
+			file.delete();
+			try {
+				file.createNewFile();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		Intent cameraIntent = new Intent(
 				android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+		cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT,
+				Uri.fromFile(file));
 		startActivityForResult(cameraIntent, REQUEST_CAMERA);
 	}
 
@@ -942,7 +965,10 @@ public class PostAdActivity extends FragmentActivity implements
 		builder.addTextBody(PostAdActivity.CLEARANCE, post.isClearance() ? "1"
 				: "0");
 		builder.addTextBody(PostAdActivity.COLOUR, post.getColour());
-		builder.addTextBody(PostAdActivity.CONDITION, post.getCondition() + "");
+		builder.addTextBody(
+				PostAdActivity.CONDITION,
+				post.getCondition() == 0 ? "" : String.valueOf(post
+						.getCondition()));
 		builder.addTextBody(PostAdActivity.CONTACTNO, post.getContactno());
 		builder.addTextBody(PostAdActivity.CONTACTPERSON,
 				post.getContactperson());
@@ -1085,6 +1111,7 @@ public class PostAdActivity extends FragmentActivity implements
 							DetailActivity.class);
 					i.putExtra(Const.ADS_ID, res.Result.adid);
 					startActivity(i);
+					finish();
 				}
 			} else {
 				showError(res.Result.Message);

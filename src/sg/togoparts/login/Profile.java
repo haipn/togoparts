@@ -2,8 +2,6 @@ package sg.togoparts.login;
 
 import java.util.ArrayList;
 
-import sg.togoparts.json.ResultLogin.ResultValue;
-
 public class Profile {
 	// {
 	// "Result": { "Return": "success",

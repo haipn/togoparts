@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:descendantFocusability="blocksDescendants"
     android:orientation="vertical"
     android:background="@drawable/textview_postad"
@@ -16,11 +16,11 @@
 
     <sg.togoparts.gallery.FontableTextView
         android:id="@+id/tvPrice"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:paddingBottom="4dp"
-        android:paddingTop="4dp"
+        android:paddingBottom="1dp"
+        android:paddingTop="2dp"
         android:singleLine="true"
         android:text="&apos;ajf;ladskjf;sakjf;saklfjsalkfj;aslkjf;sajfkl;asjf;lksajf;lksajf;kjs"
         android:textColor="@color/orange"
@@ -28,10 +28,11 @@
 
     <sg.togoparts.gallery.FontableTextView
         android:id="@+id/tvTitle"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:singleLine="false"
+        android:lines="2"
+        android:ellipsize="marquee"
         android:text="&apos;ajf;ladskjf;sakjf;saklfjsalkfj;aslkjf;sajfkl;asjf;lksajf;lksajf;kjs"
         android:textSize="15sp" />
 

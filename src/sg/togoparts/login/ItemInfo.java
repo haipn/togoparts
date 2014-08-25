@@ -481,7 +481,7 @@ public class ItemInfo extends Activity {
 		listYear = new LinkedHashMap<String, String>();
 		listCondition = new LinkedHashMap<String, Integer>();
 
-		listSize.put("All", "");
+		listSize.put("", "");
 		listSize.put("N-A", "na");
 		listSize.put("Free Size", "fs");
 		listSize.put("Extra Extra Small", "xxs");
@@ -494,7 +494,7 @@ public class ItemInfo extends Activity {
 		listSize.put("Extra Large", "xl");
 		listSize.put("Extra Extra Large", "xxl");
 
-		listColour.put("Choose Colour", "");
+		listColour.put("", "");
 		listColour.put("Beige", "Beige");
 		listColour.put("Black", "Black");
 		listColour.put("Blue", "Blue");
@@ -512,6 +512,7 @@ public class ItemInfo extends Activity {
 
 		Calendar cal = Calendar.getInstance();
 		int year = cal.get(Calendar.YEAR);
+		listYear.put("", "");
 		for (int i = 0; i <= 20; i++) {
 			listYear.put(String.valueOf(year - i), String.valueOf(year - i));
 		}
@@ -521,8 +522,8 @@ public class ItemInfo extends Activity {
 		listTranstype.put("Free", 3);
 		listTranstype.put("Exchange + Cash", 4);
 
-		listCondition.put("Choose condition", 0);
-		for (int i = 1; i <= 10; i++) {
+		listCondition.put("", 0);
+		for (int i = 10; i > 0; i--) {
 			listCondition.put(String.valueOf(i), i);
 		}
 	}
@@ -634,7 +635,8 @@ public class ItemInfo extends Activity {
 			@Override
 			public void onResponse(BrandResult response) {
 				mProgress.setVisibility(View.INVISIBLE);
-				if (response.Result != null && response.Result.Brands != null) {
+				if (response != null && response.Result != null
+						&& response.Result.Brands != null) {
 					// adapterBrand.clear();
 					// mListBrand = response.Result.Brands;
 					// for (String item : mListBrand) {
@@ -658,7 +660,8 @@ public class ItemInfo extends Activity {
 			@Override
 			public void onResponse(ModelResult response) {
 				mProgress.setVisibility(View.INVISIBLE);
-				if (response.Result != null && response.Result.Models != null) {
+				if (response != null && response.Result != null
+						&& response.Result.Models != null) {
 					// adapterModel.clear();
 					// mListModel = response.Result.Models;
 					// for (String item : mListModel) {

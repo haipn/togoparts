@@ -2,9 +2,6 @@ package sg.togoparts.json;
 
 import java.util.ArrayList;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 public class BikeShop {
 	public String sid;
 	public String shopname;

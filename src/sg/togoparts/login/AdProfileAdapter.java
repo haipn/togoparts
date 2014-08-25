@@ -7,7 +7,6 @@ import sg.togoparts.json.SearchResult.AdsResult;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -122,6 +121,8 @@ public class AdProfileAdapter extends BaseAdapter {
 					.findViewById(R.id.btnRefresh);
 			holder.btnRepost = (Button) convertView
 					.findViewById(R.id.btnRepost);
+			holder.tvNoAction = (TextView) convertView
+					.findViewById(R.id.tvNoAction);
 			convertView.setTag(holder);
 		} else {
 			holder = (ViewHolder) convertView.getTag();
@@ -205,7 +206,7 @@ public class AdProfileAdapter extends BaseAdapter {
 				holder.btnTakeDown.setVisibility(View.VISIBLE);
 			} else if (ads.adstatus.equalsIgnoreCase("sold")) {
 				holder.btnMarkAsSold.setVisibility(View.GONE);
-				holder.btnRefresh.setVisibility(View.VISIBLE);
+				holder.btnRefresh.setVisibility(View.GONE);
 				holder.btnRepost.setVisibility(View.GONE);
 				holder.btnTakeDown.setVisibility(View.VISIBLE);
 			} else if (ads.adstatus.equalsIgnoreCase("expired")) {
@@ -216,6 +217,7 @@ public class AdProfileAdapter extends BaseAdapter {
 			}
 			holder.btnMarkAsSold.setBackgroundResource(R.drawable.mark_as_sold);
 			holder.btnMarkAsSold.setTag("Sold");
+			holder.tvNoAction.setVisibility(View.GONE);
 		} else {
 			if (ads.adstatus.equalsIgnoreCase("available")) {
 				if (ads.adtype.equalsIgnoreCase("for sale")) {
@@ -231,6 +233,7 @@ public class AdProfileAdapter extends BaseAdapter {
 				holder.btnRefresh.setVisibility(View.VISIBLE);
 				holder.btnRepost.setVisibility(View.GONE);
 				holder.btnTakeDown.setVisibility(View.GONE);
+				holder.tvNoAction.setVisibility(View.GONE);
 			} else if (ads.adstatus.equalsIgnoreCase("looking")) {
 				holder.btnMarkAsSold
 						.setBackgroundResource(R.drawable.mark_as_found);
@@ -239,6 +242,7 @@ public class AdProfileAdapter extends BaseAdapter {
 				holder.btnRefresh.setVisibility(View.VISIBLE);
 				holder.btnRepost.setVisibility(View.GONE);
 				holder.btnTakeDown.setVisibility(View.GONE);
+				holder.tvNoAction.setVisibility(View.GONE);
 			} else if (ads.adstatus.equalsIgnoreCase("for exchange")) {
 				holder.btnMarkAsSold
 						.setBackgroundResource(R.drawable.mark_as_exchange);
@@ -247,11 +251,14 @@ public class AdProfileAdapter extends BaseAdapter {
 				holder.btnRefresh.setVisibility(View.VISIBLE);
 				holder.btnRepost.setVisibility(View.GONE);
 				holder.btnTakeDown.setVisibility(View.GONE);
+				holder.tvNoAction.setVisibility(View.GONE);
 			} else {
 				holder.btnMarkAsSold.setVisibility(View.GONE);
 				holder.btnRefresh.setVisibility(View.GONE);
 				holder.btnRepost.setVisibility(View.GONE);
 				holder.btnTakeDown.setVisibility(View.GONE);
+				holder.tvNoAction.setText(mContext.getString(R.string.label_no_action, ads.adstatus));
+				holder.tvNoAction.setVisibility(View.VISIBLE);
 			}
 		}
 		holder.btnMarkAsSold.setOnClickListener(new OnClickListener() {
@@ -306,5 +313,6 @@ public class AdProfileAdapter extends BaseAdapter {
 		public Button btnMarkAsSold;
 		public Button btnRefresh;
 		public Button btnRepost;
+		public TextView tvNoAction;
 	}
 }

@@ -1,13 +1,11 @@
 package sg.togoparts.login;
 
-import android.content.Intent;
+import sg.togoparts.Activity_Main;
+import sg.togoparts.R;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.KeyEvent;
-import sg.togoparts.Activity_Main;
-import sg.togoparts.R;
-import sg.togoparts.app.Const;
 
 public class FSActivity_Profile extends Activity_Main {
 	@Override
