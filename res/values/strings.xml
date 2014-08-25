@@ -199,6 +199,7 @@
     <string name="msg_confirm_cancel">Are you sure you want to cancel editing this Ad? All photos and changes will not be saved.</string>
     <string name="msg_no_ads">You have not posted any ads</string>
 	<string name="label_no_action">Ad already marked as %s</string>
+	<string name="msg_confirm_logout">Logout Togoparts Account?</string>
     <string-array name="actions">
         <item>Capture image from camera</item>
         <item>Pick image from gallery</item>

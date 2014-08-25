@@ -8,7 +8,10 @@ import sg.togoparts.app.MyVolley;
 import sg.togoparts.json.GsonRequest;
 import sg.togoparts.json.ResultLogin;
 import sg.togoparts.login.ChooseLogin;
+import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -34,6 +37,7 @@ public class MoreActivity extends Activity_Main {
 	TextView mTvLoginOrLogout;
 	protected SimpleFacebook mSimpleFacebook;
 	ProgressDialog mProgressDialog;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -103,8 +107,33 @@ public class MoreActivity extends Activity_Main {
 			@Override
 			public void onClick(View v) {
 				if (Const.isLogin(MoreActivity.this)) {
-					logout();
-					mProgressDialog.show();
+					AlertDialog.Builder builder = new Builder(MoreActivity.this);
+					builder.setMessage(R.string.msg_confirm_logout)
+							.setPositiveButton(android.R.string.yes,
+									new DialogInterface.OnClickListener() {
+
+										@Override
+										public void onClick(
+												DialogInterface dialog,
+												int which) {
+											logout();
+											mProgressDialog.show();
+											dialog.dismiss();
+										}
+									})
+							.setNegativeButton(android.R.string.no,
+									new DialogInterface.OnClickListener() {
+
+										@Override
+										public void onClick(
+												DialogInterface dialog,
+												int which) {
+											// TODO Auto-generated method stub
+											dialog.dismiss();
+										}
+									});
+					builder.show();
+
 				} else {
 					Intent i = new Intent(MoreActivity.this, ChooseLogin.class);
 					i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
