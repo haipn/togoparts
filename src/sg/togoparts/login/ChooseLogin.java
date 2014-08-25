@@ -22,10 +22,14 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Base64;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.TextView.OnEditorActionListener;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request.Method;
@@ -105,6 +109,20 @@ public class ChooseLogin extends FragmentActivity {
 		setLogin();
 		mDialog = new ErrorDialog();
 		mProgressDialog = new ProgressDialog(this);
+		mEdtPass.setOnEditorActionListener(new OnEditorActionListener() {
+
+			@Override
+			public boolean onEditorAction(TextView v, int actionId,
+					KeyEvent event) {
+				if (actionId == EditorInfo.IME_ACTION_DONE) {
+					mProgressDialog.show();
+					login(mEdtUser.getText().toString(), mEdtPass.getText()
+							.toString());
+					return true;
+				}
+				return false;
+			}
+		});
 	}
 
 	@Override
