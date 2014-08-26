@@ -14,8 +14,7 @@
             android:id="@+id/imvAvatar"
             android:layout_width="@dimen/image_thumb"
             android:layout_height="@dimen/image_thumb"
-            android:background="@android:color/white"
-            android:src="@drawable/nophoto" />
+            android:background="@android:color/white" />
 
         <LinearLayout
             android:layout_width="0dp"
@@ -29,7 +28,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
-                android:text="@string/label_rating"
                 android:textColor="@android:color/black"
                 android:textSize="22sp" />
 

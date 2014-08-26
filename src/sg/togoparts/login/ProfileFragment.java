@@ -103,6 +103,7 @@ public class ProfileFragment extends Fragment_Main implements QuickActionSelect 
 	}
 
 	protected void loadMore() {
+		headerView.setProgressVisible(View.VISIBLE);
 		RequestQueue queue = MyVolley.getRequestQueue();
 		GsonRequest<SearchResult> myReq = new GsonRequest<SearchResult>(
 				Method.GET, mQuery, SearchResult.class,
@@ -139,7 +140,7 @@ public class ProfileFragment extends Fragment_Main implements QuickActionSelect 
 		RequestQueue queue = MyVolley.getRequestQueue();
 		GsonRequest<Profile> myReq = new GsonRequest<Profile>(Method.POST,
 				Const.URL_PROFILE, Profile.class,
-				createProfileSuccessListener(), createMyReqErrorListener()) {
+				createProfileSuccessListener(), createProfileErrorListener()) {
 			protected Map<String, String> getParams() throws AuthFailureError {
 				Map<String, String> params = new HashMap<String, String>();
 				params.put("session_id", Const.getSessionId(getActivity()));
@@ -164,6 +165,7 @@ public class ProfileFragment extends Fragment_Main implements QuickActionSelect 
 					mQuery = String.format(Const.URL_GET_MY_ADS, username);
 					mTvUsername.setText(username);
 					updateProfile(response.Result);
+					
 					loadMore();
 				} else {
 					showError(response.Result.Message);
@@ -242,28 +244,39 @@ public class ProfileFragment extends Fragment_Main implements QuickActionSelect 
 		return new Response.Listener<SearchResult>() {
 			@Override
 			public void onResponse(SearchResult response) {
-				mResult.clear();
+				headerView.setProgressVisible(View.GONE);
 				if (response.ads != null && !response.ads.isEmpty()) {
+					mResult.clear();
 					mResult.addAll(response.ads);
 					mTvNoShortlist.setVisibility(View.GONE);
+					mAdapter.notifyDataSetChanged();
 				} else {
 					mTvNoShortlist.setVisibility(View.VISIBLE);
 				}
-				mAdapter.notifyDataSetChanged();
 				// mLvResult.setAdapter(mAdapter);
 			}
 		};
 	}
 
+	private Response.ErrorListener createProfileErrorListener() {
+		return new Response.ErrorListener() {
+			@Override
+			public void onErrorResponse(VolleyError error) {
+				headerView.setProgressVisible(View.GONE);
+				Log.d("haipn", "Profile error:" + error.networkResponse);
+			}
+		};
+	}
 	private Response.ErrorListener createMyReqErrorListener() {
 		return new Response.ErrorListener() {
 			@Override
 			public void onErrorResponse(VolleyError error) {
-				Log.d("haipn", "error:" + error.networkResponse);
+				headerView.setProgressVisible(View.GONE);
+				Log.d("haipn", "Load more error or expired error:" + error.networkResponse);
+				mTvNoShortlist.setVisibility(View.VISIBLE);
 			}
 		};
 	}
-
 	private void createHeader() {
 		headerView = (HeaderView) getActivity();
 		headerView.setLeftButton(View.GONE);

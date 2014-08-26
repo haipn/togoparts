@@ -18,6 +18,7 @@ import org.apache.http.util.EntityUtils;
 
 import sg.togoparts.DetailActivity;
 import sg.togoparts.HeaderView;
+import sg.togoparts.MoreActivity;
 import sg.togoparts.R;
 import sg.togoparts.app.Const;
 import sg.togoparts.app.MyVolley;
@@ -36,6 +37,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.BitmapFactory.Options;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -48,6 +51,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ImageButton;
@@ -55,6 +59,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request.Method;
@@ -69,6 +74,8 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
+import com.sromku.simple.fb.SimpleFacebook;
+import com.sromku.simple.fb.listeners.OnLogoutListener;
 
 public class PostAdActivity extends FragmentActivity implements
 		View.OnClickListener, OnSelectAction {
@@ -134,8 +141,8 @@ public class PostAdActivity extends FragmentActivity implements
 	protected static final String EDIT_AD = "edit ad";
 	protected static final String POSTING_PACK = "posting pack";
 	protected static final String MERCHANT_PACK = "merchant pack";
-	private static final String FILE_PATH = Environment.getExternalStorageDirectory() 
-			+ "/temp.jpg";
+	private static final String FILE_PATH = Environment
+			.getExternalStorageDirectory() + "/temp.jpg";
 
 	private TextView mTvCategory;
 	private TextView mTvItem;
@@ -170,6 +177,8 @@ public class PostAdActivity extends FragmentActivity implements
 	private DisplayImageOptions options;
 	protected ImageLoader imageLoader = ImageLoader.getInstance();
 	private ResultValue mResultValue;
+	private ProgressDialog mProgressDialog;
+	private CheckBox mCbEmail;
 
 	public void launchInstaFiverr(Uri uri) {
 		//
@@ -261,9 +270,101 @@ public class PostAdActivity extends FragmentActivity implements
 	}
 
 	protected void showError(String message) {
-		// TODO Auto-generated method stub
-
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setMessage(message)
+				.setIcon(android.R.drawable.ic_dialog_alert)
+				.setTitle(R.string.error)
+				.setPositiveButton(android.R.string.ok,
+						new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int id) {
+								finish();
+								dialog.dismiss();
+							}
+						});
+		builder.show();
 	}
+
+	protected void showBanned(String message) {
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setMessage(message)
+				.setIcon(android.R.drawable.ic_dialog_alert)
+				.setTitle(R.string.error)
+				.setPositiveButton(android.R.string.ok,
+						new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int id) {
+								logout();
+								dialog.dismiss();
+							}
+						});
+		builder.show();
+	}
+
+	protected void logout() {
+		mProgressDialog = new ProgressDialog(this);
+		mProgressDialog.show();
+		SimpleFacebook mSimpleFacebook = SimpleFacebook.getInstance(this);
+		RequestQueue queue = MyVolley.getRequestQueue();
+
+		GsonRequest<ResultLogin> myReq = new GsonRequest<ResultLogin>(
+				Method.POST, Const.URL_LOGOUT, ResultLogin.class,
+				createMyReqSuccessListener(), createMyReqErrorListener()) {
+
+			protected Map<String, String> getParams() throws AuthFailureError {
+				Map<String, String> params = new HashMap<String, String>();
+				String key = Const.getRefreshId(PostAdActivity.this)
+						+ ChooseLogin.CLIENT_ID;
+				key = Const.getSHA256EncryptedString(key);
+				params.put("session_id",
+						Const.getSessionId(PostAdActivity.this));
+				params.put("refresh_id", key);
+				return params;
+			};
+		};
+		queue.add(myReq);
+
+		// logout listener
+
+		mSimpleFacebook.logout(onLogoutListener);
+	}
+
+	private Response.Listener<ResultLogin> createMyReqSuccessListener() {
+		return new Response.Listener<ResultLogin>() {
+			@Override
+			public void onResponse(ResultLogin response) {
+				Log.d("haipn", "response success:" + response.Result.Return);
+				Toast.makeText(PostAdActivity.this, "Logout successful",
+						Toast.LENGTH_LONG).show();
+				Const.deleteSessionId(PostAdActivity.this);
+				Const.writeAccessTokenFb(PostAdActivity.this, "");
+				mProgressDialog.dismiss();
+			}
+		};
+	}
+
+	OnLogoutListener onLogoutListener = new OnLogoutListener() {
+		@Override
+		public void onLogout() {
+			Log.i("haipn", "Facebook You are logged out");
+		}
+
+		@Override
+		public void onThinking() {
+			// TODO Auto-generated method stub
+
+		}
+
+		@Override
+		public void onException(Throwable throwable) {
+			// TODO Auto-generated method stub
+
+		}
+
+		@Override
+		public void onFail(String reason) {
+			// TODO Auto-generated method stub
+
+		}
+	};
 
 	private Listener<PostAdOnLoadResult> createOnLoadSuccessListener() {
 		return new Response.Listener<PostAdOnLoadResult>() {
@@ -278,7 +379,9 @@ public class PostAdActivity extends FragmentActivity implements
 					mResultValue = response.Result;
 					onLoadProcess(response.Result);
 				} else if (response.Result.Return.equals("error")) {
-
+					showError(response.Result.Message);
+				} else if (response.Result.Return.equals("banned")) {
+					showBanned(response.Result.Message);
 				}
 			}
 		};
@@ -298,14 +401,21 @@ public class PostAdActivity extends FragmentActivity implements
 			mTypePostAd = QUOTA;
 			// adapter = new InfoAdapter(this, result.quota);
 		}
-
+		if (result.Shopid > 0) {
+			mTvContact.setVisibility(View.GONE);
+		} else {
+			mTvContact.setVisibility(View.VISIBLE);
+		}
 		validationTypePost(result);
 		// mGvInfo.setAdapter(adapter);
 
 		// Const.setGridViewHeightBasedOnChildren(mGvInfo, 3, 0);
 
 		if (isEdit) {
+			findViewById(R.id.llCheckEmail).setVisibility(View.GONE);
 			fillAdData(result.ad_details);
+		} else {
+			findViewById(R.id.llCheckEmail).setVisibility(View.VISIBLE);
 		}
 	}
 
@@ -399,12 +509,15 @@ public class PostAdActivity extends FragmentActivity implements
 
 	private void validationTypePost(ResultValue ret) {
 		if (mTypePostAd == MERCHANT || mTypePostAd == POSTINGPACK) {
-			mRdoFreeAd.setEnabled(false);
-			mRdoPriorityAd.setEnabled(false);
-			mRdoNewItemAd.setEnabled(true);
+			mRdoFreeAd.setVisibility(View.GONE);
+			mRdoPriorityAd.setVisibility(View.GONE);
+			mRdoNewItemAd.setVisibility(View.VISIBLE);
 			mRdoNewItemAd.setChecked(true);
 			mTvNote.setText(R.string.note_newitem_ad);
 		} else {
+			mRdoFreeAd.setVisibility(View.VISIBLE);
+			mRdoPriorityAd.setVisibility(View.VISIBLE);
+			mRdoNewItemAd.setVisibility(View.VISIBLE);
 			// if (ret.TCreds >= ret.min_newitem_cost) {
 			// mRdoNewItemAd.setEnabled(true);
 			// } else
@@ -493,6 +606,7 @@ public class PostAdActivity extends FragmentActivity implements
 		// mGvInfo = (GridView) findViewById(R.id.gvInfo);
 		// mTvInfo = (TextView) findViewById(R.id.tvInfo);
 		mBtnSubmit = (Button) findViewById(R.id.btnSubmit);
+		mCbEmail = (CheckBox) findViewById(R.id.cbEmail);
 	}
 
 	private void setListener() {
@@ -726,13 +840,25 @@ public class PostAdActivity extends FragmentActivity implements
 		case REQUEST_CAMERA:
 			if (resultCode == RESULT_OK) {
 				Uri imageUri = Uri.fromFile(new File(FILE_PATH));
+				Options op = new Options();
+				op.inJustDecodeBounds = true;
+				Bitmap bm = BitmapFactory.decodeFile(FILE_PATH, op);
+				Log.d("haipn", "bitmap camera widgh x height:" + op.outWidth
+						+ " x " + op.outHeight);
 				launchInstaFiverr(imageUri);
 			}
 			break;
 		case REQUEST_GALLERY:
 			if (resultCode == RESULT_OK) {
-				Uri imageUri = data.getData();
-				launchInstaFiverr(imageUri);
+				Uri mImageUri = data.getData();
+				Options op = new Options();
+				op.inJustDecodeBounds = true;
+				Bitmap bm = BitmapFactory.decodeFile(
+						getRealPathFromURI(mImageUri), op);
+				Log.d("haipn", "bitmap galeery widgh x height:" + op.outWidth
+						+ " x " + op.outHeight);
+				launchInstaFiverr(mImageUri);
+
 			}
 			break;
 		case REQUEST_AVIARY:
@@ -740,6 +866,11 @@ public class PostAdActivity extends FragmentActivity implements
 				Uri mImageUri = data.getData();
 				String path = getRealPathFromURI(mImageUri);
 				Log.d("haipn", "path image:" + path);
+				Options op = new Options();
+				op.inJustDecodeBounds = true;
+				Bitmap bm = BitmapFactory.decodeFile(path, op);
+				Log.d("haipn", "bitmap aviary widgh x height:" + op.outWidth
+						+ " x " + op.outHeight);
 				switch (mIdSelect) {
 				case 1:
 					mImv1.setImageURI(mImageUri);
@@ -849,8 +980,7 @@ public class PostAdActivity extends FragmentActivity implements
 		}
 		Intent cameraIntent = new Intent(
 				android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-		cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT,
-				Uri.fromFile(file));
+		cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(file));
 		startActivityForResult(cameraIntent, REQUEST_CAMERA);
 	}
 
@@ -1003,6 +1133,8 @@ public class PostAdActivity extends FragmentActivity implements
 		builder.addTextBody(PostAdActivity.TRANSTYPE, post.getTranstype() + "");
 		builder.addTextBody(PostAdActivity.WARRANTY, post.getWarranty() + "");
 		builder.addTextBody(PostAdActivity.WEIGHT, post.getWeight() + "");
+		if (!isEdit)
+			builder.addTextBody("email_me", mCbEmail.isChecked() ? "1" : "0");
 		// builder.addTextBody(KEY_ROUTE_ID, mRouteId);
 		HttpEntity entity = builder.build();
 

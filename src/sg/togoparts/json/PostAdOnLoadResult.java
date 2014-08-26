@@ -17,6 +17,7 @@ public class PostAdOnLoadResult {
 		public ArrayList<Value> quota;
 		public int min_newitem_cost;
 		public int min_priority_cost;
+		public int Shopid;
 		public String Message;
 		public AdDetails ad_details;
 	}
