@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:ads="http://schemas.android.com/apk/lib/com.google.ads"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/splash_screen_bg"
     android:orientation="vertical" >
 
-    <com.google.ads.doubleclick.DfpAdView
+    <com.google.android.gms.ads.doubleclick.PublisherAdView
         android:id="@+id/adView"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         ads:adSize="BANNER"
         ads:adUnitId="/4689451/Android320x480"
-        ads:loadAdOnCreate="true"
         android:background="@android:color/white" />
 
     <LinearLayout

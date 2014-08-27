@@ -21,21 +21,20 @@ import android.widget.RelativeLayout;
 import android.widget.TabHost;
 import android.widget.TabHost.OnTabChangeListener;
 
-import com.google.ads.Ad;
-import com.google.ads.AdListener;
-import com.google.ads.AdRequest;
-import com.google.ads.AdRequest.ErrorCode;
-import com.google.ads.AdSize;
-import com.google.ads.doubleclick.DfpAdView;
 import com.google.analytics.tracking.android.Fields;
 import com.google.analytics.tracking.android.GoogleAnalytics;
 import com.google.analytics.tracking.android.MapBuilder;
 import com.google.analytics.tracking.android.Tracker;
+import com.google.android.gms.ads.doubleclick.PublisherAdRequest;
+import com.google.android.gms.ads.doubleclick.PublisherAdView;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
 
 @SuppressWarnings("deprecation")
-public class TabsActivityMain extends TabActivity implements AdListener {
+public class TabsActivityMain extends TabActivity {
 	public static final String TAB_NAME = "tab name";
-	private DfpAdView dfpAdView;
+	private PublisherAdView dfpAdView;
 	RelativeLayout rlAdMain;
 	boolean isAdShown = false;
 	TabHost tabHost;
@@ -165,10 +164,12 @@ public class TabsActivityMain extends TabActivity implements AdListener {
 
 		rlAdMain = (RelativeLayout) findViewById(R.id.rl_main_adview);
 		rlAdMain.setVisibility(View.GONE);
-		dfpAdView = new DfpAdView(this, new AdSize(320, 480),
-				"/4689451/Android320x480");
 
-		AdRequest adRequest = new AdRequest();
+		dfpAdView = new PublisherAdView(this);
+		dfpAdView.setAdSizes(new AdSize(320, 480));
+		dfpAdView.setAdUnitId("/4689451/Android320x480");
+
+		PublisherAdRequest.Builder adRequest = new PublisherAdRequest.Builder();
 
 		LinearLayout llAdContainer = (LinearLayout) findViewById(R.id.ll_ad_container);
 		llAdContainer.addView(dfpAdView);
@@ -181,8 +182,29 @@ public class TabsActivityMain extends TabActivity implements AdListener {
 			}
 		});
 
-		dfpAdView.loadAd(adRequest);
-		dfpAdView.setAdListener(this);
+		dfpAdView.loadAd(adRequest.build());
+		dfpAdView.setAdListener(new AdListener() {
+			@Override
+			public void onAdFailedToLoad(int errorCode) {
+				// TODO Auto-generated method stub
+				super.onAdFailedToLoad(errorCode);
+				hideAd();
+			}
+
+			@Override
+			public void onAdLeftApplication() {
+				// TODO Auto-generated method stub
+				super.onAdLeftApplication();
+				hideAd();
+			}
+
+			@Override
+			public void onAdLoaded() {
+				showAd();
+				super.onAdLoaded();
+			}
+
+		});
 		if (getIntent().getStringExtra(Const.TAG_NAME) == null)
 			tabHost.setCurrentTabByTag("1");
 		else {
@@ -200,12 +222,6 @@ public class TabsActivityMain extends TabActivity implements AdListener {
 	private int getScreenHeightInDp() {
 		DisplayMetrics dm = this.getResources().getDisplayMetrics();
 		return (int) (dm.heightPixels / dm.density);
-	}
-
-	@Override
-	public void onReceiveAd(Ad ad) {
-		Log.e("Ad DFP", "onReceiveAd");
-		showAd();
 	}
 
 	@Override
@@ -241,7 +257,7 @@ public class TabsActivityMain extends TabActivity implements AdListener {
 
 	private void hideAd() {
 		rlAdMain.setVisibility(View.GONE);
-		dfpAdView.stopLoading();
+		dfpAdView.destroy();
 		isAdShown = false;
 	}
 
@@ -260,29 +276,4 @@ public class TabsActivityMain extends TabActivity implements AdListener {
 						}).setNegativeButton("No", null).show();
 	}
 
-	@Override
-	public void onDismissScreen(Ad arg0) {
-		// TODO Auto-generated method stub
-		Log.e("Ad DFP", "onDismissScreen");
-	}
-
-	@Override
-	public void onFailedToReceiveAd(Ad arg0, ErrorCode arg1) {
-		// TODO Auto-generated method stub
-		Log.e("Ad DFP", "onFailedToReceiveAd");
-		hideAd();
-	}
-
-	@Override
-	public void onLeaveApplication(Ad arg0) {
-		// TODO Auto-generated method stub
-		Log.e("Ad DFP", "onLeaveApplication");
-		hideAd();
-	}
-
-	@Override
-	public void onPresentScreen(Ad arg0) {
-		// TODO Auto-generated method stub
-		Log.e("Ad DFP", "onPresentScreen");
-	}
 }

@@ -40,6 +40,8 @@ import com.google.analytics.tracking.android.Fields;
 import com.google.analytics.tracking.android.GoogleAnalytics;
 import com.google.analytics.tracking.android.MapBuilder;
 import com.google.analytics.tracking.android.Tracker;
+import com.google.android.gms.ads.doubleclick.PublisherAdRequest;
+import com.google.android.gms.ads.doubleclick.PublisherAdView;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
@@ -96,10 +98,9 @@ public class FSActivity_BikeShop extends FragmentActivity implements
 
 	@Override
 	public void onResume() {
-//		AdView adview = (AdView) findViewById(R.id.adView);
-//		adview.setVisibility(View.GONE);
-		// AdRequest re = new AdRequest();
-		// adview.loadAd(re);
+		PublisherAdView adview = (PublisherAdView) findViewById(R.id.adView);
+		PublisherAdRequest.Builder re = new PublisherAdRequest.Builder();
+		adview.loadAd(re.build());
 		super.onResume();
 	}
 

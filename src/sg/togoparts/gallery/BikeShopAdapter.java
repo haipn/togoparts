@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import sg.togoparts.R;
 import sg.togoparts.json.BikeShop;
 import sg.togoparts.json.BikeShop.PinAd;
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.util.Log;
@@ -18,10 +17,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.google.ads.AdRequest;
-import com.google.ads.AdSize;
-import com.google.ads.AdView;
-import com.google.ads.doubleclick.DfpAdView;
+import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.doubleclick.PublisherAdRequest;
+import com.google.android.gms.ads.doubleclick.PublisherAdView;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
@@ -134,11 +132,13 @@ public class BikeShopAdapter extends BaseAdapter {
 			} else {
 				// ad
 				PinAd ad = shop.pinad;
-				AdRequest request = new AdRequest();
+				PublisherAdRequest.Builder request = new PublisherAdRequest.Builder();
 				Log.d("haipn", "ad id:" + ad.unit_id);
 				AdSize size = new AdSize(ad.unit_width, ad.unit_height);
-				convertView = new DfpAdView((Activity) mContext, size, ad.unit_id);
-				((AdView) convertView).loadAd(request);
+				convertView = new PublisherAdView( mContext);
+				((PublisherAdView)convertView).setAdSizes(size);
+				((PublisherAdView)convertView).setAdUnitId(ad.unit_id);
+				((PublisherAdView) convertView).loadAd(request.build());
 			}
 			convertView.setTag(holder);
 		} else {
@@ -341,7 +341,7 @@ public class BikeShopAdapter extends BaseAdapter {
 		public TextView promos;
 		public ImageView photo;
 		public ImageView logo;
-		public DfpAdView dfpView;
+		public PublisherAdView dfpView;
 	}
 
 }

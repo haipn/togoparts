@@ -57,12 +57,14 @@ import com.android.volley.Request.Method;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.google.ads.AdRequest;
-import com.google.ads.AdView;
 import com.google.analytics.tracking.android.Fields;
 import com.google.analytics.tracking.android.GoogleAnalytics;
 import com.google.analytics.tracking.android.MapBuilder;
 import com.google.analytics.tracking.android.Tracker;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.doubleclick.PublisherAdRequest;
+import com.google.android.gms.ads.doubleclick.PublisherAdView;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
@@ -349,9 +351,9 @@ public class DetailActivity extends FragmentActivity implements
 
 	@Override
 	protected void onResume() {
-		AdView adview = (AdView) findViewById(R.id.adView);
-		AdRequest re = new AdRequest();
-		adview.loadAd(re);
+		PublisherAdView adview = (PublisherAdView) findViewById(R.id.adView);
+		PublisherAdRequest.Builder re = new PublisherAdRequest.Builder();
+		adview.loadAd(re.build());
 		super.onResume();
 	}
 

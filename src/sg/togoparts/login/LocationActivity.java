@@ -411,6 +411,9 @@ public class LocationActivity extends Activity implements LocationListener,
 				adapterLocation.setNotifyOnChange(true);
 				mLvLocation.setAdapter(adapterLocation);
 				// mEdtLocation.showDropDown();
+			} else {
+				mListAddress.clear();
+				adapterLocation.notifyDataSetChanged();
 			}
 		}
 	}

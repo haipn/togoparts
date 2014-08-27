@@ -15,12 +15,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.google.ads.AdRequest;
-import com.google.ads.AdView;
 import com.google.analytics.tracking.android.Fields;
 import com.google.analytics.tracking.android.GoogleAnalytics;
 import com.google.analytics.tracking.android.MapBuilder;
 import com.google.analytics.tracking.android.Tracker;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.doubleclick.PublisherAdRequest;
+import com.google.android.gms.ads.doubleclick.PublisherAdView;
 
 public class SearchFragment extends Fragment_Main {
 	private static final String SCREEN_LABEL = "Marketplace Search Form";
@@ -85,9 +87,9 @@ public class SearchFragment extends Fragment_Main {
 	public void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
-		AdView adview = (AdView) getActivity().findViewById(R.id.adView);
-		AdRequest re = new AdRequest();
-		adview.loadAd(re);
+		PublisherAdView adview = (PublisherAdView) getActivity().findViewById(R.id.adView);
+		PublisherAdRequest.Builder re = new PublisherAdRequest.Builder();
+		adview.loadAd(re.build());
 	}
 
 	@Override

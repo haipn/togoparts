@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:ads="http://schemas.android.com/apk/lib/com.google.ads"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
@@ -215,7 +215,6 @@
                     android:layout_height="wrap_content" />
 
                 <sg.togoparts.gallery.FontableTextView
-                    android:id="@+id/textView7"
                     style="@style/TextAppearance.Search.Black"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -227,7 +226,6 @@
                     android:layout_height="wrap_content" />
 
                 <sg.togoparts.gallery.FontableTextView
-                    android:id="@+id/textView2"
                     style="@style/TextAppearance.Search.Black"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -273,13 +271,12 @@
         </LinearLayout>
     </ScrollView>
 
-    <com.google.ads.doubleclick.DfpAdView
+    <com.google.android.gms.ads.doubleclick.PublisherAdView
         android:id="@+id/adView"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         ads:adSize="SMART_BANNER"
-        ads:adUnitId="/4689451/Android320x50"
-        ads:loadAdOnCreate="true"
+        ads:adUnitId="@string/admod_id"
         android:background="@android:color/white" />
 
 </LinearLayout>

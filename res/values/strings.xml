@@ -201,7 +201,9 @@
     <string name="label_no_action">Ad already marked as %s</string>
     <string name="msg_confirm_logout">Logout Togoparts Account?</string>
     <string name="label_check_email">Email me when this ad is posted successfully</string>
-
+	<string name="admod_id_test">/4689451/Android320x50test</string>
+	<string name="admod_id">/4689451/Android320x50</string>
+	<string name="title_edit_ad">Edit Ad</string>
     <string-array name="actions">
         <item>Capture image from camera</item>
         <item>Pick image from gallery</item>

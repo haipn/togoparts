@@ -210,6 +210,7 @@ public class PostAdActivity extends FragmentActivity implements
 				.cacheInMemory(true).imageScaleType(ImageScaleType.EXACTLY)
 				.bitmapConfig(Bitmap.Config.RGB_565).considerExifParams(true)
 				.displayer(new FadeInBitmapDisplayer(300)).build();
+		
 	}
 
 	private void onLoad() {
@@ -263,13 +264,13 @@ public class PostAdActivity extends FragmentActivity implements
 					mProgress.setVisibility(View.GONE);
 					onLoad();
 				} else {
-					showError(response.Result.Message);
+					showError(response.Result.Message, false);
 				}
 			}
 		};
 	}
 
-	protected void showError(String message) {
+	protected void showError(String message, final boolean stay) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setMessage(message)
 				.setIcon(android.R.drawable.ic_dialog_alert)
@@ -277,7 +278,8 @@ public class PostAdActivity extends FragmentActivity implements
 				.setPositiveButton(android.R.string.ok,
 						new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int id) {
-								finish();
+								if (!stay)
+									finish();
 								dialog.dismiss();
 							}
 						});
@@ -337,6 +339,10 @@ public class PostAdActivity extends FragmentActivity implements
 				Const.deleteSessionId(PostAdActivity.this);
 				Const.writeAccessTokenFb(PostAdActivity.this, "");
 				mProgressDialog.dismiss();
+				Intent i = new Intent(PostAdActivity.this, ChooseLogin.class);
+				i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				startActivity(i);
+				finish();
 			}
 		};
 	}
@@ -379,7 +385,7 @@ public class PostAdActivity extends FragmentActivity implements
 					mResultValue = response.Result;
 					onLoadProcess(response.Result);
 				} else if (response.Result.Return.equals("error")) {
-					showError(response.Result.Message);
+					showError(response.Result.Message, false);
 				} else if (response.Result.Return.equals("banned")) {
 					showBanned(response.Result.Message);
 				}
@@ -417,15 +423,27 @@ public class PostAdActivity extends FragmentActivity implements
 		} else {
 			findViewById(R.id.llCheckEmail).setVisibility(View.VISIBLE);
 		}
+		
+		mPostAd.setSession_id(Const.getSessionId(this));
 	}
 
 	private void fillAdData(AdDetails ad) {
 		if (ad.adtype == 0) {
 			mRdoFreeAd.setChecked(true);
-		} else if (ad.adtype == 1)
+			mRdoFreeAd.setVisibility(View.VISIBLE);
+			mRdoNewItemAd.setVisibility(View.GONE);
+			mRdoPriorityAd.setVisibility(View.GONE);
+		} else if (ad.adtype == 1) {
 			mRdoPriorityAd.setChecked(true);
-		else
+			mRdoFreeAd.setVisibility(View.GONE);
+			mRdoNewItemAd.setVisibility(View.GONE);
+			mRdoPriorityAd.setVisibility(View.VISIBLE);
+		} else {
 			mRdoNewItemAd.setChecked(true);
+			mRdoFreeAd.setVisibility(View.GONE);
+			mRdoNewItemAd.setVisibility(View.VISIBLE);
+			mRdoPriorityAd.setVisibility(View.GONE);
+		}
 		mRdoFreeAd.setEnabled(false);
 		mRdoNewItemAd.setEnabled(false);
 		mRdoPriorityAd.setEnabled(false);
@@ -550,7 +568,10 @@ public class PostAdActivity extends FragmentActivity implements
 		mProgress = (ProgressBar) findViewById(R.id.progress);
 		mTvTitleHeader = (TextView) findViewById(R.id.title);
 		mTvTitleHeader.setVisibility(View.VISIBLE);
-		mTvTitleHeader.setText(R.string.title_postad);
+		if (isEdit)
+			mTvTitleHeader.setText(R.string.title_edit_ad);
+		else
+			mTvTitleHeader.setText(R.string.title_postad);
 		mBtnBack.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -858,7 +879,35 @@ public class PostAdActivity extends FragmentActivity implements
 				Log.d("haipn", "bitmap galeery widgh x height:" + op.outWidth
 						+ " x " + op.outHeight);
 				launchInstaFiverr(mImageUri);
-
+				// String path = getRealPathFromURI(mImageUri);
+				// switch (mIdSelect) {
+				// case 1:
+				// mImv1.setImageURI(mImageUri);
+				// mPostAd.setAdpic1(path);
+				// break;
+				// case 2:
+				// mImv2.setImageURI(mImageUri);
+				// mPostAd.setAdpic2(path);
+				// break;
+				// case 3:
+				// mImv3.setImageURI(mImageUri);
+				// mPostAd.setAdpic3(path);
+				// break;
+				// case 4:
+				// mImv4.setImageURI(mImageUri);
+				// mPostAd.setAdpic4(path);
+				// break;
+				// case 5:
+				// mImv5.setImageURI(mImageUri);
+				// mPostAd.setAdpic5(path);
+				// break;
+				// case 6:
+				// mImv6.setImageURI(mImageUri);
+				// mPostAd.setAdpic6(path);
+				// break;
+				// default:
+				// break;
+				// }
 			}
 			break;
 		case REQUEST_AVIARY:
@@ -1152,7 +1201,6 @@ public class PostAdActivity extends FragmentActivity implements
 
 		@Override
 		public void onClick(View v) {
-			mPostAd.setSession_id(Const.getSessionId(PostAdActivity.this));
 			new FileUploadTask().execute(mPostAd);
 			// mProgress.setVisibility(View.VISIBLE);
 			// RequestQueue queue = MyVolley.getRequestQueue();
@@ -1246,7 +1294,7 @@ public class PostAdActivity extends FragmentActivity implements
 					finish();
 				}
 			} else {
-				showError(res.Result.Message);
+				showError(res.Result.Message, true);
 			}
 		}
 

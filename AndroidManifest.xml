@@ -303,7 +303,7 @@
         <!--
         Cds Content Provider, 
         NOTE that the "authorities" value MUST be formatted in this way:
-        android:authorities="{your.packagename}.AviaryCdsProvider"
+        android:authorities="{your.packagename}.AviaryCdsProvider"
         -->
         <provider
             android:name="com.aviary.android.feather.cds.AviaryCdsProvider"
@@ -320,6 +320,14 @@
                 <action android:name="android.intent.action.DOWNLOAD_COMPLETE" />
             </intent-filter>
         </receiver>
+
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+
+        <activity
+            android:name="com.google.android.gms.ads.AdActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize" />
     </application>
 
 </manifest>

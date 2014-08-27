@@ -1,10 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:ads="http://schemas.android.com/apk/lib/com.google.ads"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/lightest_gray"
     android:orientation="vertical" >
+
+    <com.google.android.gms.ads.doubleclick.PublisherAdView
+        android:id="@+id/adView"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        ads:adSize="BANNER"
+        ads:adUnitId="/4689451/Android-home-top320x50"
+        android:background="@android:color/white" />
 
     <ExpandableListView
         android:id="@+id/elvGroup"
@@ -12,14 +20,5 @@
         android:layout_height="0dp"
         android:layout_weight="1" >
     </ExpandableListView>
-
-    <com.google.ads.doubleclick.DfpAdView
-        android:id="@+id/adView"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        ads:adSize="SMART_BANNER"
-        ads:adUnitId="/4689451/Android320x50"
-        ads:loadAdOnCreate="true"
-        android:background="@android:color/white" />
 
 </LinearLayout>
