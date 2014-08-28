@@ -265,6 +265,16 @@
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/app_id" />
+
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+
+        <activity
+            android:name="com.google.android.gms.ads.AdActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize" />
+        
+        
         <meta-data
             android:name="com.aviary.android.feather.v1.API_KEY"
             android:value="04f94d8b75aa0b80" />
@@ -303,7 +313,7 @@
         <!--
         Cds Content Provider, 
         NOTE that the "authorities" value MUST be formatted in this way:
-        android:authorities="{your.packagename}.AviaryCdsProvider"
+        android:authorities="{your.packagename}.AviaryCdsProvider"
         -->
         <provider
             android:name="com.aviary.android.feather.cds.AviaryCdsProvider"
@@ -311,7 +321,29 @@
             android:exported="false"
             android:process=":aviarycds"
             android:syncable="true" />
+        <!-- Aviary Receiver must be defined here. gets the newly installed plugins -->
+        <receiver
+            android:name="com.aviary.android.feather.library.receivers.AviarySystemReceiver"
+            android:exported="true"
+            android:process=":aviary_sample_system_receiver" >
+            <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_ADDED" />
+                <action android:name="android.intent.action.PACKAGE_REMOVED" />
+                <action android:name="android.intent.action.PACKAGE_REPLACED" />
 
+                <data android:scheme="package" />
+            </intent-filter>
+        </receiver>
+
+        <!-- Required for the hi-res image processing -->
+        <!-- The "android:authorities" attribute must be unique, so please use your app's package path in this way: -->
+        <!-- android:authorities="{your.package.name}.HiResProvider" -->
+        <provider
+            android:name="com.aviary.android.feather.library.providers.FeatherContentProvider"
+            android:authorities="sg.togoparts.HiResProvider"
+            android:exported="false"
+            android:process=":standalone" >
+        </provider>
         <!-- CDS Download Receiver -->
         <receiver
             android:name="com.aviary.android.feather.cds.AviaryCdsReceiver"
@@ -320,14 +352,6 @@
                 <action android:name="android.intent.action.DOWNLOAD_COMPLETE" />
             </intent-filter>
         </receiver>
-
-        <meta-data
-            android:name="com.google.android.gms.version"
-            android:value="@integer/google_play_services_version" />
-
-        <activity
-            android:name="com.google.android.gms.ads.AdActivity"
-            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize" />
     </application>
 
 </manifest>

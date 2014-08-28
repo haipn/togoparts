@@ -75,7 +75,7 @@ public class MyApplication extends Application {
 		SimpleFacebookConfiguration configuration = new SimpleFacebookConfiguration.Builder()
 				.setAppId(APP_ID).setNamespace(APP_NAMESPACE)
 				.setPermissions(permissions)
-				.setAskForAllPermissionsAtOnce(false).build();
+				.setAskForAllPermissionsAtOnce(true).build();
 
 		SimpleFacebook.setConfiguration(configuration);
 	}

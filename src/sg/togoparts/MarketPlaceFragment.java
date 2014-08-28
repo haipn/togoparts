@@ -30,6 +30,7 @@ import com.google.analytics.tracking.android.Fields;
 import com.google.analytics.tracking.android.GoogleAnalytics;
 import com.google.analytics.tracking.android.MapBuilder;
 import com.google.analytics.tracking.android.Tracker;
+import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.doubleclick.PublisherAdRequest;
@@ -125,9 +126,23 @@ public class MarketPlaceFragment extends Fragment_Main implements ClickViewAll {
 		super.onResume();
 		Log.d("haipn", "On resume marketplace");
 		
-		PublisherAdView adview = (PublisherAdView) getActivity().findViewById(R.id.adView);
+		final PublisherAdView adview = (PublisherAdView) getActivity().findViewById(R.id.adView);
 		PublisherAdRequest.Builder re = new PublisherAdRequest.Builder();
 		adview.loadAd(re.build());
+		adview.setVisibility(View.GONE);
+		adview.setAdListener(new AdListener() {
+			@Override
+			public void onAdLoaded() {
+				Log.d("haipn", "onloaded admod in top");
+				adview.setVisibility(View.VISIBLE);
+				super.onAdLoaded();
+			}
+			@Override
+			public void onAdFailedToLoad(int errorCode) {
+				Log.d("haipn", "onad failed + " + errorCode);
+				super.onAdFailedToLoad(errorCode);
+			}
+		});
 	}
 
 	@Override

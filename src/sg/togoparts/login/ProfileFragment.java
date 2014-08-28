@@ -105,6 +105,8 @@ public class ProfileFragment extends Fragment_Main implements QuickActionSelect 
 				startActivity(i);
 			}
 		});
+		
+		
 		return rootView;
 	}
 
@@ -134,10 +136,15 @@ public class ProfileFragment extends Fragment_Main implements QuickActionSelect 
 
 	@Override
 	public void onStart() {
-		getProfile();
+		
 		super.onStart();
 	}
-
+	
+	@Override
+	public void onResume() {
+		getProfile();
+		super.onResume();
+	};
 	private void getProfile() {
 		Log.d("haipn",
 				"url:"
@@ -356,6 +363,7 @@ public class ProfileFragment extends Fragment_Main implements QuickActionSelect 
 					isExpired = false;
 					mTvNoShortlist.setVisibility(View.GONE);
 				} else {
+					
 					mTvNoShortlist.setVisibility(View.VISIBLE);
 				}
 				// mLvResult.setAdapter(mAdapter);

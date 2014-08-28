@@ -46,6 +46,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -68,7 +69,9 @@ import com.android.volley.Response;
 import com.android.volley.Response.Listener;
 import com.android.volley.VolleyError;
 import com.aviary.android.feather.FeatherActivity;
+import com.aviary.android.feather.common.utils.StringUtils;
 import com.aviary.android.feather.library.Constants;
+import com.aviary.android.feather.library.filters.FilterLoaderFactory;
 import com.google.gson.Gson;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -79,7 +82,7 @@ import com.sromku.simple.fb.listeners.OnLogoutListener;
 
 public class PostAdActivity extends FragmentActivity implements
 		View.OnClickListener, OnSelectAction {
-
+	private static final String FOLDER_NAME = "aviary";
 	public static final String SESSION_ID = "session_id";
 	public static final String AID = "aid";
 	public static final String ADTYPE = "adtype";
@@ -143,7 +146,7 @@ public class PostAdActivity extends FragmentActivity implements
 	protected static final String MERCHANT_PACK = "merchant pack";
 	private static final String FILE_PATH = Environment
 			.getExternalStorageDirectory() + "/temp.jpg";
-
+	private File mGalleryFolder;
 	private TextView mTvCategory;
 	private TextView mTvItem;
 	private TextView mTvPrice;
@@ -179,13 +182,211 @@ public class PostAdActivity extends FragmentActivity implements
 	private ResultValue mResultValue;
 	private ProgressDialog mProgressDialog;
 	private CheckBox mCbEmail;
+	private String mOutputFilePath;
 
-	public void launchInstaFiverr(Uri uri) {
-		//
+	/**
+	 * Check the external storage status
+	 * 
+	 * @return
+	 */
+	private boolean isExternalStorageAvilable() {
+		String state = Environment.getExternalStorageState();
+		if (Environment.MEDIA_MOUNTED.equals(state)) {
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Return a new image file. Name is based on the current time. Parent folder
+	 * will be the one created with createFolders
+	 * 
+	 * @return
+	 * @see #createFolders()
+	 */
+	private File getNextFileName() {
+		if (mGalleryFolder != null) {
+			if (mGalleryFolder.exists()) {
+				File file = new File(mGalleryFolder, "aviary_"
+						+ System.currentTimeMillis() + ".jpg");
+				return file;
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * Try to create the required folder on the sdcard where images will be
+	 * saved to.
+	 * 
+	 * @return
+	 */
+	private File createFolders() {
+
+		File baseDir;
+
+		if (android.os.Build.VERSION.SDK_INT < 8) {
+			baseDir = Environment.getExternalStorageDirectory();
+		} else {
+			baseDir = Environment
+					.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+		}
+
+		if (baseDir == null)
+			return Environment.getExternalStorageDirectory();
+
+		Log.d("haipn", "Pictures folder: " + baseDir.getAbsolutePath());
+		File aviaryFolder = new File(baseDir, FOLDER_NAME);
+
+		if (aviaryFolder.exists())
+			return aviaryFolder;
+		if (aviaryFolder.mkdirs())
+			return aviaryFolder;
+
+		return Environment.getExternalStorageDirectory();
+	}
+
+	private void startFeather(Uri uri) {
+
+		Log.d("haipn", "uri: " + uri);
+
+		// first check the external storage availability
+		if (!isExternalStorageAvilable()) {
+			AlertDialog dialog = new AlertDialog.Builder(this)
+					.setTitle(R.string.external_storage_na_title)
+					.setMessage(R.string.external_storage_na_message).create();
+			dialog.show();
+			return;
+		}
+
+		// create a temporary file where to store the resulting image
+		File file = getNextFileName();
+
+		if (null != file) {
+			mOutputFilePath = file.getAbsolutePath();
+		} else {
+			new AlertDialog.Builder(this)
+					.setTitle(android.R.string.dialog_alert_title)
+					.setMessage("Failed to create a new File").show();
+			return;
+		}
+
+		// Create the intent needed to start feather
 		Intent newIntent = new Intent(this, FeatherActivity.class);
+
+		// === INPUT IMAGE URI ( MANDATORY )===
+		// Set the source image uri
 		newIntent.setData(uri);
 		newIntent.putExtra(Constants.EXTRA_IN_API_KEY_SECRET,
 				"72ef1fcfae120bfa");
+		// === OUTPUT ====
+		// Optional
+		// Pass the uri of the destination image file.
+		// This will be the same uri you will receive in the onActivityResult
+		newIntent.putExtra(Constants.EXTRA_OUTPUT,
+				Uri.parse("file://" + mOutputFilePath));
+
+		// === OUTPUT FORMAT ===
+		// Optional
+		// Format of the destination image
+		newIntent.putExtra(Constants.EXTRA_OUTPUT_FORMAT,
+				Bitmap.CompressFormat.JPEG.name());
+
+		// === OUTPUT QUALITY ===
+		// Optional
+		// Output format quality (jpeg only)
+		newIntent.putExtra(Constants.EXTRA_OUTPUT_QUALITY, 100);
+
+		// === ENABLE/DISABLE IAP FOR EFFECTS ===
+		// Optional
+		// If you want to disable the external effects
+		// newIntent.putExtra( Constants.EXTRA_EFFECTS_ENABLE_EXTERNAL_PACKS,
+		// false );
+
+		// === ENABLE/DISABLE IAP FOR FRAMES===
+		// Optional
+		// If you want to disable the external borders.
+		// Note that this will remove the frames tool.
+		// newIntent.putExtra( Constants.EXTRA_FRAMES_ENABLE_EXTERNAL_PACKS,
+		// false );
+
+		// == ENABLE/DISABLE IAP FOR STICKERS ===
+		// Optional
+		// If you want to disable the external stickers. In this case you must
+		// have a folder called "stickers" in your assets folder
+		// containing a list of .png files, which will be your default stickers
+		// newIntent.putExtra( Constants.EXTRA_STICKERS_ENABLE_EXTERNAL_PACKS,
+		// false );
+
+		// enable fast rendering preview
+		// newIntent.putExtra( Constants.EXTRA_EFFECTS_ENABLE_FAST_PREVIEW, true
+		// );
+
+		// == TOOLS LIST ===
+		// Optional
+		// You can force feather to display only some tools ( see
+		// FilterLoaderFactory#Filters )
+		// you can omit this if you just want to display the default tools
+		newIntent.putExtra("tools-list", new String[] {
+				FilterLoaderFactory.Filters.ENHANCE.name(),
+				FilterLoaderFactory.Filters.CROP.name(),
+				FilterLoaderFactory.Filters.ADJUST.name(),
+				FilterLoaderFactory.Filters.BRIGHTNESS.name(),
+				FilterLoaderFactory.Filters.CONTRAST.name(),
+				FilterLoaderFactory.Filters.SHARPNESS.name() });
+		// === EXIT ALERT ===
+		// Optional
+		// Uou want to hide the exit alert dialog shown when back is pressed
+		// without saving image first
+		// newIntent.putExtra( Constants.EXTRA_HIDE_EXIT_UNSAVE_CONFIRMATION,
+		// true );
+
+		// === VIBRATION ===
+		// Optional
+		// Some aviary tools use the device vibration in order to give a better
+		// experience
+		// to the final user. But if you want to disable this feature, just pass
+		// any value with the key "tools-vibration-disabled" in the calling
+		// intent.
+		// This option has been added to version 2.1.5 of the Aviary SDK
+		// newIntent.putExtra( Constants.EXTRA_TOOLS_DISABLE_VIBRATION, true );
+
+		// === MAX SIZE ===
+		// Optional
+		// you can pass the maximum allowed image size (for the preview),
+		// otherwise feather will determine
+		// the max size based on the device informations.
+		// This will not affect the hi-res image size.
+		// Here we're passing the current display size as max image size because
+		// after
+		// the execution of Aviary we're saving the HI-RES image so we don't
+		// need a big
+		// image for the preview
+		final DisplayMetrics metrics = new DisplayMetrics();
+		getWindowManager().getDefaultDisplay().getMetrics(metrics);
+		int max_size = Math.max(metrics.widthPixels, metrics.heightPixels);
+		max_size = (int) ((float) max_size / 1.2f);
+		newIntent.putExtra(Constants.EXTRA_MAX_IMAGE_SIZE, max_size);
+
+		// === HI-RES ===
+		// You need to generate a new session id key to pass to Aviary feather
+		// this is the key used to operate with the hi-res image ( and must be
+		// unique for every new instance of Feather )
+		// The session-id key must be 64 char length.
+		// In your "onActivityResult" method, if the resultCode is RESULT_OK,
+		// the returned
+		// bundle data will also contain the "session" key/value you are passing
+		// here.
+		// mSessionId = StringUtils.getSha256( System.currentTimeMillis() +
+		// mApiKey );
+		// Log.d( LOG_TAG, "session: " + mSessionId + ", size: " +
+		// mSessionId.length() );
+		// newIntent.putExtra( Constants.EXTRA_OUTPUT_HIRES_SESSION_ID,
+		// mSessionId );
+
+		newIntent.putExtra(Constants.EXTRA_IN_SAVE_ON_NO_CHANGES, true);
+
+		// ..and start feather
 		startActivityForResult(newIntent, REQUEST_AVIARY);
 	}
 
@@ -210,10 +411,14 @@ public class PostAdActivity extends FragmentActivity implements
 				.cacheInMemory(true).imageScaleType(ImageScaleType.EXACTLY)
 				.bitmapConfig(Bitmap.Config.RGB_565).considerExifParams(true)
 				.displayer(new FadeInBitmapDisplayer(300)).build();
-		
+		mGalleryFolder = createFolders();
 	}
 
 	private void onLoad() {
+		onLoad(Const.getSessionId(PostAdActivity.this));
+	}
+
+	private void onLoad(final String sessionId) {
 		mProgress.setVisibility(View.VISIBLE);
 		RequestQueue queue = MyVolley.getRequestQueue();
 		GsonRequest<PostAdOnLoadResult> myReq = new GsonRequest<PostAdOnLoadResult>(
@@ -222,8 +427,7 @@ public class PostAdActivity extends FragmentActivity implements
 				createMyReqErrorListener()) {
 			protected Map<String, String> getParams() throws AuthFailureError {
 				Map<String, String> params = new HashMap<String, String>();
-				params.put("session_id",
-						Const.getSessionId(PostAdActivity.this));
+				params.put("session_id", sessionId);
 				if (isEdit) {
 					params.put("aid", mAdId);
 				}
@@ -262,7 +466,7 @@ public class PostAdActivity extends FragmentActivity implements
 							response.Result.session_id,
 							response.Result.refresh_id);
 					mProgress.setVisibility(View.GONE);
-					onLoad();
+					onLoad(response.Result.session_id);
 				} else {
 					showError(response.Result.Message, false);
 				}
@@ -271,6 +475,7 @@ public class PostAdActivity extends FragmentActivity implements
 	}
 
 	protected void showError(String message, final boolean stay) {
+		Log.d("haipn", "message:" + message);
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setMessage(message)
 				.setIcon(android.R.drawable.ic_dialog_alert)
@@ -378,7 +583,7 @@ public class PostAdActivity extends FragmentActivity implements
 			@Override
 			public void onResponse(PostAdOnLoadResult response) {
 				mProgress.setVisibility(View.GONE);
-				Log.d("haipn", "profile response:" + response.Result.Return);
+				Log.d("haipn", "onload response:" + response.Result.Return);
 				if (response.Result.Return.equals("expired")) {
 					processExpired();
 				} else if (response.Result.Return.equals("success")) {
@@ -423,7 +628,7 @@ public class PostAdActivity extends FragmentActivity implements
 		} else {
 			findViewById(R.id.llCheckEmail).setVisibility(View.VISIBLE);
 		}
-		
+
 		mPostAd.setSession_id(Const.getSessionId(this));
 	}
 
@@ -860,13 +1065,13 @@ public class PostAdActivity extends FragmentActivity implements
 			break;
 		case REQUEST_CAMERA:
 			if (resultCode == RESULT_OK) {
-				Uri imageUri = Uri.fromFile(new File(FILE_PATH));
+				Uri imageUri = Uri.parse("file://" + FILE_PATH);
 				Options op = new Options();
 				op.inJustDecodeBounds = true;
 				Bitmap bm = BitmapFactory.decodeFile(FILE_PATH, op);
 				Log.d("haipn", "bitmap camera widgh x height:" + op.outWidth
 						+ " x " + op.outHeight);
-				launchInstaFiverr(imageUri);
+				startFeather(imageUri);
 			}
 			break;
 		case REQUEST_GALLERY:
@@ -878,42 +1083,13 @@ public class PostAdActivity extends FragmentActivity implements
 						getRealPathFromURI(mImageUri), op);
 				Log.d("haipn", "bitmap galeery widgh x height:" + op.outWidth
 						+ " x " + op.outHeight);
-				launchInstaFiverr(mImageUri);
-				// String path = getRealPathFromURI(mImageUri);
-				// switch (mIdSelect) {
-				// case 1:
-				// mImv1.setImageURI(mImageUri);
-				// mPostAd.setAdpic1(path);
-				// break;
-				// case 2:
-				// mImv2.setImageURI(mImageUri);
-				// mPostAd.setAdpic2(path);
-				// break;
-				// case 3:
-				// mImv3.setImageURI(mImageUri);
-				// mPostAd.setAdpic3(path);
-				// break;
-				// case 4:
-				// mImv4.setImageURI(mImageUri);
-				// mPostAd.setAdpic4(path);
-				// break;
-				// case 5:
-				// mImv5.setImageURI(mImageUri);
-				// mPostAd.setAdpic5(path);
-				// break;
-				// case 6:
-				// mImv6.setImageURI(mImageUri);
-				// mPostAd.setAdpic6(path);
-				// break;
-				// default:
-				// break;
-				// }
+				startFeather(mImageUri);
 			}
 			break;
 		case REQUEST_AVIARY:
 			if (resultCode == RESULT_OK) {
-				Uri mImageUri = data.getData();
-				String path = getRealPathFromURI(mImageUri);
+				Uri mImageUri = Uri.parse("file://" + mOutputFilePath);
+				String path = mOutputFilePath;
 				Log.d("haipn", "path image:" + path);
 				Options op = new Options();
 				op.inJustDecodeBounds = true;

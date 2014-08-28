@@ -132,7 +132,7 @@ public class TabsActivityMain extends TabActivity {
 						} else
 							startActivity(new Intent(TabsActivityMain.this,
 									ChooseLogin.class));
-						tabHost.setCurrentTabByTag("2");
+//						tabHost.setCurrentTabByTag("2");
 					} else if (tabId.equals("4")) {
 						tracker.set(Fields.SCREEN_NAME, "Bikeshop Listing");
 					} else {

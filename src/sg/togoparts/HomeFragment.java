@@ -41,6 +41,7 @@ import com.google.analytics.tracking.android.Fields;
 import com.google.analytics.tracking.android.GoogleAnalytics;
 import com.google.analytics.tracking.android.MapBuilder;
 import com.google.analytics.tracking.android.Tracker;
+import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.doubleclick.PublisherAdRequest;
@@ -196,8 +197,16 @@ public class HomeFragment extends Fragment_Main implements ClickViewAll {
 		super.onResume();
 		Const.isAppExitable = true;
 		PublisherAdView adview = (PublisherAdView) getActivity().findViewById(R.id.adView);
+		adview.setVisibility(View.GONE);
 		PublisherAdRequest.Builder re = new PublisherAdRequest.Builder();
 		adview.loadAd(re.build());
+		adview.setAdListener(new AdListener() {
+			 @Override
+			public void onAdLoaded() {
+				// TODO Auto-generated method stub
+				super.onAdLoaded();
+			}
+			});
 	}
 
 	private Response.Listener<MpListLatestAds> createMyReqSuccessListener() {

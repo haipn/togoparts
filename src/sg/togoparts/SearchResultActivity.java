@@ -36,6 +36,7 @@ import com.google.analytics.tracking.android.Fields;
 import com.google.analytics.tracking.android.GoogleAnalytics;
 import com.google.analytics.tracking.android.MapBuilder;
 import com.google.analytics.tracking.android.Tracker;
+import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.doubleclick.PublisherAdRequest;
@@ -86,9 +87,17 @@ public class SearchResultActivity extends FragmentActivity {
 
 	@Override
 	public void onResume() {
-		PublisherAdView adview = (PublisherAdView) findViewById(R.id.adView);
+		final PublisherAdView adview = (PublisherAdView) findViewById(R.id.adView);
 		PublisherAdRequest.Builder re = new PublisherAdRequest.Builder();
 		adview.loadAd(re.build());
+		adview.setVisibility(View.GONE);
+		adview.setAdListener(new AdListener() {
+			@Override
+			public void onAdLoaded() {
+				adview.setVisibility(View.VISIBLE);
+				super.onAdLoaded();
+			}
+		});
 		super.onResume();
 	}
 

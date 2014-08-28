@@ -17,7 +17,7 @@
         xmlns:swipe="http://schemas.android.com/apk/res-auto"
         android:id="@+id/lvSearchResult"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         swipe:swipeActionLeft="reveal"
         swipe:swipeActionRight="reveal"
         swipe:swipeBackView="@+id/back"

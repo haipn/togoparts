@@ -146,15 +146,17 @@ public class LocationActivity extends Activity implements LocationListener,
 		 * callbacks.
 		 */
 		mLocationClient = new LocationClient(this, this, this);
-		
-	}
-	 public void startUpdates() {
-	        mUpdatesRequested = true;
 
-	        if (servicesConnected()) {
-	            startPeriodicUpdates();
-	        }
-	    }
+	}
+
+	public void startUpdates() {
+		mUpdatesRequested = true;
+
+		if (servicesConnected()) {
+			startPeriodicUpdates();
+		}
+	}
+
 	/*
 	 * Called when the Activity is restarted, even before it becomes visible.
 	 */
@@ -168,7 +170,6 @@ public class LocationActivity extends Activity implements LocationListener,
 		 * for onResume()
 		 */
 		mLocationClient.connect();
-		
 
 	}
 
@@ -346,7 +347,7 @@ public class LocationActivity extends Activity implements LocationListener,
 								currentLocation.getLongitude(), MAX_VALUE);
 					}
 				} else {
-
+					Log.d("haipn", "lenght > 0, :" + location);
 					addresses = geocoder.getFromLocationName(location,
 							MAX_VALUE, lowerLeftLatitude, lowerLeftLongitude,
 							upperRightLatitude, upperRightLongitude);
@@ -395,6 +396,7 @@ public class LocationActivity extends Activity implements LocationListener,
 		protected void onPostExecute(ArrayList<Address> address) {
 			mProgress.setVisibility(View.INVISIBLE);
 			if (address != null && address.size() > 0) {
+				Log.d("haipn", "listAddresss:" + address.size());
 				mListAddress = address;
 				ArrayList<String> strings = new ArrayList<String>();
 				for (Address ad : address) {
@@ -402,6 +404,7 @@ public class LocationActivity extends Activity implements LocationListener,
 					for (int i = 1; i < ad.getMaxAddressLineIndex(); i++) {
 						str = str + "," + ad.getAddressLine(i);
 					}
+					Log.d("haipn", "address " + str);
 					strings.add(str);
 				}
 
@@ -410,10 +413,13 @@ public class LocationActivity extends Activity implements LocationListener,
 						android.R.layout.simple_list_item_1, strings);
 				adapterLocation.setNotifyOnChange(true);
 				mLvLocation.setAdapter(adapterLocation);
+				adapterLocation.notifyDataSetChanged();
 				// mEdtLocation.showDropDown();
 			} else {
-				mListAddress.clear();
-				adapterLocation.notifyDataSetChanged();
+				if (mListAddress != null) {
+					mListAddress.clear();
+					adapterLocation.notifyDataSetChanged();
+				}
 			}
 		}
 	}

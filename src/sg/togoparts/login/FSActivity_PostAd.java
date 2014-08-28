@@ -2,6 +2,7 @@ package sg.togoparts.login;
 
 import sg.togoparts.Activity_Main;
 import sg.togoparts.R;
+import android.app.TabActivity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -20,6 +21,12 @@ public class FSActivity_PostAd extends Activity_Main {
 //		}
 	}
 
+	@Override
+	protected void onRestart() {
+		TabActivity tabs = (TabActivity) getParent();
+		tabs.getTabHost().setCurrentTabByTag("2");
+		super.onRestart();
+	}
 	void addFragment(Fragment fragment, boolean addToBackStack, int transition) {
 		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 		ft.replace(R.id.simple_fragment, fragment);

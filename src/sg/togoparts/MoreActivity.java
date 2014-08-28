@@ -92,15 +92,7 @@ public class MoreActivity extends Activity_Main {
 				startActivity(i);
 			}
 		});
-		if (Const.isLogin(this)) {
-			mTvLoginOrLogout.setText(R.string.label_logout);
-			mTvLoginOrLogout.setCompoundDrawablesWithIntrinsicBounds(
-					R.drawable.logout_icon, 0, 0, 0);
-		} else {
-			mTvLoginOrLogout.setText(R.string.label_login);
-			mTvLoginOrLogout.setCompoundDrawablesWithIntrinsicBounds(
-					R.drawable.login_icon, 0, 0, 0);
-		}
+		
 		mProgressDialog = new ProgressDialog(this);
 		mTvLoginOrLogout.setOnClickListener(new OnClickListener() {
 
@@ -151,6 +143,15 @@ public class MoreActivity extends Activity_Main {
 		// TODO Auto-generated method stub
 		super.onResume();
 		mSimpleFacebook = SimpleFacebook.getInstance(this);
+		if (Const.isLogin(this)) {
+			mTvLoginOrLogout.setText(R.string.label_logout);
+			mTvLoginOrLogout.setCompoundDrawablesWithIntrinsicBounds(
+					R.drawable.logout_icon, 0, 0, 0);
+		} else {
+			mTvLoginOrLogout.setText(R.string.label_login);
+			mTvLoginOrLogout.setCompoundDrawablesWithIntrinsicBounds(
+					R.drawable.login_icon, 0, 0, 0);
+		}
 	}
 
 	@Override

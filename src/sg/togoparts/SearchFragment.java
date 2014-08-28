@@ -19,6 +19,7 @@ import com.google.analytics.tracking.android.Fields;
 import com.google.analytics.tracking.android.GoogleAnalytics;
 import com.google.analytics.tracking.android.MapBuilder;
 import com.google.analytics.tracking.android.Tracker;
+import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.doubleclick.PublisherAdRequest;
@@ -87,9 +88,17 @@ public class SearchFragment extends Fragment_Main {
 	public void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
-		PublisherAdView adview = (PublisherAdView) getActivity().findViewById(R.id.adView);
+		final PublisherAdView adview = (PublisherAdView) getActivity().findViewById(R.id.adView);
 		PublisherAdRequest.Builder re = new PublisherAdRequest.Builder();
 		adview.loadAd(re.build());
+		adview.setVisibility(View.GONE);
+		adview.setAdListener(new AdListener() {
+			@Override
+			public void onAdLoaded() {
+				adview.setVisibility(View.VISIBLE);
+				super.onAdLoaded();
+			}
+		});
 	}
 
 	@Override
