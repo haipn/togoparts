@@ -195,8 +195,6 @@ public class ProfileFragment extends Fragment_Main implements QuickActionSelect 
 	protected void showBanned(String message) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 		builder.setMessage(message)
-				.setIcon(android.R.drawable.ic_dialog_alert)
-				.setTitle(R.string.error)
 				.setPositiveButton(android.R.string.ok,
 						new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int id) {
@@ -272,6 +270,7 @@ public class ProfileFragment extends Fragment_Main implements QuickActionSelect 
 				mProgressDialog.dismiss();
 				Intent i = new Intent(getActivity(), ChooseLogin.class);
 				i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 				getActivity().startActivity(i);
 			}
 		};

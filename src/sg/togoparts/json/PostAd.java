@@ -21,9 +21,9 @@ public class PostAd {
 		contactno = "";
 		contactperson = "";
 		time_to_contact = "";
-		section = 0;
-		cat = 0;
-		sub_cat = 0;
+		section = -1;
+		cat = -1;
+		sub_cat = -1;
 		brand = "";
 		item = "";
 		item_year = "";

@@ -42,7 +42,7 @@ public class SubCategoryActivity extends Activity {
 
 	private int mSectionId;
 	private int mCategoryId;
-
+	private int mSubCatId;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -50,12 +50,13 @@ public class SubCategoryActivity extends Activity {
 		setContentView(R.layout.list_activity);
 		mSectionId = getIntent().getIntExtra(PostAdActivity.SECTION, 0);
 		mCategoryId = getIntent().getIntExtra(PostAdActivity.CAT, 0);
+		mSubCatId = getIntent().getIntExtra(PostAdActivity.SUB_CAT, -1);
 		Log.d("haipn", "sessionid:" + mSectionId + ", categoryid :"
 				+ +mCategoryId);
 		createHeader();
 		mListSection = new ArrayList<Category>();
 		mLvCategories = (ListView) findViewById(R.id.listView);
-		mAdapter = new CategoryAdapter(this, mListSection);
+		mAdapter = new CategoryAdapter(this, mListSection, mSubCatId);
 		mLvCategories.setAdapter(mAdapter);
 
 		mLvCategories.setOnItemClickListener(new OnItemClickListener() {

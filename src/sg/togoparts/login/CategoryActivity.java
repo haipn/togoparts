@@ -42,6 +42,7 @@ public class CategoryActivity extends Activity {
 
 	private int mSectionId;
 	private int mCategoryId;
+	private int mSubCatId;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -50,9 +51,11 @@ public class CategoryActivity extends Activity {
 		setContentView(R.layout.list_activity);
 		mSectionId = getIntent().getIntExtra(PostAdActivity.SECTION, 0);
 		createHeader();
+		mCategoryId = getIntent().getIntExtra(PostAdActivity.CAT, -1);
+		mSubCatId = getIntent().getIntExtra(PostAdActivity.SUB_CAT, -1);
 		mListSection = new ArrayList<Category>();
 		mLvCategories = (ListView) findViewById(R.id.listView);
-		mAdapter = new CategoryAdapter(this, mListSection);
+		mAdapter = new CategoryAdapter(this, mListSection, mCategoryId);
 		mLvCategories.setAdapter(mAdapter);
 
 		mLvCategories.setOnItemClickListener(new OnItemClickListener() {
@@ -65,6 +68,7 @@ public class CategoryActivity extends Activity {
 				i.putExtra(PostAdActivity.SECTION, mSectionId);
 				mCategoryId = mListSection.get(position).id;
 				i.putExtra(PostAdActivity.CAT, mCategoryId);
+				i.putExtra(PostAdActivity.SUB_CAT, mSubCatId);
 				startActivityForResult(i, REQUEST_SUB_CATEGORY);
 			}
 		});

@@ -146,6 +146,8 @@ public class PostAdActivity extends FragmentActivity implements
 	protected static final String MERCHANT_PACK = "merchant pack";
 	private static final String FILE_PATH = Environment
 			.getExternalStorageDirectory() + "/temp.jpg";
+	protected static final String TYPE_AD_POST = "type post ad";
+	public static final String TCRED = "tcred";
 	private File mGalleryFolder;
 	private TextView mTvCategory;
 	private TextView mTvItem;
@@ -174,7 +176,7 @@ public class PostAdActivity extends FragmentActivity implements
 	private Button mBtnSubmit;
 	private int mIdSelect;
 	private PostAd mPostAd;
-	private int mTypePostAd;
+	private int mTypeAccount;
 	private String mAdId;
 	private boolean isEdit;
 	private DisplayImageOptions options;
@@ -183,6 +185,8 @@ public class PostAdActivity extends FragmentActivity implements
 	private ProgressDialog mProgressDialog;
 	private CheckBox mCbEmail;
 	private String mOutputFilePath;
+	private boolean isOverQuota;
+	private int mTcred;
 
 	/**
 	 * Check the external storage status
@@ -419,7 +423,7 @@ public class PostAdActivity extends FragmentActivity implements
 	}
 
 	private void onLoad(final String sessionId) {
-		mProgress.setVisibility(View.VISIBLE);
+		mProgressDialog.show();
 		RequestQueue queue = MyVolley.getRequestQueue();
 		GsonRequest<PostAdOnLoadResult> myReq = new GsonRequest<PostAdOnLoadResult>(
 				Method.POST, Const.URL_POST_AD_ONLOAD,
@@ -477,37 +481,35 @@ public class PostAdActivity extends FragmentActivity implements
 	protected void showError(String message, final boolean stay) {
 		Log.d("haipn", "message:" + message);
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setMessage(message)
-				.setIcon(android.R.drawable.ic_dialog_alert)
-				.setTitle(R.string.error)
-				.setPositiveButton(android.R.string.ok,
-						new DialogInterface.OnClickListener() {
-							public void onClick(DialogInterface dialog, int id) {
-								if (!stay)
-									finish();
-								dialog.dismiss();
-							}
-						});
-		builder.show();
+		builder.setMessage(message).setPositiveButton(android.R.string.ok,
+				new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int id) {
+						if (!stay)
+							finish();
+						dialog.dismiss();
+					}
+				});
+		Dialog dialog = builder.create();
+		dialog.setCanceledOnTouchOutside(false);
+		dialog.show();
 	}
 
 	protected void showBanned(String message) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setMessage(message)
-				.setIcon(android.R.drawable.ic_dialog_alert)
-				.setTitle(R.string.error)
-				.setPositiveButton(android.R.string.ok,
-						new DialogInterface.OnClickListener() {
-							public void onClick(DialogInterface dialog, int id) {
-								logout();
-								dialog.dismiss();
-							}
-						});
-		builder.show();
+		builder.setMessage(message).setPositiveButton(android.R.string.ok,
+				new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int id) {
+						logout();
+						dialog.dismiss();
+					}
+				});
+		Dialog dialog = builder.create();
+		dialog.setCanceledOnTouchOutside(false);
+		dialog.show();
 	}
 
 	protected void logout() {
-		mProgressDialog = new ProgressDialog(this);
+		
 		mProgressDialog.show();
 		SimpleFacebook mSimpleFacebook = SimpleFacebook.getInstance(this);
 		RequestQueue queue = MyVolley.getRequestQueue();
@@ -582,11 +584,14 @@ public class PostAdActivity extends FragmentActivity implements
 
 			@Override
 			public void onResponse(PostAdOnLoadResult response) {
-				mProgress.setVisibility(View.GONE);
+				mProgressDialog.dismiss();
 				Log.d("haipn", "onload response:" + response.Result.Return);
 				if (response.Result.Return.equals("expired")) {
 					processExpired();
 				} else if (response.Result.Return.equals("success")) {
+					if (response.Result.Message != null) {
+						showError(response.Result.Message, true);
+					}
 					mResultValue = response.Result;
 					onLoadProcess(response.Result);
 				} else if (response.Result.Return.equals("error")) {
@@ -599,19 +604,22 @@ public class PostAdActivity extends FragmentActivity implements
 	}
 
 	protected void onLoadProcess(ResultValue result) {
-		InfoAdapter adapter = null;
 		if (result.merchant != null) {
 			// mTvInfo.setText(R.string.merchant_pack_ads);
 			// adapter = new InfoAdapter(this, result.merchant);
-			mTypePostAd = MERCHANT;
+			mTypeAccount = MERCHANT;
 		} else if (result.postingpack != null) {
 			// mTvInfo.setText(R.string.posting_pack_ads);
 			// adapter = new InfoAdapter(this, result.postingpack);
-			mTypePostAd = POSTINGPACK;
+			mTypeAccount = POSTINGPACK;
 		} else {
-			mTypePostAd = QUOTA;
+			mTypeAccount = QUOTA;
+			if (result.freeadsleft == 0) {
+				isOverQuota = true;
+			}
 			// adapter = new InfoAdapter(this, result.quota);
 		}
+		mTcred = result.TCreds;
 		if (result.Shopid > 0) {
 			mTvContact.setVisibility(View.GONE);
 		} else {
@@ -630,6 +638,9 @@ public class PostAdActivity extends FragmentActivity implements
 		}
 
 		mPostAd.setSession_id(Const.getSessionId(this));
+		if (isOverQuota)
+			mRdoFreeAd.setVisibility(View.GONE);
+
 	}
 
 	private void fillAdData(AdDetails ad) {
@@ -731,7 +742,7 @@ public class PostAdActivity extends FragmentActivity implements
 	}
 
 	private void validationTypePost(ResultValue ret) {
-		if (mTypePostAd == MERCHANT || mTypePostAd == POSTINGPACK) {
+		if (mTypeAccount == MERCHANT || mTypeAccount == POSTINGPACK) {
 			mRdoFreeAd.setVisibility(View.GONE);
 			mRdoPriorityAd.setVisibility(View.GONE);
 			mRdoNewItemAd.setVisibility(View.VISIBLE);
@@ -819,20 +830,17 @@ public class PostAdActivity extends FragmentActivity implements
 		mImv1 = (ImageView) findViewById(R.id.imv1);
 		mImv1.setOnClickListener(this);
 		mImv2 = (ImageView) findViewById(R.id.imv2);
-		mImv2.setOnClickListener(this);
 		mImv3 = (ImageView) findViewById(R.id.imv3);
-		mImv3.setOnClickListener(this);
 		mImv4 = (ImageView) findViewById(R.id.imv4);
-		mImv4.setOnClickListener(this);
 		mImv5 = (ImageView) findViewById(R.id.imv5);
-		mImv5.setOnClickListener(this);
 		mImv6 = (ImageView) findViewById(R.id.imv6);
-		mImv6.setOnClickListener(this);
 
 		// mGvInfo = (GridView) findViewById(R.id.gvInfo);
 		// mTvInfo = (TextView) findViewById(R.id.tvInfo);
 		mBtnSubmit = (Button) findViewById(R.id.btnSubmit);
 		mCbEmail = (CheckBox) findViewById(R.id.cbEmail);
+		isOverQuota = false;
+		mProgressDialog = new ProgressDialog(this);
 	}
 
 	private void setListener() {
@@ -840,53 +848,80 @@ public class PostAdActivity extends FragmentActivity implements
 
 			@Override
 			public void onClick(View v) {
-				Intent i = new Intent(PostAdActivity.this,
-						SectionActivity.class);
-				startActivityForResult(i, REQUEST_CATEGORY);
+				if (isOverQuota) {
+					if (mRdoFreeAd.isChecked())
+						showError(
+								"Please select an Ad type before selecting a category!",
+								true);
+				} else {
+					Intent i = new Intent(PostAdActivity.this,
+							SectionActivity.class);
+					i.putExtra(SECTION, mPostAd.getSection());
+					i.putExtra(CAT, mPostAd.getCat());
+					i.putExtra(SUB_CAT, mPostAd.getSub_cat());
+					i.putExtra(TYPE_AD_POST, mPostAd.getAdtype());
+					i.putExtra(TCRED, mTcred);
+					startActivityForResult(i, REQUEST_CATEGORY);
+				}
 			}
 		});
 		mTvItem.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				Intent i = new Intent(PostAdActivity.this, ItemInfo.class);
-				i.putExtra(BRAND, mPostAd.getBrand());
-				i.putExtra(ITEM_YEAR, mPostAd.getItem_year());
-				i.putExtra(ITEM, mPostAd.getItem());
-				i.putExtra(TITLE, mPostAd.getTitle());
-				i.putExtra(TRANSTYPE, mPostAd.getTranstype());
-				i.putExtra(DESCRIPTION, mPostAd.getDescription());
-				i.putExtra(D_MTB, mPostAd.isD_mtb());
-				i.putExtra(D_BMX, mPostAd.isD_bmx());
-				i.putExtra(D_COMMUTE, mPostAd.isD_commute());
-				i.putExtra(D_FOLDING, mPostAd.isD_folding());
-				i.putExtra(D_OTHERS, mPostAd.isD_others());
-				i.putExtra(D_ROAD, mPostAd.isD_road());
-				i.putExtra(SIZE, mPostAd.getSize());
-				i.putExtra(COLOUR, mPostAd.getColour());
-				i.putExtra(WEIGHT, mPostAd.getWeight());
-				i.putExtra(CONDITION, mPostAd.getCondition());
-				i.putExtra(WARRANTY, mPostAd.getWarranty());
-				i.putExtra(PICTURELINK, PICTURELINK);
-				i.putExtra(EDIT_AD, isEdit);
-				i.putExtra(POSTING_PACK, mTypePostAd == MERCHANT
-						|| mTypePostAd == POSTINGPACK);
-				startActivityForResult(i, REQUEST_ITEM);
+				if (isOverQuota) {
+					if (mRdoFreeAd.isChecked())
+						showError(
+								"Please select an Ad type before selecting a category!",
+								true);
+				} else {
+					Intent i = new Intent(PostAdActivity.this, ItemInfo.class);
+					i.putExtra(BRAND, mPostAd.getBrand());
+					i.putExtra(ITEM_YEAR, mPostAd.getItem_year());
+					i.putExtra(ITEM, mPostAd.getItem());
+					i.putExtra(TITLE, mPostAd.getTitle());
+					i.putExtra(TRANSTYPE, mPostAd.getTranstype());
+					i.putExtra(DESCRIPTION, mPostAd.getDescription());
+					i.putExtra(D_MTB, mPostAd.isD_mtb());
+					i.putExtra(D_BMX, mPostAd.isD_bmx());
+					i.putExtra(D_COMMUTE, mPostAd.isD_commute());
+					i.putExtra(D_FOLDING, mPostAd.isD_folding());
+					i.putExtra(D_OTHERS, mPostAd.isD_others());
+					i.putExtra(D_ROAD, mPostAd.isD_road());
+					i.putExtra(SIZE, mPostAd.getSize());
+					i.putExtra(COLOUR, mPostAd.getColour());
+					i.putExtra(WEIGHT, mPostAd.getWeight());
+					i.putExtra(CONDITION, mPostAd.getCondition());
+					i.putExtra(WARRANTY, mPostAd.getWarranty());
+					i.putExtra(PICTURELINK, PICTURELINK);
+					i.putExtra(EDIT_AD, isEdit);
+					i.putExtra("free", mRdoFreeAd.isChecked());
+					i.putExtra(POSTING_PACK, mTypeAccount == MERCHANT
+							|| mTypeAccount == POSTINGPACK);
+					startActivityForResult(i, REQUEST_ITEM);
+				}
 			}
 		});
 		mTvPrice.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				Intent i = new Intent(PostAdActivity.this, Price.class);
-				i.putExtra(PRICE, mPostAd.getPrice());
-				i.putExtra(PRICETYPE, mPostAd.getPricetype());
-				i.putExtra(ORIGINAL_PRICE, mPostAd.getOriginal_price());
-				i.putExtra(CLEARANCE, mPostAd.isClearance());
-				i.putExtra(EDIT_AD, isEdit);
-				i.putExtra(POSTING_PACK, mTypePostAd == POSTINGPACK);
-				i.putExtra(MERCHANT_PACK, mTypePostAd == MERCHANT);
-				startActivityForResult(i, REQUEST_PRICE);
+				if (isOverQuota) {
+					if (mRdoFreeAd.isChecked())
+						showError(
+								"Please select an Ad type before selecting a category!",
+								true);
+				} else {
+					Intent i = new Intent(PostAdActivity.this, Price.class);
+					i.putExtra(PRICE, mPostAd.getPrice());
+					i.putExtra(PRICETYPE, mPostAd.getPricetype());
+					i.putExtra(ORIGINAL_PRICE, mPostAd.getOriginal_price());
+					i.putExtra(CLEARANCE, mPostAd.isClearance());
+					i.putExtra(EDIT_AD, isEdit);
+					i.putExtra(POSTING_PACK, mTypeAccount == POSTINGPACK);
+					i.putExtra(MERCHANT_PACK, mTypeAccount == MERCHANT);
+					startActivityForResult(i, REQUEST_PRICE);
+				}
 
 			}
 		});
@@ -895,22 +930,29 @@ public class PostAdActivity extends FragmentActivity implements
 
 			@Override
 			public void onClick(View v) {
-				Intent i = new Intent(PostAdActivity.this, ContactInfo.class);
-				i.putExtra(CITY, mPostAd.getCity());
-				i.putExtra(REGION, mPostAd.getRegion());
-				i.putExtra(COUNTRY, mPostAd.getCountry());
-				i.putExtra(POSTALCODE, mPostAd.getPostalcode());
-				i.putExtra(ADDRESS, mPostAd.getAddress());
-				i.putExtra(LAT, mPostAd.getLatitude());
-				i.putExtra(LONGITUDE, mPostAd.getLongitude());
-				i.putExtra(CONTACTNO, mPostAd.getContactno());
-				i.putExtra(CONTACTPERSON, mPostAd.getContactperson());
-				i.putExtra(TIME_TO_CONTACT, mPostAd.getTime_to_contact());
-				i.putExtra(EDIT_AD, isEdit);
-				i.putExtra(POSTING_PACK, mTypePostAd == MERCHANT
-						|| mTypePostAd == POSTINGPACK);
-				startActivityForResult(i, REQUEST_CONTACT);
-
+				if (isOverQuota) {
+					if (mRdoFreeAd.isChecked())
+						showError(
+								"Please select an Ad type before selecting a category!",
+								true);
+				} else {
+					Intent i = new Intent(PostAdActivity.this,
+							ContactInfo.class);
+					i.putExtra(CITY, mPostAd.getCity());
+					i.putExtra(REGION, mPostAd.getRegion());
+					i.putExtra(COUNTRY, mPostAd.getCountry());
+					i.putExtra(POSTALCODE, mPostAd.getPostalcode());
+					i.putExtra(ADDRESS, mPostAd.getAddress());
+					i.putExtra(LAT, mPostAd.getLatitude());
+					i.putExtra(LONGITUDE, mPostAd.getLongitude());
+					i.putExtra(CONTACTNO, mPostAd.getContactno());
+					i.putExtra(CONTACTPERSON, mPostAd.getContactperson());
+					i.putExtra(TIME_TO_CONTACT, mPostAd.getTime_to_contact());
+					i.putExtra(EDIT_AD, isEdit);
+					i.putExtra(POSTING_PACK, mTypeAccount == MERCHANT
+							|| mTypeAccount == POSTINGPACK);
+					startActivityForResult(i, REQUEST_CONTACT);
+				}
 			}
 		});
 
@@ -918,29 +960,31 @@ public class PostAdActivity extends FragmentActivity implements
 
 			@Override
 			public void onCheckedChanged(CompoundButton arg0, boolean arg1) {
+				if (isOverQuota)
+					arg0.setVisibility(View.GONE);
 				if (arg1) {
 					mTvNote.setText("");
-					mImv2.setEnabled(false);
+					mImv2.setOnClickListener(null);
 					mImv2.setImageResource(R.drawable.unselected_pic);
-					mImv3.setEnabled(false);
+					mImv3.setOnClickListener(null);
 					mImv3.setImageResource(R.drawable.unselected_pic);
-					mImv4.setEnabled(false);
+					mImv4.setOnClickListener(null);
 					mImv4.setImageResource(R.drawable.unselected_pic);
-					mImv5.setEnabled(false);
+					mImv5.setOnClickListener(null);
 					mImv5.setImageResource(R.drawable.unselected_pic);
-					mImv6.setEnabled(false);
+					mImv6.setOnClickListener(null);
 					mImv6.setImageResource(R.drawable.unselected_pic);
 					mPostAd.setAdtype(0);
 				} else {
-					mImv2.setEnabled(true);
+					mImv2.setOnClickListener(PostAdActivity.this);
 					mImv2.setImageResource(R.drawable.upload_pic);
-					mImv3.setEnabled(true);
+					mImv3.setOnClickListener(PostAdActivity.this);
 					mImv3.setImageResource(R.drawable.upload_pic);
-					mImv4.setEnabled(true);
+					mImv4.setOnClickListener(PostAdActivity.this);
 					mImv4.setImageResource(R.drawable.upload_pic);
-					mImv5.setEnabled(true);
+					mImv5.setOnClickListener(PostAdActivity.this);
 					mImv5.setImageResource(R.drawable.upload_pic);
-					mImv6.setEnabled(true);
+					mImv6.setOnClickListener(PostAdActivity.this);
 					mImv6.setImageResource(R.drawable.upload_pic);
 				}
 

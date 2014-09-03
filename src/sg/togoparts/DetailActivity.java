@@ -595,20 +595,32 @@ public class DetailActivity extends FragmentActivity implements
 					}
 				});
 			}
+			mLlShop.setVisibility(View.VISIBLE);
 		} else {
 			mLlShop.setVisibility(View.GONE);
 		}
 
 		if (res.mContactDetails.mContactNo.value != null
-				&& !res.mContactDetails.mContactNo.value.isEmpty())
+				&& !res.mContactDetails.mContactNo.value.isEmpty()) {
 			mTvContactNo.setText(res.mContactDetails.mContactNo.value);
-		else
+			mLlContactNo.setVisibility(View.VISIBLE);
+		} else
 			mLlContactNo.setVisibility(View.GONE);
-
+		if (res.mContactDetails.mBestTime.value != null
+				&& !res.mContactDetails.mBestTime.value.isEmpty()) {
+			((TextView) findViewById(R.id.tvBesttime))
+					.setText(res.mContactDetails.mBestTime.value);
+			((TextView) findViewById(R.id.tvLabelBesttime))
+					.setText(res.mContactDetails.mBestTime.label);
+			findViewById(R.id.llBestTime).setVisibility(View.VISIBLE);
+		} else
+			findViewById(R.id.llBestTime).setVisibility(View.GONE);
+		
 		if (res.mContactDetails.mLocation.value != null
-				&& !res.mContactDetails.mLocation.value.isEmpty())
+				&& !res.mContactDetails.mLocation.value.isEmpty()) {
 			mTvAddress.setText(res.mContactDetails.mLocation.value);
-		else
+			mLlAddress.setVisibility(View.VISIBLE);
+		} else
 			mLlAddress.setVisibility(View.GONE);
 
 		mTvMailCount.setText(res.mMsgSent);

@@ -27,9 +27,8 @@ public class ErrorDialog extends DialogFragment {
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
 		// Use the Builder class for convenient dialog construction
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+		
 		builder.setMessage(mMessage)
-				.setIcon(android.R.drawable.ic_dialog_alert)
-				.setTitle(R.string.error)
 				.setPositiveButton(android.R.string.ok,
 						new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int id) {
@@ -43,6 +42,8 @@ public class ErrorDialog extends DialogFragment {
 		// }
 		// });
 		// Create the AlertDialog object and return it
-		return builder.create();
+		Dialog ret = builder.create();
+		ret.setCanceledOnTouchOutside(false);
+		return ret;
 	}
 }

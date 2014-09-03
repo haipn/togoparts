@@ -53,8 +53,6 @@ public class ChooseLogin extends FragmentActivity {
 	public static final String GENDER = "gender";
 	public static final String USERNAME = "username";
 	public static final String FACEBOOK_FIRST_LAST_NAME = "last first name";
-	public static String USER = "tgptestuser3";
-	public static String PASS = "hx77WTF3";
 	public static String CLIENT_ID = "G101vptA69sVpvlr";
 	protected Profile mProfileFb;
 	protected SimpleFacebook mSimpleFacebook;
@@ -93,8 +91,11 @@ public class ChooseLogin extends FragmentActivity {
 
 			@Override
 			public void onClick(View arg0) {
-				startActivity(new Intent(ChooseLogin.this,
-						TabsActivityMain.class));
+				Intent i = new Intent(ChooseLogin.this,
+						TabsActivityMain.class);
+				i.putExtra(Const.TAG_NAME, "1");
+				i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				startActivity(i);
 				finish();
 			}
 		});
@@ -102,8 +103,6 @@ public class ChooseLogin extends FragmentActivity {
 		mEdtPass = (EditText) findViewById(R.id.edtPass);
 		mEdtUser = (EditText) findViewById(R.id.edtUsername);
 
-		mEdtUser.setText(USER);
-		mEdtPass.setText(PASS);
 		mBtnSkip = (Button) findViewById(R.id.btnSkip);
 		setLoginFacebook();
 		setLogin();
@@ -136,6 +135,7 @@ public class ChooseLogin extends FragmentActivity {
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		mSimpleFacebook.onActivityResult(this, requestCode, resultCode, data);
+		mProgressDialog.dismiss();
 		if ((requestCode == 0 || requestCode == 1) && resultCode == RESULT_OK) {
 			startActivity(new Intent(this, TabsActivityMain.class));
 			finish();

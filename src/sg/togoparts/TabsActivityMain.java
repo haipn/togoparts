@@ -143,24 +143,6 @@ public class TabsActivityMain extends TabActivity {
 				tracker.send(MapBuilder.createAppView().build());
 			}
 		});
-		// Create the interstitial
-		// interstitial = new DfpInterstitialAd(this,
-		// "/78685291/Android320x480");
-		// // interstitial = new DfpInterstitialAd(this,
-		// "/78685291/Android640x960");
-		//
-		// // Create ad request
-		// AdRequest adRequest = new AdRequest();
-		//
-		// DfpExtras extras = new DfpExtras();
-		// extras.addExtra("screenWidth", getScreenWidthInDp());
-		// extras.addExtra("screenHeight", getScreenHeightInDp());
-		// adRequest.setNetworkExtras(extras);
-		// // Begin loading your interstitial
-		// interstitial.loadAd(adRequest);
-		//
-		// // Set Ad Listener to use the callbacks below
-		// interstitial.setAdListener(this);
 
 		rlAdMain = (RelativeLayout) findViewById(R.id.rl_main_adview);
 		rlAdMain.setVisibility(View.GONE);

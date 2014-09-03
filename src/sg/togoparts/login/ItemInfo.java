@@ -17,6 +17,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
+import android.text.InputFilter;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
@@ -403,6 +404,7 @@ public class ItemInfo extends Activity {
 	}
 
 	private void init() {
+
 		mAtvBrand = (AutoCompleteTextView) findViewById(R.id.atvBrand);
 		// mListBrand = new ArrayList<String>();
 		// adapterBrand = new ArrayAdapter<String>(ItemInfo.this,
@@ -431,7 +433,10 @@ public class ItemInfo extends Activity {
 		mSwitcher = (ViewSwitcher) findViewById(R.id.flipper);
 
 		mEdtDescription = (EditText) findViewById(R.id.edtDescription);
-
+		int maxlenght = getIntent().getBooleanExtra("free", true) ? 700 : 1400;
+		mEdtDescription
+				.setFilters(new InputFilter[] { new InputFilter.LengthFilter(
+						maxlenght) });
 		mSpnSize = (Spinner) findViewById(R.id.spnSize);
 		mSpnColour = (Spinner) findViewById(R.id.spnColour);
 		mSpnCondition = (Spinner) findViewById(R.id.spnCondition);

@@ -321,19 +321,6 @@
             android:exported="false"
             android:process=":aviarycds"
             android:syncable="true" />
-        <!-- Aviary Receiver must be defined here. gets the newly installed plugins -->
-        <receiver
-            android:name="com.aviary.android.feather.library.receivers.AviarySystemReceiver"
-            android:exported="true"
-            android:process=":aviary_sample_system_receiver" >
-            <intent-filter>
-                <action android:name="android.intent.action.PACKAGE_ADDED" />
-                <action android:name="android.intent.action.PACKAGE_REMOVED" />
-                <action android:name="android.intent.action.PACKAGE_REPLACED" />
-
-                <data android:scheme="package" />
-            </intent-filter>
-        </receiver>
 
         <!-- Required for the hi-res image processing -->
         <!-- The "android:authorities" attribute must be unique, so please use your app's package path in this way: -->

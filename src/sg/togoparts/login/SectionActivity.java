@@ -46,15 +46,22 @@ public class SectionActivity extends Activity {
 	private int mCategoryId;
 	private int mSubCategoryId;
 
+	private int adType;
+	private int mTcred;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.list_activity);
 		createHeader();
+		adType = getIntent().getIntExtra(PostAdActivity.TYPE_AD_POST, 0);
+		mTcred = getIntent().getIntExtra(PostAdActivity.TCRED, 0);
+		mSessionId = getIntent().getIntExtra(PostAdActivity.SECTION, -1);
+		mCategoryId = getIntent().getIntExtra(PostAdActivity.CAT, -1);
+		mSubCategoryId = getIntent().getIntExtra(PostAdActivity.SUB_CAT, -1);
 		mListSection = new ArrayList<SectionResult.Section>();
 		mLvSection = (ListView) findViewById(R.id.listView);
-		mAdapter = new SectionAdapter(this, mListSection);
+		mAdapter = new SectionAdapter(this, mListSection, mSessionId, adType, mTcred);
 		mLvSection.setAdapter(mAdapter);
 
 		mLvSection.setOnItemClickListener(new OnItemClickListener() {
@@ -66,6 +73,8 @@ public class SectionActivity extends Activity {
 						CategoryActivity.class);
 				mSessionId = mListSection.get(position).id;
 				i.putExtra(PostAdActivity.SECTION, mSessionId);
+				i.putExtra(PostAdActivity.CAT, mCategoryId);
+				i.putExtra(PostAdActivity.SUB_CAT, mSubCategoryId);
 				startActivityForResult(i, REQUEST_CATEGORY);
 			}
 		});

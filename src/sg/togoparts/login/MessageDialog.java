@@ -31,6 +31,8 @@ public class MessageDialog extends DialogFragment {
 								dialog.dismiss();
 							}
 						});
-		return builder.create();
+		Dialog ret = builder.create();
+		ret.setCanceledOnTouchOutside(false);
+		return ret;
 	}
 }
