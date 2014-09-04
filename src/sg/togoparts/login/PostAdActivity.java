@@ -29,6 +29,7 @@ import sg.togoparts.json.PostAdOnLoadResult;
 import sg.togoparts.json.PostAdOnLoadResult.AdDetails;
 import sg.togoparts.json.PostAdOnLoadResult.ResultValue;
 import sg.togoparts.json.ResultLogin;
+import sg.togoparts.login.ExpireProcess.OnExpireResult;
 import sg.togoparts.login.MyDialogFragment.OnSelectAction;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -81,7 +82,7 @@ import com.sromku.simple.fb.SimpleFacebook;
 import com.sromku.simple.fb.listeners.OnLogoutListener;
 
 public class PostAdActivity extends FragmentActivity implements
-		View.OnClickListener, OnSelectAction {
+		View.OnClickListener, OnSelectAction, OnExpireResult {
 	private static final String FOLDER_NAME = "aviary";
 	public static final String SESSION_ID = "session_id";
 	public static final String AID = "aid";
@@ -187,6 +188,9 @@ public class PostAdActivity extends FragmentActivity implements
 	private String mOutputFilePath;
 	private boolean isOverQuota;
 	private int mTcred;
+	private int mExpireFrom;
+	private int mCost1 = 0;
+	private int mCost2 = 0;
 
 	/**
 	 * Check the external storage status
@@ -443,39 +447,9 @@ public class PostAdActivity extends FragmentActivity implements
 
 	protected void processExpired() {
 		mProgress.setVisibility(View.VISIBLE);
-		RequestQueue queue = MyVolley.getRequestQueue();
-		GsonRequest<ResultLogin> myReq = new GsonRequest<ResultLogin>(
-				Method.POST, Const.URL_SESSION_REFRESH, ResultLogin.class,
-				createExpireSuccessListener(), createMyReqErrorListener()) {
-
-			protected Map<String, String> getParams() throws AuthFailureError {
-				Map<String, String> params = new HashMap<String, String>();
-				params.put("session_id",
-						Const.getSessionId(PostAdActivity.this));
-				params.put("refresh_id", Const.getSHA256EncryptedString(Const
-						.getRefreshId(PostAdActivity.this)
-						+ ChooseLogin.CLIENT_ID));
-				return params;
-			};
-		};
-		queue.add(myReq);
-	}
-
-	private Listener<ResultLogin> createExpireSuccessListener() {
-		return new Response.Listener<ResultLogin>() {
-			@Override
-			public void onResponse(ResultLogin response) {
-				if (response.Result.Return.equals("success")) {
-					Const.writeSessionId(PostAdActivity.this,
-							response.Result.session_id,
-							response.Result.refresh_id);
-					mProgress.setVisibility(View.GONE);
-					onLoad(response.Result.session_id);
-				} else {
-					showError(response.Result.Message, false);
-				}
-			}
-		};
+		ExpireProcess expire = new ExpireProcess(this, this);
+		expire.processExpired();
+		mExpireFrom = 0;
 	}
 
 	protected void showError(String message, final boolean stay) {
@@ -509,7 +483,7 @@ public class PostAdActivity extends FragmentActivity implements
 	}
 
 	protected void logout() {
-		
+
 		mProgressDialog.show();
 		SimpleFacebook mSimpleFacebook = SimpleFacebook.getInstance(this);
 		RequestQueue queue = MyVolley.getRequestQueue();
@@ -584,19 +558,21 @@ public class PostAdActivity extends FragmentActivity implements
 
 			@Override
 			public void onResponse(PostAdOnLoadResult response) {
-				mProgressDialog.dismiss();
 				Log.d("haipn", "onload response:" + response.Result.Return);
 				if (response.Result.Return.equals("expired")) {
 					processExpired();
 				} else if (response.Result.Return.equals("success")) {
+					mProgressDialog.dismiss();
 					if (response.Result.Message != null) {
 						showError(response.Result.Message, true);
 					}
 					mResultValue = response.Result;
 					onLoadProcess(response.Result);
 				} else if (response.Result.Return.equals("error")) {
+					mProgressDialog.dismiss();
 					showError(response.Result.Message, false);
 				} else if (response.Result.Return.equals("banned")) {
+					mProgressDialog.dismiss();
 					showBanned(response.Result.Message);
 				}
 			}
@@ -849,7 +825,8 @@ public class PostAdActivity extends FragmentActivity implements
 			@Override
 			public void onClick(View v) {
 				if (isOverQuota) {
-					if (mRdoFreeAd.isChecked())
+					if (!mRdoNewItemAd.isChecked()
+							&& !mRdoPriorityAd.isChecked())
 						showError(
 								"Please select an Ad type before selecting a category!",
 								true);
@@ -870,7 +847,8 @@ public class PostAdActivity extends FragmentActivity implements
 			@Override
 			public void onClick(View v) {
 				if (isOverQuota) {
-					if (mRdoFreeAd.isChecked())
+					if (!mRdoNewItemAd.isChecked()
+							&& !mRdoPriorityAd.isChecked())
 						showError(
 								"Please select an Ad type before selecting a category!",
 								true);
@@ -907,7 +885,8 @@ public class PostAdActivity extends FragmentActivity implements
 			@Override
 			public void onClick(View v) {
 				if (isOverQuota) {
-					if (mRdoFreeAd.isChecked())
+					if (!mRdoNewItemAd.isChecked()
+							&& !mRdoPriorityAd.isChecked())
 						showError(
 								"Please select an Ad type before selecting a category!",
 								true);
@@ -931,7 +910,8 @@ public class PostAdActivity extends FragmentActivity implements
 			@Override
 			public void onClick(View v) {
 				if (isOverQuota) {
-					if (mRdoFreeAd.isChecked())
+					if (!mRdoNewItemAd.isChecked()
+							&& !mRdoPriorityAd.isChecked())
 						showError(
 								"Please select an Ad type before selecting a category!",
 								true);
@@ -996,17 +976,22 @@ public class PostAdActivity extends FragmentActivity implements
 			@Override
 			public void onCheckedChanged(CompoundButton buttonView,
 					boolean isChecked) {
-				if (isChecked) {
-					if (mResultValue.TCreds >= mResultValue.min_newitem_cost) {
-						mTvNote.setText(R.string.note_newitem_ad);
-						mPostAd.setAdtype(2);
-					} else {
+				if (!isEdit && isChecked) {
+					if (mResultValue.TCreds < mResultValue.min_newitem_cost) {
+
 						AlertTcredDialog dialog = new AlertTcredDialog(
 								getString(R.string.msg_purchase, "New Item"));
 						dialog.show(getSupportFragmentManager(),
 								"new item confirm");
 						buttonView.setChecked(false);
 						mRdoFreeAd.setChecked(true);
+					} else if (mResultValue.TCreds < mCost2) {
+						showTcred("New Item");
+						buttonView.setChecked(false);
+						mRdoFreeAd.setChecked(true);
+					} else {
+						mTvNote.setText(R.string.note_newitem_ad);
+						mPostAd.setAdtype(2);
 					}
 
 				}
@@ -1019,11 +1004,9 @@ public class PostAdActivity extends FragmentActivity implements
 					@Override
 					public void onCheckedChanged(CompoundButton buttonView,
 							boolean isChecked) {
-						if (isChecked) {
-							if (mResultValue.TCreds >= mResultValue.min_priority_cost) {
-								mTvNote.setText(R.string.note_priority_ad);
-								mPostAd.setAdtype(1);
-							} else {
+						if (!isEdit && isChecked) {
+							if (mResultValue.TCreds < mResultValue.min_priority_cost) {
+
 								AlertTcredDialog dialog = new AlertTcredDialog(
 										getString(R.string.msg_purchase,
 												"Priority"));
@@ -1031,6 +1014,13 @@ public class PostAdActivity extends FragmentActivity implements
 										"priority confirm");
 								buttonView.setChecked(false);
 								mRdoFreeAd.setChecked(true);
+							} else if (mResultValue.TCreds < mCost1) {
+								showTcred("Priority");
+								buttonView.setChecked(false);
+								mRdoFreeAd.setChecked(true);
+							} else {
+								mTvNote.setText(R.string.note_priority_ad);
+								mPostAd.setAdtype(1);
 							}
 						}
 					}
@@ -1049,10 +1039,12 @@ public class PostAdActivity extends FragmentActivity implements
 				mPostAd.setSection(data.getIntExtra(SECTION, 0));
 				mPostAd.setCat(data.getIntExtra(CAT, 0));
 				mPostAd.setSub_cat(data.getIntExtra(SUB_CAT, 0));
-
+				mCost1 = data.getIntExtra("cost1", 0);
+				mCost2 = data.getIntExtra("cost2", 0);
 				Log.d("haipn", "Section:" + mPostAd.getSection()
 						+ ", category:" + mPostAd.getCat() + ", sub cat:"
-						+ mPostAd.getSub_cat());
+						+ mPostAd.getSub_cat() + ", cost1 :" + mCost1
+						+ ",  cost2 :" + mCost2);
 				mTvCategory.setCompoundDrawablesWithIntrinsicBounds(
 						R.drawable.category_icon, 0, R.drawable.tick, 0);
 			}
@@ -1110,23 +1102,23 @@ public class PostAdActivity extends FragmentActivity implements
 		case REQUEST_CAMERA:
 			if (resultCode == RESULT_OK) {
 				Uri imageUri = Uri.parse("file://" + FILE_PATH);
-				Options op = new Options();
-				op.inJustDecodeBounds = true;
-				Bitmap bm = BitmapFactory.decodeFile(FILE_PATH, op);
-				Log.d("haipn", "bitmap camera widgh x height:" + op.outWidth
-						+ " x " + op.outHeight);
+				// Options op = new Options();
+				// op.inJustDecodeBounds = true;
+				// Bitmap bm = BitmapFactory.decodeFile(FILE_PATH, op);
+				// Log.d("haipn", "bitmap camera widgh x height:" + op.outWidth
+				// + " x " + op.outHeight);
 				startFeather(imageUri);
 			}
 			break;
 		case REQUEST_GALLERY:
 			if (resultCode == RESULT_OK) {
 				Uri mImageUri = data.getData();
-				Options op = new Options();
-				op.inJustDecodeBounds = true;
-				Bitmap bm = BitmapFactory.decodeFile(
-						getRealPathFromURI(mImageUri), op);
-				Log.d("haipn", "bitmap galeery widgh x height:" + op.outWidth
-						+ " x " + op.outHeight);
+				// Options op = new Options();
+				// op.inJustDecodeBounds = true;
+				// Bitmap bm = BitmapFactory.decodeFile(
+				// getRealPathFromURI(mImageUri), op);
+				// Log.d("haipn", "bitmap galeery widgh x height:" + op.outWidth
+				// + " x " + op.outHeight);
 				startFeather(mImageUri);
 			}
 			break;
@@ -1134,12 +1126,12 @@ public class PostAdActivity extends FragmentActivity implements
 			if (resultCode == RESULT_OK) {
 				Uri mImageUri = Uri.parse("file://" + mOutputFilePath);
 				String path = mOutputFilePath;
-				Log.d("haipn", "path image:" + path);
-				Options op = new Options();
-				op.inJustDecodeBounds = true;
-				Bitmap bm = BitmapFactory.decodeFile(path, op);
-				Log.d("haipn", "bitmap aviary widgh x height:" + op.outWidth
-						+ " x " + op.outHeight);
+				// Log.d("haipn", "path image:" + path);
+				// Options op = new Options();
+				// op.inJustDecodeBounds = true;
+				// Bitmap bm = BitmapFactory.decodeFile(path, op);
+				// Log.d("haipn", "bitmap aviary widgh x height:" + op.outWidth
+				// + " x " + op.outHeight);
 				switch (mIdSelect) {
 				case 1:
 					mImv1.setImageURI(mImageUri);
@@ -1434,33 +1426,6 @@ public class PostAdActivity extends FragmentActivity implements
 
 	}
 
-	private String buildMultipartEntityTest(PostAd post)
-			throws ClientProtocolException, IOException {
-		HttpClient client = new DefaultHttpClient();
-
-		HttpPost httpPost = new HttpPost(Const.URL_POST_AD_TEST);
-
-		MultipartEntityBuilder builder = MultipartEntityBuilder.create();
-		builder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
-
-		File file1 = new File(post.getAdpic1());
-
-		if (file1.exists()) {
-			builder.addPart("image", new FileBody(file1));
-			Log.d("haipn", "test 1:" + post.getAdpic1());
-		}
-		HttpEntity entity = builder.build();
-
-		httpPost.setEntity(entity);
-
-		HttpResponse response = client.execute(httpPost);
-
-		HttpEntity httpEntity = response.getEntity();
-
-		String result = EntityUtils.toString(httpEntity);
-		return result;
-	}
-
 	private class FileUploadTask extends AsyncTask<PostAd, Integer, String> {
 
 		private ProgressDialog dialog;
@@ -1513,6 +1478,12 @@ public class PostAdActivity extends FragmentActivity implements
 					startActivity(i);
 					finish();
 				}
+			} else if (res.Result.Return.equals("expired")) {
+
+				ExpireProcess expireProcess = new ExpireProcess(
+						PostAdActivity.this, PostAdActivity.this);
+				expireProcess.processExpired();
+				mExpireFrom = 1;
 			} else {
 				showError(res.Result.Message, true);
 			}
@@ -1566,6 +1537,39 @@ public class PostAdActivity extends FragmentActivity implements
 							});
 			return builder.create();
 		}
+	}
+
+	protected void showTcred(String string) {
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setMessage(getString(R.string.message_tcred_1, string))
+				.setIcon(android.R.drawable.ic_dialog_alert)
+				.setTitle(R.string.title_tcred)
+				.setNegativeButton(android.R.string.ok,
+						new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int id) {
+								dialog.dismiss();
+							}
+						});
+		Dialog dialog = builder.create();
+		dialog.setCanceledOnTouchOutside(false);
+		dialog.show();
+	}
+
+	@Override
+	public void onSuccess() {
+		mProgress.setVisibility(View.GONE);
+		if (mExpireFrom == 0)
+			onLoad();
+		else {
+			mPostAd.setSession_id(Const.getSessionId(this));
+			new FileUploadTask().execute(mPostAd);
+		}
+	}
+
+	@Override
+	public void onError(String message) {
+		mProgress.setVisibility(View.GONE);
+		showError(message, true);
 	}
 
 }

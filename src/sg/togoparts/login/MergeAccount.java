@@ -26,6 +26,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.sromku.simple.fb.SimpleFacebook;
 
 public class MergeAccount extends FragmentActivity {
 	protected String mAccessToken;
@@ -92,6 +93,9 @@ public class MergeAccount extends FragmentActivity {
 			@Override
 			public void onClick(View v) {
 				setResult(RESULT_CANCELED);
+				SimpleFacebook fb = SimpleFacebook
+						.getInstance(MergeAccount.this);
+				fb.getSession().closeAndClearTokenInformation();
 				finish();
 			}
 		});

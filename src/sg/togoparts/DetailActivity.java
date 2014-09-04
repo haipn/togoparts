@@ -576,7 +576,8 @@ public class DetailActivity extends FragmentActivity implements
 			}
 		});
 
-		if (res.mContactDetails.mContact.value != null
+		if (res.mContactDetails.mContact != null
+				&& res.mContactDetails.mContact.value != null
 				&& !res.mContactDetails.mContact.value.isEmpty()) {
 			mTvShopOrContact.setText(res.mContactDetails.mContact.label);
 			mTvNameContact.setText(res.mContactDetails.mContact.value);
@@ -600,13 +601,15 @@ public class DetailActivity extends FragmentActivity implements
 			mLlShop.setVisibility(View.GONE);
 		}
 
-		if (res.mContactDetails.mContactNo.value != null
+		if (res.mContactDetails.mContactNo != null
+				&& res.mContactDetails.mContactNo.value != null
 				&& !res.mContactDetails.mContactNo.value.isEmpty()) {
 			mTvContactNo.setText(res.mContactDetails.mContactNo.value);
 			mLlContactNo.setVisibility(View.VISIBLE);
 		} else
 			mLlContactNo.setVisibility(View.GONE);
-		if (res.mContactDetails.mBestTime.value != null
+		if (res.mContactDetails.mBestTime != null
+				&& res.mContactDetails.mBestTime.value != null
 				&& !res.mContactDetails.mBestTime.value.isEmpty()) {
 			((TextView) findViewById(R.id.tvBesttime))
 					.setText(res.mContactDetails.mBestTime.value);
@@ -615,8 +618,9 @@ public class DetailActivity extends FragmentActivity implements
 			findViewById(R.id.llBestTime).setVisibility(View.VISIBLE);
 		} else
 			findViewById(R.id.llBestTime).setVisibility(View.GONE);
-		
-		if (res.mContactDetails.mLocation.value != null
+
+		if (res.mContactDetails.mLocation != null
+				&& res.mContactDetails.mLocation.value != null
 				&& !res.mContactDetails.mLocation.value.isEmpty()) {
 			mTvAddress.setText(res.mContactDetails.mLocation.value);
 			mLlAddress.setVisibility(View.VISIBLE);

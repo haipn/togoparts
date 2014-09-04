@@ -12,6 +12,9 @@ import sg.togoparts.json.GsonRequest;
 import sg.togoparts.json.SectionResult;
 import sg.togoparts.json.SectionResult.Section;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -48,6 +51,8 @@ public class SectionActivity extends Activity {
 
 	private int adType;
 	private int mTcred;
+	private int mSelectedCost1;
+	private int mSelectedCost2;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -61,7 +66,7 @@ public class SectionActivity extends Activity {
 		mSubCategoryId = getIntent().getIntExtra(PostAdActivity.SUB_CAT, -1);
 		mListSection = new ArrayList<SectionResult.Section>();
 		mLvSection = (ListView) findViewById(R.id.listView);
-		mAdapter = new SectionAdapter(this, mListSection, mSessionId, adType, mTcred);
+		mAdapter = new SectionAdapter(this, mListSection, mSessionId);
 		mLvSection.setAdapter(mAdapter);
 
 		mLvSection.setOnItemClickListener(new OnItemClickListener() {
@@ -69,13 +74,28 @@ public class SectionActivity extends Activity {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-				Intent i = new Intent(SectionActivity.this,
-						CategoryActivity.class);
-				mSessionId = mListSection.get(position).id;
-				i.putExtra(PostAdActivity.SECTION, mSessionId);
-				i.putExtra(PostAdActivity.CAT, mCategoryId);
-				i.putExtra(PostAdActivity.SUB_CAT, mSubCategoryId);
-				startActivityForResult(i, REQUEST_CATEGORY);
+				Section section = mListSection.get(position);
+				if (adType == 1) {
+					if (section.data != null
+							&& section.data.priority_cost > mTcred) {
+						showTcred("Priority");
+					}
+				} else if (adType == 2) {
+					if (section.data != null
+							&& section.data.newitem_cost > mTcred) {
+						showTcred("New Item");
+					}
+				} else {
+					mSelectedCost1 = section.data.priority_cost;
+					mSelectedCost2 = section.data.newitem_cost;
+					Intent i = new Intent(SectionActivity.this,
+							CategoryActivity.class);
+					mSessionId = mListSection.get(position).id;
+					i.putExtra(PostAdActivity.SECTION, mSessionId);
+					i.putExtra(PostAdActivity.CAT, mCategoryId);
+					i.putExtra(PostAdActivity.SUB_CAT, mSubCategoryId);
+					startActivityForResult(i, REQUEST_CATEGORY);
+				}
 			}
 		});
 		mProgress.setVisibility(View.VISIBLE);
@@ -91,6 +111,22 @@ public class SectionActivity extends Activity {
 			};
 		};
 		queue.add(myReq);
+	}
+
+	protected void showTcred(String string) {
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setMessage(getString(R.string.message_tcred, string))
+				.setIcon(android.R.drawable.ic_dialog_alert)
+				.setTitle(R.string.title_tcred)
+				.setNegativeButton(android.R.string.ok,
+						new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int id) {
+								dialog.dismiss();
+							}
+						});
+		Dialog dialog = builder.create();
+		dialog.setCanceledOnTouchOutside(false);
+		dialog.show();
 	}
 
 	private Listener<SectionResult> createProfileSuccessListener() {
@@ -125,6 +161,8 @@ public class SectionActivity extends Activity {
 		super.onActivityResult(requestCode, resultCode, data);
 		if (resultCode == RESULT_OK && requestCode == REQUEST_CATEGORY) {
 			data.putExtra(PostAdActivity.SECTION, mSessionId);
+			data.putExtra("cost1", mSelectedCost1);
+			data.putExtra("cost2", mSelectedCost2);
 			setResult(RESULT_OK, data);
 			finish();
 		}

@@ -30,6 +30,7 @@ import com.android.volley.Request.Method;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.sromku.simple.fb.SimpleFacebook;
 
 public class Signup extends FragmentActivity {
 	protected String mFbId;
@@ -112,6 +113,8 @@ public class Signup extends FragmentActivity {
 			
 			@Override
 			public void onClick(View v) {
+				SimpleFacebook fb = SimpleFacebook.getInstance(Signup.this);
+				fb.logout(null);
 				finish();
 			}
 		});

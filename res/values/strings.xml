@@ -201,10 +201,15 @@
     <string name="label_no_action">Ad already marked as %s</string>
     <string name="msg_confirm_logout">Logout Togoparts Account?</string>
     <string name="label_check_email">Email me when this ad is posted successfully</string>
-	<string name="admod_id">/4689451/Android320x50</string>
-	<string name="title_edit_ad">Edit Ad</string>
-	<string name="external_storage_na_title">Attention</string>
+    <string name="admod_id">/4689451/Android320x50</string>
+    <string name="title_edit_ad">Edit Ad</string>
+    <string name="external_storage_na_title">Attention</string>
     <string name="external_storage_na_message">Sdcard is missing or currently not mounted. Cannot continue.</string>
+    <string name="title_fb_authorize">Details missing!</string>
+    <string name="message_fb_authorize">Email and birthday are required to proceed sign-up</string>
+	<string name="title_tcred">Insufficient TCredits</string>
+	<string name="message_tcred">You do not have enough TCredits to post %s ad under this Section!</string>
+	<string name="message_tcred_1">You do not have enough TCredits to post %s ad under the selected Category!</string>
     <string-array name="actions">
         <item>Capture image from camera</item>
         <item>Pick image from gallery</item>

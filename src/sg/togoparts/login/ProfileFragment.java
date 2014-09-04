@@ -20,6 +20,7 @@ import sg.togoparts.login.AdProfileAdapter.QuickActionSelect;
 import sg.togoparts.login.Profile.ProfileValue;
 import sg.togoparts.login.Profile.Value;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -99,10 +100,14 @@ public class ProfileFragment extends Fragment_Main implements QuickActionSelect 
 			public void onClickFrontView(int position) {
 				super.onClickFrontView(position);
 				Log.d("haipn", "position:" + position);
-				Intent i = new Intent(getActivity(), DetailActivity.class);
-				i.putExtra(Const.ADS_ID, mResult.get(position - 1).aid);
-				i.putExtra(Const.IS_MY_AD, true);
-				startActivity(i);
+				try {
+					Intent i = new Intent(getActivity(), DetailActivity.class);
+					i.putExtra(Const.ADS_ID, mResult.get(position - 1).aid);
+					i.putExtra(Const.IS_MY_AD, true);
+					startActivity(i);
+				} catch (IndexOutOfBoundsException e) {
+					e.printStackTrace();
+				}
 			}
 		});
 		
@@ -202,7 +207,9 @@ public class ProfileFragment extends Fragment_Main implements QuickActionSelect 
 								dialog.dismiss();
 							}
 						});
-		builder.show();
+		Dialog dialog = builder.create();
+		dialog.setCanceledOnTouchOutside(false);
+		dialog.show();
 	}
 
 	protected void logout() {
@@ -441,7 +448,9 @@ public class ProfileFragment extends Fragment_Main implements QuickActionSelect 
 								mLvResult.closeOpenedItems();
 							}
 						});
-		builder.show();
+		Dialog dialog = builder.create();
+		dialog.setCanceledOnTouchOutside(false);
+		dialog.show();
 	}
 
 	@Override
@@ -467,7 +476,9 @@ public class ProfileFragment extends Fragment_Main implements QuickActionSelect 
 								mLvResult.closeOpenedItems();
 							}
 						});
-		builder.show();
+		Dialog dialog = builder.create();
+		dialog.setCanceledOnTouchOutside(false);
+		dialog.show();
 	}
 
 	@Override
@@ -493,7 +504,9 @@ public class ProfileFragment extends Fragment_Main implements QuickActionSelect 
 								mLvResult.closeOpenedItems();
 							}
 						});
-		builder.show();
+		Dialog dialog = builder.create();
+		dialog.setCanceledOnTouchOutside(false);
+		dialog.show();
 	}
 
 	@Override
@@ -519,7 +532,9 @@ public class ProfileFragment extends Fragment_Main implements QuickActionSelect 
 								mLvResult.closeOpenedItems();
 							}
 						});
-		builder.show();
+		Dialog dialog = builder.create();
+		dialog.setCanceledOnTouchOutside(false);
+		dialog.show();
 	}
 
 	private Listener<ResultLogin> createManageSuccessListener() {

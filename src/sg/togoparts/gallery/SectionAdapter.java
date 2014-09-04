@@ -22,13 +22,11 @@ public class SectionAdapter extends BaseAdapter {
 	int mTcred;
 
 	public SectionAdapter(Context context, ArrayList<Section> result,
-			int idSelect, int type, int tCred) {
+			int idSelect) {
 		super();
 		mContext = context;
 		mListResult = result;
 		id = idSelect;
-		adType = type;
-		mTcred = tCred;
 	}
 
 	@Override
@@ -72,47 +70,46 @@ public class SectionAdapter extends BaseAdapter {
 			holder.tick.setVisibility(View.GONE);
 		}
 		holder.label.setText(promos.data.title);
-		if (adType == 1) {
-			if (promos.data != null && promos.data.priority_cost <= mTcred) {
-				// ((ListView) parent).getChildAt(position).setEnabled(true);
-				holder.label.setEnabled(true);
-			} else {
-				// ((ListView) parent).getChildAt(position).setEnabled(false);
-				holder.label.setEnabled(false);
-			}
-		} else if (adType == 2) {
-			if (promos.data != null && promos.data.newitem_cost <= mTcred) {
-				// ((ListView) parent).getChildAt(position).setEnabled(true);
-				holder.label.setEnabled(true);
-			} else {
-				// ((ListView) parent).getChildAt(position).setEnabled(false);
-				holder.label.setEnabled(false);
-			}
-		} else {
-			// ((ListView) parent).getChildAt(position).setEnabled(true);
-			holder.label.setEnabled(true);
-		}
+//		if (adType == 1) {
+//			if (promos.data != null && promos.data.priority_cost <= mTcred) {
+//				// ((ListView) parent).getChildAt(position).setEnabled(true);
+//				// holder.label.setEnabled(true);
+//			} else {
+//				// ((ListView) parent).getChildAt(position).setEnabled(false);
+//				// holder.label.setEnabled(false);
+//				showTcred("Show");
+//			}
+//		} else if (adType == 2) {
+//			if (promos.data != null && promos.data.newitem_cost <= mTcred) {
+//				// ((ListView) parent).getChildAt(position).setEnabled(true);
+//				// holder.label.setEnabled(true);
+//			} else {
+//				// ((ListView) parent).getChildAt(position).setEnabled(false);
+//				// holder.label.setEnabled(false);
+//				showTcred("New Item");
+//			}
+//		}
 		return convertView;
 	}
 
-	public boolean isEnabled(int position) {
-		Section promos = getItem(position);
-		if (adType == 1) {
-			if (promos.data != null && promos.data.priority_cost <= mTcred) {
-				return true;
-			} else {
-				return false;
-			}
-		} else if (adType == 2) {
-			if (promos.data != null && promos.data.newitem_cost <= mTcred) {
-				return true;
-			} else {
-				return false;
-			}
-		} else {
-			return true;
-		}
-	}
+	// public boolean isEnabled(int position) {
+	// Section promos = getItem(position);
+	// if (adType == 1) {
+	// if (promos.data != null && promos.data.priority_cost <= mTcred) {
+	// return true;
+	// } else {
+	// return false;
+	// }
+	// } else if (adType == 2) {
+	// if (promos.data != null && promos.data.newitem_cost <= mTcred) {
+	// return true;
+	// } else {
+	// return false;
+	// }
+	// } else {
+	// return true;
+	// }
+	// }
 
 	class ViewHolder {
 		public TextView label;

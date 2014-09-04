@@ -2,7 +2,9 @@ package sg.togoparts.login;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import sg.togoparts.R;
@@ -12,7 +14,11 @@ import sg.togoparts.app.MyVolley;
 import sg.togoparts.json.GsonRequest;
 import sg.togoparts.json.ResultLogin;
 import sg.togoparts.json.ResultLogin.ResultValue;
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -26,6 +32,8 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethod.SessionCallback;
+import android.view.inputmethod.InputMethodSession;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -36,11 +44,14 @@ import com.android.volley.Request.Method;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.facebook.Session;
 import com.sromku.simple.fb.Permission;
+import com.sromku.simple.fb.Permission.Type;
 import com.sromku.simple.fb.SimpleFacebook;
 import com.sromku.simple.fb.entities.Profile;
 import com.sromku.simple.fb.entities.Profile.Properties;
 import com.sromku.simple.fb.listeners.OnLoginListener;
+import com.sromku.simple.fb.listeners.OnNewPermissionsListener;
 import com.sromku.simple.fb.listeners.OnProfileListener;
 
 public class ChooseLogin extends FragmentActivity {
@@ -53,6 +64,10 @@ public class ChooseLogin extends FragmentActivity {
 	public static final String GENDER = "gender";
 	public static final String USERNAME = "username";
 	public static final String FACEBOOK_FIRST_LAST_NAME = "last first name";
+	private static final List<String> PERMISSIONS = Arrays
+			.asList("public_profile, email, user_birthday, user_friends");
+	// Request code for reauthorization requests.
+	private static final int REAUTH_ACTIVITY_CODE = 100;
 	public static String CLIENT_ID = "G101vptA69sVpvlr";
 	protected Profile mProfileFb;
 	protected SimpleFacebook mSimpleFacebook;
@@ -91,15 +106,13 @@ public class ChooseLogin extends FragmentActivity {
 
 			@Override
 			public void onClick(View arg0) {
-				Intent i = new Intent(ChooseLogin.this,
-						TabsActivityMain.class);
+				Intent i = new Intent(ChooseLogin.this, TabsActivityMain.class);
 				i.putExtra(Const.TAG_NAME, "1");
 				i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				startActivity(i);
 				finish();
 			}
 		});
-
 		mEdtPass = (EditText) findViewById(R.id.edtPass);
 		mEdtUser = (EditText) findViewById(R.id.edtUsername);
 
@@ -140,6 +153,15 @@ public class ChooseLogin extends FragmentActivity {
 			startActivity(new Intent(this, TabsActivityMain.class));
 			finish();
 		}
+		switch (requestCode) {
+	    case REAUTH_ACTIVITY_CODE:
+	        Session session = Session.getActiveSession();
+	        if (session != null) {
+	            session.onActivityResult(this, requestCode, resultCode, data);
+	            getProfileFb();
+	        }
+	        break;
+	    }
 	}
 
 	private void setLogin() {
@@ -215,7 +237,16 @@ public class ChooseLogin extends FragmentActivity {
 				// change the state of the button or do whatever you want
 				// mTextStatus.setText("Logged in");
 				// loggedInUIState();
-
+				mProgressDialog.dismiss();
+				List<String> permissions = mSimpleFacebook.getSession().getPermissions();
+				if (!permissions.containsAll(PERMISSIONS)) {
+//					pendingAnnounce = true; // Mark that we are currently
+											// waiting for confirmation of
+											// publish permissions
+//					mSimpleFacebook.getSession().addCallback(callback)
+					showAuthorize();
+					return;
+				}
 				Log.d("haipn", "login fb");
 				getProfileFb();
 			}
@@ -237,11 +268,12 @@ public class ChooseLogin extends FragmentActivity {
 	}
 
 	private void getProfileFb() {
+		mProgressDialog.show();
 		Profile.Properties properties = new Profile.Properties.Builder()
 				.add(Properties.ID).add(Properties.FIRST_NAME)
-				.add(Properties.LAST_NAME).add(Properties.EMAIL)
-				.add(Properties.COVER).add(Properties.WORK)
-				.add(Properties.EDUCATION).build();
+				.add(Properties.BIRTHDAY).add(Properties.LAST_NAME)
+				.add(Properties.EMAIL).add(Properties.COVER)
+				.add(Properties.WORK).add(Properties.EDUCATION).build();
 		mSimpleFacebook.getProfile(properties, onProfileListener);
 	}
 
@@ -252,14 +284,24 @@ public class ChooseLogin extends FragmentActivity {
 					+ profile.getEmail() + ","
 					+ mSimpleFacebook.getSession().getAccessToken());
 			mProfileFb = profile;
-			Const.writeAccessTokenFb(ChooseLogin.this, mSimpleFacebook
-					.getSession().getAccessToken());
-			loginFB(profile.getId(), profile.getEmail(), mSimpleFacebook
-					.getSession().getAccessToken());
+			mProgressDialog.dismiss();
+			if (profile.getEmail() == null || profile.getBirthday() == null
+					|| profile.getEmail().isEmpty()
+					|| profile.getEmail().equals("null")
+					|| profile.getBirthday().isEmpty()
+					|| profile.getBirthday().equals("null")) {
+				showAuthorize();
+			} else {
+				Const.writeAccessTokenFb(ChooseLogin.this, mSimpleFacebook
+						.getSession().getAccessToken());
+				loginFB(profile.getId(), profile.getEmail(), mSimpleFacebook
+						.getSession().getAccessToken());
+			}
 		}
 	};
 
 	public void loginFB(final String id, final String email, final String token) {
+		mProgressDialog.show();
 		RequestQueue queue = MyVolley.getRequestQueue();
 
 		if (id != null && !id.equals("") && email != null && !email.equals("")
@@ -291,6 +333,43 @@ public class ChooseLogin extends FragmentActivity {
 			queue.add(myReq);
 		}
 	}
+
+	protected void showAuthorize() {
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setMessage(R.string.message_fb_authorize)
+				.setIcon(android.R.drawable.ic_dialog_alert)
+				.setTitle(R.string.title_fb_authorize)
+				.setPositiveButton("Authorize",
+						new DialogInterface.OnClickListener() {
+
+							@Override
+							public void onClick(DialogInterface dialog,
+									int which) {
+								dialog.dismiss();
+								requestReadPermissions(ChooseLogin.this, mSimpleFacebook.getSession(), PERMISSIONS,
+										REAUTH_ACTIVITY_CODE);
+							}
+						})
+				.setNegativeButton(android.R.string.cancel,
+						new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int id) {
+								dialog.dismiss();
+							}
+						});
+		Dialog dialog = builder.create();
+		dialog.setCanceledOnTouchOutside(false);
+		dialog.show();
+	}
+
+	public void requestReadPermissions(Activity activity,
+			Session session, List<String> permissions, int requestCode) {
+		if (session != null) {
+			Session.NewPermissionsRequest reauthRequest = new Session.NewPermissionsRequest(
+					activity, permissions).setRequestCode(requestCode);
+			session.requestNewReadPermissions(reauthRequest);
+		}
+	}
+
 
 	private Response.Listener<ResultLogin> createLoginNormalSuccessListener() {
 		return new Response.Listener<ResultLogin>() {
@@ -380,4 +459,5 @@ public class ChooseLogin extends FragmentActivity {
 		mDialog.setMessage(msg);
 		mDialog.show(getSupportFragmentManager(), "error");
 	}
+
 }

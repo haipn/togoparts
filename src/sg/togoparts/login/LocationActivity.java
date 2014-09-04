@@ -89,12 +89,10 @@ public class LocationActivity extends Activity implements LocationListener,
 				String mCity = "";
 				if (add.getLocality() != null)
 					mCity = add.getLocality();
-				String mRegion = "";
-				if (add.getAdminArea() != null)
-					mRegion = add.getAdminArea();
+				String mRegion = "Singapore";
 				String mAddress = "";
-				if (add.getAddressLine(0) != null)
-					mAddress = add.getAddressLine(0);
+				if (add.getFeatureName() != null)
+					mAddress = add.getFeatureName();
 				String mPostalCode = "";
 				if (add.getPostalCode() != null)
 					mPostalCode = add.getPostalCode();
@@ -349,8 +347,7 @@ public class LocationActivity extends Activity implements LocationListener,
 				} else {
 					Log.d("haipn", "lenght > 0, :" + location);
 					addresses = geocoder.getFromLocationName(location,
-							MAX_VALUE, lowerLeftLatitude, lowerLeftLongitude,
-							upperRightLatitude, upperRightLongitude);
+							MAX_VALUE);
 				}
 				// Catch network or other I/O problems.
 			} catch (IOException exception1) {
@@ -400,11 +397,11 @@ public class LocationActivity extends Activity implements LocationListener,
 				mListAddress = address;
 				ArrayList<String> strings = new ArrayList<String>();
 				for (Address ad : address) {
-					String str = ad.getAddressLine(0);
+					String str = ad.getFeatureName() + "\n";
+					str += ad.getAddressLine(0);
 					for (int i = 1; i < ad.getMaxAddressLineIndex(); i++) {
 						str = str + "," + ad.getAddressLine(i);
 					}
-					Log.d("haipn", "address " + str);
 					strings.add(str);
 				}
 
