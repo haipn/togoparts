@@ -6,6 +6,7 @@ public class SectionResult {
 	public Sections Result;
 
 	public class Sections {
+		public String Return;
 		public ArrayList<Section> Sections;
 	}
 

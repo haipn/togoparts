@@ -155,7 +155,7 @@ public class ShortListAdsFragment extends Fragment_Main implements
 		return new Response.Listener<SearchResult>() {
 			@Override
 			public void onResponse(SearchResult response) {
-				if (response.ads != null && !response.ads.isEmpty()) {
+				if (response != null && response.ads != null && !response.ads.isEmpty()) {
 					mResult.addAll(response.ads);
 					mAdapter.notifyDataSetChanged();
 					mTvNoShortlist.setVisibility(View.GONE);

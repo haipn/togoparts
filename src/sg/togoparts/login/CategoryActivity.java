@@ -11,9 +11,11 @@ import sg.togoparts.gallery.CategoryAdapter;
 import sg.togoparts.json.CategoryResult;
 import sg.togoparts.json.CategoryResult.Category;
 import sg.togoparts.json.GsonRequest;
+import sg.togoparts.login.ExpireProcess.OnExpireResult;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -31,7 +33,8 @@ import com.android.volley.Response;
 import com.android.volley.Response.Listener;
 import com.android.volley.VolleyError;
 
-public class CategoryActivity extends Activity {
+public class CategoryActivity extends FragmentActivity implements
+		OnExpireResult {
 	protected static final int REQUEST_SUB_CATEGORY = 0;
 	private ImageButton mBtnBack;
 	private TextView mTvTitleHeader;
@@ -72,6 +75,10 @@ public class CategoryActivity extends Activity {
 				startActivityForResult(i, REQUEST_SUB_CATEGORY);
 			}
 		});
+		getCategory();
+	}
+
+	private void getCategory() {
 		mProgress.setVisibility(View.VISIBLE);
 		RequestQueue queue = MyVolley.getRequestQueue();
 		GsonRequest<CategoryResult> myReq = new GsonRequest<CategoryResult>(
@@ -94,7 +101,11 @@ public class CategoryActivity extends Activity {
 			@Override
 			public void onResponse(CategoryResult response) {
 				mProgress.setVisibility(View.INVISIBLE);
-				if (response.Result != null && response.Result.Category != null) {
+				if (response.Result.Return != null
+						&& response.Result.Return.equals("expired")) {
+					processExpired();
+				} else if (response.Result != null
+						&& response.Result.Category != null) {
 					Log.d("haipn", "list Category lenght:"
 							+ response.Result.Category.size());
 					mListSection.addAll(response.Result.Category);
@@ -102,6 +113,12 @@ public class CategoryActivity extends Activity {
 				}
 			}
 		};
+	}
+
+	protected void processExpired() {
+		mProgress.setVisibility(View.VISIBLE);
+		ExpireProcess expire = new ExpireProcess(this, this);
+		expire.processExpired();
 	}
 
 	private Response.ErrorListener createMyReqErrorListener() {
@@ -142,5 +159,18 @@ public class CategoryActivity extends Activity {
 				onBackPressed();
 			}
 		});
+	}
+
+	@Override
+	public void onSuccess() {
+		mProgress.setVisibility(View.INVISIBLE);
+		getCategory();
+	}
+
+	@Override
+	public void onError(String message) {
+		mProgress.setVisibility(View.INVISIBLE);
+		ErrorDialog errorDialog = new ErrorDialog(message);
+		errorDialog.show(getSupportFragmentManager(), "error");
 	}
 }

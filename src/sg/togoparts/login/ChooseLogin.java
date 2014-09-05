@@ -238,15 +238,15 @@ public class ChooseLogin extends FragmentActivity {
 				// mTextStatus.setText("Logged in");
 				// loggedInUIState();
 				mProgressDialog.dismiss();
-				List<String> permissions = mSimpleFacebook.getSession().getPermissions();
-				if (!permissions.containsAll(PERMISSIONS)) {
-//					pendingAnnounce = true; // Mark that we are currently
-											// waiting for confirmation of
-											// publish permissions
-//					mSimpleFacebook.getSession().addCallback(callback)
-					showAuthorize();
-					return;
-				}
+//				List<String> permissions = mSimpleFacebook.getSession().getPermissions();
+//				if (!permissions.containsAll(PERMISSIONS)) {
+////					pendingAnnounce = true; // Mark that we are currently
+//											// waiting for confirmation of
+//											// publish permissions
+////					mSimpleFacebook.getSession().addCallback(callback)
+//					showAuthorize();
+//					return;
+//				}
 				Log.d("haipn", "login fb");
 				getProfileFb();
 			}

@@ -397,11 +397,14 @@ public class LocationActivity extends Activity implements LocationListener,
 				mListAddress = address;
 				ArrayList<String> strings = new ArrayList<String>();
 				for (Address ad : address) {
-					String str = ad.getFeatureName() + "\n";
-					str += ad.getAddressLine(0);
+//					 str = ad.getFeatureName() + "\n";
+					 String str = ad.getAddressLine(0);
 					for (int i = 1; i < ad.getMaxAddressLineIndex(); i++) {
 						str = str + "," + ad.getAddressLine(i);
 					}
+					str +="\n";
+					str += ad.getCountryName() + "," + ad.getPostalCode();
+					
 					strings.add(str);
 				}
 

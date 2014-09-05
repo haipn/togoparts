@@ -181,13 +181,17 @@ public class MoreActivity extends Activity_Main {
 
 		// logout listener
 
-		mSimpleFacebook.logout(onLogoutListener);
+		
 	}
 
 	OnLogoutListener onLogoutListener = new OnLogoutListener() {
 		@Override
 		public void onLogout() {
 			Log.i("haipn", "Facebook You are logged out");
+			mTvLoginOrLogout.setText(R.string.label_login);
+			mTvLoginOrLogout.setCompoundDrawablesWithIntrinsicBounds(
+					R.drawable.login_icon, 0, 0, 0);
+			mProgressDialog.dismiss();
 		}
 
 		@Override
@@ -218,10 +222,9 @@ public class MoreActivity extends Activity_Main {
 						Toast.LENGTH_LONG).show();
 				Const.deleteSessionId(MoreActivity.this);
 				Const.writeAccessTokenFb(MoreActivity.this, "");
-				mTvLoginOrLogout.setText(R.string.label_login);
-				mTvLoginOrLogout.setCompoundDrawablesWithIntrinsicBounds(
-						R.drawable.login_icon, 0, 0, 0);
-				mProgressDialog.dismiss();
+				
+//				mProgressDialog.dismiss();
+				mSimpleFacebook.logout(onLogoutListener);
 			}
 		};
 	}

@@ -44,10 +44,11 @@ public class FSActivity_ShortList extends Activity_Main {
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
-//			if (Const.isAppExitable) {
-				return false;
-//			} else
-//				return super.onKeyDown(keyCode, event);
+			// if (Const.isAppExitable) {
+			finish();
+			return true;
+			// } else
+			// return super.onKeyDown(keyCode, event);
 		}
 		return super.onKeyDown(keyCode, event);
 	}

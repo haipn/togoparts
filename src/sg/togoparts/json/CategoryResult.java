@@ -6,6 +6,7 @@ public class CategoryResult {
 	public Categories Result;
 
 	public class Categories {
+		public String Return;
 		public ArrayList<Category> Category;
 	}
 

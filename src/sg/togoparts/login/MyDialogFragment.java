@@ -8,15 +8,20 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 
 public class MyDialogFragment extends DialogFragment {
-	public MyDialogFragment(OnSelectAction mCallback) {
+	boolean hasRm;
+
+	public MyDialogFragment(OnSelectAction mCallback, boolean hasRemove) {
 		super();
 		this.mCallback = mCallback;
+		this.hasRm = hasRemove;
 	}
 
 	public interface OnSelectAction {
 		public void onCaptureSelect();
 
 		public void onPickSelect();
+
+		public void onRemoveSelect();
 	}
 
 	OnSelectAction mCallback;
@@ -24,13 +29,17 @@ public class MyDialogFragment extends DialogFragment {
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-		builder.setTitle(R.string.select_action).setItems(R.array.actions,
+		builder.setTitle(R.string.select_action).setItems(
+				hasRm ? R.array.actions_extra : R.array.actions,
 				new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int which) {
 						if (which == 0) {
 							mCallback.onCaptureSelect();
 						} else if (which == 1)
 							mCallback.onPickSelect();
+						else {
+							mCallback.onRemoveSelect();
+						}
 					}
 				});
 		return builder.create();

@@ -2,6 +2,7 @@ package sg.togoparts.login;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,11 +19,9 @@ import org.apache.http.util.EntityUtils;
 
 import sg.togoparts.DetailActivity;
 import sg.togoparts.HeaderView;
-import sg.togoparts.MoreActivity;
 import sg.togoparts.R;
 import sg.togoparts.app.Const;
 import sg.togoparts.app.MyVolley;
-import sg.togoparts.gallery.InfoAdapter;
 import sg.togoparts.json.GsonRequest;
 import sg.togoparts.json.PostAd;
 import sg.togoparts.json.PostAdOnLoadResult;
@@ -38,8 +37,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.BitmapFactory.Options;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -50,8 +47,10 @@ import android.support.v4.app.FragmentActivity;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -70,7 +69,6 @@ import com.android.volley.Response;
 import com.android.volley.Response.Listener;
 import com.android.volley.VolleyError;
 import com.aviary.android.feather.FeatherActivity;
-import com.aviary.android.feather.common.utils.StringUtils;
 import com.aviary.android.feather.library.Constants;
 import com.aviary.android.feather.library.filters.FilterLoaderFactory;
 import com.google.gson.Gson;
@@ -191,6 +189,8 @@ public class PostAdActivity extends FragmentActivity implements
 	private int mExpireFrom;
 	private int mCost1 = 0;
 	private int mCost2 = 0;
+
+	ArrayList<String> listDelPic = new ArrayList<String>();
 
 	/**
 	 * Check the external storage status
@@ -824,12 +824,11 @@ public class PostAdActivity extends FragmentActivity implements
 
 			@Override
 			public void onClick(View v) {
-				if (isOverQuota) {
-					if (!mRdoNewItemAd.isChecked()
-							&& !mRdoPriorityAd.isChecked())
-						showError(
-								"Please select an Ad type before selecting a category!",
-								true);
+				if (isOverQuota && !mRdoNewItemAd.isChecked()
+						&& !mRdoPriorityAd.isChecked()) {
+					showError(
+							"Please select an Ad type before selecting a category!",
+							true);
 				} else {
 					Intent i = new Intent(PostAdActivity.this,
 							SectionActivity.class);
@@ -846,12 +845,11 @@ public class PostAdActivity extends FragmentActivity implements
 
 			@Override
 			public void onClick(View v) {
-				if (isOverQuota) {
-					if (!mRdoNewItemAd.isChecked()
-							&& !mRdoPriorityAd.isChecked())
-						showError(
-								"Please select an Ad type before selecting a category!",
-								true);
+				if (isOverQuota && !mRdoNewItemAd.isChecked()
+						&& !mRdoPriorityAd.isChecked()) {
+					showError(
+							"Please select an Ad type before selecting a category!",
+							true);
 				} else {
 					Intent i = new Intent(PostAdActivity.this, ItemInfo.class);
 					i.putExtra(BRAND, mPostAd.getBrand());
@@ -884,12 +882,11 @@ public class PostAdActivity extends FragmentActivity implements
 
 			@Override
 			public void onClick(View v) {
-				if (isOverQuota) {
-					if (!mRdoNewItemAd.isChecked()
-							&& !mRdoPriorityAd.isChecked())
-						showError(
-								"Please select an Ad type before selecting a category!",
-								true);
+				if (isOverQuota && !mRdoNewItemAd.isChecked()
+						&& !mRdoPriorityAd.isChecked()) {
+					showError(
+							"Please select an Ad type before selecting a category!",
+							true);
 				} else {
 					Intent i = new Intent(PostAdActivity.this, Price.class);
 					i.putExtra(PRICE, mPostAd.getPrice());
@@ -909,12 +906,11 @@ public class PostAdActivity extends FragmentActivity implements
 
 			@Override
 			public void onClick(View v) {
-				if (isOverQuota) {
-					if (!mRdoNewItemAd.isChecked()
-							&& !mRdoPriorityAd.isChecked())
-						showError(
-								"Please select an Ad type before selecting a category!",
-								true);
+				if (isOverQuota && !mRdoNewItemAd.isChecked()
+						&& !mRdoPriorityAd.isChecked()) {
+					showError(
+							"Please select an Ad type before selecting a category!",
+							true);
 				} else {
 					Intent i = new Intent(PostAdActivity.this,
 							ContactInfo.class);
@@ -940,7 +936,7 @@ public class PostAdActivity extends FragmentActivity implements
 
 			@Override
 			public void onCheckedChanged(CompoundButton arg0, boolean arg1) {
-				if (isOverQuota)
+				if (isOverQuota && !isEdit)
 					arg0.setVisibility(View.GONE);
 				if (arg1) {
 					mTvNote.setText("");
@@ -955,17 +951,17 @@ public class PostAdActivity extends FragmentActivity implements
 					mImv6.setOnClickListener(null);
 					mImv6.setImageResource(R.drawable.unselected_pic);
 					mPostAd.setAdtype(0);
-				} else {
-					mImv2.setOnClickListener(PostAdActivity.this);
-					mImv2.setImageResource(R.drawable.upload_pic);
-					mImv3.setOnClickListener(PostAdActivity.this);
-					mImv3.setImageResource(R.drawable.upload_pic);
-					mImv4.setOnClickListener(PostAdActivity.this);
-					mImv4.setImageResource(R.drawable.upload_pic);
-					mImv5.setOnClickListener(PostAdActivity.this);
-					mImv5.setImageResource(R.drawable.upload_pic);
-					mImv6.setOnClickListener(PostAdActivity.this);
-					mImv6.setImageResource(R.drawable.upload_pic);
+					// } else {
+					// mImv2.setOnClickListener(PostAdActivity.this);
+					// mImv2.setImageResource(R.drawable.upload_pic);
+					// mImv3.setOnClickListener(PostAdActivity.this);
+					// mImv3.setImageResource(R.drawable.upload_pic);
+					// mImv4.setOnClickListener(PostAdActivity.this);
+					// mImv4.setImageResource(R.drawable.upload_pic);
+					// mImv5.setOnClickListener(PostAdActivity.this);
+					// mImv5.setImageResource(R.drawable.upload_pic);
+					// mImv6.setOnClickListener(PostAdActivity.this);
+					// mImv6.setImageResource(R.drawable.upload_pic);
 				}
 
 			}
@@ -976,26 +972,50 @@ public class PostAdActivity extends FragmentActivity implements
 			@Override
 			public void onCheckedChanged(CompoundButton buttonView,
 					boolean isChecked) {
-				if (!isEdit && isChecked) {
-					if (mResultValue.TCreds < mResultValue.min_newitem_cost) {
-
-						AlertTcredDialog dialog = new AlertTcredDialog(
-								getString(R.string.msg_purchase, "New Item"));
-						dialog.show(getSupportFragmentManager(),
-								"new item confirm");
-						buttonView.setChecked(false);
-						mRdoFreeAd.setChecked(true);
-					} else if (mResultValue.TCreds < mCost2) {
-						showTcred("New Item");
-						buttonView.setChecked(false);
-						mRdoFreeAd.setChecked(true);
-					} else {
-						mTvNote.setText(R.string.note_newitem_ad);
-						mPostAd.setAdtype(2);
-					}
-
+				Log.d("haipn", "newitem on checked");
+				if (isChecked) {
+					mImv2.setOnClickListener(PostAdActivity.this);
+					mImv2.setImageResource(R.drawable.upload_pic);
+					mImv3.setOnClickListener(PostAdActivity.this);
+					mImv3.setImageResource(R.drawable.upload_pic);
+					mImv4.setOnClickListener(PostAdActivity.this);
+					mImv4.setImageResource(R.drawable.upload_pic);
+					mImv5.setOnClickListener(PostAdActivity.this);
+					mImv5.setImageResource(R.drawable.upload_pic);
+					mImv6.setOnClickListener(PostAdActivity.this);
+					mImv6.setImageResource(R.drawable.upload_pic);
+					mTvNote.setText(R.string.note_newitem_ad);
+					mPostAd.setAdtype(2);
 				}
 
+			}
+		});
+		mRdoNewItemAd.setOnTouchListener(new OnTouchListener() {
+
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				// TODO Auto-generated method stub
+				Log.d("haipn", "new item ontouch");
+				if (event.getAction() == MotionEvent.ACTION_DOWN) {
+					if (!isEdit) {
+						if (mResultValue.TCreds < mResultValue.min_newitem_cost) {
+
+							AlertTcredDialog dialog = new AlertTcredDialog(
+									getString(R.string.msg_purchase, "New Item"));
+							dialog.show(getSupportFragmentManager(),
+									"new item confirm");
+							// buttonView.setChecked(false);
+							// mRdoFreeAd.setChecked(true);
+							return true;
+						} else if (mResultValue.TCreds < mCost2) {
+							showTcred("New Item");
+							// buttonView.setChecked(false);
+							// mRdoFreeAd.setChecked(true);
+							return true;
+						}
+					}
+				}
+				return false;
 			}
 		});
 		mRdoPriorityAd
@@ -1004,27 +1024,49 @@ public class PostAdActivity extends FragmentActivity implements
 					@Override
 					public void onCheckedChanged(CompoundButton buttonView,
 							boolean isChecked) {
-						if (!isEdit && isChecked) {
-							if (mResultValue.TCreds < mResultValue.min_priority_cost) {
-
-								AlertTcredDialog dialog = new AlertTcredDialog(
-										getString(R.string.msg_purchase,
-												"Priority"));
-								dialog.show(getSupportFragmentManager(),
-										"priority confirm");
-								buttonView.setChecked(false);
-								mRdoFreeAd.setChecked(true);
-							} else if (mResultValue.TCreds < mCost1) {
-								showTcred("Priority");
-								buttonView.setChecked(false);
-								mRdoFreeAd.setChecked(true);
-							} else {
-								mTvNote.setText(R.string.note_priority_ad);
-								mPostAd.setAdtype(1);
-							}
+						if (isChecked) {
+							mImv2.setOnClickListener(PostAdActivity.this);
+							mImv2.setImageResource(R.drawable.upload_pic);
+							mImv3.setOnClickListener(PostAdActivity.this);
+							mImv3.setImageResource(R.drawable.upload_pic);
+							mImv4.setOnClickListener(PostAdActivity.this);
+							mImv4.setImageResource(R.drawable.upload_pic);
+							mImv5.setOnClickListener(PostAdActivity.this);
+							mImv5.setImageResource(R.drawable.upload_pic);
+							mImv6.setOnClickListener(PostAdActivity.this);
+							mImv6.setImageResource(R.drawable.upload_pic);
+							mTvNote.setText(R.string.note_priority_ad);
+							mPostAd.setAdtype(1);
 						}
+
 					}
 				});
+		mRdoPriorityAd.setOnTouchListener(new OnTouchListener() {
+
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				if (event.getAction() == MotionEvent.ACTION_DOWN) {
+					if (!isEdit) {
+						if (mResultValue.TCreds < mResultValue.min_priority_cost) {
+
+							AlertTcredDialog dialog = new AlertTcredDialog(
+									getString(R.string.msg_purchase, "Priority"));
+							dialog.show(getSupportFragmentManager(),
+									"priority confirm");
+							// buttonView.setChecked(false);
+							// mRdoFreeAd.setChecked(true);
+							return true;
+						} else if (mResultValue.TCreds < mCost1) {
+							showTcred("Priority");
+							// buttonView.setChecked(false);
+							// mRdoFreeAd.setChecked(true);
+							return true;
+						}
+					}
+				}
+				return false;
+			}
+		});
 		mBtnSubmit.setOnClickListener(new OnPostAdClick());
 	}
 
@@ -1196,27 +1238,64 @@ public class PostAdActivity extends FragmentActivity implements
 
 	@Override
 	public void onClick(View v) {
+		boolean hasRemove = false;
 		switch (v.getId()) {
 		case R.id.imv1:
 			mIdSelect = 1;
+			if (isEdit) {
+				hasRemove = mImv1.getTag() != null;
+			} else {
+				hasRemove = mPostAd.getAdpic1() != null
+						&& !mPostAd.getAdpic1().isEmpty();
+			}
 			break;
 		case R.id.imv2:
 			mIdSelect = 2;
+			if (isEdit) {
+				hasRemove = mImv2.getTag() != null;
+			} else {
+				hasRemove = mPostAd.getAdpic2() != null
+						&& !mPostAd.getAdpic2().isEmpty();
+			}
 			break;
 		case R.id.imv3:
 			mIdSelect = 3;
+			if (isEdit) {
+				hasRemove = mImv3.getTag() != null;
+			} else {
+				hasRemove = mPostAd.getAdpic3() != null
+						&& !mPostAd.getAdpic3().isEmpty();
+			}
 			break;
 		case R.id.imv4:
 			mIdSelect = 4;
+			if (isEdit) {
+				hasRemove = mImv4.getTag() != null;
+			} else {
+				hasRemove = mPostAd.getAdpic4() != null
+						&& !mPostAd.getAdpic4().isEmpty();
+			}
 			break;
 		case R.id.imv5:
 			mIdSelect = 5;
+			if (isEdit) {
+				hasRemove = mImv5.getTag() != null;
+			} else {
+				hasRemove = mPostAd.getAdpic5() != null
+						&& !mPostAd.getAdpic5().isEmpty();
+			}
 			break;
 		case R.id.imv6:
 			mIdSelect = 6;
+			if (isEdit) {
+				hasRemove = mImv6.getTag() != null;
+			} else {
+				hasRemove = mPostAd.getAdpic6() != null
+						&& !mPostAd.getAdpic6().isEmpty();
+			}
 			break;
 		}
-		DialogFragment newFragment = new MyDialogFragment(this);
+		DialogFragment newFragment = new MyDialogFragment(this, hasRemove);
 		newFragment.show(getSupportFragmentManager(), "dialog");
 	}
 
@@ -1250,6 +1329,96 @@ public class PostAdActivity extends FragmentActivity implements
 		Intent i = new Intent(Intent.ACTION_PICK,
 				android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
 		startActivityForResult(i, REQUEST_GALLERY);
+	}
+
+	@Override
+	public void onRemoveSelect() {
+		showRemoveConfirm();
+	}
+
+	private void showRemoveConfirm() {
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setMessage(R.string.message_rm_img)
+				.setIcon(android.R.drawable.ic_dialog_alert)
+				.setTitle(R.string.title_rm_img)
+				.setPositiveButton(android.R.string.ok,
+						new DialogInterface.OnClickListener() {
+
+							@Override
+							public void onClick(DialogInterface dialog,
+									int which) {
+								dialog.dismiss();
+								removeImage();
+							}
+						})
+				.setNegativeButton(android.R.string.cancel,
+						new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int id) {
+								dialog.dismiss();
+							}
+						});
+		Dialog dialog = builder.create();
+		dialog.setCanceledOnTouchOutside(false);
+		dialog.show();
+	}
+
+	protected void removeImage() {
+		switch (mIdSelect) {
+		case 1:
+			if (isEdit) {
+				listDelPic.add((String) mImv1.getTag());
+				mImv1.setTag(null);
+			} else {
+				mPostAd.setAdpic1("");
+			}
+			mImv1.setImageResource(R.drawable.upload_pic);
+			break;
+		case 2:
+			if (isEdit) {
+				listDelPic.add((String) mImv2.getTag());
+				mImv2.setTag(null);
+			} else {
+				mPostAd.setAdpic2("");
+			}
+			mImv2.setImageResource(R.drawable.upload_pic);
+			break;
+		case 3:
+			if (isEdit) {
+				listDelPic.add((String) mImv3.getTag());
+				mImv3.setTag(null);
+			} else {
+				mPostAd.setAdpic3("");
+			}
+			mImv3.setImageResource(R.drawable.upload_pic);
+			break;
+		case 4:
+			if (isEdit) {
+				listDelPic.add((String) mImv4.getTag());
+				mImv4.setTag(null);
+			} else {
+				mPostAd.setAdpic4("");
+			}
+			mImv4.setImageResource(R.drawable.upload_pic);
+			break;
+		case 5:
+			if (isEdit) {
+				listDelPic.add((String) mImv5.getTag());
+				mImv5.setTag(null);
+			} else {
+				mPostAd.setAdpic5("");
+			}
+			mImv5.setImageResource(R.drawable.upload_pic);
+			break;
+		case 6:
+			if (isEdit) {
+				listDelPic.add((String) mImv6.getTag());
+				mImv6.setTag(null);
+			} else {
+				mPostAd.setAdpic6("");
+			}
+			mImv6.setImageResource(R.drawable.upload_pic);
+			break;
+		}
 	}
 
 	public String getAdtype() {
@@ -1302,7 +1471,9 @@ public class PostAdActivity extends FragmentActivity implements
 			}
 		}
 		File file3 = new File(post.getAdpic3());
-
+		for (String pic : listDelPic) {
+			del_pics += pic + ",";
+		}
 		if (file3.exists()) {
 			builder.addPart(PostAdActivity.ADPIC3, new FileBody(file3));
 			Log.d("haipn", "postad image 3:" + post.getAdpic3());
@@ -1532,7 +1703,6 @@ public class PostAdActivity extends FragmentActivity implements
 								public void onClick(DialogInterface dialog,
 										int id) {
 									dialog.dismiss();
-									mRdoFreeAd.setChecked(true);
 								}
 							});
 			return builder.create();

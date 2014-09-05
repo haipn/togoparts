@@ -11,12 +11,14 @@ import sg.togoparts.gallery.SectionAdapter;
 import sg.togoparts.json.GsonRequest;
 import sg.togoparts.json.SectionResult;
 import sg.togoparts.json.SectionResult.Section;
+import sg.togoparts.login.ExpireProcess.OnExpireResult;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -34,7 +36,7 @@ import com.android.volley.Response;
 import com.android.volley.Response.Listener;
 import com.android.volley.VolleyError;
 
-public class SectionActivity extends Activity {
+public class SectionActivity extends FragmentActivity implements OnExpireResult {
 
 	public static final String SECTION_ID = "section id";
 	public static final String CATEGORY_ID = "category id";
@@ -53,6 +55,7 @@ public class SectionActivity extends Activity {
 	private int mTcred;
 	private int mSelectedCost1;
 	private int mSelectedCost2;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -75,16 +78,12 @@ public class SectionActivity extends Activity {
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
 				Section section = mListSection.get(position);
-				if (adType == 1) {
-					if (section.data != null
-							&& section.data.priority_cost > mTcred) {
-						showTcred("Priority");
-					}
-				} else if (adType == 2) {
-					if (section.data != null
-							&& section.data.newitem_cost > mTcred) {
-						showTcred("New Item");
-					}
+				if (adType == 1 && section.data != null
+						&& section.data.priority_cost > mTcred) {
+					showTcred("Priority");
+				} else if (adType == 2 && section.data != null
+						&& section.data.newitem_cost > mTcred) {
+					showTcred("New Item");
 				} else {
 					mSelectedCost1 = section.data.priority_cost;
 					mSelectedCost2 = section.data.newitem_cost;
@@ -98,6 +97,10 @@ public class SectionActivity extends Activity {
 				}
 			}
 		});
+		getSections();
+	}
+
+	private void getSections() {
 		mProgress.setVisibility(View.VISIBLE);
 		RequestQueue queue = MyVolley.getRequestQueue();
 		GsonRequest<SectionResult> myReq = new GsonRequest<SectionResult>(
@@ -135,7 +138,11 @@ public class SectionActivity extends Activity {
 			@Override
 			public void onResponse(SectionResult response) {
 				mProgress.setVisibility(View.INVISIBLE);
-				if (response.Result != null && response.Result.Sections != null) {
+				if (response.Result.Return != null
+						&& response.Result.Return.equals("expired")) {
+					processExpired();
+				} else if (response.Result != null
+						&& response.Result.Sections != null) {
 					Log.d("haipn", "list section lenght:"
 							+ response.Result.Sections.size());
 					mListSection.addAll(response.Result.Sections);
@@ -143,6 +150,12 @@ public class SectionActivity extends Activity {
 				}
 			}
 		};
+	}
+
+	protected void processExpired() {
+		mProgress.setVisibility(View.VISIBLE);
+		ExpireProcess expire = new ExpireProcess(this, this);
+		expire.processExpired();
 	}
 
 	private Response.ErrorListener createMyReqErrorListener() {
@@ -185,5 +198,18 @@ public class SectionActivity extends Activity {
 				onBackPressed();
 			}
 		});
+	}
+
+	@Override
+	public void onSuccess() {
+		mProgress.setVisibility(View.INVISIBLE);
+		getSections();
+	}
+
+	@Override
+	public void onError(String message) {
+		mProgress.setVisibility(View.INVISIBLE);
+		ErrorDialog errorDialog = new ErrorDialog(message);
+		errorDialog.show(getSupportFragmentManager(), "error");
 	}
 }
