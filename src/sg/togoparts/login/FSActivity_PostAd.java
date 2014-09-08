@@ -6,6 +6,7 @@ import android.app.TabActivity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.KeyEvent;
 
 public class FSActivity_PostAd extends Activity_Main {
@@ -23,6 +24,7 @@ public class FSActivity_PostAd extends Activity_Main {
 
 	@Override
 	protected void onRestart() {
+		Log.d("haipn", " FsActivity postad on restart");
 		TabActivity tabs = (TabActivity) getParent();
 		tabs.getTabHost().setCurrentTabByTag("2");
 		super.onRestart();

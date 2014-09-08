@@ -109,12 +109,7 @@ public class LocationActivity extends Activity implements LocationListener,
 				i.putExtra(PostAdActivity.COUNTRY, mCountry);
 				i.putExtra(PostAdActivity.LAT, mLat);
 				i.putExtra(PostAdActivity.LONGITUDE, mLong);
-				String str = add.getAddressLine(0);
-				for (int i1 = 1; i1 < add.getMaxAddressLineIndex(); i1++) {
-					str = str + "," + add.getAddressLine(i1);
-				}
 
-				i.putExtra("full_address", str);
 				setResult(RESULT_OK, i);
 				finish();
 			}
@@ -397,14 +392,20 @@ public class LocationActivity extends Activity implements LocationListener,
 				mListAddress = address;
 				ArrayList<String> strings = new ArrayList<String>();
 				for (Address ad : address) {
-//					 str = ad.getFeatureName() + "\n";
-					 String str = ad.getAddressLine(0);
+					// str = ad.getFeatureName() + "\n";
+					String str = ad.getAddressLine(0);
 					for (int i = 1; i < ad.getMaxAddressLineIndex(); i++) {
 						str = str + "," + ad.getAddressLine(i);
 					}
-					str +="\n";
-					str += ad.getCountryName() + "," + ad.getPostalCode();
-					
+					str += "\n";
+					if (ad.getCountryName() != null)
+						str += ad.getCountryName();
+					if (ad.getCountryName() != null
+							&& ad.getPostalCode() != null)
+						str += ",";
+					if (ad.getPostalCode() != null)
+						str += ad.getPostalCode();
+
 					strings.add(str);
 				}
 

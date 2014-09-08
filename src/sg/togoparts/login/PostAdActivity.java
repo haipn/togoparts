@@ -465,6 +465,7 @@ public class PostAdActivity extends FragmentActivity implements
 				});
 		Dialog dialog = builder.create();
 		dialog.setCanceledOnTouchOutside(false);
+		dialog.setCancelable(false);
 		dialog.show();
 	}
 
@@ -614,7 +615,7 @@ public class PostAdActivity extends FragmentActivity implements
 		}
 
 		mPostAd.setSession_id(Const.getSessionId(this));
-		if (isOverQuota)
+		if (isOverQuota && !isEdit)
 			mRdoFreeAd.setVisibility(View.GONE);
 
 	}
@@ -825,7 +826,7 @@ public class PostAdActivity extends FragmentActivity implements
 			@Override
 			public void onClick(View v) {
 				if (isOverQuota && !mRdoNewItemAd.isChecked()
-						&& !mRdoPriorityAd.isChecked()) {
+						&& !mRdoPriorityAd.isChecked() && !isEdit) {
 					showError(
 							"Please select an Ad type before selecting a category!",
 							true);
@@ -846,7 +847,7 @@ public class PostAdActivity extends FragmentActivity implements
 			@Override
 			public void onClick(View v) {
 				if (isOverQuota && !mRdoNewItemAd.isChecked()
-						&& !mRdoPriorityAd.isChecked()) {
+						&& !mRdoPriorityAd.isChecked() && !isEdit) {
 					showError(
 							"Please select an Ad type before selecting a category!",
 							true);
@@ -883,7 +884,7 @@ public class PostAdActivity extends FragmentActivity implements
 			@Override
 			public void onClick(View v) {
 				if (isOverQuota && !mRdoNewItemAd.isChecked()
-						&& !mRdoPriorityAd.isChecked()) {
+						&& !mRdoPriorityAd.isChecked() && !isEdit) {
 					showError(
 							"Please select an Ad type before selecting a category!",
 							true);
@@ -907,7 +908,7 @@ public class PostAdActivity extends FragmentActivity implements
 			@Override
 			public void onClick(View v) {
 				if (isOverQuota && !mRdoNewItemAd.isChecked()
-						&& !mRdoPriorityAd.isChecked()) {
+						&& !mRdoPriorityAd.isChecked() && !isEdit) {
 					showError(
 							"Please select an Ad type before selecting a category!",
 							true);

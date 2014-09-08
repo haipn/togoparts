@@ -224,7 +224,7 @@ public class AdProfileAdapter extends BaseAdapter {
 					holder.btnMarkAsSold
 							.setBackgroundResource(R.drawable.mark_as_sold);
 					holder.btnMarkAsSold.setTag("Sold");
-				} else if (ads.adtype.equalsIgnoreCase("free")) {
+				} else if (ads.adtype.equalsIgnoreCase("free!")) {
 					holder.btnMarkAsSold
 							.setBackgroundResource(R.drawable.mark_as_given);
 					holder.btnMarkAsSold.setTag("Given");

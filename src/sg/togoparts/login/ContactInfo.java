@@ -52,10 +52,12 @@ public class ContactInfo extends FragmentActivity {
 		mAddress = i.getStringExtra(PostAdActivity.ADDRESS);
 		mLat = i.getDoubleExtra(PostAdActivity.LAT, 0);
 		mLong = i.getDoubleExtra(PostAdActivity.LONGITUDE, 0);
-
+		
 		mEdtContactNo = (EditText) findViewById(R.id.edtContactNo);
 		mEdtContactPerson = (EditText) findViewById(R.id.edtContactPerson);
 		mEdtLocation = (TextView) findViewById(R.id.edtLocation);
+		
+		mEdtLocation.setText(mAddress);
 		mSpnBestTime = (Spinner) findViewById(R.id.spnBestTime);
 		mBtnSave = (Button) findViewById(R.id.btnSave);
 
@@ -123,7 +125,7 @@ public class ContactInfo extends FragmentActivity {
 				mPostalCode = data.getStringExtra(PostAdActivity.POSTALCODE);
 				mLat = data.getDoubleExtra(PostAdActivity.LAT, 0);
 				mLong = data.getDoubleExtra(PostAdActivity.LONGITUDE, 0);
-				mEdtLocation.setText(data.getStringExtra("full_address"));
+				mEdtLocation.setText(mAddress);
 			}
 		}
 	}

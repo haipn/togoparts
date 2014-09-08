@@ -296,8 +296,9 @@ public class DetailActivity extends FragmentActivity implements
 
 			@Override
 			public void onClick(View v) {
-				setResult(RESULT_CANCELED);
-				onBackPressed();
+//				setResult(RESULT_CANCELED);
+//				onBackPressed();
+				finish();
 			}
 		});
 		mBtnSearch.setVisibility(View.VISIBLE);
