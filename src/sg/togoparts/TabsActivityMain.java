@@ -34,11 +34,12 @@ import com.google.android.gms.ads.AdSize;
 @SuppressWarnings("deprecation")
 public class TabsActivityMain extends TabActivity {
 	public static final String TAB_NAME = "tab name";
+	public static boolean canRestart = true;
 	private PublisherAdView dfpAdView;
 	RelativeLayout rlAdMain;
 	boolean isAdShown = false;
 	TabHost tabHost;
-
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -122,8 +123,9 @@ public class TabsActivityMain extends TabActivity {
 									ChooseLogin.class));
 							tabHost.setCurrentTabByTag("1");
 						}
-					} else if (tabId.equals("3")) {
+					} else if (tabId.equals("3")) {	
 
+						TabsActivityMain.canRestart = false;
 						if (Const.isLogin(TabsActivityMain.this)) {
 							tracker.set(Fields.SCREEN_NAME, "Post Ad");
 							startActivity(new Intent(TabsActivityMain.this,
@@ -132,7 +134,7 @@ public class TabsActivityMain extends TabActivity {
 						} else
 							startActivity(new Intent(TabsActivityMain.this,
 									ChooseLogin.class));
-//						tabHost.setCurrentTabByTag("2");
+						tabHost.setCurrentTabByTag("2");
 					} else if (tabId.equals("4")) {
 						tracker.set(Fields.SCREEN_NAME, "Bikeshop Listing");
 					} else {
@@ -195,7 +197,11 @@ public class TabsActivityMain extends TabActivity {
 			hideAd();
 		}
 	}
-
+	@Override
+	protected void onRestart() {
+		Log.d("haipn", "main tab onrestart");
+		super.onRestart();
+	}
 	private int getScreenWidthInDp() {
 		DisplayMetrics dm = this.getResources().getDisplayMetrics();
 		return (int) (dm.widthPixels / dm.density);

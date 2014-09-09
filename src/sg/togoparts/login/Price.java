@@ -1,5 +1,6 @@
 package sg.togoparts.login;
 
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -26,7 +27,8 @@ public class Price extends Activity {
 	Spinner mSpnPriceType;
 	Button mBtnSave;
 	CheckBox mCbClearance;
-	int price, originalPrice, firmNeg;
+	int  originalPrice, firmNeg;
+	double price;
 	boolean clearance;
 	HashMap<String, Integer> listPricetype;
 	public boolean mIsPostingPack;
@@ -45,7 +47,8 @@ public class Price extends Activity {
 		Intent i = getIntent();
 		mIsPostingPack = i.getBooleanExtra(PostAdActivity.POSTING_PACK, false);
 		mIsMerchant = i.getBooleanExtra(PostAdActivity.MERCHANT_PACK, false);
-		price = i.getIntExtra(PostAdActivity.PRICE, 0);
+		DecimalFormat df = new DecimalFormat("###.##");
+		price = i.getDoubleExtra(PostAdActivity.PRICE, 0);
 		originalPrice = i.getIntExtra(PostAdActivity.ORIGINAL_PRICE, 0);
 		firmNeg = i.getIntExtra(PostAdActivity.PRICETYPE, 0);
 		clearance = i.getBooleanExtra(PostAdActivity.CLEARANCE, false);
@@ -59,7 +62,7 @@ public class Price extends Activity {
 		if (originalPrice != 0)
 			mEdtOriginalPrice.setText(originalPrice + "");
 		if (price != 0)
-			mEdtPrice.setText(price + "");
+			mEdtPrice.setText(df.format(price));
 		mCbClearance.setChecked(clearance);
 
 		
@@ -141,11 +144,12 @@ public class Price extends Activity {
 	}
 	private void saveButton() {
 		Intent i = getIntent();
-		int price;
+		double price;
 		if (mEdtPrice.getText().toString().length() > 0)
-			price = Integer.valueOf(mEdtPrice.getText().toString());
+			price = Double.valueOf(mEdtPrice.getText().toString());
 		else
 			price = 0;
+		
 		i.putExtra(PostAdActivity.PRICE, price);
 		int original;
 		if (mEdtOriginalPrice.getText().toString().length() > 0)

@@ -192,11 +192,16 @@ public class MarketPlaceFragment extends Fragment_Main implements ClickViewAll {
 			@Override
 			public void onErrorResponse(VolleyError error) {
 				Log.d("haipn", "market place error");
-				FragmentTransaction ft = getActivity()
-						.getSupportFragmentManager().beginTransaction();
-				ErrorInternetDialog newFragment = new ErrorInternetDialog();
-				headerView.setProgressVisible(View.INVISIBLE);
-				newFragment.show(ft, "error dialog");
+				try {
+					FragmentTransaction ft = getActivity()
+							.getSupportFragmentManager().beginTransaction();
+					ErrorInternetDialog newFragment = new ErrorInternetDialog();
+					headerView.setProgressVisible(View.INVISIBLE);
+					newFragment.show(ft, "error dialog");
+				} catch (IllegalStateException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		};
 	}

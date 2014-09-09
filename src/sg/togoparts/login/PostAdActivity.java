@@ -2,6 +2,7 @@ package sg.togoparts.login;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -20,6 +21,7 @@ import org.apache.http.util.EntityUtils;
 import sg.togoparts.DetailActivity;
 import sg.togoparts.HeaderView;
 import sg.togoparts.R;
+import sg.togoparts.TabsActivityMain;
 import sg.togoparts.app.Const;
 import sg.togoparts.app.MyVolley;
 import sg.togoparts.json.GsonRequest;
@@ -33,6 +35,7 @@ import sg.togoparts.login.MyDialogFragment.OnSelectAction;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.app.TabActivity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -403,6 +406,7 @@ public class PostAdActivity extends FragmentActivity implements
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.post_ad);
+		Log.d("haipn", "post ad onresume");
 		mAdId = getIntent().getStringExtra(Const.ADS_ID);
 		mPostAd = new PostAd();
 		if (mAdId == null || mAdId.length() == 0) {
@@ -450,6 +454,37 @@ public class PostAdActivity extends FragmentActivity implements
 		ExpireProcess expire = new ExpireProcess(this, this);
 		expire.processExpired();
 		mExpireFrom = 0;
+	}
+
+	@Override
+	protected void onStart() {
+		Log.d("haipn", "post ad onstart");
+		super.onStart();
+	}
+
+	@Override
+	protected void onRestart() {
+		Log.d("haipn", "post ad onrestart");
+
+		super.onRestart();
+	}
+
+	@Override
+	protected void onResume() {
+
+		super.onResume();
+	}
+
+	@Override
+	protected void onPause() {
+		Log.d("haipn", "post ad onPause");
+		super.onPause();
+	}
+
+	@Override
+	protected void onStop() {
+		Log.d("haipn", "post ad onStop");
+		super.onStop();
 	}
 
 	protected void showError(String message, final boolean stay) {
@@ -564,7 +599,7 @@ public class PostAdActivity extends FragmentActivity implements
 					processExpired();
 				} else if (response.Result.Return.equals("success")) {
 					mProgressDialog.dismiss();
-					if (response.Result.Message != null) {
+					if (response.Result.Message != null && !isEdit) {
 						showError(response.Result.Message, true);
 					}
 					mResultValue = response.Result;
@@ -702,7 +737,7 @@ public class PostAdActivity extends FragmentActivity implements
 		mPostAd.setTime_to_contact(ad.time_to_contact);
 		mPostAd.setSize(ad.size);
 		mPostAd.setRegion(ad.region);
-		mPostAd.setPrice(Integer.valueOf(ad.price));
+		mPostAd.setPrice(Double.valueOf(ad.price));
 		mPostAd.setPricetype(ad.pricetype);
 		mPostAd.setSection(Integer.valueOf(ad.section));
 		mPostAd.setCat(Integer.valueOf(ad.cat));
@@ -789,7 +824,8 @@ public class PostAdActivity extends FragmentActivity implements
 						new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int id) {
 								dialog.dismiss();
-								onBackPressed();
+								setResult(RESULT_OK);
+								finish();
 							}
 						});
 		builder.create().show();
@@ -797,10 +833,16 @@ public class PostAdActivity extends FragmentActivity implements
 
 	private void init() {
 		mRdoFreeAd = (RadioButton) findViewById(R.id.rdoFreeAd);
+		mRdoFreeAd.setChecked(true);
 		mRdoNewItemAd = (RadioButton) findViewById(R.id.rdoNewItemAd);
 		mRdoPriorityAd = (RadioButton) findViewById(R.id.rdoPriorityAd);
 		mTvNote = (TextView) findViewById(R.id.tvNote);
+
 		mTvCategory = (TextView) findViewById(R.id.tvCategory);
+		mTvCategory.setEnabled(true);
+		mTvCategory.setCompoundDrawablesWithIntrinsicBounds(
+				R.drawable.category_icon, 0, 0, 0);
+
 		mTvItem = (TextView) findViewById(R.id.tvItem);
 		mTvPrice = (TextView) findViewById(R.id.tvPrice);
 		mTvContact = (TextView) findViewById(R.id.tvContact);
@@ -1118,7 +1160,7 @@ public class PostAdActivity extends FragmentActivity implements
 			break;
 		case REQUEST_PRICE:
 			if (resultCode == RESULT_OK) {
-				mPostAd.setPrice(data.getIntExtra(PRICE, 0));
+				mPostAd.setPrice(data.getDoubleExtra(PRICE, 0));
 				mPostAd.setOriginal_price(data.getIntExtra(ORIGINAL_PRICE, 0));
 				mPostAd.setClearance(data.getBooleanExtra(CLEARANCE, false));
 				mPostAd.setPricetype(data.getIntExtra(PRICETYPE, 3));
@@ -1167,41 +1209,46 @@ public class PostAdActivity extends FragmentActivity implements
 			break;
 		case REQUEST_AVIARY:
 			if (resultCode == RESULT_OK) {
-				Uri mImageUri = Uri.parse("file://" + mOutputFilePath);
-				String path = mOutputFilePath;
-				// Log.d("haipn", "path image:" + path);
-				// Options op = new Options();
-				// op.inJustDecodeBounds = true;
-				// Bitmap bm = BitmapFactory.decodeFile(path, op);
-				// Log.d("haipn", "bitmap aviary widgh x height:" + op.outWidth
-				// + " x " + op.outHeight);
-				switch (mIdSelect) {
-				case 1:
-					mImv1.setImageURI(mImageUri);
-					mPostAd.setAdpic1(path);
-					break;
-				case 2:
-					mImv2.setImageURI(mImageUri);
-					mPostAd.setAdpic2(path);
-					break;
-				case 3:
-					mImv3.setImageURI(mImageUri);
-					mPostAd.setAdpic3(path);
-					break;
-				case 4:
-					mImv4.setImageURI(mImageUri);
-					mPostAd.setAdpic4(path);
-					break;
-				case 5:
-					mImv5.setImageURI(mImageUri);
-					mPostAd.setAdpic5(path);
-					break;
-				case 6:
-					mImv6.setImageURI(mImageUri);
-					mPostAd.setAdpic6(path);
-					break;
-				default:
-					break;
+				try {
+					Uri mImageUri = Uri.parse("file://" + mOutputFilePath);
+					String path = mOutputFilePath;
+					// Log.d("haipn", "path image:" + path);
+					// Options op = new Options();
+					// op.inJustDecodeBounds = true;
+					// Bitmap bm = BitmapFactory.decodeFile(path, op);
+					// Log.d("haipn", "bitmap aviary widgh x height:" +
+					// op.outWidth
+					// + " x " + op.outHeight);
+					switch (mIdSelect) {
+					case 1:
+						mImv1.setImageURI(mImageUri);
+						mPostAd.setAdpic1(path);
+						break;
+					case 2:
+						mImv2.setImageURI(mImageUri);
+						mPostAd.setAdpic2(path);
+						break;
+					case 3:
+						mImv3.setImageURI(mImageUri);
+						mPostAd.setAdpic3(path);
+						break;
+					case 4:
+						mImv4.setImageURI(mImageUri);
+						mPostAd.setAdpic4(path);
+						break;
+					case 5:
+						mImv5.setImageURI(mImageUri);
+						mPostAd.setAdpic5(path);
+						break;
+					case 6:
+						mImv6.setImageURI(mImageUri);
+						mPostAd.setAdpic6(path);
+						break;
+					default:
+						break;
+					}
+				} catch (NullPointerException e) {
+					e.printStackTrace();
 				}
 			}
 			break;
@@ -1244,7 +1291,9 @@ public class PostAdActivity extends FragmentActivity implements
 		case R.id.imv1:
 			mIdSelect = 1;
 			if (isEdit) {
-				hasRemove = mImv1.getTag() != null;
+				hasRemove = (mImv1.getTag() != null)
+						|| (mPostAd.getAdpic1() != null && !mPostAd.getAdpic1()
+								.isEmpty());
 			} else {
 				hasRemove = mPostAd.getAdpic1() != null
 						&& !mPostAd.getAdpic1().isEmpty();
@@ -1253,7 +1302,9 @@ public class PostAdActivity extends FragmentActivity implements
 		case R.id.imv2:
 			mIdSelect = 2;
 			if (isEdit) {
-				hasRemove = mImv2.getTag() != null;
+				hasRemove = (mImv2.getTag() != null)
+						|| (mPostAd.getAdpic2() != null && !mPostAd.getAdpic2()
+								.isEmpty());
 			} else {
 				hasRemove = mPostAd.getAdpic2() != null
 						&& !mPostAd.getAdpic2().isEmpty();
@@ -1262,7 +1313,9 @@ public class PostAdActivity extends FragmentActivity implements
 		case R.id.imv3:
 			mIdSelect = 3;
 			if (isEdit) {
-				hasRemove = mImv3.getTag() != null;
+				hasRemove = (mImv3.getTag() != null)
+						|| (mPostAd.getAdpic3() != null && !mPostAd.getAdpic3()
+								.isEmpty());
 			} else {
 				hasRemove = mPostAd.getAdpic3() != null
 						&& !mPostAd.getAdpic3().isEmpty();
@@ -1271,7 +1324,9 @@ public class PostAdActivity extends FragmentActivity implements
 		case R.id.imv4:
 			mIdSelect = 4;
 			if (isEdit) {
-				hasRemove = mImv4.getTag() != null;
+				hasRemove = (mImv4.getTag() != null)
+						|| (mPostAd.getAdpic4() != null && !mPostAd.getAdpic4()
+								.isEmpty());
 			} else {
 				hasRemove = mPostAd.getAdpic4() != null
 						&& !mPostAd.getAdpic4().isEmpty();
@@ -1280,7 +1335,9 @@ public class PostAdActivity extends FragmentActivity implements
 		case R.id.imv5:
 			mIdSelect = 5;
 			if (isEdit) {
-				hasRemove = mImv5.getTag() != null;
+				hasRemove = (mImv5.getTag() != null)
+						|| (mPostAd.getAdpic5() != null && !mPostAd.getAdpic5()
+								.isEmpty());
 			} else {
 				hasRemove = mPostAd.getAdpic5() != null
 						&& !mPostAd.getAdpic5().isEmpty();
@@ -1289,7 +1346,9 @@ public class PostAdActivity extends FragmentActivity implements
 		case R.id.imv6:
 			mIdSelect = 6;
 			if (isEdit) {
-				hasRemove = mImv6.getTag() != null;
+				hasRemove = (mImv6.getTag() != null)
+						|| (mPostAd.getAdpic6() != null && !mPostAd.getAdpic6()
+								.isEmpty());
 			} else {
 				hasRemove = mPostAd.getAdpic6() != null
 						&& !mPostAd.getAdpic6().isEmpty();
@@ -1367,56 +1426,57 @@ public class PostAdActivity extends FragmentActivity implements
 		switch (mIdSelect) {
 		case 1:
 			if (isEdit) {
-				listDelPic.add((String) mImv1.getTag());
+				if (mImv1.getTag() != null)
+					listDelPic.add((String) mImv1.getTag());
 				mImv1.setTag(null);
-			} else {
-				mPostAd.setAdpic1("");
 			}
+			mPostAd.setAdpic1("");
 			mImv1.setImageResource(R.drawable.upload_pic);
 			break;
 		case 2:
 			if (isEdit) {
-				listDelPic.add((String) mImv2.getTag());
+				if (mImv2.getTag() != null)
+					listDelPic.add((String) mImv2.getTag());
 				mImv2.setTag(null);
-			} else {
-				mPostAd.setAdpic2("");
 			}
+			mPostAd.setAdpic2("");
+
 			mImv2.setImageResource(R.drawable.upload_pic);
 			break;
 		case 3:
 			if (isEdit) {
-				listDelPic.add((String) mImv3.getTag());
+				if (mImv3.getTag() != null)
+					listDelPic.add((String) mImv3.getTag());
 				mImv3.setTag(null);
-			} else {
-				mPostAd.setAdpic3("");
 			}
+			mPostAd.setAdpic3("");
 			mImv3.setImageResource(R.drawable.upload_pic);
 			break;
 		case 4:
 			if (isEdit) {
-				listDelPic.add((String) mImv4.getTag());
+				if (mImv4.getTag() != null)
+					listDelPic.add((String) mImv4.getTag());
 				mImv4.setTag(null);
-			} else {
-				mPostAd.setAdpic4("");
 			}
+			mPostAd.setAdpic4("");
 			mImv4.setImageResource(R.drawable.upload_pic);
 			break;
 		case 5:
 			if (isEdit) {
-				listDelPic.add((String) mImv5.getTag());
+				if (mImv5.getTag() != null)
+					listDelPic.add((String) mImv5.getTag());
 				mImv5.setTag(null);
-			} else {
-				mPostAd.setAdpic5("");
 			}
+			mPostAd.setAdpic5("");
 			mImv5.setImageResource(R.drawable.upload_pic);
 			break;
 		case 6:
 			if (isEdit) {
-				listDelPic.add((String) mImv6.getTag());
+				if (mImv6.getTag() != null)
+					listDelPic.add((String) mImv6.getTag());
 				mImv6.setTag(null);
-			} else {
-				mPostAd.setAdpic6("");
 			}
+			mPostAd.setAdpic6("");
 			mImv6.setImageResource(R.drawable.upload_pic);
 			break;
 		}
@@ -1554,7 +1614,8 @@ public class PostAdActivity extends FragmentActivity implements
 				post.getOriginal_price() + "");
 		builder.addTextBody(PostAdActivity.PICTURELINK, post.getPicturelink());
 		builder.addTextBody(PostAdActivity.POSTALCODE, post.getPostalcode());
-		builder.addTextBody(PostAdActivity.PRICE, post.getPrice() + "");
+		DecimalFormat df = new DecimalFormat("###.##");
+		builder.addTextBody(PostAdActivity.PRICE, df.format(post.getPrice()));
 		builder.addTextBody(PostAdActivity.PRICETYPE, post.getPricetype() + "");
 		builder.addTextBody(PostAdActivity.REGION, post.getRegion());
 		builder.addTextBody(PostAdActivity.SECTION, post.getSection() + "");

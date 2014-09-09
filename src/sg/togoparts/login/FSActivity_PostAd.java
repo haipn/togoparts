@@ -2,6 +2,7 @@ package sg.togoparts.login;
 
 import sg.togoparts.Activity_Main;
 import sg.togoparts.R;
+import sg.togoparts.TabsActivityMain;
 import android.app.TabActivity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -13,21 +14,41 @@ public class FSActivity_PostAd extends Activity_Main {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-//		if (Const.isLogin(this))
-//			startActivity(new Intent(this, PostAdActivity.class));
-		
-//		else {
-//			startActivity(new Intent(this, ChooseLogin.class));
-//			
-//		}
+		// if (Const.isLogin(this))
+		// startActivity(new Intent(this, PostAdActivity.class));
+
+		// else {
+		// startActivity(new Intent(this, ChooseLogin.class));
+		//
+		// }
 	}
 
 	@Override
 	protected void onRestart() {
 		Log.d("haipn", " FsActivity postad on restart");
-		TabActivity tabs = (TabActivity) getParent();
-		tabs.getTabHost().setCurrentTabByTag("2");
+//		TabActivity tabs = (TabActivity) getParent();
+//		tabs.getTabHost().setCurrentTabByTag("2");
 		super.onRestart();
+	}
+	@Override
+	protected void onStart() {
+		Log.d("haipn", " FsActivity postad on start");
+		super.onStart();
+	}
+	@Override
+	protected void onResume() {
+		Log.d("haipn", " FsActivity postad on resume");
+		super.onResume();
+	}
+	@Override
+	protected void onPause() {
+		Log.d("haipn", " FsActivity postad on pause");
+		super.onPause();
+	}
+	@Override
+	protected void onStop() {
+		Log.d("haipn", " FsActivity postad on stop");
+		super.onStop();
 	}
 	void addFragment(Fragment fragment, boolean addToBackStack, int transition) {
 		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();

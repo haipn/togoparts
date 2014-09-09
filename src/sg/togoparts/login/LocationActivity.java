@@ -91,8 +91,13 @@ public class LocationActivity extends Activity implements LocationListener,
 					mCity = add.getLocality();
 				String mRegion = "Singapore";
 				String mAddress = "";
-				if (add.getFeatureName() != null)
-					mAddress = add.getFeatureName();
+				if (add.getMaxAddressLineIndex() > 0) {
+					String str = add.getAddressLine(0);
+					for (int i = 1; i < add.getMaxAddressLineIndex(); i++) {
+						str = str + "," + add.getAddressLine(i);
+					}
+					mAddress = str;
+				}
 				String mPostalCode = "";
 				if (add.getPostalCode() != null)
 					mPostalCode = add.getPostalCode();

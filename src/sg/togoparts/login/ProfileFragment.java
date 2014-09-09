@@ -19,6 +19,7 @@ import sg.togoparts.json.SearchResult.AdsResult;
 import sg.togoparts.login.AdProfileAdapter.QuickActionSelect;
 import sg.togoparts.login.Profile.ProfileValue;
 import sg.togoparts.login.Profile.Value;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -111,7 +112,7 @@ public class ProfileFragment extends Fragment_Main implements QuickActionSelect 
 			}
 		});
 		
-		
+		Log.d("haipn", "profile fragment onCreateView");
 		return rootView;
 	}
 
@@ -135,19 +136,33 @@ public class ProfileFragment extends Fragment_Main implements QuickActionSelect 
 		mResult = new ArrayList<AdsResult>();
 		mListValue = new ArrayList<Profile.Value>();
 		// }
-
+		Log.d("haipn", "profile fragment onCreate");
+		
 		super.onCreate(savedInstanceState);
 	}
 
 	@Override
 	public void onStart() {
-		
+		Log.d("haipn", "profile fragment onStart");
+		getProfile();
 		super.onStart();
 	}
 	
 	@Override
+	public void onAttach(Activity activity) {
+		Log.d("haipn", "profile fragment onAttach");
+		super.onAttach(activity);
+	}
+	
+	@Override
+	public void onActivityCreated(Bundle savedInstanceState) {
+		Log.d("haipn", "profile fragment onActivityCreate");
+		super.onActivityCreated(savedInstanceState);
+	}
+	@Override
 	public void onResume() {
-		getProfile();
+		Log.d("haipn", "profile fragment onResume");
+		
 		super.onResume();
 	};
 	private void getProfile() {

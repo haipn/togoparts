@@ -97,7 +97,7 @@ public class PostAd {
 	private int warranty;
 	private String picturelink;
 	// /// Price screen
-	private int price;
+	private double price;
 	private int pricetype;
 	private int original_price;
 	private boolean clearance;
@@ -374,11 +374,11 @@ public class PostAd {
 		this.picturelink = picturelink;
 	}
 
-	public int getPrice() {
+	public double getPrice() {
 		return price;
 	}
 
-	public void setPrice(int price) {
+	public void setPrice(double price) {
 		this.price = price;
 	}
 
