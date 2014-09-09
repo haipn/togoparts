@@ -34,6 +34,7 @@ import com.google.android.gms.ads.AdSize;
 @SuppressWarnings("deprecation")
 public class TabsActivityMain extends TabActivity {
 	public static final String TAB_NAME = "tab name";
+	protected static final int REQUEST_POSTAD = 0;
 	public static boolean canRestart = true;
 	private PublisherAdView dfpAdView;
 	RelativeLayout rlAdMain;
@@ -128,13 +129,14 @@ public class TabsActivityMain extends TabActivity {
 						TabsActivityMain.canRestart = false;
 						if (Const.isLogin(TabsActivityMain.this)) {
 							tracker.set(Fields.SCREEN_NAME, "Post Ad");
-							startActivity(new Intent(TabsActivityMain.this,
-									PostAdActivity.class));
+							Intent i = new Intent(TabsActivityMain.this,
+									PostAdActivity.class);
+							startActivityForResult(i, REQUEST_POSTAD);
 
 						} else
 							startActivity(new Intent(TabsActivityMain.this,
 									ChooseLogin.class));
-						tabHost.setCurrentTabByTag("2");
+//						tabHost.setCurrentTabByTag("2");
 					} else if (tabId.equals("4")) {
 						tracker.set(Fields.SCREEN_NAME, "Bikeshop Listing");
 					} else {
@@ -196,6 +198,14 @@ public class TabsActivityMain extends TabActivity {
 					Const.TAG_NAME));
 			hideAd();
 		}
+	}
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (requestCode == REQUEST_POSTAD) {
+			tabHost.setCurrentTab(1);
+		}
+		super.onActivityResult(requestCode, resultCode, data);
 	}
 	@Override
 	protected void onRestart() {
