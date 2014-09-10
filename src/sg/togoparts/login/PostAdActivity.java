@@ -651,7 +651,7 @@ public class PostAdActivity extends FragmentActivity implements
 
 		mPostAd.setSession_id(Const.getSessionId(this));
 		if (isOverQuota && !isEdit)
-			mRdoFreeAd.setVisibility(View.GONE);
+			mRdoFreeAd.setVisibility(View.INVISIBLE);
 
 	}
 
@@ -659,18 +659,18 @@ public class PostAdActivity extends FragmentActivity implements
 		if (ad.adtype == 0) {
 			mRdoFreeAd.setChecked(true);
 			mRdoFreeAd.setVisibility(View.VISIBLE);
-			mRdoNewItemAd.setVisibility(View.GONE);
-			mRdoPriorityAd.setVisibility(View.GONE);
+			mRdoNewItemAd.setVisibility(View.INVISIBLE);
+			mRdoPriorityAd.setVisibility(View.INVISIBLE);
 		} else if (ad.adtype == 1) {
 			mRdoPriorityAd.setChecked(true);
-			mRdoFreeAd.setVisibility(View.GONE);
-			mRdoNewItemAd.setVisibility(View.GONE);
+			mRdoFreeAd.setVisibility(View.INVISIBLE);
+			mRdoNewItemAd.setVisibility(View.INVISIBLE);
 			mRdoPriorityAd.setVisibility(View.VISIBLE);
 		} else {
 			mRdoNewItemAd.setChecked(true);
-			mRdoFreeAd.setVisibility(View.GONE);
+			mRdoFreeAd.setVisibility(View.INVISIBLE);
 			mRdoNewItemAd.setVisibility(View.VISIBLE);
-			mRdoPriorityAd.setVisibility(View.GONE);
+			mRdoPriorityAd.setVisibility(View.INVISIBLE);
 		}
 		mRdoFreeAd.setEnabled(false);
 		mRdoNewItemAd.setEnabled(false);
@@ -755,8 +755,8 @@ public class PostAdActivity extends FragmentActivity implements
 
 	private void validationTypePost(ResultValue ret) {
 		if (mTypeAccount == MERCHANT || mTypeAccount == POSTINGPACK) {
-			mRdoFreeAd.setVisibility(View.GONE);
-			mRdoPriorityAd.setVisibility(View.GONE);
+			mRdoFreeAd.setVisibility(View.INVISIBLE);
+			mRdoPriorityAd.setVisibility(View.INVISIBLE);
 			mRdoNewItemAd.setVisibility(View.VISIBLE);
 			mRdoNewItemAd.setChecked(true);
 			mTvNote.setText(R.string.note_newitem_ad);

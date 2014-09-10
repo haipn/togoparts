@@ -96,22 +96,23 @@ public class ShortListAdsFragment extends Fragment_Main implements
 	@Override
 	public void onResume() {
 		super.onResume();
-		SharedPreferences pref = Const.getTogoPartsPreferences(getActivity());
-		String stringAds = pref.getString(Const.KEY_SHORTLIST, "");
-		Log.d("haipn", "before:" + stringAds);
-		
-		stringAds = stringAds.trim();
-		stringAds = stringAds.replaceAll("\\s", "+");
-		Log.d("haipn", "after:" + stringAds);
-		mResult.clear();
-		RequestQueue queue = MyVolley.getRequestQueue();
-		GsonRequest<SearchResult> myReq = new GsonRequest<SearchResult>(
-				Method.GET, String.format(Const.URL_SHORTLIST, stringAds),
-				SearchResult.class, createMyReqSuccessListener(),
-				createMyReqErrorListener());
-		queue.add(myReq);
-		Log.d("haipn", "shortlist ads:" + stringAds);
-		headerView.setProgressVisible(View.VISIBLE);
+		try {
+			SharedPreferences pref = Const.getTogoPartsPreferences(getActivity());
+			String stringAds = pref.getString(Const.KEY_SHORTLIST, "");
+			stringAds = stringAds.trim();
+			stringAds = stringAds.replaceAll("\\s", "+");
+			mResult.clear();
+			RequestQueue queue = MyVolley.getRequestQueue();
+			GsonRequest<SearchResult> myReq = new GsonRequest<SearchResult>(
+					Method.GET, String.format(Const.URL_SHORTLIST, stringAds),
+					SearchResult.class, createMyReqSuccessListener(),
+					createMyReqErrorListener());
+			queue.add(myReq);
+			headerView.setProgressVisible(View.VISIBLE);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		final PublisherAdView adview = (PublisherAdView) getActivity().findViewById(R.id.adView);
 		PublisherAdRequest.Builder re = new PublisherAdRequest.Builder();
 		adview.loadAd(re.build());

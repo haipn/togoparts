@@ -40,6 +40,7 @@
                         android:layout_gravity="left"
                         android:layout_marginLeft="10dp"
                         android:layout_marginRight="10dp"
+                        android:layout_weight="0.33"
                         android:button="@drawable/radio_free_ad"
                         android:checked="true"
                         android:visibility="visible" />
@@ -51,6 +52,7 @@
                         android:layout_gravity="center"
                         android:layout_marginLeft="10dp"
                         android:layout_marginRight="10dp"
+                        android:layout_weight="0.33"
                         android:button="@drawable/radio_priority_ad"
                         android:visibility="visible" />
 
@@ -61,6 +63,7 @@
                         android:layout_gravity="right"
                         android:layout_marginLeft="10dp"
                         android:layout_marginRight="10dp"
+                        android:layout_weight="0.33"
                         android:button="@drawable/radio_newitem_ad"
                         android:visibility="visible" />
                 </RadioGroup>
@@ -271,17 +274,17 @@
             <!-- </GridView> -->
 
             <LinearLayout
+                android:id="@+id/llCheckEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:id="@+id/llCheckEmail"
                 android:padding="10dp" >
 
                 <CheckBox
                     android:id="@+id/cbEmail"
-                    android:checked="true"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:checked="true" />
 
                 <sg.togoparts.gallery.FontableTextView
                     android:layout_width="match_parent"

@@ -144,7 +144,7 @@ public class ProfileFragment extends Fragment_Main implements QuickActionSelect 
 	@Override
 	public void onStart() {
 		Log.d("haipn", "profile fragment onStart");
-		getProfile();
+		
 		super.onStart();
 	}
 	
@@ -162,7 +162,7 @@ public class ProfileFragment extends Fragment_Main implements QuickActionSelect 
 	@Override
 	public void onResume() {
 		Log.d("haipn", "profile fragment onResume");
-		
+		getProfile();
 		super.onResume();
 	};
 	private void getProfile() {

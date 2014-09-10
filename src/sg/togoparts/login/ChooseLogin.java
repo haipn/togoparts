@@ -37,6 +37,7 @@ import android.view.inputmethod.InputMethodSession;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.TextView.OnEditorActionListener;
 
 import com.android.volley.AuthFailureError;
@@ -154,14 +155,14 @@ public class ChooseLogin extends FragmentActivity {
 			finish();
 		}
 		switch (requestCode) {
-	    case REAUTH_ACTIVITY_CODE:
-	        Session session = Session.getActiveSession();
-	        if (session != null) {
-	            session.onActivityResult(this, requestCode, resultCode, data);
-	            getProfileFb();
-	        }
-	        break;
-	    }
+		case REAUTH_ACTIVITY_CODE:
+			Session session = Session.getActiveSession();
+			if (session != null) {
+				session.onActivityResult(this, requestCode, resultCode, data);
+				getProfileFb();
+			}
+			break;
+		}
 	}
 
 	private void setLogin() {
@@ -169,7 +170,7 @@ public class ChooseLogin extends FragmentActivity {
 
 			@Override
 			public void onClick(View arg0) {
-				mProgressDialog.show();
+				
 				login(mEdtUser.getText().toString(), mEdtPass.getText()
 						.toString());
 			}
@@ -177,30 +178,35 @@ public class ChooseLogin extends FragmentActivity {
 	}
 
 	public void login(final String user, final String pass) {
-		RequestQueue queue = MyVolley.getRequestQueue();
-
-		if (user != null && !user.equals("") && pass != null
-				&& !pass.equals("")) {
-			GsonRequest<ResultLogin> myReq = new GsonRequest<ResultLogin>(
-					Method.POST, Const.URL_LOGIN, ResultLogin.class,
-					createLoginNormalSuccessListener(),
-					createMyReqErrorListener()) {
-
-				protected Map<String, String> getParams()
-						throws AuthFailureError {
-					Map<String, String> params = new HashMap<String, String>();
-					String key = pass + System.currentTimeMillis() / 1000
-							+ CLIENT_ID;
-					key = Const.getSHA256EncryptedString(key);
-					params.put("TgpUserName", user);
-					params.put("logintime", System.currentTimeMillis() / 1000
-							+ "");
-					params.put("TgpKey", key);
-					return params;
-				};
-			};
-			queue.add(myReq);
+		
+		if (user == null || user.length() == 0) {
+			Toast.makeText(this, "Input Username!", Toast.LENGTH_SHORT).show();
+			mEdtUser.requestFocus();
+			return;
 		}
+		if (pass == null || pass.length() == 0) {
+			Toast.makeText(this, "Input Password!", Toast.LENGTH_SHORT).show();
+			mEdtPass.requestFocus();
+			return;
+		}
+		mProgressDialog.show();
+		RequestQueue queue = MyVolley.getRequestQueue();
+		GsonRequest<ResultLogin> myReq = new GsonRequest<ResultLogin>(
+				Method.POST, Const.URL_LOGIN, ResultLogin.class,
+				createLoginNormalSuccessListener(), createMyReqErrorListener()) {
+
+			protected Map<String, String> getParams() throws AuthFailureError {
+				Map<String, String> params = new HashMap<String, String>();
+				String key = pass + System.currentTimeMillis() / 1000
+						+ CLIENT_ID;
+				key = Const.getSHA256EncryptedString(key);
+				params.put("TgpUserName", user);
+				params.put("logintime", System.currentTimeMillis() / 1000 + "");
+				params.put("TgpKey", key);
+				return params;
+			};
+		};
+		queue.add(myReq);
 	}
 
 	/**
@@ -238,15 +244,16 @@ public class ChooseLogin extends FragmentActivity {
 				// mTextStatus.setText("Logged in");
 				// loggedInUIState();
 				mProgressDialog.dismiss();
-//				List<String> permissions = mSimpleFacebook.getSession().getPermissions();
-//				if (!permissions.containsAll(PERMISSIONS)) {
-////					pendingAnnounce = true; // Mark that we are currently
-//											// waiting for confirmation of
-//											// publish permissions
-////					mSimpleFacebook.getSession().addCallback(callback)
-//					showAuthorize();
-//					return;
-//				}
+				// List<String> permissions =
+				// mSimpleFacebook.getSession().getPermissions();
+				// if (!permissions.containsAll(PERMISSIONS)) {
+				// // pendingAnnounce = true; // Mark that we are currently
+				// // waiting for confirmation of
+				// // publish permissions
+				// // mSimpleFacebook.getSession().addCallback(callback)
+				// showAuthorize();
+				// return;
+				// }
 				Log.d("haipn", "login fb");
 				getProfileFb();
 			}
@@ -346,8 +353,9 @@ public class ChooseLogin extends FragmentActivity {
 							public void onClick(DialogInterface dialog,
 									int which) {
 								dialog.dismiss();
-								requestReadPermissions(ChooseLogin.this, mSimpleFacebook.getSession(), PERMISSIONS,
-										REAUTH_ACTIVITY_CODE);
+								requestReadPermissions(ChooseLogin.this,
+										mSimpleFacebook.getSession(),
+										PERMISSIONS, REAUTH_ACTIVITY_CODE);
 							}
 						})
 				.setNegativeButton(android.R.string.cancel,
@@ -361,15 +369,14 @@ public class ChooseLogin extends FragmentActivity {
 		dialog.show();
 	}
 
-	public void requestReadPermissions(Activity activity,
-			Session session, List<String> permissions, int requestCode) {
+	public void requestReadPermissions(Activity activity, Session session,
+			List<String> permissions, int requestCode) {
 		if (session != null) {
 			Session.NewPermissionsRequest reauthRequest = new Session.NewPermissionsRequest(
 					activity, permissions).setRequestCode(requestCode);
 			session.requestNewReadPermissions(reauthRequest);
 		}
 	}
-
 
 	private Response.Listener<ResultLogin> createLoginNormalSuccessListener() {
 		return new Response.Listener<ResultLogin>() {
