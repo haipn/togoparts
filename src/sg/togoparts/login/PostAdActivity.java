@@ -604,6 +604,9 @@ public class PostAdActivity extends FragmentActivity implements
 					}
 					mResultValue = response.Result;
 					onLoadProcess(response.Result);
+				} else if (response.Result.Return.contains("TCred")) {
+					showBuyTcred(response.Result.Return,
+							response.Result.Message, response.Result.TCredsLink);
 				} else if (response.Result.Return.equals("error")) {
 					mProgressDialog.dismiss();
 					showError(response.Result.Message, false);
@@ -613,6 +616,34 @@ public class PostAdActivity extends FragmentActivity implements
 				}
 			}
 		};
+	}
+
+	protected void showBuyTcred(String title, String msg, final String link) {
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setMessage(msg)
+				.setIcon(android.R.drawable.ic_dialog_alert)
+				.setTitle(title)
+				.setPositiveButton("Buy TCredits",
+						new DialogInterface.OnClickListener() {
+
+							@Override
+							public void onClick(DialogInterface dialog,
+									int which) {
+								dialog.dismiss();
+								Intent i = new Intent(Intent.ACTION_VIEW);
+								i.setData(Uri.parse(link));
+								startActivity(i);
+							}
+						})
+				.setNegativeButton(android.R.string.cancel,
+						new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int id) {
+								dialog.dismiss();
+							}
+						});
+		Dialog dialog = builder.create();
+		dialog.setCanceledOnTouchOutside(false);
+		dialog.show();
 	}
 
 	protected void onLoadProcess(ResultValue result) {
@@ -774,7 +805,7 @@ public class PostAdActivity extends FragmentActivity implements
 			// mRdoPriorityAd.setEnabled(false);
 			// mRdoFreeAd.setEnabled(true);
 			mRdoFreeAd.setChecked(true);
-			mTvNote.setText("");
+			mTvNote.setText(R.string.note_free_ad);
 		}
 	}
 
@@ -811,7 +842,9 @@ public class PostAdActivity extends FragmentActivity implements
 
 	protected void showConfirmDialog() {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setMessage(R.string.msg_confirm_cancel)
+		builder.setMessage(
+				isEdit ? R.string.msg_confirm_cancel_editing
+						: R.string.msg_confirm_cancel_posting)
 				.setIcon(android.R.drawable.ic_dialog_info)
 				.setTitle("Confirm Cancellation")
 				.setNegativeButton(android.R.string.cancel,
@@ -880,6 +913,7 @@ public class PostAdActivity extends FragmentActivity implements
 					i.putExtra(SUB_CAT, mPostAd.getSub_cat());
 					i.putExtra(TYPE_AD_POST, mPostAd.getAdtype());
 					i.putExtra(TCRED, mTcred);
+					i.putExtra("tcredlink", mResultValue.TCredsLink);
 					startActivityForResult(i, REQUEST_CATEGORY);
 				}
 			}
@@ -982,7 +1016,7 @@ public class PostAdActivity extends FragmentActivity implements
 				if (isOverQuota && !isEdit)
 					arg0.setVisibility(View.GONE);
 				if (arg1) {
-					mTvNote.setText("");
+					mTvNote.setText(R.string.note_free_ad);
 					mImv2.setOnClickListener(null);
 					mImv2.setImageResource(R.drawable.unselected_pic);
 					mImv3.setOnClickListener(null);
@@ -1042,11 +1076,14 @@ public class PostAdActivity extends FragmentActivity implements
 				if (event.getAction() == MotionEvent.ACTION_DOWN) {
 					if (!isEdit) {
 						if (mResultValue.TCreds < mResultValue.min_newitem_cost) {
-
-							AlertTcredDialog dialog = new AlertTcredDialog(
-									getString(R.string.msg_purchase, "New Item"));
-							dialog.show(getSupportFragmentManager(),
-									"new item confirm");
+							showBuyTcred(
+									getString(R.string.title_tcred),
+									getString(R.string.msg_purchase, "New Item"),
+									mResultValue.TCredsLink);
+							// AlertTcredDialog dialog = new AlertTcredDialog(
+							// getString(R.string.msg_purchase, "New Item"));
+							// dialog.show(getSupportFragmentManager(),
+							// "new item confirm");
 							// buttonView.setChecked(false);
 							// mRdoFreeAd.setChecked(true);
 							return true;
@@ -1091,11 +1128,14 @@ public class PostAdActivity extends FragmentActivity implements
 				if (event.getAction() == MotionEvent.ACTION_DOWN) {
 					if (!isEdit) {
 						if (mResultValue.TCreds < mResultValue.min_priority_cost) {
-
-							AlertTcredDialog dialog = new AlertTcredDialog(
-									getString(R.string.msg_purchase, "Priority"));
-							dialog.show(getSupportFragmentManager(),
-									"priority confirm");
+							showBuyTcred(
+									getString(R.string.title_tcred),
+									getString(R.string.msg_purchase, "Priority"),
+									mResultValue.TCredsLink);
+							// AlertTcredDialog dialog = new AlertTcredDialog(
+							// getString(R.string.msg_purchase, "Priority"));
+							// dialog.show(getSupportFragmentManager(),
+							// "priority confirm");
 							// buttonView.setChecked(false);
 							// mRdoFreeAd.setChecked(true);
 							return true;
@@ -1161,7 +1201,8 @@ public class PostAdActivity extends FragmentActivity implements
 		case REQUEST_PRICE:
 			if (resultCode == RESULT_OK) {
 				mPostAd.setPrice(data.getDoubleExtra(PRICE, 0));
-				mPostAd.setOriginal_price(data.getIntExtra(ORIGINAL_PRICE, 0));
+				mPostAd.setOriginal_price(data
+						.getDoubleExtra(ORIGINAL_PRICE, 0));
 				mPostAd.setClearance(data.getBooleanExtra(CLEARANCE, false));
 				mPostAd.setPricetype(data.getIntExtra(PRICETYPE, 3));
 				mTvPrice.setCompoundDrawablesWithIntrinsicBounds(
@@ -1610,11 +1651,12 @@ public class PostAdActivity extends FragmentActivity implements
 		builder.addTextBody(PostAdActivity.ITEM_YEAR, post.getItem_year());
 		builder.addTextBody(PostAdActivity.LAT, post.getLatitude() + "");
 		builder.addTextBody(PostAdActivity.LONGITUDE, post.getLongitude() + "");
+		DecimalFormat df = new DecimalFormat("###.##");
 		builder.addTextBody(PostAdActivity.ORIGINAL_PRICE,
-				post.getOriginal_price() + "");
+				df.format(post.getOriginal_price()));
 		builder.addTextBody(PostAdActivity.PICTURELINK, post.getPicturelink());
 		builder.addTextBody(PostAdActivity.POSTALCODE, post.getPostalcode());
-		DecimalFormat df = new DecimalFormat("###.##");
+
 		builder.addTextBody(PostAdActivity.PRICE, df.format(post.getPrice()));
 		builder.addTextBody(PostAdActivity.PRICETYPE, post.getPricetype() + "");
 		builder.addTextBody(PostAdActivity.REGION, post.getRegion());
@@ -1772,19 +1814,9 @@ public class PostAdActivity extends FragmentActivity implements
 	}
 
 	protected void showTcred(String string) {
-		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setMessage(getString(R.string.message_tcred_1, string))
-				.setIcon(android.R.drawable.ic_dialog_alert)
-				.setTitle(R.string.title_tcred)
-				.setNegativeButton(android.R.string.ok,
-						new DialogInterface.OnClickListener() {
-							public void onClick(DialogInterface dialog, int id) {
-								dialog.dismiss();
-							}
-						});
-		Dialog dialog = builder.create();
-		dialog.setCanceledOnTouchOutside(false);
-		dialog.show();
+		showBuyTcred(getString(R.string.title_tcred),
+				getString(R.string.message_tcred_1, string),
+				mResultValue.TCredsLink);
 	}
 
 	@Override

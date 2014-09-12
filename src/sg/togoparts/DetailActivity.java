@@ -318,7 +318,7 @@ public class DetailActivity extends FragmentActivity implements
 					startActivityForResult(i, REQUEST_EDIT_AD);
 				} else {
 					Intent i = new Intent(DetailActivity.this,
-							FSActivity_Search.class);
+							SearchActivity.class);
 					startActivity(i);
 					finish();
 				}

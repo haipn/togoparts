@@ -107,17 +107,17 @@ public class ChooseLogin extends FragmentActivity {
 
 			@Override
 			public void onClick(View arg0) {
-				Intent i = new Intent(ChooseLogin.this, TabsActivityMain.class);
-				i.putExtra(Const.TAG_NAME, "1");
-				i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-				startActivity(i);
+//				Intent i = new Intent(ChooseLogin.this, TabsActivityMain.class);
+//				i.putExtra(Const.TAG_NAME, "1");
+//				i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//				startActivity(i);
+				setResult(RESULT_CANCELED);
 				finish();
 			}
 		});
 		mEdtPass = (EditText) findViewById(R.id.edtPass);
 		mEdtUser = (EditText) findViewById(R.id.edtUsername);
 
-		mBtnSkip = (Button) findViewById(R.id.btnSkip);
 		setLoginFacebook();
 		setLogin();
 		mDialog = new ErrorDialog();

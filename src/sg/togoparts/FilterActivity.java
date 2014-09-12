@@ -11,7 +11,6 @@ import sg.togoparts.app.ErrorInternetDialog;
 import sg.togoparts.app.MyVolley;
 import sg.togoparts.json.GsonRequest;
 import sg.togoparts.json.ListCategories;
-import sg.togoparts.json.ListCategories.Cat;
 import sg.togoparts.json.ListCategories.Shopname;
 import android.content.Intent;
 import android.os.Bundle;
@@ -44,6 +43,9 @@ import com.google.analytics.tracking.android.Fields;
 import com.google.analytics.tracking.android.GoogleAnalytics;
 import com.google.analytics.tracking.android.MapBuilder;
 import com.google.analytics.tracking.android.Tracker;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.doubleclick.PublisherAdRequest;
+import com.google.android.gms.ads.doubleclick.PublisherAdView;
 
 public class FilterActivity extends FragmentActivity {
 
@@ -66,7 +68,7 @@ public class FilterActivity extends FragmentActivity {
 	HashMap<String, String> listSize;
 	HashMap<String, String> listUnit;
 	HashMap<String, String> listAdStatus;
-	HashMap<String, String> listCatId;
+	
 	HashMap<String, String> listType;
 	HashMap<String, String> listShop;
 
@@ -82,7 +84,7 @@ public class FilterActivity extends FragmentActivity {
 	private EditText mEdtFrom;
 	private EditText mEdtTo;
 	private Spinner mSpnAdStatus;
-	private Spinner mSpnCatId;
+	
 	private Spinner mSpnType;
 	private Spinner mSpnShop;
 	private EditText mEdtPostedBy;
@@ -97,6 +99,8 @@ public class FilterActivity extends FragmentActivity {
 	Button mBtnReset;
 	Button mBtnApplyFilter;
 	private String mSort;
+	private Bundle mBundle;
+	private PublisherAdView adview;
 
 	protected String presetParamenters() {
 		String postedby = mEdtPostedBy.getText().toString();
@@ -113,7 +117,7 @@ public class FilterActivity extends FragmentActivity {
 
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.filter_fragment);
-
+		adview = (PublisherAdView) findViewById(R.id.adView);
 		RequestQueue queue = MyVolley.getRequestQueue();
 		GsonRequest<ListCategories> myReq = new GsonRequest<ListCategories>(
 				Method.GET, Const.URL_SEARCH_CATEGORY, ListCategories.class,
@@ -159,7 +163,6 @@ public class FilterActivity extends FragmentActivity {
 		mEdtValue = (EditText) findViewById(R.id.edtValue);
 
 		mSpnAdStatus = (Spinner) findViewById(R.id.spnAdStatus);
-		mSpnCatId = (Spinner) findViewById(R.id.spnCatId);
 		mSpnSize = (Spinner) findViewById(R.id.spnSize);
 		mSpnType = (Spinner) findViewById(R.id.spnType);
 
@@ -184,7 +187,6 @@ public class FilterActivity extends FragmentActivity {
 				mEdtValue.setText("");
 
 				mSpnAdStatus.setSelection(0);
-				mSpnCatId.setSelection(0);
 				mSpnSize.setSelection(0);
 				mSpnShop.setSelection(0);
 				mSpnType.setSelection(0);
@@ -277,7 +279,20 @@ public class FilterActivity extends FragmentActivity {
 		});
 
 	}
-
+	@Override
+	protected void onResume() {
+		PublisherAdRequest.Builder re = new PublisherAdRequest.Builder();
+		adview.loadAd(re.build());
+		adview.setVisibility(View.GONE);
+		adview.setAdListener(new AdListener() {
+			@Override
+			public void onAdLoaded() {
+				adview.setVisibility(View.VISIBLE);
+				super.onAdLoaded();
+			}
+		});
+		super.onResume();
+	}
 	@Override
 	public void onStart() {
 		super.onStart();
@@ -316,23 +331,22 @@ public class FilterActivity extends FragmentActivity {
 	}
 
 	protected void applyFilter() {
-		Bundle bundle = new Bundle();
-		bundle.putString(POSTED_BY, mEdtPostedBy.getText().toString());
-		bundle.putString(SIZE, listSize.get(mSpnSize.getSelectedItem()));
-		bundle.putString(VALUE, mEdtValue.getText().toString());
-		bundle.putString(FROM, mEdtFrom.getText().toString());
-		bundle.putString(TO, mEdtTo.getText().toString());
-		bundle.putString(UNIT, listUnit.get(mSpnUnit.getSelectedItem()));
-		bundle.putString(ADSTATUS,
+		mBundle.putString(POSTED_BY, mEdtPostedBy.getText().toString());
+		mBundle.putString(SIZE, listSize.get(mSpnSize.getSelectedItem()));
+		mBundle.putString(VALUE, mEdtValue.getText().toString());
+		mBundle.putString(FROM, mEdtFrom.getText().toString());
+		mBundle.putString(TO, mEdtTo.getText().toString());
+		mBundle.putString(UNIT, listUnit.get(mSpnUnit.getSelectedItem()));
+		mBundle.putString(ADSTATUS,
 				listAdStatus.get(mSpnAdStatus.getSelectedItem()));
-		bundle.putString(MARKETPLACE_CATEGORY,
-				listCatId.get(mSpnCatId.getSelectedItem()));
-		bundle.putString(TYPE, listType.get(mSpnType.getSelectedItem()));
-		bundle.putString(SHOP_NAME, listShop.get(mSpnShop.getSelectedItem()));
-		bundle.putString(SORT_BY, mSort);
+//		bundle.putString(MARKETPLACE_CATEGORY,
+//				listCatId.get(mSpnCatId.getSelectedItem()));
+		mBundle.putString(TYPE, listType.get(mSpnType.getSelectedItem()));
+		mBundle.putString(SHOP_NAME, listShop.get(mSpnShop.getSelectedItem()));
+		mBundle.putString(SORT_BY, mSort);
 
 		Intent i = getIntent();
-		i.putExtras(bundle);
+		i.putExtras(mBundle);
 		setResult(RESULT_OK, i);
 		finish();
 	}
@@ -341,7 +355,7 @@ public class FilterActivity extends FragmentActivity {
 		listSize = new LinkedHashMap<String, String>();
 		listUnit = new LinkedHashMap<String, String>();
 		listAdStatus = new LinkedHashMap<String, String>();
-		listCatId = new LinkedHashMap<String, String>();
+		
 		listType = new LinkedHashMap<String, String>();
 		listShop = new LinkedHashMap<String, String>();
 
@@ -387,33 +401,15 @@ public class FilterActivity extends FragmentActivity {
 	}
 
 	public void initSpinner() {
-		Bundle b = getIntent().getExtras();
-		mEdtFrom.setText(b.getString(FROM));
-		mEdtPostedBy.setText(b.getString(POSTED_BY));
-		mEdtTo.setText(b.getString(TO));
-		mEdtValue.setText(b.getString(VALUE));
+		mBundle = getIntent().getExtras();
+		mEdtFrom.setText(mBundle.getString(FROM));
+		mEdtPostedBy.setText(mBundle.getString(POSTED_BY));
+		mEdtTo.setText(mBundle.getString(TO));
+		mEdtValue.setText(mBundle.getString(VALUE));
 		int i = 0, d = 0;
 		String value = null;
-
 		i = 0;
-		value = b.getString(MARKETPLACE_CATEGORY);
-		ArrayAdapter<String> adtCatId = new ArrayAdapter<String>(this,
-				R.layout.spinner_text);
-		Iterator itCatId = listCatId.entrySet().iterator();
-		while (itCatId.hasNext()) {
-			Map.Entry pairs = (Map.Entry) itCatId.next();
-			adtCatId.add((String) pairs.getKey());
-			if (value != null && value.equals(pairs.getValue())) {
-				d = i;
-			}
-			i++;
-		}
-		adtCatId.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		mSpnCatId.setAdapter(adtCatId);
-		mSpnCatId.setSelection(d);
-
-		i = 0;
-		value = b.getString(SHOP_NAME);
+		value = mBundle.getString(SHOP_NAME);
 		ArrayAdapter<String> adtShop = new ArrayAdapter<String>(this,
 				R.layout.spinner_text);
 		Iterator itShop = listShop.entrySet().iterator();
@@ -430,7 +426,7 @@ public class FilterActivity extends FragmentActivity {
 		mSpnShop.setSelection(d);
 
 		i = 0;
-		value = b.getString(SIZE);
+		value = mBundle.getString(SIZE);
 		ArrayAdapter<String> adtSize = new ArrayAdapter<String>(this,
 				R.layout.spinner_text);
 		Iterator itSize = listSize.entrySet().iterator();
@@ -447,7 +443,7 @@ public class FilterActivity extends FragmentActivity {
 		mSpnSize.setSelection(d);
 
 		i = 0;
-		value = b.getString(TYPE);
+		value = mBundle.getString(TYPE);
 		ArrayAdapter<String> adtType = new ArrayAdapter<String>(this,
 				R.layout.spinner_text);
 		Iterator itType = listType.entrySet().iterator();
@@ -481,7 +477,7 @@ public class FilterActivity extends FragmentActivity {
 		ArrayAdapter<String> adtCategory = new ArrayAdapter<String>(this,
 				R.layout.spinner_text);
 		Iterator itCat = listAdStatus.entrySet().iterator();
-		value = b.getString(ADSTATUS);
+		value = mBundle.getString(ADSTATUS);
 		Log.d("haipn", "value:" + value);
 		while (itCat.hasNext()) {
 
@@ -502,7 +498,7 @@ public class FilterActivity extends FragmentActivity {
 		mSpnAdStatus.setSelection(d);
 
 		i = 0;
-		value = b.getString(UNIT);
+		value = mBundle.getString(UNIT);
 		ArrayAdapter<String> adtUnit = new ArrayAdapter<String>(this,
 				R.layout.spinner_text);
 		Iterator itUnit = listUnit.entrySet().iterator();
@@ -518,7 +514,7 @@ public class FilterActivity extends FragmentActivity {
 		mSpnUnit.setAdapter(adtUnit);
 		mSpnUnit.setSelection(d);
 
-		mSort = b.getString(SORT_BY);
+		mSort = mBundle.getString(SORT_BY);
 		if (mSort.equals("1")) {
 			mGroupSort.check(R.id.rbSort1);
 		} else if (mSort.equals("2")) {
@@ -594,11 +590,11 @@ public class FilterActivity extends FragmentActivity {
 			@Override
 			public void onResponse(ListCategories response) {
 				setListValues();
-				ArrayList<Cat> list = response.mp_categories;
-				// listCatId.put("All", "");
-				for (int i = 0; i < list.size(); i++) {
-					listCatId.put(list.get(i).title, list.get(i).value);
-				}
+//				ArrayList<Cat> list = response.mp_categories;
+//				// listCatId.put("All", "");
+//				for (int i = 0; i < list.size(); i++) {
+//					listCatId.put(list.get(i).title, list.get(i).value);
+//				}
 
 				ArrayList<Shopname> shops = response.bikeshops;
 				for (int i = 0; i < shops.size(); i++) {

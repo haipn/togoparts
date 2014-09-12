@@ -202,17 +202,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
-                <sg.togoparts.gallery.FontableTextView
-                    android:id="@+id/textView7"
-                    style="@style/TextAppearance.Search.Black"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/search_marketplace" />
-
-                <Spinner
-                    android:id="@+id/spnCatId"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                
 
                 <sg.togoparts.gallery.FontableTextView
                     style="@style/TextAppearance.Search.Black"

@@ -92,4 +92,10 @@ public class Activity_Main extends FragmentActivity implements HeaderView {
 	public void setProgressVisible(int visible) {
 		mProgress.setVisibility(visible);
 	}
+
+	@Override
+	public void setRightBackground(int res) {
+		mBtnRight.setBackgroundResource(res);
+	}
+	
 }

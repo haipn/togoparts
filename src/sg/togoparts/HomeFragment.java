@@ -174,7 +174,7 @@ public class HomeFragment extends Fragment_Main implements ClickViewAll {
 				// TabsActivityMain tab = (TabsActivityMain) getActivity()
 				// .getParent();
 				// tab.getTabHost().setCurrentTab(3);
-				Intent i = new Intent(getActivity(), FSActivity_Search.class);
+				Intent i = new Intent(getActivity(), SearchActivity.class);
 				startActivity(i);
 			}
 		});

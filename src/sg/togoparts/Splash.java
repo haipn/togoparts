@@ -75,13 +75,13 @@ public class Splash extends Activity {
 		}
 
 		protected void onPostExecute(Integer result) {
-			if (Const.isLogin(Splash.this)) {
-				Log.d("haipn", "login roi");
+//			if (Const.isLogin(Splash.this)) {
+//				Log.d("haipn", "login roi");
 				startActivity(new Intent(Splash.this, TabsActivityMain.class));
-			} else {
-				Log.d("haipn", "chua login nhe");
-				startActivity(new Intent(Splash.this, ChooseLogin.class));
-			}
+//			} else {
+//				Log.d("haipn", "chua login nhe");
+//				startActivity(new Intent(Splash.this, ChooseLogin.class));
+//			}
 			finish();
 		}
 

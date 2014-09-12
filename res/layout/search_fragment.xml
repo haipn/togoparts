@@ -3,16 +3,22 @@
     xmlns:ads="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginTop="10dp"
-    android:layout_marginLeft="10dp"
-    android:layout_marginRight="10dp"
     android:orientation="vertical" >
+
+    <include
+        android:id="@+id/header"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        layout="@layout/new_actionbar" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:orientation="vertical"
         android:layout_height="0dp"
-        android:layout_weight="1" >
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_weight="1"
+        android:orientation="vertical" >
 
         <sg.togoparts.gallery.FontableEditText
             android:id="@+id/edtKeyword"
@@ -26,19 +32,42 @@
             <requestFocus />
         </sg.togoparts.gallery.FontableEditText>
 
+        <sg.togoparts.gallery.FontableTextView
+            android:id="@+id/textView7"
+            style="@style/TextAppearance.Search.Black"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="5dp"
+            android:paddingTop="5dp"
+            android:text="@string/search_marketplace" />
+
+        <Spinner
+            android:id="@+id/spnCatId"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="5dp" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical" >
 
             <sg.togoparts.gallery.FontableButton
-                android:id="@+id/btnSearch"
+                android:id="@+id/btnSearchResult"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/btn_click"
                 android:text="@string/search"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textColor="@android:color/white" />
+
+            <sg.togoparts.gallery.FontableTextView
+                style="@android:style/TextAppearance.Medium"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:paddingTop="8dp"
+                android:text="@string/search_note" />
         </LinearLayout>
     </LinearLayout>
 

@@ -13,5 +13,7 @@ public class ResultLogin {
 		public String picture;
 		public String country;
 		public String gender;
+		
+		public String link;
 	}
 }

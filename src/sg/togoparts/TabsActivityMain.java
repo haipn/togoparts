@@ -35,15 +35,22 @@ import com.google.android.gms.ads.AdSize;
 public class TabsActivityMain extends TabActivity {
 	public static final String TAB_NAME = "tab name";
 	protected static final int REQUEST_POSTAD = 0;
+	private static final int REQUEST_LOGIN = 1;
 	public static boolean canRestart = true;
 	private PublisherAdView dfpAdView;
 	RelativeLayout rlAdMain;
 	boolean isAdShown = false;
 	TabHost tabHost;
-	
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+		if (!Const.isLogin(this)) {
+			// Log.d("haipn", "login roi");
+			startActivityForResult(new Intent(this, ChooseLogin.class),
+					REQUEST_LOGIN);
+		}
 		setContentView(R.layout.tabs_activity_main);
 
 		tabHost = getTabHost();
@@ -124,7 +131,7 @@ public class TabsActivityMain extends TabActivity {
 									ChooseLogin.class));
 							tabHost.setCurrentTabByTag("1");
 						}
-					} else if (tabId.equals("3")) {	
+					} else if (tabId.equals("3")) {
 
 						TabsActivityMain.canRestart = false;
 						if (Const.isLogin(TabsActivityMain.this)) {
@@ -134,9 +141,10 @@ public class TabsActivityMain extends TabActivity {
 							startActivityForResult(i, REQUEST_POSTAD);
 
 						} else
-							startActivity(new Intent(TabsActivityMain.this,
-									ChooseLogin.class));
-//						tabHost.setCurrentTabByTag("2");
+							startActivityForResult(new Intent(
+									TabsActivityMain.this, ChooseLogin.class),
+									REQUEST_LOGIN);
+						// tabHost.setCurrentTabByTag("2");
 					} else if (tabId.equals("4")) {
 						tracker.set(Fields.SCREEN_NAME, "Bikeshop Listing");
 					} else {
@@ -191,27 +199,34 @@ public class TabsActivityMain extends TabActivity {
 			}
 
 		});
-		if (getIntent().getStringExtra(Const.TAG_NAME) == null)
+		if (getIntent().getStringExtra(Const.TAG_NAME) == null) {
 			tabHost.setCurrentTabByTag("1");
-		else {
+			Log.d("haipn", "main activity tag name = null");
+		} else {
 			tabHost.setCurrentTabByTag(getIntent().getStringExtra(
 					Const.TAG_NAME));
+			Log.d("haipn", "main activity tag name = "
+					+ getIntent().getStringExtra(Const.TAG_NAME));
 			hideAd();
 		}
 	}
-	
+
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (requestCode == REQUEST_POSTAD) {
 			tabHost.setCurrentTab(1);
 		}
+		if (requestCode == REQUEST_LOGIN)
+			tabHost.setCurrentTab(0);
 		super.onActivityResult(requestCode, resultCode, data);
 	}
+
 	@Override
 	protected void onRestart() {
 		Log.d("haipn", "main tab onrestart");
 		super.onRestart();
 	}
+
 	private int getScreenWidthInDp() {
 		DisplayMetrics dm = this.getResources().getDisplayMetrics();
 		return (int) (dm.widthPixels / dm.density);

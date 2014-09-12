@@ -80,7 +80,7 @@
     <string name="marketplace_search">Marketplace Search</string>
     <string name="bikeshop_promos">Bikeshop Promos</string>
     <string name="bikeshop_search">Bikeshop Search</string>
-    <string name="about">About Togoparts</string>
+    <string name="about">Information</string>
     <string name="more">More</string>
     <string name="map">Map</string>
     <string name="title_search_bikeshop">Bikeshop Search Results</string>
@@ -120,6 +120,7 @@
     <string name="label_view_all_comment">View %d more earlier comments</string>
     <string name="note_priority_ad">Get your Used Item sorted above all Free Ads.</string>
     <string name="note_newitem_ad">Make a Profit selling New Items and get sorted above all Priority Ads.</string>
+    <string name="note_free_ad">You are posting a Free Ad. To get 5x more views to your ad, post as a Priority Ad or New Item Ads for new items.</string>
     <string name="details">Details</string>
     <string name="category">Category</string>
     <string name="item">Item</string>
@@ -138,7 +139,7 @@
     <string name="year">Year</string>
     <string name="model">Model</string>
     <string name="ad_title">Ad title</string>
-    <string name="ad_discipline">Ad Discipline</string>
+    <string name="ad_discipline">Discipline</string>
     <string name="ad_description">Ad Description</string>
     <string name="title_item_info">Item Info</string>
     <string name="next">Next</string>
@@ -196,7 +197,9 @@
     <string name="msg_purchase">Purchase Tcredits to post this as a %s ad</string>
     <string name="msg_input_title">Ad title is required.</string>
     <string name="msg_input_description">Ad description is required.</string>
-    <string name="msg_confirm_cancel">Are you sure you want to cancel editing this Ad? All photos and changes will not be saved.</string>
+    <string name="msg_confirm_cancel_editing">Are you sure you want to cancel editing this Ad? All photos and changes will not be saved.</string>
+    <string name="msg_confirm_cancel_posting">Are you sure you want to cancel posting this Ad? All details and photos will not be saved.</string>
+    
     <string name="msg_no_ads">You have not posted any ads</string>
     <string name="label_no_action">Ad already marked as %s</string>
     <string name="msg_confirm_logout">Logout Togoparts Account?</string>
@@ -212,6 +215,7 @@
 	<string name="message_tcred_1">You do not have enough TCredits to post %s ad under the selected Category!</string>
 	<string name="title_rm_img">Remove Image?</string>
 	<string name="message_rm_img">Are you sure you want to remove the selected image?</string>
+	<string name="search_note">You may use more search filters after submitting this Search</string>
     <string-array name="actions">
         <item>Capture image from camera</item>
         <item>Pick image from gallery</item>

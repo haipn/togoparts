@@ -55,7 +55,7 @@ public class MoreActivity extends Activity_Main {
 			@Override
 			public void onClick(View v) {
 				startActivity(new Intent(MoreActivity.this,
-						FSActivity_Search.class));
+						SearchActivity.class));
 			}
 		});
 

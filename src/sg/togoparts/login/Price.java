@@ -27,15 +27,15 @@ public class Price extends Activity {
 	Spinner mSpnPriceType;
 	Button mBtnSave;
 	CheckBox mCbClearance;
-	int  originalPrice, firmNeg;
-	double price;
+	int firmNeg;
+	double price, originalPrice;
 	boolean clearance;
 	HashMap<String, Integer> listPricetype;
 	public boolean mIsPostingPack;
 	private boolean mIsMerchant;
 	private ImageButton mBtnBack;
 	private ImageButton mBtnApply;
-	
+
 	private ProgressBar mProgress;
 	private TextView mTvTitleHeader;
 
@@ -49,7 +49,7 @@ public class Price extends Activity {
 		mIsMerchant = i.getBooleanExtra(PostAdActivity.MERCHANT_PACK, false);
 		DecimalFormat df = new DecimalFormat("###.##");
 		price = i.getDoubleExtra(PostAdActivity.PRICE, 0);
-		originalPrice = i.getIntExtra(PostAdActivity.ORIGINAL_PRICE, 0);
+		originalPrice = i.getDoubleExtra(PostAdActivity.ORIGINAL_PRICE, 0);
 		firmNeg = i.getIntExtra(PostAdActivity.PRICETYPE, 0);
 		clearance = i.getBooleanExtra(PostAdActivity.CLEARANCE, false);
 
@@ -60,12 +60,11 @@ public class Price extends Activity {
 		mCbClearance = (CheckBox) findViewById(R.id.cbClearance);
 
 		if (originalPrice != 0)
-			mEdtOriginalPrice.setText(originalPrice + "");
+			mEdtOriginalPrice.setText(df.format(originalPrice));
 		if (price != 0)
 			mEdtPrice.setText(df.format(price));
 		mCbClearance.setChecked(clearance);
 
-		
 		if (mIsMerchant || mIsPostingPack) {
 			findViewById(R.id.tvLabelOriginal).setVisibility(View.VISIBLE);
 			findViewById(R.id.llOriginalPrice).setVisibility(View.VISIBLE);
@@ -89,6 +88,7 @@ public class Price extends Activity {
 			}
 		});
 	}
+
 	private void createHeader() {
 		mBtnBack = (ImageButton) findViewById(R.id.btnBack);
 		mBtnApply = (ImageButton) findViewById(R.id.btnSearch);
@@ -96,7 +96,7 @@ public class Price extends Activity {
 		mBtnApply.setVisibility(View.VISIBLE);
 		findViewById(R.id.logo).setVisibility(View.INVISIBLE);
 		mBtnApply.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 				saveButton();
@@ -115,6 +115,7 @@ public class Price extends Activity {
 			}
 		});
 	}
+
 	private void initSpinner() {
 		int i = 0, d = 0;
 
@@ -142,6 +143,7 @@ public class Price extends Activity {
 		listPricetype.put("Firm", 1);
 		listPricetype.put("Negotiable", 2);
 	}
+
 	private void saveButton() {
 		Intent i = getIntent();
 		double price;
@@ -149,12 +151,11 @@ public class Price extends Activity {
 			price = Double.valueOf(mEdtPrice.getText().toString());
 		else
 			price = 0;
-		
+
 		i.putExtra(PostAdActivity.PRICE, price);
-		int original;
+		double original;
 		if (mEdtOriginalPrice.getText().toString().length() > 0)
-			original = Integer.valueOf(mEdtOriginalPrice.getText()
-					.toString());
+			original = Double.valueOf(mEdtOriginalPrice.getText().toString());
 		else
 			original = 0;
 		i.putExtra(PostAdActivity.ORIGINAL_PRICE, original);

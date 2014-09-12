@@ -2,8 +2,6 @@ package sg.togoparts.json;
 
 import java.util.ArrayList;
 
-import sg.togoparts.login.Profile.Value;
-
 import com.google.gson.annotations.SerializedName;
 
 public class PostAdOnLoadResult {
@@ -20,7 +18,13 @@ public class PostAdOnLoadResult {
 		public int freeadsleft;
 		public int Shopid;
 		public String Message;
+		public String TCredsLink;
 		public AdDetails ad_details;
+	}
+
+	public class Value {
+		public String label;
+		public int value;
 	}
 
 	public class AdDetails {

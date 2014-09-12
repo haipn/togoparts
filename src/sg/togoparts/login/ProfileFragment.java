@@ -25,10 +25,12 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.GridView;
 import android.widget.ImageView;
@@ -111,7 +113,7 @@ public class ProfileFragment extends Fragment_Main implements QuickActionSelect 
 				}
 			}
 		});
-		
+
 		Log.d("haipn", "profile fragment onCreateView");
 		return rootView;
 	}
@@ -137,34 +139,36 @@ public class ProfileFragment extends Fragment_Main implements QuickActionSelect 
 		mListValue = new ArrayList<Profile.Value>();
 		// }
 		Log.d("haipn", "profile fragment onCreate");
-		
+
 		super.onCreate(savedInstanceState);
 	}
 
 	@Override
 	public void onStart() {
 		Log.d("haipn", "profile fragment onStart");
-		
+
 		super.onStart();
 	}
-	
+
 	@Override
 	public void onAttach(Activity activity) {
 		Log.d("haipn", "profile fragment onAttach");
 		super.onAttach(activity);
 	}
-	
+
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		Log.d("haipn", "profile fragment onActivityCreate");
 		super.onActivityCreated(savedInstanceState);
 	}
+
 	@Override
 	public void onResume() {
 		Log.d("haipn", "profile fragment onResume");
 		getProfile();
 		super.onResume();
 	};
+
 	private void getProfile() {
 		Log.d("haipn",
 				"url:"
@@ -214,14 +218,13 @@ public class ProfileFragment extends Fragment_Main implements QuickActionSelect 
 
 	protected void showBanned(String message) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-		builder.setMessage(message)
-				.setPositiveButton(android.R.string.ok,
-						new DialogInterface.OnClickListener() {
-							public void onClick(DialogInterface dialog, int id) {
-								logout();
-								dialog.dismiss();
-							}
-						});
+		builder.setMessage(message).setPositiveButton(android.R.string.ok,
+				new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int id) {
+						logout();
+						dialog.dismiss();
+					}
+				});
 		Dialog dialog = builder.create();
 		dialog.setCanceledOnTouchOutside(false);
 		dialog.show();
@@ -303,6 +306,20 @@ public class ProfileFragment extends Fragment_Main implements QuickActionSelect 
 		mTvNeutral.setText(result.ratings.Neutral + "");
 		mTvPositive.setText(result.ratings.Positive + "");
 		imageLoader.displayImage(result.info.picture, mImvAvatar);
+		final String link = result.info.TCredsLink;
+		if (link != null && !link.isEmpty())
+			headerView.setRightButton(View.VISIBLE, new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					Intent i = new Intent(Intent.ACTION_VIEW);
+					i.setData(Uri.parse(link));
+					startActivity(i);
+				}
+			});
+		else {
+			headerView.setRightButton(View.INVISIBLE, null);
+		}
 		mListValue.clear();
 		if (result.quota != null) {
 			mListValue.addAll(result.quota);
@@ -384,7 +401,8 @@ public class ProfileFragment extends Fragment_Main implements QuickActionSelect 
 					isExpired = false;
 					mTvNoShortlist.setVisibility(View.GONE);
 				} else {
-					
+					mResult.clear();
+					mAdapter.notifyDataSetChanged();
 					mTvNoShortlist.setVisibility(View.VISIBLE);
 				}
 				// mLvResult.setAdapter(mAdapter);
@@ -421,6 +439,7 @@ public class ProfileFragment extends Fragment_Main implements QuickActionSelect 
 		headerView.setTitleVisible(View.VISIBLE,
 				getString(R.string.title_profile));
 		headerView.setRightButton(View.INVISIBLE, null);
+		headerView.setRightBackground(R.drawable.btn_buy);
 	}
 
 	protected void manageAd(final String action, final String aid) {
@@ -552,6 +571,34 @@ public class ProfileFragment extends Fragment_Main implements QuickActionSelect 
 		dialog.show();
 	}
 
+	protected void showBuyTcred(final ResultLogin res) {
+		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+		builder.setMessage(res.Result.Message)
+				.setIcon(android.R.drawable.ic_dialog_alert)
+				.setTitle(res.Result.Return)
+				.setPositiveButton("Buy TCredits",
+						new DialogInterface.OnClickListener() {
+
+							@Override
+							public void onClick(DialogInterface dialog,
+									int which) {
+								dialog.dismiss();
+								Intent i = new Intent(Intent.ACTION_VIEW);
+								i.setData(Uri.parse(res.Result.link));
+								startActivity(i);
+							}
+						})
+				.setNegativeButton(android.R.string.cancel,
+						new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int id) {
+								dialog.dismiss();
+							}
+						});
+		Dialog dialog = builder.create();
+		dialog.setCanceledOnTouchOutside(false);
+		dialog.show();
+	}
+
 	private Listener<ResultLogin> createManageSuccessListener() {
 		return new Response.Listener<ResultLogin>() {
 
@@ -565,6 +612,8 @@ public class ProfileFragment extends Fragment_Main implements QuickActionSelect 
 							response.Result.Message);
 					success.show(getActivity().getSupportFragmentManager(),
 							"success");
+				} else if (response.Result.Return.contains("TCred")) {
+					showBuyTcred(response);
 				} else {
 					showError(response.Result.Message);
 				}

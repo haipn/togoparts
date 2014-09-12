@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import sg.togoparts.R;
 import sg.togoparts.login.Profile.Value;
 import android.content.Context;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -58,7 +59,7 @@ public class InfoAdapter extends BaseAdapter {
 		Value promos = getItem(position);
 		holder.label.setText(promos.label);
 		holder.label.setTextColor(mContext.getResources().getColor(android.R.color.black));
-		holder.value.setText(promos.value + "");
+		holder.value.setText(Html.fromHtml(promos.value));
 		holder.value.setTextColor(mContext.getResources().getColor(R.color.orange));
 		return convertView;
 	}

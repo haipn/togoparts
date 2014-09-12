@@ -83,7 +83,6 @@
         <activity
             android:name="sg.togoparts.TabsActivityMain"
             android:label="@string/app_name"
-            android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|adjustResize" >
         </activity>
@@ -103,7 +102,7 @@
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="sg.togoparts.FSActivity_Search"
+            android:name="sg.togoparts.SearchActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
         </activity>

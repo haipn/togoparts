@@ -49,6 +49,9 @@ import com.google.analytics.tracking.android.Fields;
 import com.google.analytics.tracking.android.GoogleAnalytics;
 import com.google.analytics.tracking.android.MapBuilder;
 import com.google.analytics.tracking.android.Tracker;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.doubleclick.PublisherAdRequest;
+import com.google.android.gms.ads.doubleclick.PublisherAdView;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
@@ -110,12 +113,14 @@ public class BikeShopDetail extends FragmentActivity implements LocationResult,
 	private ArrayList<String> actualNo = new ArrayList<String>();
 	protected String[] listNumber;
 	protected int mTypeDialog;
+	private PublisherAdView adview;
 
 	@Override
 	protected void onCreate(Bundle arg0) {
 
 		super.onCreate(arg0);
 		setContentView(R.layout.bikeshop_detail);
+		adview = (PublisherAdView) findViewById(R.id.adView);
 		Tracker tracker = GoogleAnalytics.getInstance(this).getTracker(
 				Const.GA_PROPERTY_ID);
 		tracker.set(Fields.SCREEN_NAME, "Bikeshop Details");
@@ -166,6 +171,21 @@ public class BikeShopDetail extends FragmentActivity implements LocationResult,
 				requestBikeShopDetail();
 			}
 		}
+	}
+
+	@Override
+	protected void onResume() {
+		PublisherAdRequest.Builder re = new PublisherAdRequest.Builder();
+		adview.loadAd(re.build());
+		adview.setVisibility(View.GONE);
+		adview.setAdListener(new AdListener() {
+			@Override
+			public void onAdLoaded() {
+				adview.setVisibility(View.VISIBLE);
+				super.onAdLoaded();
+			}
+		});
+		super.onResume();
 	}
 
 	private void requestBikeShopDetail() {

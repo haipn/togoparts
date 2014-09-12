@@ -165,7 +165,7 @@ public class MarketPlaceFragment extends Fragment_Main implements ClickViewAll {
 //						.getParent();
 //				tab.getTabHost().setCurrentTab(3);
 				Intent i = new Intent(getActivity(),
-						FSActivity_Search.class);
+						SearchActivity.class);
 				startActivity(i);
 			}
 		});

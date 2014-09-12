@@ -164,7 +164,7 @@ public class SearchResultActivity extends FragmentActivity {
 		mLvResult.setAdapter(mAdapter);
 		searchResult(mIntent);
 		createHeader();
-		Log.d("haipn","screen name:" + mScreenName);
+		Log.d("haipn", "screen name:" + mScreenName);
 
 	}
 
@@ -180,9 +180,6 @@ public class SearchResultActivity extends FragmentActivity {
 		tracker.set(Fields.SCREEN_NAME, mScreenName);
 		tracker.send(MapBuilder.createAppView().build());
 
-		
-		if (i.getStringExtra(FilterActivity.KEYWORD) != null)
-			mKeyword = i.getStringExtra(FilterActivity.KEYWORD);
 		mPageId = 1;
 		if (mQueryBundle != null)
 			getQuery();
@@ -215,6 +212,10 @@ public class SearchResultActivity extends FragmentActivity {
 	}
 
 	private void getQuery() {
+		if (mQueryBundle.getString(FilterActivity.KEYWORD) != null)
+			mKeyword = mQueryBundle.getString(FilterActivity.KEYWORD);
+		else
+			mKeyword = "";
 		String postBy = mQueryBundle.getString(FilterActivity.POSTED_BY);
 		if (postBy == null) {
 			postBy = "";
@@ -286,9 +287,8 @@ public class SearchResultActivity extends FragmentActivity {
 			} catch (UnsupportedEncodingException e) {
 				mQuery = String.format(Const.URL_LIST_SEARCH, String.format(
 						Const.URL_LIST_SEARCH_PARAM,
-						URLEncoder.encode(mKeyword), postBy, size,
-						value, unit, from, to, adStatus, market, type,
-						shopname, sort));
+						URLEncoder.encode(mKeyword), postBy, size, value, unit,
+						from, to, adStatus, market, type, shopname, sort));
 				e.printStackTrace();
 			}
 		} else {
@@ -302,9 +302,8 @@ public class SearchResultActivity extends FragmentActivity {
 			} catch (UnsupportedEncodingException e) {
 				mQuery = String.format(Const.URL_LIST_SEARCH, String.format(
 						Const.URL_LIST_SEARCH_PARAM,
-						URLEncoder.encode(mKeyword), postBy, size,
-						value, unit, from, to, adStatus, market, type,
-						shopname, sort))
+						URLEncoder.encode(mKeyword), postBy, size, value, unit,
+						from, to, adStatus, market, type, shopname, sort))
 						+ "&gid=" + group;
 				e.printStackTrace();
 			}

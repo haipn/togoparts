@@ -139,7 +139,7 @@ public class ShortListAdsFragment extends Fragment_Main implements
 //						.getParent();
 //				tab.getTabHost().setCurrentTab(3);
 				Intent i = new Intent(getActivity(),
-						FSActivity_Search.class);
+						SearchActivity.class);
 				startActivity(i);
 			}
 		});

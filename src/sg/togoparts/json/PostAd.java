@@ -99,7 +99,7 @@ public class PostAd {
 	// /// Price screen
 	private double price;
 	private int pricetype;
-	private int original_price;
+	private double original_price;
 	private boolean clearance;
 	// /// Images
 	private String adpic1;
@@ -390,11 +390,11 @@ public class PostAd {
 		this.pricetype = pricetype;
 	}
 
-	public int getOriginal_price() {
+	public double getOriginal_price() {
 		return original_price;
 	}
 
-	public void setOriginal_price(int original_price) {
+	public void setOriginal_price(double original_price) {
 		this.original_price = original_price;
 	}
 

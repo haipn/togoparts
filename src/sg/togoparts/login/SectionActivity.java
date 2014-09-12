@@ -17,6 +17,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
@@ -55,13 +56,14 @@ public class SectionActivity extends FragmentActivity implements OnExpireResult 
 	private int mTcred;
 	private int mSelectedCost1;
 	private int mSelectedCost2;
-
+	String tCredLink;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.list_activity);
 		createHeader();
+		tCredLink = getIntent().getStringExtra("tcredlink");
 		adType = getIntent().getIntExtra(PostAdActivity.TYPE_AD_POST, 0);
 		mTcred = getIntent().getIntExtra(PostAdActivity.TCRED, 0);
 		mSessionId = getIntent().getIntExtra(PostAdActivity.SECTION, -1);
@@ -121,7 +123,19 @@ public class SectionActivity extends FragmentActivity implements OnExpireResult 
 		builder.setMessage(getString(R.string.message_tcred, string))
 				.setIcon(android.R.drawable.ic_dialog_alert)
 				.setTitle(R.string.title_tcred)
-				.setNegativeButton(android.R.string.ok,
+				.setPositiveButton("Buy TCredits",
+						new DialogInterface.OnClickListener() {
+
+							@Override
+							public void onClick(DialogInterface dialog,
+									int which) {
+								dialog.dismiss();
+								Intent i = new Intent(Intent.ACTION_VIEW);
+								i.setData(Uri.parse(tCredLink));
+								startActivity(i);
+							}
+						})
+				.setNegativeButton(android.R.string.cancel,
 						new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int id) {
 								dialog.dismiss();

@@ -39,6 +39,8 @@ public class Profile {
 	public class Info {
 		public String username;
 		public String picture;
+		public String TCredsLink;
+		public int TCreds;
 	}
 
 	public class Ratings {
@@ -49,7 +51,7 @@ public class Profile {
 
 	public class Value {
 		public String label;
-		public int value;
+		public String value;
 	}
 
 }
