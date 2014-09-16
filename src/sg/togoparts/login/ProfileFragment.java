@@ -165,7 +165,8 @@ public class ProfileFragment extends Fragment_Main implements QuickActionSelect 
 	@Override
 	public void onResume() {
 		Log.d("haipn", "profile fragment onResume");
-		getProfile();
+		if (Const.isLogin(getActivity()))
+			getProfile();
 		super.onResume();
 	};
 
@@ -546,7 +547,8 @@ public class ProfileFragment extends Fragment_Main implements QuickActionSelect 
 	@Override
 	public void onRefreshClick(final String aid) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-		builder.setMessage(R.string.msg_refresh_confirm)
+		builder.setMessage(R.string.message_refresh)
+				.setTitle(R.string.title_refresh)
 				.setIcon(android.R.drawable.ic_dialog_alert)
 				.setPositiveButton(android.R.string.ok,
 						new DialogInterface.OnClickListener() {
@@ -584,7 +586,7 @@ public class ProfileFragment extends Fragment_Main implements QuickActionSelect 
 									int which) {
 								dialog.dismiss();
 								Intent i = new Intent(Intent.ACTION_VIEW);
-								i.setData(Uri.parse(res.Result.link));
+								i.setData(Uri.parse(res.Result.TCredsLink));
 								startActivity(i);
 							}
 						})

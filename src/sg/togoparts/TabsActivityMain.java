@@ -36,6 +36,7 @@ public class TabsActivityMain extends TabActivity {
 	public static final String TAB_NAME = "tab name";
 	protected static final int REQUEST_POSTAD = 0;
 	private static final int REQUEST_LOGIN = 1;
+	
 	public static boolean canRestart = true;
 	private PublisherAdView dfpAdView;
 	RelativeLayout rlAdMain;
@@ -127,9 +128,10 @@ public class TabsActivityMain extends TabActivity {
 							tracker.set(Fields.SCREEN_NAME, "Profile");
 
 						else {
-							startActivity(new Intent(TabsActivityMain.this,
-									ChooseLogin.class));
-							tabHost.setCurrentTabByTag("1");
+							startActivityForResult(new Intent(
+									TabsActivityMain.this, ChooseLogin.class),
+									REQUEST_LOGIN);
+//							tabHost.setCurrentTabByTag("1");
 						}
 					} else if (tabId.equals("3")) {
 

@@ -14,6 +14,6 @@ public class ResultLogin {
 		public String country;
 		public String gender;
 		
-		public String link;
+		public String TCredsLink;
 	}
 }

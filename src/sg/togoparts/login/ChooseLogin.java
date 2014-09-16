@@ -151,7 +151,8 @@ public class ChooseLogin extends FragmentActivity {
 		mSimpleFacebook.onActivityResult(this, requestCode, resultCode, data);
 		mProgressDialog.dismiss();
 		if ((requestCode == 0 || requestCode == 1) && resultCode == RESULT_OK) {
-			startActivity(new Intent(this, TabsActivityMain.class));
+//			startActivity(new Intent(this, TabsActivityMain.class));
+			setResult(RESULT_OK);
 			finish();
 		}
 		switch (requestCode) {
@@ -418,7 +419,8 @@ public class ChooseLogin extends FragmentActivity {
 		if (result.Return.equals("success")) {
 			// success();
 			Const.writeSessionId(this, result.session_id, result.refresh_id);
-			startActivity(new Intent(this, TabsActivityMain.class));
+//			startActivity(new Intent(this, TabsActivityMain.class));
+			setResult(RESULT_OK);
 			finish();
 		} else if (result.Return.equals("error")
 				|| result.Return.equals("banned")) {
@@ -433,7 +435,8 @@ public class ChooseLogin extends FragmentActivity {
 		if (result.Return.equals("success")) {
 			// success();
 			Const.writeSessionId(this, result.session_id, result.refresh_id);
-			startActivity(new Intent(this, TabsActivityMain.class));
+//			startActivity(new Intent(this, TabsActivityMain.class));
+			setResult(RESULT_OK);
 			finish();
 		} else if (result.Return.equals("error")
 				|| result.Return.equals("banned")) {

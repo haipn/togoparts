@@ -606,7 +606,8 @@ public class PostAdActivity extends FragmentActivity implements
 					onLoadProcess(response.Result);
 				} else if (response.Result.Return.contains("TCred")) {
 					showBuyTcred(response.Result.Return,
-							response.Result.Message, response.Result.TCredsLink);
+							response.Result.Message,
+							response.Result.TCredsLink, true);
 				} else if (response.Result.Return.equals("error")) {
 					mProgressDialog.dismiss();
 					showError(response.Result.Message, false);
@@ -618,7 +619,8 @@ public class PostAdActivity extends FragmentActivity implements
 		};
 	}
 
-	protected void showBuyTcred(String title, String msg, final String link) {
+	protected void showBuyTcred(String title, String msg, final String link,
+			final boolean finish) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setMessage(msg)
 				.setIcon(android.R.drawable.ic_dialog_alert)
@@ -630,15 +632,21 @@ public class PostAdActivity extends FragmentActivity implements
 							public void onClick(DialogInterface dialog,
 									int which) {
 								dialog.dismiss();
-								Intent i = new Intent(Intent.ACTION_VIEW);
-								i.setData(Uri.parse(link));
-								startActivity(i);
+								if (link != null) {
+									Intent i = new Intent(Intent.ACTION_VIEW);
+									i.setData(Uri.parse(link));
+									startActivity(i);
+								}
+								if (finish)
+									finish();
 							}
 						})
 				.setNegativeButton(android.R.string.cancel,
 						new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int id) {
 								dialog.dismiss();
+								if (finish)
+									finish();
 							}
 						});
 		Dialog dialog = builder.create();
@@ -676,8 +684,11 @@ public class PostAdActivity extends FragmentActivity implements
 		if (isEdit) {
 			findViewById(R.id.llCheckEmail).setVisibility(View.GONE);
 			fillAdData(result.ad_details);
+			mTvNote.setVisibility(View.GONE);
+			
 		} else {
 			findViewById(R.id.llCheckEmail).setVisibility(View.VISIBLE);
+			mTvNote.setVisibility(View.VISIBLE);
 		}
 
 		mPostAd.setSession_id(Const.getSessionId(this));
@@ -1079,7 +1090,7 @@ public class PostAdActivity extends FragmentActivity implements
 							showBuyTcred(
 									getString(R.string.title_tcred),
 									getString(R.string.msg_purchase, "New Item"),
-									mResultValue.TCredsLink);
+									mResultValue.TCredsLink, false);
 							// AlertTcredDialog dialog = new AlertTcredDialog(
 							// getString(R.string.msg_purchase, "New Item"));
 							// dialog.show(getSupportFragmentManager(),
@@ -1131,7 +1142,7 @@ public class PostAdActivity extends FragmentActivity implements
 							showBuyTcred(
 									getString(R.string.title_tcred),
 									getString(R.string.msg_purchase, "Priority"),
-									mResultValue.TCredsLink);
+									mResultValue.TCredsLink, false);
 							// AlertTcredDialog dialog = new AlertTcredDialog(
 							// getString(R.string.msg_purchase, "Priority"));
 							// dialog.show(getSupportFragmentManager(),
@@ -1816,7 +1827,7 @@ public class PostAdActivity extends FragmentActivity implements
 	protected void showTcred(String string) {
 		showBuyTcred(getString(R.string.title_tcred),
 				getString(R.string.message_tcred_1, string),
-				mResultValue.TCredsLink);
+				mResultValue.TCredsLink, false);
 	}
 
 	@Override

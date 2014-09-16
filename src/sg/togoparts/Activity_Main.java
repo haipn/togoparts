@@ -71,8 +71,13 @@ public class Activity_Main extends FragmentActivity implements HeaderView {
 
 	@Override
 	public void setRightButton(int visible, OnClickListener click) {
-		mBtnRight.setVisibility(visible);
-		mBtnRight.setOnClickListener(click);
+		try {
+			mBtnRight.setVisibility(visible);
+			mBtnRight.setOnClickListener(click);
+		} catch (NullPointerException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	@Override

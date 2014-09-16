@@ -129,7 +129,7 @@ public class MarketPlaceFragment extends Fragment_Main implements ClickViewAll {
 		final PublisherAdView adview = (PublisherAdView) getActivity().findViewById(R.id.adView);
 		PublisherAdRequest.Builder re = new PublisherAdRequest.Builder();
 		adview.loadAd(re.build());
-		adview.setVisibility(View.GONE);
+		
 		adview.setAdListener(new AdListener() {
 			@Override
 			public void onAdLoaded() {
@@ -140,6 +140,7 @@ public class MarketPlaceFragment extends Fragment_Main implements ClickViewAll {
 			@Override
 			public void onAdFailedToLoad(int errorCode) {
 				Log.d("haipn", "onad failed + " + errorCode);
+				adview.setVisibility(View.GONE);
 				super.onAdFailedToLoad(errorCode);
 			}
 		});

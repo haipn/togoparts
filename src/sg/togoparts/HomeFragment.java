@@ -70,6 +70,7 @@ public class HomeFragment extends Fragment_Main implements ClickViewAll {
 	ExpandableListView mLvGroup;
 	protected MyExpandableAdapter mAdapter;
 	protected ArrayList<Group> mGroups;
+	private PublisherAdView adview;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -152,6 +153,17 @@ public class HomeFragment extends Fragment_Main implements ClickViewAll {
 				createMarketPlaceSuccessListener(), createMarketPlaceErrorListener());
 		queue.add(myReq);
 		mGroups = new ArrayList<Group>();
+		adview = (PublisherAdView) getActivity().findViewById(R.id.adView);
+		adview.setVisibility(View.GONE);
+		PublisherAdRequest.Builder re = new PublisherAdRequest.Builder();
+		adview.loadAd(re.build());
+		adview.setAdListener(new AdListener() {
+			 @Override
+			public void onAdLoaded() {
+				// TODO Auto-generated method stub
+				super.onAdLoaded();
+			}
+			});
 		super.onCreate(savedInstanceState);
 	}
 
@@ -196,17 +208,7 @@ public class HomeFragment extends Fragment_Main implements ClickViewAll {
 	public void onResume() {
 		super.onResume();
 		Const.isAppExitable = true;
-		PublisherAdView adview = (PublisherAdView) getActivity().findViewById(R.id.adView);
-		adview.setVisibility(View.GONE);
-		PublisherAdRequest.Builder re = new PublisherAdRequest.Builder();
-		adview.loadAd(re.build());
-		adview.setAdListener(new AdListener() {
-			 @Override
-			public void onAdLoaded() {
-				// TODO Auto-generated method stub
-				super.onAdLoaded();
-			}
-			});
+		
 	}
 
 	private Response.Listener<MpListLatestAds> createMyReqSuccessListener() {

@@ -120,7 +120,8 @@
     <string name="label_view_all_comment">View %d more earlier comments</string>
     <string name="note_priority_ad">Get your Used Item sorted above all Free Ads.</string>
     <string name="note_newitem_ad">Make a Profit selling New Items and get sorted above all Priority Ads.</string>
-    <string name="note_free_ad">You are posting a Free Ad. To get 5x more views to your ad, post as a Priority Ad or New Item Ads for new items.</string>
+   
+    <string name="note_free_ad"> You are posting a Free ad. To get 5x more views and 6 pictures, post as a Priority or New Item Ad.</string>
     <string name="details">Details</string>
     <string name="category">Category</string>
     <string name="item">Item</string>
@@ -216,6 +217,8 @@
 	<string name="title_rm_img">Remove Image?</string>
 	<string name="message_rm_img">Are you sure you want to remove the selected image?</string>
 	<string name="search_note">You may use more search filters after submitting this Search</string>
+	<string name="title_refresh">Confirm Refresh</string>
+	<string name="message_refresh">Bump your Ad to the top of the list for 1 Tcredit?</string>
     <string-array name="actions">
         <item>Capture image from camera</item>
         <item>Pick image from gallery</item>

@@ -372,7 +372,8 @@ public class ItemInfo extends Activity {
 				mProgress.setVisibility(View.VISIBLE);
 				RequestQueue queue = MyVolley.getRequestQueue();
 				GsonRequest<ModelResult> brandReq = new GsonRequest<ModelResult>(
-						Method.GET, String.format(Const.URL_GET_MODEL, data),
+						Method.GET, String.format(Const.URL_GET_MODEL, data,
+								mAtvBrand.getText().toString()),
 						ModelResult.class, createModelSuccessListener(),
 						createMyReqErrorListener());
 				queue.add(brandReq);

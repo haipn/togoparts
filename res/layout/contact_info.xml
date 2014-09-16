@@ -58,20 +58,35 @@
             android:layout_height="wrap_content"
             android:text="@string/label_location" />
 
-        <sg.togoparts.gallery.FontableTextView
-            android:id="@+id/edtLocation"
-            style="@android:style/Widget.EditText"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:singleLine="true" />
+            android:gravity="bottom"
+            android:orientation="horizontal" >
+
+            <sg.togoparts.gallery.FontableTextView
+                android:id="@+id/edtLocation"
+                style="@android:style/Widget.EditText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:singleLine="true" />
+
+            <ImageView
+                android:layout_margin="5dp"
+                android:id="@+id/btnDelete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_delete" />
+        </LinearLayout>
 
         <sg.togoparts.gallery.FontableButton
             android:id="@+id/btnSave"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:background="@drawable/btn_click"
             android:text="@string/save"
-            android:layout_marginTop="10dp"
             android:textColor="@android:color/white"
             android:textSize="20sp" />
     </LinearLayout>

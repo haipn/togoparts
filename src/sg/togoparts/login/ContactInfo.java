@@ -11,31 +11,30 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 public class ContactInfo extends FragmentActivity {
 
-	
 	protected static final int REQUEST_LOCATION = 0;
-	
+
 	EditText mEdtContactPerson;
 	EditText mEdtContactNo;
 	Spinner mSpnBestTime;
-	
+	ImageView mBtnDelete;
 	Button mBtnSave;
 
 	String mContactNo, mContactPerson, mBestTime, mCity, mRegion, mCountry,
 			mPostalCode, mAddress;
 	double mLat, mLong;
 
-	
 	private ImageButton mBtnBack;
 	private ProgressBar mProgress;
 	private TextView mTvTitleHeader;
 	TextView mEdtLocation;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -52,11 +51,11 @@ public class ContactInfo extends FragmentActivity {
 		mAddress = i.getStringExtra(PostAdActivity.ADDRESS);
 		mLat = i.getDoubleExtra(PostAdActivity.LAT, 0);
 		mLong = i.getDoubleExtra(PostAdActivity.LONGITUDE, 0);
-		
+
 		mEdtContactNo = (EditText) findViewById(R.id.edtContactNo);
 		mEdtContactPerson = (EditText) findViewById(R.id.edtContactPerson);
 		mEdtLocation = (TextView) findViewById(R.id.edtLocation);
-		
+
 		mEdtLocation.setText(mAddress);
 		mSpnBestTime = (Spinner) findViewById(R.id.spnBestTime);
 		mBtnSave = (Button) findViewById(R.id.btnSave);
@@ -92,32 +91,49 @@ public class ContactInfo extends FragmentActivity {
 		});
 
 		mEdtLocation.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 				Intent i = new Intent(ContactInfo.this, LocationActivity.class);
 				startActivityForResult(i, REQUEST_LOCATION);
 			}
 		});
-		
+
 		mEdtLocation.setOnFocusChangeListener(new OnFocusChangeListener() {
-			
+
 			@Override
 			public void onFocusChange(View v, boolean hasFocus) {
 				if (hasFocus) {
-					Intent i = new Intent(ContactInfo.this, LocationActivity.class);
+					Intent i = new Intent(ContactInfo.this,
+							LocationActivity.class);
 					startActivityForResult(i, REQUEST_LOCATION);
 				}
 			}
 		});
-		
+		mBtnDelete = (ImageView) findViewById(R.id.btnDelete);
+		mBtnDelete.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				mCity = "";
+				mRegion = "";
+				mCountry = "";
+				mPostalCode = "";
+				mAddress = "";
+				mLat = 0;
+				mLong = 0;
+				mEdtLocation.setText("");
+			}
+		});
+
 	}
+
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		// TODO Auto-generated method stub
 		super.onActivityResult(requestCode, resultCode, data);
 		if (resultCode == RESULT_OK && requestCode == REQUEST_LOCATION) {
-			if (data != null ) {
+			if (data != null) {
 				mAddress = data.getStringExtra(PostAdActivity.ADDRESS);
 				mCity = data.getStringExtra(PostAdActivity.CITY);
 				mRegion = data.getStringExtra(PostAdActivity.REGION);
@@ -129,6 +145,7 @@ public class ContactInfo extends FragmentActivity {
 			}
 		}
 	}
+
 	private void createHeader() {
 		mBtnBack = (ImageButton) findViewById(R.id.btnBack);
 		findViewById(R.id.btnSearch).setVisibility(View.INVISIBLE);
@@ -163,5 +180,4 @@ public class ContactInfo extends FragmentActivity {
 		mSpnBestTime.setSelection(d);
 	}
 
-	
 }
