@@ -11,7 +11,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         ads:adSize="BANNER"
-        ads:adUnitId="/4689451/Android-home-top320x50"
+        ads:adUnitId="@string/admod_home_id"
         android:background="@android:color/white" />
 
     <ExpandableListView

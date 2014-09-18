@@ -205,7 +205,8 @@
     <string name="label_no_action">Ad already marked as %s</string>
     <string name="msg_confirm_logout">Logout Togoparts Account?</string>
     <string name="label_check_email">Email me when this ad is posted successfully</string>
-    <string name="admod_id">/4689451/Android320x50</string>
+    <string name="admod_id">/4689451/AndroidPro320x50</string>
+    <string name="admod_home_id">/4689451/AndroidPro-home-top320x50</string>
     <string name="title_edit_ad">Edit Ad</string>
     <string name="external_storage_na_title">Attention</string>
     <string name="external_storage_na_message">Sdcard is missing or currently not mounted. Cannot continue.</string>
