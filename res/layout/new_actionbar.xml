@@ -22,7 +22,7 @@
         android:src="@drawable/banner"
         android:visibility="visible" />
 
-    <sg.togoparts.gallery.FontableTextView
+    <sg.togoparts.pro.gallery.FontableTextView
         android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="sg.togoparts"
+    package="sg.togoparts.pro"
     android:versionCode="3"
     android:versionName="1.1.1" >
 
@@ -19,10 +19,10 @@
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
 
     <permission
-        android:name="sg.togoparts.permission.C2D_MESSAGE"
+        android:name="sg.togoparts.pro.permission.C2D_MESSAGE"
         android:protectionLevel="signature" />
 
-    <uses-permission android:name="sg.togoparts.permission.C2D_MESSAGE" />
+    <uses-permission android:name="sg.togoparts.pro.permission.C2D_MESSAGE" />
 
     <uses-feature
         android:name="android.hardware.telephony"
@@ -32,10 +32,10 @@
         android:required="false" />
 
     <permission
-        android:name="sg.togoparts.permission.MAPS_RECEIVE"
+        android:name="sg.togoparts.pro.permission.MAPS_RECEIVE"
         android:protectionLevel="signature" />
 
-    <uses-permission android:name="sg.togoparts.permission.MAPS_RECEIVE" />
+    <uses-permission android:name="sg.togoparts.pro.permission.MAPS_RECEIVE" />
 
     <uses-sdk
         android:minSdkVersion="9"
@@ -50,7 +50,7 @@
         android:xlargeScreens="true" />
 
     <application
-        android:name="sg.togoparts.app.MyApplication"
+        android:name="sg.togoparts.pro.app.MyApplication"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
@@ -75,45 +75,45 @@
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
 
-                <category android:name="sg.togoparts" />
+                <category android:name="sg.togoparts.pro" />
             </intent-filter>
         </receiver>
 
         <service android:name=".gcm.GcmIntentService" />
 
         <activity
-            android:name="sg.togoparts.TabsActivityMain"
+            android:name="sg.togoparts.pro.TabsActivityMain"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|adjustResize" >
         </activity>
         <activity
-            android:name="sg.togoparts.FSActivity_Home"
+            android:name="sg.togoparts.pro.FSActivity_Home"
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="sg.togoparts.FSActivity_MarketPlace"
+            android:name="sg.togoparts.pro.FSActivity_MarketPlace"
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="sg.togoparts.FSActivity_ShortList"
+            android:name="sg.togoparts.pro.FSActivity_ShortList"
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="sg.togoparts.SearchActivity"
+            android:name="sg.togoparts.pro.SearchActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="sg.togoparts.login.FSActivity_PostAd"
+            android:name="sg.togoparts.pro.login.FSActivity_PostAd"
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="sg.togoparts.Splash"
+            android:name="sg.togoparts.pro.Splash"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Light.NoTitleBar" >
             <intent-filter>
@@ -123,137 +123,137 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="sg.togoparts.FilterActivity"
+            android:name="sg.togoparts.pro.FilterActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" >
         </activity>
         <activity
-            android:name="sg.togoparts.DetailActivity"
+            android:name="sg.togoparts.pro.DetailActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="sg.togoparts.TabsActivityMain" />
+                android:value="sg.togoparts.pro.TabsActivityMain" />
         </activity>
         <activity
-            android:name="sg.togoparts.SearchResultActivity"
+            android:name="sg.togoparts.pro.SearchResultActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="sg.togoparts.TabsActivityMain" />
+                android:value="sg.togoparts.pro.TabsActivityMain" />
         </activity>
         <activity
-            android:name="sg.togoparts.FSActivity_BikeShop"
+            android:name="sg.togoparts.pro.FSActivity_BikeShop"
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="sg.togoparts.FilterBikeShop"
+            android:name="sg.togoparts.pro.FilterBikeShop"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" >
         </activity>
         <activity
-            android:name="sg.togoparts.BikeShopDetail"
+            android:name="sg.togoparts.pro.BikeShopDetail"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="sg.togoparts.TabsActivityMain" />
+                android:value="sg.togoparts.pro.TabsActivityMain" />
         </activity>
         <activity
-            android:name="sg.togoparts.MoreActivity"
+            android:name="sg.togoparts.pro.MoreActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" >
         </activity>
         <activity
-            android:name="sg.togoparts.AboutActivity"
+            android:name="sg.togoparts.pro.AboutActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" >
         </activity>
         <activity
-            android:name="sg.togoparts.ListPromosActivity"
+            android:name="sg.togoparts.pro.ListPromosActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" >
         </activity>
         <activity
-            android:name="sg.togoparts.MapActivity"
+            android:name="sg.togoparts.pro.MapActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="sg.togoparts.login.ChooseLogin"
+            android:name="sg.togoparts.pro.login.ChooseLogin"
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="sg.togoparts.login.LoginActivity"
+            android:name="sg.togoparts.pro.login.LoginActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="sg.togoparts.login.MergeAccount"
+            android:name="sg.togoparts.pro.login.MergeAccount"
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="sg.togoparts.login.Signup"
+            android:name="sg.togoparts.pro.login.Signup"
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="sg.togoparts.login.FSActivity_Profile"
+            android:name="sg.togoparts.pro.login.FSActivity_Profile"
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="sg.togoparts.login.PostAdActivity"
+            android:name="sg.togoparts.pro.login.PostAdActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="sg.togoparts.login.SectionActivity"
+            android:name="sg.togoparts.pro.login.SectionActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="sg.togoparts.login.CategoryActivity"
+            android:name="sg.togoparts.pro.login.CategoryActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="sg.togoparts.login.SubCategoryActivity"
+            android:name="sg.togoparts.pro.login.SubCategoryActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="sg.togoparts.login.ItemInfo"
+            android:name="sg.togoparts.pro.login.ItemInfo"
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="sg.togoparts.login.Price"
+            android:name="sg.togoparts.pro.login.Price"
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="sg.togoparts.login.ContactInfo"
+            android:name="sg.togoparts.pro.login.ContactInfo"
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="sg.togoparts.login.MessageActivity"
+            android:name="sg.togoparts.pro.login.MessageActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="sg.togoparts.login.LocationActivity"
+            android:name="sg.togoparts.pro.login.LocationActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
         </activity>
@@ -312,7 +312,7 @@
         -->
         <provider
             android:name="com.aviary.android.feather.cds.AviaryCdsProvider"
-            android:authorities="sg.togoparts.AviaryCdsProvider"
+            android:authorities="sg.togoparts.pro.AviaryCdsProvider"
             android:exported="false"
             android:process=":aviarycds"
             android:syncable="true" />
@@ -322,7 +322,7 @@
         <!-- android:authorities="{your.package.name}.HiResProvider" -->
         <provider
             android:name="com.aviary.android.feather.library.providers.FeatherContentProvider"
-            android:authorities="sg.togoparts.HiResProvider"
+            android:authorities="sg.togoparts.pro.HiResProvider"
             android:exported="false"
             android:process=":standalone" >
         </provider>

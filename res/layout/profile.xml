@@ -25,7 +25,7 @@
         swipe:swipeFrontView="@+id/front"
         swipe:swipeMode="both"
         swipe:swipeOpenOnLongPress="true" />
-     <sg.togoparts.gallery.FontableTextView
+     <sg.togoparts.pro.gallery.FontableTextView
         android:id="@+id/tvNoResult"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

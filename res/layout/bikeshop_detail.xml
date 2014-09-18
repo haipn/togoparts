@@ -46,14 +46,14 @@
                         android:orientation="vertical"
                         android:padding="4dp" >
 
-                        <sg.togoparts.gallery.FontableTextView
+                        <sg.togoparts.pro.gallery.FontableTextView
                             android:id="@+id/tvOpenLabel"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textAppearance="?android:attr/textAppearanceMedium"
                             android:textColor="@android:color/white" />
 
-                        <sg.togoparts.gallery.FontableTextView
+                        <sg.togoparts.pro.gallery.FontableTextView
                             android:id="@+id/tvRemark"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -72,7 +72,7 @@
                         android:orientation="vertical"
                         android:padding="4dp" >
 
-                        <sg.togoparts.gallery.FontableTextView
+                        <sg.togoparts.pro.gallery.FontableTextView
                             android:id="@+id/tvLocation"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -83,12 +83,12 @@
                             android:textAppearance="?android:attr/textAppearanceMedium"
                             android:textColor="@android:color/white" />
 
-                        <sg.togoparts.gallery.FontableTextView
+                        <sg.togoparts.pro.gallery.FontableTextView
                             android:id="@+id/tvDistance"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:paddingLeft="10dp"
                             android:ellipsize="marquee"
+                            android:paddingLeft="10dp"
                             android:textColor="@android:color/white" />
                     </LinearLayout>
                 </LinearLayout>
@@ -133,7 +133,7 @@
                         android:orientation="horizontal"
                         android:weightSum="6" >
 
-                        <sg.togoparts.gallery.FontableTextView
+                        <sg.togoparts.pro.gallery.FontableTextView
                             android:id="@+id/tvSMS"
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
@@ -144,7 +144,7 @@
                             android:textAppearance="?android:attr/textAppearanceLarge"
                             android:textColorHighlight="@color/orange" />
 
-                        <sg.togoparts.gallery.FontableTextView
+                        <sg.togoparts.pro.gallery.FontableTextView
                             android:id="@+id/tvCall"
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
@@ -180,9 +180,9 @@
                         android:paddingTop="5dp" >
 
                         <LinearLayout
-                            android:layout_weight="1"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
+                            android:layout_weight="1"
                             android:orientation="vertical"
                             android:paddingRight="5dp" >
 
@@ -201,7 +201,7 @@
                                     android:paddingRight="5dp"
                                     android:src="@drawable/address_icon" />
 
-                                <sg.togoparts.gallery.FontableTextView
+                                <sg.togoparts.pro.gallery.FontableTextView
                                     android:id="@+id/tvAddress"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
@@ -224,7 +224,7 @@
                                     android:paddingRight="5dp"
                                     android:src="@drawable/timing_icon" />
 
-                                <sg.togoparts.gallery.FontableTextView
+                                <sg.togoparts.pro.gallery.FontableTextView
                                     android:id="@+id/tvOpenHours"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
@@ -255,7 +255,7 @@
                             android:paddingRight="5dp"
                             android:src="@drawable/tel_icon" />
 
-                        <sg.togoparts.gallery.FontableTextView
+                        <sg.togoparts.pro.gallery.FontableTextView
                             android:id="@+id/tvTelephone"
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
@@ -278,7 +278,7 @@
                             android:paddingRight="5dp"
                             android:src="@drawable/mobile_icon" />
 
-                        <sg.togoparts.gallery.FontableTextView
+                        <sg.togoparts.pro.gallery.FontableTextView
                             android:id="@+id/tvMobile"
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
@@ -301,7 +301,7 @@
                             android:paddingRight="5dp"
                             android:src="@drawable/fax_icon" />
 
-                        <sg.togoparts.gallery.FontableTextView
+                        <sg.togoparts.pro.gallery.FontableTextView
                             android:id="@+id/tvFax"
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
@@ -324,7 +324,7 @@
                             android:paddingRight="5dp"
                             android:src="@drawable/email_bikeshop_icon" />
 
-                        <sg.togoparts.gallery.FontableTextView
+                        <sg.togoparts.pro.gallery.FontableTextView
                             android:id="@+id/tvEmail"
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
@@ -349,7 +349,7 @@
                             android:paddingRight="5dp"
                             android:src="@drawable/website_icon" />
 
-                        <sg.togoparts.gallery.FontableTextView
+                        <sg.togoparts.pro.gallery.FontableTextView
                             android:id="@+id/tvWebsite"
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
@@ -374,7 +374,7 @@
                             android:paddingRight="5dp"
                             android:src="@drawable/availability_icon" />
 
-                        <sg.togoparts.gallery.FontableTextView
+                        <sg.togoparts.pro.gallery.FontableTextView
                             android:id="@+id/tvBikesAvai"
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
@@ -397,7 +397,7 @@
                             android:paddingRight="5dp"
                             android:src="@drawable/mechanic_service_icon" />
 
-                        <sg.togoparts.gallery.FontableTextView
+                        <sg.togoparts.pro.gallery.FontableTextView
                             android:id="@+id/tvMechanic"
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
@@ -420,7 +420,7 @@
                             android:paddingRight="5dp"
                             android:src="@drawable/delivery_icon" />
 
-                        <sg.togoparts.gallery.FontableTextView
+                        <sg.togoparts.pro.gallery.FontableTextView
                             android:id="@+id/tvDelivery"
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
@@ -458,7 +458,7 @@
                                 android:layout_width="@dimen/image_home"
                                 android:layout_height="@dimen/image_home" />
 
-                            <sg.togoparts.gallery.FontableTextView
+                            <sg.togoparts.pro.gallery.FontableTextView
                                 android:id="@+id/tvPromos"
                                 android:layout_width="@dimen/image_home"
                                 android:layout_height="wrap_content"
@@ -481,7 +481,7 @@
                                 android:layout_width="@dimen/image_home"
                                 android:layout_height="@dimen/image_home" />
 
-                            <sg.togoparts.gallery.FontableTextView
+                            <sg.togoparts.pro.gallery.FontableTextView
                                 android:id="@+id/tvNewItems"
                                 android:layout_width="@dimen/image_home"
                                 android:layout_height="wrap_content"
@@ -498,7 +498,7 @@
                         android:background="@drawable/gray" >
                     </View>
 
-                    <sg.togoparts.gallery.FontableTextView
+                    <sg.togoparts.pro.gallery.FontableTextView
                         android:id="@+id/tvBrands"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
@@ -507,7 +507,7 @@
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:textColor="@color/orange" />
 
-                    <sg.togoparts.app.NewGridView
+                    <sg.togoparts.pro.app.NewGridView
                         android:id="@+id/gvBrands"
                         android:layout_width="match_parent"
                         android:layout_height="200dp"
@@ -516,7 +516,7 @@
                         android:stretchMode="columnWidth"
                         android:verticalSpacing="10dp" />
 
-                    <sg.togoparts.gallery.FontableTextView
+                    <sg.togoparts.pro.gallery.FontableTextViewView
                         android:id="@+id/tvBrandRetailed"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
@@ -570,7 +570,7 @@
                 android:paddingRight="5dp"
                 android:src="@drawable/address_icon" />
 
-            <sg.togoparts.gallery.FontableTextView
+            <sg.togoparts.pro.gallery.FontableTextViewView
                 android:id="@+id/tvAddressNotPaying"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -595,7 +595,7 @@
                 android:paddingRight="5dp"
                 android:src="@drawable/tel_icon" />
 
-            <sg.togoparts.gallery.FontableTextView
+            <sg.togoparts.pro.gallery.FontableTextViewView
                 android:id="@+id/tvTelephoneNotPaying"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"

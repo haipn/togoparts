@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         layout="@layout/new_actionbar" />
 
-    <sg.togoparts.gallery.FontableTextView
+    <sg.togoparts.pro.gallery.FontableTextView
         android:id="@+id/tvShortlistedAds"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -29,7 +29,7 @@
         android:background="@drawable/gray" >
     </View>
 
-    <sg.togoparts.gallery.FontableTextView
+    <sg.togoparts.pro.gallery.FontableTextView
         android:id="@+id/tvAdsSearch"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -48,7 +48,7 @@
         android:background="@drawable/gray" >
     </View>
 
-    <sg.togoparts.gallery.FontableTextView
+    <sg.togoparts.pro.gallery.FontableTextView
         android:id="@+id/tvShopSearch"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -67,7 +67,7 @@
         android:background="@drawable/gray" >
     </View>
 
-    <sg.togoparts.gallery.FontableTextView
+    <sg.togoparts.pro.gallery.FontableTextView
         android:id="@+id/tvAbout"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -86,7 +86,7 @@
         android:background="@drawable/gray" >
     </View>
 
-    <sg.togoparts.gallery.FontableTextView
+    <sg.togoparts.pro.gallery.FontableTextView
         android:id="@+id/tvLoginOrLogout"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"

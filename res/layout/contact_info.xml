@@ -16,32 +16,32 @@
         android:orientation="vertical"
         android:padding="10dp" >
 
-        <sg.togoparts.gallery.FontableTextView
+        <sg.togoparts.pro.gallery.FontableTextView
             style="@style/LabelBlack"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/label_contact_person" />
 
-        <sg.togoparts.gallery.FontableEditText
+        <sg.togoparts.pro.gallery.FontableEditText
             android:id="@+id/edtContactPerson"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:singleLine="true" />
 
-        <sg.togoparts.gallery.FontableTextView
+        <sg.togoparts.pro.gallery.FontableTextView
             style="@style/LabelBlack"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/label_contact_number" />
 
-        <sg.togoparts.gallery.FontableEditText
+        <sg.togoparts.pro.gallery.FontableEditText
             android:id="@+id/edtContactNo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="number"
             android:singleLine="true" />
 
-        <sg.togoparts.gallery.FontableTextView
+        <sg.togoparts.pro.gallery.FontableTextView
             style="@style/LabelBlack"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -52,7 +52,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
-        <sg.togoparts.gallery.FontableTextView
+        <sg.togoparts.pro.gallery.FontableTextView
             style="@style/LabelBlack"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -64,7 +64,7 @@
             android:gravity="bottom"
             android:orientation="horizontal" >
 
-            <sg.togoparts.gallery.FontableTextView
+            <sg.togoparts.pro.gallery.FontableTextView
                 android:id="@+id/edtLocation"
                 style="@android:style/Widget.EditText"
                 android:layout_width="0dp"
@@ -80,7 +80,7 @@
                 android:background="@drawable/btn_delete" />
         </LinearLayout>
 
-        <sg.togoparts.gallery.FontableButton
+        <sg.togoparts.pro.gallery.FontableButton
             android:id="@+id/btnSave"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

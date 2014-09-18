@@ -14,7 +14,7 @@
         android:paddingLeft="10dp"
         android:paddingRight="10dp" >
 
-        <sg.togoparts.gallery.FontableTextView
+        <sg.togoparts.pro.gallery.FontableTextView
             android:id="@+id/tvTitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -23,7 +23,7 @@
             android:textColor="@android:color/white"
             android:textSize="25sp" />
 
-        <sg.togoparts.gallery.FontableTextView
+        <sg.togoparts.pro.gallery.FontableTextView
             android:id="@+id/btnViewAll"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -34,11 +34,11 @@
             android:textColor="@android:color/white" />
     </LinearLayout>
 
-    <sg.togoparts.gallery.HorizontalListView
+    <sg.togoparts.pro.gallery.HorizontalListView
         android:layout_margin="10dp"
         android:id="@+id/hlvFeature"
         android:layout_width="match_parent"
         android:layout_height="@dimen/image_home" >
-    </sg.togoparts.gallery.HorizontalListView>
+    </sg.togoparts.pro.gallery.HorizontalListView>
 
 </LinearLayout>

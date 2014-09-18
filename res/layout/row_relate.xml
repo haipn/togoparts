@@ -11,7 +11,7 @@
         android:layout_width="100dp"
         android:layout_height="100dp" />
 
-    <sg.togoparts.gallery.FontableTextView
+    <sg.togoparts.pro.gallery.FontableTextView
         android:id="@+id/tvTitle"
         android:singleLine="false"
         android:text="'ajf;ladskjf;sakjf;saklfjsalkfj;aslkjf;sajfkl;asjf;lksajf;lksajf;kjs"

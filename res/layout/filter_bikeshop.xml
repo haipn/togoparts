@@ -27,7 +27,7 @@
                 android:layout_margin="10dp"
                 android:orientation="vertical" >
 
-                <sg.togoparts.gallery.FontableTextView
+                <sg.togoparts.pro.gallery.FontableTextView
                     android:id="@+id/textView2"
                     style="@style/TextAppearance.Search.Black"
                     android:layout_width="wrap_content"
@@ -81,13 +81,13 @@
                         android:text="@string/sort_bikeshop_4" />
                 </RadioGroup>
 
-                <sg.togoparts.gallery.FontableTextView
+                <sg.togoparts.pro.gallery.FontableTextView
                     style="@style/TextAppearance.Search.Black"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/filter_bikeshop" />
 
-                <sg.togoparts.gallery.FontableEditText
+                <sg.togoparts.pro.gallery.FontableEditText
                     android:id="@+id/edtBikeShop"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -97,7 +97,7 @@
                     android:paddingTop="10dp"
                     android:singleLine="true" />
 
-                <sg.togoparts.gallery.FontableTextView
+                <sg.togoparts.pro.gallery.FontableTextView
                     style="@style/TextAppearance.Search.Black"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

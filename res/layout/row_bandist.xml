@@ -16,7 +16,7 @@
         android:layout_height="@dimen/brand_dist"
         android:gravity="center" >
 
-        <sg.togoparts.gallery.FontableTextView
+        <sg.togoparts.pro.gallery.FontableTextView
             android:id="@+id/tvBrand"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"

@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <sg.togoparts.gallery.FontableTextView
+    <sg.togoparts.pro.gallery.FontableTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/lightest_gray"
@@ -20,7 +20,7 @@
         android:orientation="vertical"
         android:padding="10dp" >
 
-        <sg.togoparts.gallery.FontableTextView
+        <sg.togoparts.pro.gallery.FontableTextView
             android:id="@+id/textView1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -61,7 +61,7 @@
                     android:layout_weight="0.33"
                     android:gravity="center_vertical" >
 
-                    <sg.togoparts.gallery.FontableTextView
+                    <sg.togoparts.pro.gallery.FontableTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:drawableLeft="@drawable/user_icon"
@@ -69,7 +69,7 @@
                         android:paddingRight="8dp"
                         android:text="@string/label_username" />
 
-                    <sg.togoparts.gallery.FontableTextView
+                    <sg.togoparts.pro.gallery.FontableTextView
                         android:id="@+id/tvUsername"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -85,7 +85,7 @@
                     android:layout_weight="0.33"
                     android:gravity="center_vertical" >
 
-                    <sg.togoparts.gallery.FontableTextView
+                    <sg.togoparts.pro.gallery.FontableTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:drawableLeft="@drawable/location_icons"
@@ -93,7 +93,7 @@
                         android:paddingRight="8dp"
                         android:text="@string/label_location" />
 
-                    <sg.togoparts.gallery.FontableTextView
+                    <sg.togoparts.pro.gallery.FontableTextView
                         android:id="@+id/tvLocation"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -109,7 +109,7 @@
                     android:layout_weight="0.33"
                     android:gravity="center_vertical" >
 
-                    <sg.togoparts.gallery.FontableTextView
+                    <sg.togoparts.pro.gallery.FontableTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:drawableLeft="@drawable/gender_icon"
@@ -117,7 +117,7 @@
                         android:paddingRight="8dp"
                         android:text="@string/label_gender" />
 
-                    <sg.togoparts.gallery.FontableTextView
+                    <sg.togoparts.pro.gallery.FontableTextView
                         android:id="@+id/tvGender"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -132,7 +132,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" >
 
-            <sg.togoparts.gallery.FontableButton
+            <sg.togoparts.pro.gallery.FontableButton
                 android:id="@+id/btnYes"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -143,7 +143,7 @@
                 android:textColor="@android:color/white"
                 android:textSize="25sp" />
 
-            <sg.togoparts.gallery.FontableButton
+            <sg.togoparts.pro.gallery.FontableButton
                 android:id="@+id/btnNo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

@@ -23,7 +23,7 @@
 
         <!--  -->
 
-        <sg.togoparts.gallery.FontableTextView
+        <sg.togoparts.pro.gallery.FontableTextView
             android:id="@+id/tvTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

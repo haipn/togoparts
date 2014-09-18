@@ -23,7 +23,7 @@
             android:layout_weight="1"
             android:orientation="vertical" >
 
-            <sg.togoparts.gallery.FontableTextView
+            <sg.togoparts.pro.gallery.FontableTextView
                 android:id="@+id/tvUserName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -36,7 +36,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp" >
 
-                <sg.togoparts.gallery.FontableTextView
+                <sg.togoparts.pro.gallery.FontableTextView
                     android:id="@+id/tvPositive"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -45,7 +45,7 @@
                     android:drawablePadding="4dp"
                     android:textAppearance="?android:attr/textAppearanceLarge" />
 
-                <sg.togoparts.gallery.FontableTextView
+                <sg.togoparts.pro.gallery.FontableTextView
                     android:id="@+id/tvNeutral"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -54,7 +54,7 @@
                     android:drawablePadding="4dp"
                     android:textAppearance="?android:attr/textAppearanceLarge" />
 
-                <sg.togoparts.gallery.FontableTextView
+                <sg.togoparts.pro.gallery.FontableTextView
                     android:id="@+id/tvNegative"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

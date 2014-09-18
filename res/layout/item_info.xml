@@ -44,7 +44,7 @@
                         android:layout_weight="1"
                         android:orientation="vertical" >
 
-                        <sg.togoparts.gallery.FontableTextView
+                        <sg.togoparts.pro.gallery.FontableTextView
                             android:id="@+id/textView1"
                             style="@style/LabelBlack"
                             android:layout_width="match_parent"
@@ -67,7 +67,7 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical" >
 
-                        <sg.togoparts.gallery.FontableTextView
+                        <sg.togoparts.pro.gallery.FontableTextView
                             style="@style/LabelBlack"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -82,7 +82,7 @@
                     </LinearLayout>
                 </LinearLayout>
 
-                <sg.togoparts.gallery.FontableTextView
+                <sg.togoparts.pro.gallery.FontableTextView
                     style="@style/LabelBlack"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -94,19 +94,19 @@
                     android:layout_height="wrap_content"
                     android:singleLine="true" />
 
-                <sg.togoparts.gallery.FontableTextView
+                <sg.togoparts.pro.gallery.FontableTextView
                     style="@style/LabelBlack"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/ad_title" />
 
-                <sg.togoparts.gallery.FontableEditText
+                <sg.togoparts.pro.gallery.FontableEditText
                     android:id="@+id/edtTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:singleLine="true" />
 
-                <sg.togoparts.gallery.FontableTextView
+                <sg.togoparts.pro.gallery.FontableTextView
                     style="@style/LabelBlack"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -197,7 +197,7 @@
                         </LinearLayout>
                     </LinearLayout>
 
-                    <sg.togoparts.gallery.FontableTextView
+                    <sg.togoparts.pro.gallery.FontableTextView
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:gravity="center"
@@ -221,20 +221,20 @@
                     </LinearLayout>
                 </LinearLayout>
 
-                <sg.togoparts.gallery.FontableTextView
+                <sg.togoparts.pro.gallery.FontableTextView
                     style="@style/LabelBlack"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/ad_description" />
 
-                <sg.togoparts.gallery.FontableEditText
+                <sg.togoparts.pro.gallery.FontableEditText
                     android:id="@+id/edtDescription"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="top|left"
                     android:lines="3" />
 
-                <sg.togoparts.gallery.FontableButton
+                <sg.togoparts.pro.gallery.FontableButton
                     android:id="@+id/btnNext"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -256,7 +256,7 @@
                 android:orientation="vertical"
                 android:padding="10dp" >
 
-                <sg.togoparts.gallery.FontableTextView
+                <sg.togoparts.pro.gallery.FontableTextView
                     style="@style/LabelBlack"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -267,7 +267,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
-                <sg.togoparts.gallery.FontableTextView
+                <sg.togoparts.pro.gallery.FontableTextView
                     style="@style/LabelBlack"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -278,7 +278,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
-                <sg.togoparts.gallery.FontableTextView
+                <sg.togoparts.pro.gallery.FontableTextView
                     style="@style/LabelBlack"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -289,20 +289,20 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal" >
 
-                    <sg.togoparts.gallery.FontableEditText
+                    <sg.togoparts.pro.gallery.FontableEditText
                         android:id="@+id/edtWeight"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:inputType="number" />
 
-                    <sg.togoparts.gallery.FontableTextView
+                    <sg.togoparts.pro.gallery.FontableTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/label_gram" />
                 </LinearLayout>
 
-                <sg.togoparts.gallery.FontableTextView
+                <sg.togoparts.pro.gallery.FontableTextView
                     style="@style/LabelBlack"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -319,13 +319,13 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1" />
 
-                    <sg.togoparts.gallery.FontableTextView
+                    <sg.togoparts.pro.gallery.FontableTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/label_per_ten" />
                 </LinearLayout>
 
-                <sg.togoparts.gallery.FontableTextView
+                <sg.togoparts.pro.gallery.FontableTextView
                     style="@style/LabelBlack"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -336,7 +336,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal" >
 
-                    <sg.togoparts.gallery.FontableEditText
+                    <sg.togoparts.pro.gallery.FontableEditText
                         android:id="@+id/edtWarranty"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -344,19 +344,19 @@
                         android:inputType="number"
                         android:maxLength="2" />
 
-                    <sg.togoparts.gallery.FontableTextView
+                    <sg.togoparts.pro.gallery.FontableTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/label_months" />
                 </LinearLayout>
 
-                <sg.togoparts.gallery.FontableTextView
+                <sg.togoparts.pro.gallery.FontableTextView
                     style="@style/LabelBlack"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/label_other_links" />
 
-                <sg.togoparts.gallery.FontableEditText
+                <sg.togoparts.pro.gallery.FontableEditText
                     android:id="@+id/edtOtherLinks"
                     android:maxLength="200"
                     android:layout_width="match_parent"
@@ -364,7 +364,7 @@
                     android:gravity="top|left"
                     android:lines="3" />
 
-                <sg.togoparts.gallery.FontableButton
+                <sg.togoparts.pro.gallery.FontableButton
                     android:id="@+id/btnSave"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

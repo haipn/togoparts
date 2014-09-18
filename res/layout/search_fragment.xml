@@ -20,7 +20,7 @@
         android:layout_weight="1"
         android:orientation="vertical" >
 
-        <sg.togoparts.gallery.FontableEditText
+        <sg.togoparts.pro.gallery.FontableEditText
             android:id="@+id/edtKeyword"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -30,9 +30,9 @@
             android:singleLine="true" >
 
             <requestFocus />
-        </sg.togoparts.gallery.FontableEditText>
+        </sg.togoparts.pro.gallery.FontableEditText>
 
-        <sg.togoparts.gallery.FontableTextView
+        <sg.togoparts.pro.gallery.FontableTextView
             android:id="@+id/textView7"
             style="@style/TextAppearance.Search.Black"
             android:layout_width="wrap_content"
@@ -52,7 +52,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical" >
 
-            <sg.togoparts.gallery.FontableButton
+            <sg.togoparts.pro.gallery.FontableButton
                 android:id="@+id/btnSearchResult"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -61,7 +61,7 @@
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textColor="@android:color/white" />
 
-            <sg.togoparts.gallery.FontableTextView
+            <sg.togoparts.pro.gallery.FontableTextView
                 style="@android:style/TextAppearance.Medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
