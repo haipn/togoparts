@@ -15,7 +15,7 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 
 public class Const {
-	public static final String GA_PROPERTY_ID = "UA-479713-13";
+	public static final String GA_PROPERTY_ID = "UA-479713-16";
 	public static final String SHARE_PREF = "togoparts pref";
 	public static final String KEY_SHORTLIST = "shortlists";
 	public static final String SESSION_ID = "session id";
