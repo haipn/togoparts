@@ -162,7 +162,7 @@ public class TabsActivityMain extends TabActivity {
 
 		dfpAdView = new PublisherAdView(this);
 		dfpAdView.setAdSizes(new AdSize(320, 480));
-		dfpAdView.setAdUnitId("/4689451/Android320x480");
+		dfpAdView.setAdUnitId("/4689451/AndroidPro320x480");
 
 		PublisherAdRequest.Builder adRequest = new PublisherAdRequest.Builder();
 
