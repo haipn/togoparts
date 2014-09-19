@@ -74,7 +74,7 @@ public class GcmIntentService extends IntentService {
 	private static final int LIST_ID = 1;
 	private static final int SHOP_ID = 2;
 	private static final int AD_ID = 3;
-	private static final int LINK_ID =4;
+	private static final int LINK_ID = 4;
 
 	@Override
 	protected void onHandleIntent(Intent intent) {
@@ -111,9 +111,12 @@ public class GcmIntentService extends IntentService {
 
 		// notificationIntent.setAction(Intent.ACTION_MAIN);
 		// notificationIntent.addCategory(Intent.CATEGORY_LAUNCHER);
-		notificationIntent.setFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+		// notificationIntent.setFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+		notificationIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		notificationIntent.putExtra(Const.TAG_NAME, "1");
 		if (loc.equalsIgnoreCase("home")) {
 			notificationIntent.setClass(this, TabsActivityMain.class);
+			
 			pendingIntent = PendingIntent.getActivity(this, 0,
 					notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 			mNotificationId = HOME_ID;
@@ -149,11 +152,11 @@ public class GcmIntentService extends IntentService {
 				GcmIntentService.this).setSmallIcon(R.drawable.ic_launcher)
 				.setContentTitle(title).setContentText(msg)
 				.setContentIntent(pendingIntent);
-		
-//		NotificationManager mNotificationManager =
-//			    (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-//			// mId allows you to update the notification later on.
-//			mNotificationManager.notify(NOTIFICATION_ID, mBuilder.build());
+
+		// NotificationManager mNotificationManager =
+		// (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+		// // mId allows you to update the notification later on.
+		// mNotificationManager.notify(NOTIFICATION_ID, mBuilder.build());
 		DownloadImageTask download = new DownloadImageTask(mBuilder);
 		download.execute(icon);
 	}

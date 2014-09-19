@@ -81,12 +81,11 @@ public class FilterBikeShop extends FragmentActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.filter_bikeshop);
 
-		
 		Tracker tracker = GoogleAnalytics.getInstance(this).getTracker(
 				Const.GA_PROPERTY_ID);
 		tracker.set(Fields.SCREEN_NAME, "Bikeshop Search Form");
 		tracker.send(MapBuilder.createAppView().build());
-		
+
 		createHeader();
 		mGroupSort = (RadioGroup) findViewById(R.id.group);
 		mRb1 = (RadioButton) findViewById(R.id.rbSort1);
@@ -232,7 +231,9 @@ public class FilterBikeShop extends FragmentActivity {
 			Intent i = new Intent(FilterBikeShop.this, TabsActivityMain.class);
 			i.putExtra(Const.TAG_NAME, "4");
 			i.putExtras(bundle);
-			i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			i.setFlags(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB ? Intent.FLAG_ACTIVITY_NEW_TASK
+					| Intent.FLAG_ACTIVITY_CLEAR_TASK
+					: Intent.FLAG_ACTIVITY_NEW_TASK);
 			startActivity(i);
 		}
 		finish();

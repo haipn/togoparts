@@ -35,7 +35,7 @@ public class TabsActivityMain extends TabActivity {
 	public static final String TAB_NAME = "tab name";
 	protected static final int REQUEST_POSTAD = 0;
 	private static final int REQUEST_LOGIN = 1;
-	
+
 	public static boolean canRestart = true;
 	private PublisherAdView dfpAdView;
 	RelativeLayout rlAdMain;
@@ -46,11 +46,6 @@ public class TabsActivityMain extends TabActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		if (!Const.isLogin(this)) {
-			// Log.d("haipn", "login roi");
-			startActivityForResult(new Intent(this, ChooseLogin.class),
-					REQUEST_LOGIN);
-		}
 		setContentView(R.layout.tabs_activity_main);
 
 		tabHost = getTabHost();
@@ -130,7 +125,7 @@ public class TabsActivityMain extends TabActivity {
 							startActivityForResult(new Intent(
 									TabsActivityMain.this, ChooseLogin.class),
 									REQUEST_LOGIN);
-//							tabHost.setCurrentTabByTag("1");
+							// tabHost.setCurrentTabByTag("1");
 						}
 					} else if (tabId.equals("3")) {
 
@@ -200,8 +195,14 @@ public class TabsActivityMain extends TabActivity {
 			}
 
 		});
+		if (!Const.isLogin(this) && getIntent().getBooleanExtra("show", false)) {
+			// Log.d("haipn", "login roi");
+			startActivityForResult(new Intent(this, ChooseLogin.class),
+					REQUEST_LOGIN);
+		}
 		if (getIntent().getStringExtra(Const.TAG_NAME) == null) {
 			tabHost.setCurrentTabByTag("1");
+			
 			Log.d("haipn", "main activity tag name = null");
 		} else {
 			tabHost.setCurrentTabByTag(getIntent().getStringExtra(

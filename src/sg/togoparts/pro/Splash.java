@@ -38,12 +38,13 @@ public class Splash extends Activity {
 	private static final String PROPERTY_APP_VERSION = "appVersion";
 	private GoogleCloudMessaging gcm;
 	String regid;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.splash);
-		
+
 		new DownloadFilesTask().execute(1);
 		if (checkPlayServices()) {
 			gcm = GoogleCloudMessaging.getInstance(this);
@@ -57,7 +58,7 @@ public class Splash extends Activity {
 		}
 
 	}
-	
+
 	@Override
 	protected void onResume() {
 		AppEventsLogger.activateApp(this, FACEBOOK_ID);
@@ -73,13 +74,15 @@ public class Splash extends Activity {
 		}
 
 		protected void onPostExecute(Integer result) {
-//			if (Const.isLogin(Splash.this)) {
-//				Log.d("haipn", "login roi");
-				startActivity(new Intent(Splash.this, TabsActivityMain.class));
-//			} else {
-//				Log.d("haipn", "chua login nhe");
-//				startActivity(new Intent(Splash.this, ChooseLogin.class));
-//			}
+			// if (Const.isLogin(Splash.this)) {
+			// Log.d("haipn", "login roi");
+			Intent i = new Intent(Splash.this, TabsActivityMain.class);
+			i.putExtra("show", true);
+			startActivity(i);
+			// } else {
+			// Log.d("haipn", "chua login nhe");
+			// startActivity(new Intent(Splash.this, ChooseLogin.class));
+			// }
 			finish();
 		}
 
@@ -95,6 +98,7 @@ public class Splash extends Activity {
 		}
 
 	}
+
 	/**
 	 * Check the device to make sure it has the Google Play Services APK. If it
 	 * doesn't, display a dialog that allows users to download the APK from the
@@ -180,7 +184,7 @@ public class Splash extends Activity {
 						gcm = GoogleCloudMessaging.getInstance(Splash.this);
 					}
 					regid = gcm.register(getString(R.string.project_number));
-					
+
 					msg = "Device registered, registration ID=" + regid;
 
 					// You should send the registration ID to your server over

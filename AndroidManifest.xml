@@ -83,8 +83,11 @@
 
         <activity
             android:name="sg.togoparts.pro.TabsActivityMain"
+            android:excludeFromRecents="true"
             android:label="@string/app_name"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait"
+            android:taskAffinity=""
             android:windowSoftInputMode="adjustPan|adjustResize" >
         </activity>
         <activity
@@ -308,7 +311,7 @@
         <!--
         Cds Content Provider, 
         NOTE that the "authorities" value MUST be formatted in this way:
-        android:authorities="{your.packagename}.AviaryCdsProvider"
+        android:authorities="{your.packagename}.AviaryCdsProvider"
         -->
         <provider
             android:name="com.aviary.android.feather.cds.AviaryCdsProvider"
