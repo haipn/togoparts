@@ -72,6 +72,10 @@ import com.android.volley.VolleyError;
 import com.aviary.android.feather.FeatherActivity;
 import com.aviary.android.feather.library.Constants;
 import com.aviary.android.feather.library.filters.FilterLoaderFactory;
+import com.google.analytics.tracking.android.Fields;
+import com.google.analytics.tracking.android.GoogleAnalytics;
+import com.google.analytics.tracking.android.MapBuilder;
+import com.google.analytics.tracking.android.Tracker;
 import com.google.gson.Gson;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -396,6 +400,11 @@ public class PostAdActivity extends FragmentActivity implements
 		newIntent.putExtra(Constants.EXTRA_IN_SAVE_ON_NO_CHANGES, true);
 
 		// ..and start feather
+		Tracker tracker = GoogleAnalytics.getInstance(this).getTracker(
+				Const.GA_PROPERTY_ID);
+		tracker.set(Fields.SCREEN_NAME, "Marketplace Photo Editor");
+		tracker.send(MapBuilder.createAppView().build());
+		
 		startActivityForResult(newIntent, REQUEST_AVIARY);
 	}
 
@@ -409,7 +418,15 @@ public class PostAdActivity extends FragmentActivity implements
 		mPostAd = new PostAd();
 		if (mAdId == null || mAdId.length() == 0) {
 			isEdit = false;
+			Tracker tracker = GoogleAnalytics.getInstance(this).getTracker(
+					Const.GA_PROPERTY_ID);
+			tracker.set(Fields.SCREEN_NAME, "Marketplace Post Ad");
+			tracker.send(MapBuilder.createAppView().build());
 		} else {
+			Tracker tracker = GoogleAnalytics.getInstance(this).getTracker(
+					Const.GA_PROPERTY_ID);
+			tracker.set(Fields.SCREEN_NAME, "Marketplace Edit Ad");
+			tracker.send(MapBuilder.createAppView().build());
 			isEdit = true;
 		}
 		createHeader();
@@ -683,7 +700,7 @@ public class PostAdActivity extends FragmentActivity implements
 			findViewById(R.id.llCheckEmail).setVisibility(View.GONE);
 			fillAdData(result.ad_details);
 			mTvNote.setVisibility(View.GONE);
-			
+
 		} else {
 			findViewById(R.id.llCheckEmail).setVisibility(View.VISIBLE);
 			mTvNote.setVisibility(View.VISIBLE);
@@ -960,6 +977,7 @@ public class PostAdActivity extends FragmentActivity implements
 					i.putExtra("free", mRdoFreeAd.isChecked());
 					i.putExtra(POSTING_PACK, mTypeAccount == MERCHANT
 							|| mTypeAccount == POSTINGPACK);
+					i.putExtra("screen", isEdit ? "Edit Ad" : "Post Ad");
 					startActivityForResult(i, REQUEST_ITEM);
 				}
 			}
@@ -982,6 +1000,7 @@ public class PostAdActivity extends FragmentActivity implements
 					i.putExtra(EDIT_AD, isEdit);
 					i.putExtra(POSTING_PACK, mTypeAccount == POSTINGPACK);
 					i.putExtra(MERCHANT_PACK, mTypeAccount == MERCHANT);
+					i.putExtra("screen", isEdit ? "Edit Ad" : "Post Ad");
 					startActivityForResult(i, REQUEST_PRICE);
 				}
 
@@ -1013,6 +1032,7 @@ public class PostAdActivity extends FragmentActivity implements
 					i.putExtra(EDIT_AD, isEdit);
 					i.putExtra(POSTING_PACK, mTypeAccount == MERCHANT
 							|| mTypeAccount == POSTINGPACK);
+					i.putExtra("screen", isEdit ? "Edit Ad" : "Post Ad");
 					startActivityForResult(i, REQUEST_CONTACT);
 				}
 			}

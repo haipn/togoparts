@@ -296,8 +296,8 @@ public class DetailActivity extends FragmentActivity implements
 
 			@Override
 			public void onClick(View v) {
-//				setResult(RESULT_CANCELED);
-//				onBackPressed();
+				// setResult(RESULT_CANCELED);
+				// onBackPressed();
 				finish();
 			}
 		});
@@ -312,6 +312,7 @@ public class DetailActivity extends FragmentActivity implements
 			@Override
 			public void onClick(View v) {
 				if (isMyAd) {
+
 					Intent i = new Intent(DetailActivity.this,
 							PostAdActivity.class);
 					i.putExtra(Const.ADS_ID, mAdsId);
@@ -345,7 +346,11 @@ public class DetailActivity extends FragmentActivity implements
 		super.onStart();
 		Tracker tracker = GoogleAnalytics.getInstance(this).getTracker(
 				Const.GA_PROPERTY_ID);
-		tracker.set(Fields.SCREEN_NAME, SCREEN_LABEL);
+		if (isMyAd) {
+			tracker.set(Fields.SCREEN_NAME, "Marketplace Manage Ads Details");
+		} else {
+			tracker.set(Fields.SCREEN_NAME, SCREEN_LABEL);
+		}
 		tracker.send(MapBuilder.createAppView().build());
 	}
 

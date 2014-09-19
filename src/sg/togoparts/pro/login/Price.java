@@ -6,7 +6,13 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import com.google.analytics.tracking.android.Fields;
+import com.google.analytics.tracking.android.GoogleAnalytics;
+import com.google.analytics.tracking.android.MapBuilder;
+import com.google.analytics.tracking.android.Tracker;
+
 import sg.togoparts.pro.R;
+import sg.togoparts.pro.app.Const;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -43,6 +49,11 @@ public class Price extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.price);
+		Tracker tracker = GoogleAnalytics.getInstance(this).getTracker(
+				Const.GA_PROPERTY_ID);
+		tracker.set(Fields.SCREEN_NAME, "Marketplace "
+				+ getIntent().getStringExtra("screen") + " Price");
+		tracker.send(MapBuilder.createAppView().build());
 		createHeader();
 		Intent i = getIntent();
 		mIsPostingPack = i.getBooleanExtra(PostAdActivity.POSTING_PACK, false);

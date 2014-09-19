@@ -44,6 +44,10 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.Response.Listener;
 import com.android.volley.VolleyError;
+import com.google.analytics.tracking.android.Fields;
+import com.google.analytics.tracking.android.GoogleAnalytics;
+import com.google.analytics.tracking.android.MapBuilder;
+import com.google.analytics.tracking.android.Tracker;
 
 public class ItemInfo extends Activity {
 	private ImageButton mBtnBack;
@@ -98,6 +102,11 @@ public class ItemInfo extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.item_info);
+		Tracker tracker = GoogleAnalytics.getInstance(this).getTracker(
+				Const.GA_PROPERTY_ID);
+		tracker.set(Fields.SCREEN_NAME, "Marketplace "
+				+ getIntent().getStringExtra("screen") + " Item Info");
+		tracker.send(MapBuilder.createAppView().build());
 		createHeader();
 		init();
 		getValuesIntent();
@@ -696,6 +705,11 @@ public class ItemInfo extends Activity {
 	}
 
 	private void nextScreen() {
+		Tracker tracker = GoogleAnalytics.getInstance(this).getTracker(
+				Const.GA_PROPERTY_ID);
+		tracker.set(Fields.SCREEN_NAME, "Marketplace "
+				+ getIntent().getStringExtra("screen") + "  More Ad Details");
+		tracker.send(MapBuilder.createAppView().build());
 		if (mEdtTitle.getText().length() == 0) {
 			Toast.makeText(this, R.string.msg_input_title, Toast.LENGTH_LONG)
 					.show();

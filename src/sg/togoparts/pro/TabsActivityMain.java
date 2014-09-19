@@ -34,7 +34,7 @@ import com.google.android.gms.ads.doubleclick.PublisherAdView;
 public class TabsActivityMain extends TabActivity {
 	public static final String TAB_NAME = "tab name";
 	protected static final int REQUEST_POSTAD = 0;
-	private static final int REQUEST_LOGIN = 1;
+	protected static final int REQUEST_LOGIN = 1;
 
 	public static boolean canRestart = true;
 	private PublisherAdView dfpAdView;
@@ -114,14 +114,11 @@ public class TabsActivityMain extends TabActivity {
 
 				if (tabId.equals("1")) {
 					tracker.set(Fields.SCREEN_NAME,
-							"Marketplace List Categories");
+							"Home");
 					Const.isAppExitable = true;
 				} else {
 					if (tabId.equals("2")) {
-						if (Const.isLogin(TabsActivityMain.this))
-							tracker.set(Fields.SCREEN_NAME, "Profile");
-
-						else {
+						if (!Const.isLogin(TabsActivityMain.this)) {
 							startActivityForResult(new Intent(
 									TabsActivityMain.this, ChooseLogin.class),
 									REQUEST_LOGIN);
@@ -131,7 +128,6 @@ public class TabsActivityMain extends TabActivity {
 
 						TabsActivityMain.canRestart = false;
 						if (Const.isLogin(TabsActivityMain.this)) {
-							tracker.set(Fields.SCREEN_NAME, "Post Ad");
 							Intent i = new Intent(TabsActivityMain.this,
 									PostAdActivity.class);
 							startActivityForResult(i, REQUEST_POSTAD);

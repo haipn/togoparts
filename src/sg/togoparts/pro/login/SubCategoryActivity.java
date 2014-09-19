@@ -32,6 +32,10 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.Response.Listener;
 import com.android.volley.VolleyError;
+import com.google.analytics.tracking.android.Fields;
+import com.google.analytics.tracking.android.GoogleAnalytics;
+import com.google.analytics.tracking.android.MapBuilder;
+import com.google.analytics.tracking.android.Tracker;
 
 public class SubCategoryActivity extends FragmentActivity implements
 		OnExpireResult {
@@ -50,6 +54,10 @@ public class SubCategoryActivity extends FragmentActivity implements
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
+		Tracker tracker = GoogleAnalytics.getInstance(this).getTracker(
+				Const.GA_PROPERTY_ID);
+		tracker.set(Fields.SCREEN_NAME, "Marketplace Post Ad Sub Category");
+		tracker.send(MapBuilder.createAppView().build());
 		setContentView(R.layout.list_activity);
 		mSectionId = getIntent().getIntExtra(PostAdActivity.SECTION, 0);
 		mCategoryId = getIntent().getIntExtra(PostAdActivity.CAT, 0);

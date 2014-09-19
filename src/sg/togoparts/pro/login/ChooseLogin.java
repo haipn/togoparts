@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import sg.togoparts.pro.R;
+import sg.togoparts.pro.TabsActivityMain;
 import sg.togoparts.pro.app.Const;
 import sg.togoparts.pro.app.MyVolley;
 import sg.togoparts.pro.json.GsonRequest;
@@ -43,6 +44,10 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.facebook.Session;
+import com.google.analytics.tracking.android.Fields;
+import com.google.analytics.tracking.android.GoogleAnalytics;
+import com.google.analytics.tracking.android.MapBuilder;
+import com.google.analytics.tracking.android.Tracker;
 import com.sromku.simple.fb.Permission;
 import com.sromku.simple.fb.SimpleFacebook;
 import com.sromku.simple.fb.entities.Profile;
@@ -80,9 +85,13 @@ public class ChooseLogin extends FragmentActivity {
 	protected void onCreate(Bundle arg0) {
 		super.onCreate(arg0);
 		setContentView(R.layout.choose_login);
+		Tracker tracker = GoogleAnalytics.getInstance(this).getTracker(
+				Const.GA_PROPERTY_ID);
+		tracker.set(Fields.SCREEN_NAME, "Login");
+		tracker.send(MapBuilder.createAppView().build());
 		try {
 			PackageInfo info = getPackageManager().getPackageInfo(
-					"sg.togoparts", PackageManager.GET_SIGNATURES);
+					"sg.togoparts.pro", PackageManager.GET_SIGNATURES);
 			for (Signature signature : info.signatures) {
 				MessageDigest md = MessageDigest.getInstance("SHA");
 				md.update(signature.toByteArray());
@@ -102,10 +111,11 @@ public class ChooseLogin extends FragmentActivity {
 
 			@Override
 			public void onClick(View arg0) {
-//				Intent i = new Intent(ChooseLogin.this, TabsActivityMain.class);
-//				i.putExtra(Const.TAG_NAME, "1");
-//				i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//				startActivity(i);
+				// Intent i = new Intent(ChooseLogin.this,
+				// TabsActivityMain.class);
+				// i.putExtra(Const.TAG_NAME, "1");
+				// i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				// startActivity(i);
 				setResult(RESULT_CANCELED);
 				finish();
 			}
@@ -146,7 +156,7 @@ public class ChooseLogin extends FragmentActivity {
 		mSimpleFacebook.onActivityResult(this, requestCode, resultCode, data);
 		mProgressDialog.dismiss();
 		if ((requestCode == 0 || requestCode == 1) && resultCode == RESULT_OK) {
-//			startActivity(new Intent(this, TabsActivityMain.class));
+			// startActivity(new Intent(this, TabsActivityMain.class));
 			setResult(RESULT_OK);
 			finish();
 		}
@@ -166,7 +176,7 @@ public class ChooseLogin extends FragmentActivity {
 
 			@Override
 			public void onClick(View arg0) {
-				
+
 				login(mEdtUser.getText().toString(), mEdtPass.getText()
 						.toString());
 			}
@@ -174,7 +184,7 @@ public class ChooseLogin extends FragmentActivity {
 	}
 
 	public void login(final String user, final String pass) {
-		
+
 		if (user == null || user.length() == 0) {
 			Toast.makeText(this, "Input Username!", Toast.LENGTH_SHORT).show();
 			mEdtUser.requestFocus();
@@ -414,7 +424,7 @@ public class ChooseLogin extends FragmentActivity {
 		if (result.Return.equals("success")) {
 			// success();
 			Const.writeSessionId(this, result.session_id, result.refresh_id);
-//			startActivity(new Intent(this, TabsActivityMain.class));
+			// startActivity(new Intent(this, TabsActivityMain.class));
 			setResult(RESULT_OK);
 			finish();
 		} else if (result.Return.equals("error")
@@ -430,7 +440,7 @@ public class ChooseLogin extends FragmentActivity {
 		if (result.Return.equals("success")) {
 			// success();
 			Const.writeSessionId(this, result.session_id, result.refresh_id);
-//			startActivity(new Intent(this, TabsActivityMain.class));
+			// startActivity(new Intent(this, TabsActivityMain.class));
 			setResult(RESULT_OK);
 			finish();
 		} else if (result.Return.equals("error")

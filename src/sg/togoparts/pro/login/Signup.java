@@ -30,6 +30,10 @@ import com.android.volley.Request.Method;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.google.analytics.tracking.android.Fields;
+import com.google.analytics.tracking.android.GoogleAnalytics;
+import com.google.analytics.tracking.android.MapBuilder;
+import com.google.analytics.tracking.android.Tracker;
 import com.sromku.simple.fb.SimpleFacebook;
 
 public class Signup extends FragmentActivity {
@@ -55,7 +59,10 @@ public class Signup extends FragmentActivity {
 		// TODO Auto-generated method stub
 		super.onCreate(arg0);
 		setContentView(R.layout.sign_up);
-
+		Tracker tracker = GoogleAnalytics.getInstance(this).getTracker(
+				Const.GA_PROPERTY_ID);
+		tracker.set(Fields.SCREEN_NAME, "Facebook Signup Form");
+		tracker.send(MapBuilder.createAppView().build());
 		Intent i = getIntent();
 		mFbId = i.getStringExtra(ChooseLogin.FACEBOOK_ID);
 		mFbEmail = i.getStringExtra(ChooseLogin.FACEBOOK_MAIL);

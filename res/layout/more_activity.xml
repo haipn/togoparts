@@ -73,7 +73,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:background="@drawable/textview_more"
-        android:drawableLeft="@drawable/about_togopart_icon"
+        android:drawableLeft="@drawable/about_pro"
         android:drawablePadding="10dp"
         android:gravity="center_vertical"
         android:padding="10dp"

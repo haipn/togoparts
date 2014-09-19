@@ -128,10 +128,7 @@ public class MoreActivity extends Activity_Main {
 
 				} else {
 					Intent i = new Intent(MoreActivity.this, ChooseLogin.class);
-					i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-
-					startActivity(i);
-					finish();
+					startActivityForResult(i, TabsActivityMain.REQUEST_LOGIN);
 				}
 
 			}
@@ -158,6 +155,11 @@ public class MoreActivity extends Activity_Main {
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		mSimpleFacebook.onActivityResult(this, requestCode, resultCode, data);
+		if (requestCode == TabsActivityMain.REQUEST_LOGIN && resultCode == RESULT_OK) {
+			TabsActivityMain main = (TabsActivityMain) getParent();
+			main.getTabHost().setCurrentTab(0);
+		}
+			
 	}
 
 	protected void logout() {

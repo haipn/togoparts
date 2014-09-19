@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import sg.togoparts.pro.DetailActivity;
 import sg.togoparts.pro.R;
 import sg.togoparts.pro.app.Const;
 import sg.togoparts.pro.app.MyVolley;
@@ -35,6 +36,10 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.Response.Listener;
 import com.android.volley.VolleyError;
+import com.google.analytics.tracking.android.Fields;
+import com.google.analytics.tracking.android.GoogleAnalytics;
+import com.google.analytics.tracking.android.MapBuilder;
+import com.google.analytics.tracking.android.Tracker;
 
 public class SectionActivity extends FragmentActivity implements OnExpireResult {
 
@@ -62,6 +67,10 @@ public class SectionActivity extends FragmentActivity implements OnExpireResult 
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.list_activity);
 		createHeader();
+		Tracker tracker = GoogleAnalytics.getInstance(this).getTracker(
+				Const.GA_PROPERTY_ID);
+		tracker.set(Fields.SCREEN_NAME, "Marketplace Post Ad Sections");
+		tracker.send(MapBuilder.createAppView().build());
 		tCredLink = getIntent().getStringExtra("tcredlink");
 		adType = getIntent().getIntExtra(PostAdActivity.TYPE_AD_POST, 0);
 		mTcred = getIntent().getIntExtra(PostAdActivity.TCRED, 0);

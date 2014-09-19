@@ -25,6 +25,10 @@ import com.android.volley.Request.Method;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.google.analytics.tracking.android.Fields;
+import com.google.analytics.tracking.android.GoogleAnalytics;
+import com.google.analytics.tracking.android.MapBuilder;
+import com.google.analytics.tracking.android.Tracker;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.sromku.simple.fb.SimpleFacebook;
 
@@ -53,6 +57,11 @@ public class MergeAccount extends FragmentActivity {
 	protected void onCreate(Bundle arg0) {
 		// TODO Auto-generated method stub
 		super.onCreate(arg0);
+		Tracker tracker = GoogleAnalytics.getInstance(this).getTracker(
+				Const.GA_PROPERTY_ID);
+		tracker.set(Fields.SCREEN_NAME, "Facebook Merge Account");
+		tracker.send(MapBuilder.createAppView().build());
+		
 		setContentView(R.layout.merge_account);
 		mTvUsername = (TextView) findViewById(R.id.tvUsername);
 		mTvCountry = (TextView) findViewById(R.id.tvLocation);

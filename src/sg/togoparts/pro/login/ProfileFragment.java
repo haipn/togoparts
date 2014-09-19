@@ -45,6 +45,10 @@ import com.android.volley.Response.Listener;
 import com.android.volley.VolleyError;
 import com.fortysevendeg.swipelistview.BaseSwipeListViewListener;
 import com.fortysevendeg.swipelistview.SwipeListView;
+import com.google.analytics.tracking.android.Fields;
+import com.google.analytics.tracking.android.GoogleAnalytics;
+import com.google.analytics.tracking.android.MapBuilder;
+import com.google.analytics.tracking.android.Tracker;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.sromku.simple.fb.SimpleFacebook;
 import com.sromku.simple.fb.listeners.OnLogoutListener;
@@ -165,6 +169,10 @@ public class ProfileFragment extends Fragment_Main implements QuickActionSelect 
 	@Override
 	public void onResume() {
 		Log.d("haipn", "profile fragment onResume");
+		Tracker tracker = GoogleAnalytics.getInstance(getActivity()).getTracker(
+				Const.GA_PROPERTY_ID);
+		tracker.set(Fields.SCREEN_NAME, "Marketplace Manage Ads");
+		tracker.send(MapBuilder.createAppView().build());
 		if (Const.isLogin(getActivity()))
 			getProfile();
 		super.onResume();

@@ -113,10 +113,10 @@ public class MarketPlaceFragment extends Fragment_Main implements ClickViewAll {
 				createMyReqSuccessListener(), createMyReqErrorListener());
 		queue.add(myReq);
 		
-		Tracker tracker = GoogleAnalytics.getInstance(getActivity())
-				.getTracker(Const.GA_PROPERTY_ID);
-		tracker.set(Fields.SCREEN_NAME, SCREEN_LABEL);
-		tracker.send(MapBuilder.createAppView().build());
+//		Tracker tracker = GoogleAnalytics.getInstance(getActivity())
+//				.getTracker(Const.GA_PROPERTY_ID);
+//		tracker.set(Fields.SCREEN_NAME, SCREEN_LABEL);
+//		tracker.send(MapBuilder.createAppView().build());
 	}
 
 	@Override

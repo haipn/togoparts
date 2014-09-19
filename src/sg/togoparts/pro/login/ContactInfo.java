@@ -1,6 +1,12 @@
 package sg.togoparts.pro.login;
 
+import com.google.analytics.tracking.android.Fields;
+import com.google.analytics.tracking.android.GoogleAnalytics;
+import com.google.analytics.tracking.android.MapBuilder;
+import com.google.analytics.tracking.android.Tracker;
+
 import sg.togoparts.pro.R;
+import sg.togoparts.pro.app.Const;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -39,6 +45,12 @@ public class ContactInfo extends FragmentActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.contact_info);
+		Tracker tracker = GoogleAnalytics.getInstance(this).getTracker(
+				Const.GA_PROPERTY_ID);
+		tracker.set(Fields.SCREEN_NAME, "Marketplace "
+				+ getIntent().getStringExtra("screen") + " Contact Info");
+		tracker.send(MapBuilder.createAppView().build());
+		
 		createHeader();
 		Intent i = getIntent();
 		mContactNo = i.getStringExtra(PostAdActivity.CONTACTNO);
@@ -94,6 +106,12 @@ public class ContactInfo extends FragmentActivity {
 
 			@Override
 			public void onClick(View v) {
+				Tracker tracker = GoogleAnalytics.getInstance(ContactInfo.this).getTracker(
+						Const.GA_PROPERTY_ID);
+				tracker.set(Fields.SCREEN_NAME, "Marketplace "
+						+ getIntent().getStringExtra("screen") + " Location");
+				tracker.send(MapBuilder.createAppView().build());
+				
 				Intent i = new Intent(ContactInfo.this, LocationActivity.class);
 				startActivityForResult(i, REQUEST_LOCATION);
 			}

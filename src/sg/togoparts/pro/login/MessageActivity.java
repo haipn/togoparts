@@ -25,6 +25,10 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.Response.Listener;
 import com.android.volley.VolleyError;
+import com.google.analytics.tracking.android.Fields;
+import com.google.analytics.tracking.android.GoogleAnalytics;
+import com.google.analytics.tracking.android.MapBuilder;
+import com.google.analytics.tracking.android.Tracker;
 
 public class MessageActivity extends FragmentActivity {
 	private ImageButton mBtnBack;
@@ -33,34 +37,41 @@ public class MessageActivity extends FragmentActivity {
 	private ListView mLvComment;
 	private MessageAdapter mAdapter;
 	private ArrayList<Message> mListComment;
-	
+
 	@Override
 	protected void onCreate(Bundle arg0) {
 		super.onCreate(arg0);
-		setContentView(R.layout.list_activity);createHeader();
+		
+		Tracker tracker = GoogleAnalytics.getInstance(this).getTracker(
+				Const.GA_PROPERTY_ID);
+		tracker.set(Fields.SCREEN_NAME, "Marketplace Ad Comments");
+		tracker.send(MapBuilder.createAppView().build());
+		
+		setContentView(R.layout.list_activity);
+		createHeader();
 		mListComment = new ArrayList<Message>();
 		mLvComment = (ListView) findViewById(R.id.listView);
 		mAdapter = new MessageAdapter(this, mListComment);
 		mLvComment.setAdapter(mAdapter);
 
-//		mLvComment.setOnItemClickListener(new OnItemClickListener() {
-//
-//			@Override
-//			public void onItemClick(AdapterView<?> parent, View view,
-//					int position, long id) {
-//				Intent i = new Intent(MessageActivity.this,
-//						CategoryActivity.class);
-//				mSessionId = mListComment.get(position).id;
-//				i.putExtra(PostAdActivity.SECTION, mSessionId);
-//				startActivityForResult(i, REQUEST_CATEGORY);
-//			}
-//		});
+		// mLvComment.setOnItemClickListener(new OnItemClickListener() {
+		//
+		// @Override
+		// public void onItemClick(AdapterView<?> parent, View view,
+		// int position, long id) {
+		// Intent i = new Intent(MessageActivity.this,
+		// CategoryActivity.class);
+		// mSessionId = mListComment.get(position).id;
+		// i.putExtra(PostAdActivity.SECTION, mSessionId);
+		// startActivityForResult(i, REQUEST_CATEGORY);
+		// }
+		// });
 		String aid = getIntent().getStringExtra(Const.ADS_ID);
 		mProgress.setVisibility(View.VISIBLE);
 		RequestQueue queue = MyVolley.getRequestQueue();
-		GsonRequest<AllComment> myReq = new GsonRequest<AllComment>(
-				Method.GET, String.format(Const.URL_ALL_MESSAGE, aid), AllComment.class,
-				createProfileSuccessListener(), createMyReqErrorListener()) ;
+		GsonRequest<AllComment> myReq = new GsonRequest<AllComment>(Method.GET,
+				String.format(Const.URL_ALL_MESSAGE, aid), AllComment.class,
+				createProfileSuccessListener(), createMyReqErrorListener());
 		queue.add(myReq);
 	}
 

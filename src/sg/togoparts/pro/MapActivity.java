@@ -9,7 +9,9 @@ import sg.togoparts.pro.app.MyVolley;
 import sg.togoparts.pro.json.BikeShop;
 import sg.togoparts.pro.json.GsonRequest;
 import sg.togoparts.pro.json.ListBikeShop;
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
@@ -65,12 +67,14 @@ public class MapActivity extends FragmentActivity {
 	private ToggleButton mBtnHybrid;
 	private ToggleButton mBtnSatelite;
 	private ProgressBar mProgress;
+	public ArrayList<String> mListId;
+	private ProgressDialog mProDialog;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.map_layout);
-
+		mProDialog = new ProgressDialog(this);
 		mHmId = new HashMap<String, String>();
 		mQueryBundle = getIntent().getExtras();
 		mLat = getIntent().getStringExtra(Const.LATITUDE);
@@ -135,7 +139,78 @@ public class MapActivity extends FragmentActivity {
 		// createListPins(listStringShop);
 		// Log.d("haipn", "map activity:" + listStringShop.size());
 		searchResult(getIntent());
-		
+
+	}
+
+	private class loadPinAsyncTask extends
+			AsyncTask<String, Void, ArrayList<MarkerOptions>> {
+		protected ArrayList<MarkerOptions> doInBackground(String... args) {
+			ArrayList<MarkerOptions> listMo = new ArrayList<MarkerOptions>();
+			mListId = new ArrayList<String>();
+			if (args == null || args.length == 0) {
+				Toast.makeText(MapActivity.this, R.string.no_result_found,
+						Toast.LENGTH_LONG).show();
+				return null;
+			} else {
+				Log.d("haipn","list size map:" + args.length);
+			}
+
+			for (String shop : args) {
+				if (shop == null) 
+					continue;
+				String[] split = shop.split(":::");
+				BikeShop bikeshop = new BikeShop();
+				bikeshop.sid = split[0];
+				bikeshop.shopname = split[1];
+				bikeshop.address = split[2];
+				LatLng latlong = new LatLng(Double.valueOf(split[3]),
+						Double.valueOf(split[4]));
+				MarkerOptions mo = new MarkerOptions();
+				mo.anchor(0.7f, 0.6f);
+				if (split[6].contains("OPEN") || split[6].contains("Open")
+						|| split[6].contains("open")) {
+					mo.icon(BitmapDescriptorFactory
+							.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+				} else if (split[6].contains("CLOSE")
+						|| split[6].contains("Close")
+						|| split[6].contains("close")) {
+					mo.icon(BitmapDescriptorFactory
+							.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+				} else {
+
+					mo.icon(BitmapDescriptorFactory
+							.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA));
+				}
+				mo.title(split[1] + split[6]);
+				mo.snippet(split[2] + "\n" + split[5]);
+				mListId.add(split[0]);
+				mo.position(latlong);
+				listMo.add(mo);
+				
+			}
+			return listMo;
+		}
+
+
+		protected void onPostExecute(ArrayList<MarkerOptions> listMo) {
+			
+			final LatLngBounds.Builder builder = new LatLngBounds.Builder();
+			int i = 0;
+			for (MarkerOptions markerOptions : listMo) {
+				Marker a = googleMap.addMarker(markerOptions);
+				mHmId.put(a.getId(), mListId.get(i++));
+				builder.include(a.getPosition());
+			}
+			LatLngBounds bounds = builder.build();
+			int padding = 10; // offset from edges of the map in pixels
+			CameraUpdate cu = CameraUpdateFactory
+					.newLatLngBounds(bounds, MapActivity.this.getResources()
+							.getDisplayMetrics().widthPixels, MapActivity.this
+							.getResources().getDisplayMetrics().heightPixels,
+							padding);
+			googleMap.animateCamera(cu);
+			mProDialog.dismiss();
+		}
 	}
 
 	private void createListPins(ArrayList<String> shops) {
@@ -156,11 +231,13 @@ public class MapActivity extends FragmentActivity {
 					Double.valueOf(split[4]));
 			MarkerOptions mo = new MarkerOptions();
 			mo.anchor(0.7f, 0.6f);
-			
-			if (split[6].contains("OPEN") || split[6].contains("Open") || split[6].contains("open")) {
+
+			if (split[6].contains("OPEN") || split[6].contains("Open")
+					|| split[6].contains("open")) {
 				mo.icon(BitmapDescriptorFactory
 						.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
-			} else if (split[6].contains("CLOSE") || split[6].contains("Close") || split[6].contains("close")) {
+			} else if (split[6].contains("CLOSE") || split[6].contains("Close")
+					|| split[6].contains("close")) {
 				mo.icon(BitmapDescriptorFactory
 						.defaultMarker(BitmapDescriptorFactory.HUE_RED));
 			} else {
@@ -175,12 +252,7 @@ public class MapActivity extends FragmentActivity {
 			mHmId.put(a.getId(), split[0]);
 			builder.include(a.getPosition());
 		}
-		LatLngBounds bounds = builder.build();
-		int padding = 10; // offset from edges of the map in pixels
-		CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, this
-				.getResources().getDisplayMetrics().widthPixels, this
-				.getResources().getDisplayMetrics().heightPixels, padding);
-		googleMap.animateCamera(cu);
+
 	}
 
 	/**
@@ -273,9 +345,10 @@ public class MapActivity extends FragmentActivity {
 		initilizeMap();
 	}
 
-	protected ArrayList<String> generateListShop(ArrayList<BikeShop> result) {
-		ArrayList<String> ret = new ArrayList<String>();
-		for (BikeShop shop : result) {
+	protected String[] generateListShop(ArrayList<BikeShop> result) {
+		String[] ret = new String[result.size()];
+		for (int i = 0; i < ret.length; i++) {
+			BikeShop shop = result.get(i);
 			if (shop.sid == null)
 				continue;
 			if (shop.address == null || shop.address.isEmpty())
@@ -300,12 +373,11 @@ public class MapActivity extends FragmentActivity {
 			if (shop.forpaidonly != null && shop.forpaidonly.openlabel != null) {
 				st += " - ";
 				st += shop.forpaidonly.openlabel;
-			}
-			else {
+			} else {
 				st += " - ";
 				st += "Unknown";
 			}
-			ret.add(st);
+			ret[i] = st;
 		}
 		return ret;
 	}
@@ -324,6 +396,7 @@ public class MapActivity extends FragmentActivity {
 
 	private void searchResult(Intent i) {
 		mProgress.setVisibility(View.VISIBLE);
+		mProDialog.show();
 		mQueryBundle = i.getExtras();
 		if (mQueryBundle.getBoolean(IS_SEARCH)) {
 			Tracker tracker = GoogleAnalytics.getInstance(this).getTracker(
@@ -354,8 +427,9 @@ public class MapActivity extends FragmentActivity {
 				googleMap.clear();
 				mProgress.setVisibility(View.GONE);
 				if (response != null && response.bikeshoplist != null) {
-					ArrayList<String> listStringShop = generateListShop(response.bikeshoplist);
-					createListPins(listStringShop);
+					String[] listStringShop = generateListShop(response.bikeshoplist);
+//					createListPins(listStringShop);
+					new loadPinAsyncTask().execute(listStringShop);
 				}
 			}
 		};
@@ -428,8 +502,7 @@ public class MapActivity extends FragmentActivity {
 
 		mTvTitleHeader = (TextView) findViewById(R.id.title);
 		mTvTitleHeader.setVisibility(View.VISIBLE);
-		
-		
+
 		if (mQueryBundle.getString(Const.TITLE) != null) {
 			mTvTitleHeader.setText(getIntent().getStringExtra(Const.TITLE));
 		} else {
