@@ -86,7 +86,7 @@
     <string name="title_search_bikeshop">Bikeshop Search Results</string>
     <!-- v1.2 -->
     <string name="error">Error</string>
-    <string name="label_rating">Marketplace Rating</string>
+    <string name="label_rating">My Marketplace Rating</string>
     <string name="label_free_ads_posted">Free Ads Posted:</string>
     <string name="label_free_ads_quota">Free Ads Quota:</string>
     <string name="label_free_ads_balance">Free Ads Balance:</string>
@@ -118,9 +118,9 @@
     <string name="title_profile">Manage Ads</string>
     <string name="label_comment">Ad comments</string>
     <string name="label_view_all_comment">View %d more earlier comments</string>
-    <string name="note_priority_ad">Get your Used Item sorted above all Free Ads.</string>
-    <string name="note_newitem_ad">Make a Profit selling New Items and get sorted above all Priority Ads.</string>
-   
+    <string name="note_priority_ad">Sort your item above all Free Ads for 7 days.\n4 Tcreds for all stuff except complete bikes at 10 Tcreds.</string>
+    <string name="note_newitem_ad">Make a Profit selling New Items.</string>
+    <string name="note_not_postingpack">\n%d Tcreds / day for all item types.</string>
     <string name="note_free_ad">You are posting a Free ad. To get 5x more views and 6 pictures, post as a Priority or New Item Ad.</string>
     <string name="details">Details</string>
     <string name="category">Category</string>
@@ -200,7 +200,6 @@
     <string name="msg_input_description">Ad description is required.</string>
     <string name="msg_confirm_cancel_editing">Are you sure you want to cancel editing this Ad? All photos and changes will not be saved.</string>
     <string name="msg_confirm_cancel_posting">Are you sure you want to cancel posting this Ad? All details and photos will not be saved.</string>
-    
     <string name="msg_no_ads">You have not posted any ads</string>
     <string name="label_no_action">Ad already marked as %s</string>
     <string name="msg_confirm_logout">Logout Togoparts Account?</string>
@@ -212,14 +211,15 @@
     <string name="external_storage_na_message">Sdcard is missing or currently not mounted. Cannot continue.</string>
     <string name="title_fb_authorize">Details missing!</string>
     <string name="message_fb_authorize">Email and birthday are required to proceed sign-up</string>
-	<string name="title_tcred">Insufficient TCredits</string>
-	<string name="message_tcred">You do not have enough TCredits to post %s ad under this Section!</string>
-	<string name="message_tcred_1">You do not have enough TCredits to post %s ad under the selected Category!</string>
-	<string name="title_rm_img">Remove Image?</string>
-	<string name="message_rm_img">Are you sure you want to remove the selected image?</string>
-	<string name="search_note">You may use more search filters after submitting this Search</string>
-	<string name="title_refresh">Confirm Refresh</string>
-	<string name="message_refresh">Bump your Ad to the top of the list for 1 Tcredit?</string>
+    <string name="title_tcred">Insufficient TCredits</string>
+    <string name="message_tcred">You do not have enough TCredits to post %s ad under this Section!</string>
+    <string name="message_tcred_1">You do not have enough TCredits to post %s ad under the selected Category!</string>
+    <string name="title_rm_img">Remove Image?</string>
+    <string name="message_rm_img">Are you sure you want to remove the selected image?</string>
+    <string name="search_note">You may use more search filters after submitting this Search</string>
+    <string name="title_refresh">Confirm Refresh</string>
+    <string name="message_refresh">Bump your Ad to the top of the list for 1 Tcredit?</string>
+	<string name="tcred">TCredits</string>
     <string-array name="actions">
         <item>Capture image from camera</item>
         <item>Pick image from gallery</item>

@@ -72,7 +72,8 @@ public class ProfileFragment extends Fragment_Main implements QuickActionSelect 
 	private TextView mTvPositive;
 	private TextView mTvNeutral;
 	private TextView mTvNegative;
-	private TextView mTvUsername;
+	private TextView mTvTcred;
+//	private TextView mTvUsername;
 	private GridView mGvInfo;
 	private InfoAdapter mInfoAdapter;
 	private ArrayList<Value> mListValue;
@@ -93,7 +94,8 @@ public class ProfileFragment extends Fragment_Main implements QuickActionSelect 
 		mTvPositive = (TextView) header.findViewById(R.id.tvPositive);
 		mTvNeutral = (TextView) header.findViewById(R.id.tvNeutral);
 		mTvNegative = (TextView) header.findViewById(R.id.tvNegative);
-		mTvUsername = (TextView) header.findViewById(R.id.tvUserName);
+		mTvTcred = (TextView) header.findViewById(R.id.tvNumber);
+//		mTvUsername = (TextView) header.findViewById(R.id.tvUserName);
 
 		mGvInfo = (GridView) header.findViewById(R.id.gvInfo);
 		mInfoAdapter = new InfoAdapter(getActivity(), mListValue);
@@ -212,7 +214,7 @@ public class ProfileFragment extends Fragment_Main implements QuickActionSelect 
 					if (response.Result.Return.equals("success")) {
 						String username = response.Result.info.username;
 						mQuery = String.format(Const.URL_GET_MY_ADS, username);
-						mTvUsername.setText(username);
+//						mTvUsername.setText(username);
 						updateProfile(response.Result);
 						loadMore();
 					} else if (response.Result.Return.equals("banned")) {
@@ -314,6 +316,7 @@ public class ProfileFragment extends Fragment_Main implements QuickActionSelect 
 		mTvNegative.setText(result.ratings.Negative + "");
 		mTvNeutral.setText(result.ratings.Neutral + "");
 		mTvPositive.setText(result.ratings.Positive + "");
+		mTvTcred.setText(result.info.TCreds +"");
 		imageLoader.displayImage(result.info.picture, mImvAvatar);
 		final String link = result.info.TCredsLink;
 		if (link != null && !link.isEmpty())

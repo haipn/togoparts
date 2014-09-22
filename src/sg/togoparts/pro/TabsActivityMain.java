@@ -113,8 +113,7 @@ public class TabsActivityMain extends TabActivity {
 						TabsActivityMain.this).getTracker(Const.GA_PROPERTY_ID);
 
 				if (tabId.equals("1")) {
-					tracker.set(Fields.SCREEN_NAME,
-							"Home");
+					tracker.set(Fields.SCREEN_NAME, "Home");
 					Const.isAppExitable = true;
 				} else {
 					if (tabId.equals("2")) {
@@ -198,7 +197,7 @@ public class TabsActivityMain extends TabActivity {
 		}
 		if (getIntent().getStringExtra(Const.TAG_NAME) == null) {
 			tabHost.setCurrentTabByTag("1");
-			
+
 			Log.d("haipn", "main activity tag name = null");
 		} else {
 			tabHost.setCurrentTabByTag(getIntent().getStringExtra(

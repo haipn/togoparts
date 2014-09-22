@@ -8,7 +8,7 @@
         android:id="@+id/header"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        layout="@layout/new_actionbar" />
+        layout="@layout/postad_actionbar" />
 
     <ScrollView
         android:layout_width="match_parent"

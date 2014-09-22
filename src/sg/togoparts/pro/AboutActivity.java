@@ -10,6 +10,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.webkit.WebView;
 import android.widget.TextView;
 
@@ -17,6 +18,7 @@ import com.android.volley.Request.Method;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.google.android.gms.internal.fi;
 
 public class AboutActivity extends FragmentActivity {
 	TextView mTitle;
@@ -48,7 +50,14 @@ public class AboutActivity extends FragmentActivity {
 	}
 
 	private void createHeader() {
-		findViewById(R.id.btnBack).setVisibility(View.INVISIBLE);
+		findViewById(R.id.btnBack).setVisibility(View.VISIBLE);
+		findViewById(R.id.btnBack).setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				finish();
+			}
+		});
 		findViewById(R.id.btnSearch).setVisibility(View.INVISIBLE);
 		findViewById(R.id.logo).setVisibility(View.VISIBLE);
 

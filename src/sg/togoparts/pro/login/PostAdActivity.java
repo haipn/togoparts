@@ -43,6 +43,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.provider.ContactsContract.CommonDataKinds.Note;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.util.DisplayMetrics;
@@ -58,6 +59,7 @@ import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.TextView;
@@ -86,7 +88,7 @@ import com.sromku.simple.fb.listeners.OnLogoutListener;
 
 public class PostAdActivity extends FragmentActivity implements
 		View.OnClickListener, OnSelectAction, OnExpireResult {
-	private static final String FOLDER_NAME = "aviary";
+	private static final String FOLDER_NAME = "Togoparts";
 	public static final String SESSION_ID = "session_id";
 	public static final String AID = "aid";
 	public static final String ADTYPE = "adtype";
@@ -164,7 +166,9 @@ public class PostAdActivity extends FragmentActivity implements
 	private TextView mTvNote;
 	private HeaderView headerView;
 	private ImageButton mBtnBack;
-	private ImageButton mBtnSearch;
+	private LinearLayout mLlTcred;
+	
+	private TextView mTvTcred;
 	private ProgressBar mProgress;
 	private ImageView mIvLogo;
 	private TextView mTvTitleHeader;
@@ -220,7 +224,7 @@ public class PostAdActivity extends FragmentActivity implements
 	private File getNextFileName() {
 		if (mGalleryFolder != null) {
 			if (mGalleryFolder.exists()) {
-				File file = new File(mGalleryFolder, "aviary_"
+				File file = new File(mGalleryFolder, "togoparts_"
 						+ System.currentTimeMillis() + ".jpg");
 				return file;
 			}
@@ -238,12 +242,7 @@ public class PostAdActivity extends FragmentActivity implements
 
 		File baseDir;
 
-		if (android.os.Build.VERSION.SDK_INT < 8) {
-			baseDir = Environment.getExternalStorageDirectory();
-		} else {
-			baseDir = Environment
-					.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-		}
+		baseDir = Environment.getExternalStorageDirectory();
 
 		if (baseDir == null)
 			return Environment.getExternalStorageDirectory();
@@ -404,7 +403,7 @@ public class PostAdActivity extends FragmentActivity implements
 				Const.GA_PROPERTY_ID);
 		tracker.set(Fields.SCREEN_NAME, "Marketplace Photo Editor");
 		tracker.send(MapBuilder.createAppView().build());
-		
+
 		startActivityForResult(newIntent, REQUEST_AVIARY);
 	}
 
@@ -670,22 +669,29 @@ public class PostAdActivity extends FragmentActivity implements
 	}
 
 	protected void onLoadProcess(ResultValue result) {
+		mTcred = result.TCreds;
 		if (result.merchant != null) {
 			// mTvInfo.setText(R.string.merchant_pack_ads);
 			// adapter = new InfoAdapter(this, result.merchant);
 			mTypeAccount = MERCHANT;
+			mLlTcred.setVisibility(View.VISIBLE);
+			mTvTcred.setText(mTcred + "");
 		} else if (result.postingpack != null) {
 			// mTvInfo.setText(R.string.posting_pack_ads);
 			// adapter = new InfoAdapter(this, result.postingpack);
 			mTypeAccount = POSTINGPACK;
+			mLlTcred.setVisibility(View.INVISIBLE);
+			mTvTcred.setText(mTcred + "");
 		} else {
 			mTypeAccount = QUOTA;
 			if (result.freeadsleft == 0) {
 				isOverQuota = true;
 			}
+			mLlTcred.setVisibility(View.VISIBLE);
+			mTvTcred.setText(mTcred + "");
 			// adapter = new InfoAdapter(this, result.quota);
 		}
-		mTcred = result.TCreds;
+		
 		if (result.Shopid > 0) {
 			mTvContact.setVisibility(View.GONE);
 		} else {
@@ -816,7 +822,14 @@ public class PostAdActivity extends FragmentActivity implements
 			mRdoPriorityAd.setVisibility(View.INVISIBLE);
 			mRdoNewItemAd.setVisibility(View.VISIBLE);
 			mRdoNewItemAd.setChecked(true);
-			mTvNote.setText(R.string.note_newitem_ad);
+			if (mTypeAccount == POSTINGPACK) {
+				mTvNote.setText(R.string.note_newitem_ad);
+			} else {
+				String note = getString(R.string.note_newitem_ad)
+						+ getString(R.string.note_not_postingpack,
+								mResultValue.min_newitem_cost);
+				mTvNote.setText(note);
+			}
 		} else {
 			mRdoFreeAd.setVisibility(View.VISIBLE);
 			mRdoPriorityAd.setVisibility(View.VISIBLE);
@@ -847,8 +860,8 @@ public class PostAdActivity extends FragmentActivity implements
 	private void createHeader() {
 		mBtnBack = (ImageButton) findViewById(R.id.btnBack);
 		mBtnBack.setBackgroundResource(R.drawable.btn_cancel);
-		mBtnSearch = (ImageButton) findViewById(R.id.btnSearch);
-		mBtnSearch.setVisibility(View.INVISIBLE);
+		mTvTcred = (TextView) findViewById(R.id.tvNumber);
+		mLlTcred = (LinearLayout) findViewById(R.id.llTcred);
 		findViewById(R.id.logo).setVisibility(View.GONE);
 		mProgress = (ProgressBar) findViewById(R.id.progress);
 		mTvTitleHeader = (TextView) findViewById(R.id.title);
@@ -1090,7 +1103,14 @@ public class PostAdActivity extends FragmentActivity implements
 					mImv5.setImageResource(R.drawable.upload_pic);
 					mImv6.setOnClickListener(PostAdActivity.this);
 					mImv6.setImageResource(R.drawable.upload_pic);
-					mTvNote.setText(R.string.note_newitem_ad);
+					if (mTypeAccount == POSTINGPACK) {
+						mTvNote.setText(R.string.note_newitem_ad);
+					} else {
+						String note = getString(R.string.note_newitem_ad)
+								+ getString(R.string.note_not_postingpack,
+										mResultValue.min_newitem_cost);
+						mTvNote.setText(note);
+					}
 					mPostAd.setAdtype(2);
 				}
 

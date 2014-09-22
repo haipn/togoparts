@@ -451,9 +451,11 @@ public class DetailActivity extends FragmentActivity implements
 			mBtnRight.setVisibility(View.GONE);
 			mPagerImage.setVisibility(View.GONE);
 		} else if (images.size() == 1) {
+			mPagerImage.setVisibility(View.VISIBLE);
 			mBtnLeft.setVisibility(View.GONE);
 			mBtnRight.setVisibility(View.GONE);
 		} else {
+			mPagerImage.setVisibility(View.VISIBLE);
 			mPagerImage.setCurrentItem(0);
 			mBtnLeft.setVisibility(View.GONE);
 		}
