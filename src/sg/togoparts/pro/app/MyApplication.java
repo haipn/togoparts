@@ -69,8 +69,7 @@ public class MyApplication extends Application {
 		Logger.DEBUG_WITH_STACKTRACE = true;
 
 		// initialize facebook configuration
-		Permission[] permissions = new Permission[] {
-				Permission.PUBLIC_PROFILE, Permission.EMAIL,
+		Permission[] permissions = new Permission[] {Permission.EMAIL,
 				Permission.USER_FRIENDS, Permission.USER_BIRTHDAY };
 		SimpleFacebookConfiguration configuration = new SimpleFacebookConfiguration.Builder()
 				.setAppId(APP_ID).setNamespace(APP_NAMESPACE)
