@@ -70,8 +70,8 @@ public class FSActivity_BikeShop extends FragmentActivity implements
 	TextView mTvNoResult;
 	String mScreenName = "Bike shop";
 	Intent mIntent;
-	String mLat = "0.0";
-	String mLong = "0.0";
+	String mLat = "1.352083";
+	String mLong = "103.819836";
 
 	private boolean isSearch;
 

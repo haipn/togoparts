@@ -52,6 +52,8 @@ public class MapActivity extends FragmentActivity {
 	public static final String LIST_BIKE_SHOP = "list bike shop";
 	protected static final int FILTER_RETURN = 0;
 	public static final String IS_SEARCH = "is search";
+	public static double Lat  = 1.352083000000000000;
+	public static double Long = 103.819836000000010000;
 	// Google Map
 	private GoogleMap googleMap;
 	private ImageButton mBtnBack;
@@ -152,11 +154,11 @@ public class MapActivity extends FragmentActivity {
 						Toast.LENGTH_LONG).show();
 				return null;
 			} else {
-				Log.d("haipn","list size map:" + args.length);
+				Log.d("haipn", "list size map:" + args.length);
 			}
 
 			for (String shop : args) {
-				if (shop == null) 
+				if (shop == null)
 					continue;
 				String[] split = shop.split(":::");
 				BikeShop bikeshop = new BikeShop();
@@ -186,14 +188,13 @@ public class MapActivity extends FragmentActivity {
 				mListId.add(split[0]);
 				mo.position(latlong);
 				listMo.add(mo);
-				
+
 			}
 			return listMo;
 		}
 
-
 		protected void onPostExecute(ArrayList<MarkerOptions> listMo) {
-			
+
 			final LatLngBounds.Builder builder = new LatLngBounds.Builder();
 			int i = 0;
 			for (MarkerOptions markerOptions : listMo) {
@@ -336,6 +337,18 @@ public class MapActivity extends FragmentActivity {
 					return myContentView;
 				}
 			});
+		} else {
+			try {
+				CameraUpdate cu = CameraUpdateFactory.newLatLngZoom(new LatLng(
+						Double.valueOf(mLat), Double.valueOf(mLong)), 10.0f);
+				Log.d("haipn", "mLat:" + mLat + ", mLong:" + mLong);
+				googleMap.moveCamera(cu);
+			} catch (NumberFormatException e) {
+				CameraUpdate cu = CameraUpdateFactory.newLatLngZoom(new LatLng(
+						Lat, Long), 10.0f);
+				googleMap.moveCamera(cu);
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -428,7 +441,7 @@ public class MapActivity extends FragmentActivity {
 				mProgress.setVisibility(View.GONE);
 				if (response != null && response.bikeshoplist != null) {
 					String[] listStringShop = generateListShop(response.bikeshoplist);
-//					createListPins(listStringShop);
+					// createListPins(listStringShop);
 					new loadPinAsyncTask().execute(listStringShop);
 				}
 			}
@@ -487,9 +500,15 @@ public class MapActivity extends FragmentActivity {
 			mQueryBundle.putString(FilterActivity.SORT_BY, "2");
 		}
 
-		if (googleMap.getMyLocation() != null) {
-			mLat = String.valueOf(googleMap.getMyLocation().getLatitude());
-			mLong = String.valueOf(googleMap.getMyLocation().getLongitude());
+		try {
+			if (googleMap.getMyLocation() != null) {
+				mLat = String.valueOf(googleMap.getMyLocation().getLatitude());
+				mLong = String
+						.valueOf(googleMap.getMyLocation().getLongitude());
+			}
+		} catch (IllegalStateException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		mQuery = String.format(Const.URL_BIKE_SHOP, bikeShop, "", type, open,
 				mechanicStr, mLat, mLong, sort);
