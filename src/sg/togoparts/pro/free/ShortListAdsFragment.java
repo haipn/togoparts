@@ -1,10 +1,11 @@
-package sg.togoparts.pro;
+package sg.togoparts.pro.free;
 
 import java.util.ArrayList;
 
 import sg.togoparts.pro.app.Const;
 import sg.togoparts.pro.app.ErrorInternetDialog;
 import sg.togoparts.pro.app.MyVolley;
+import sg.togoparts.pro.free.R;
 import sg.togoparts.pro.gallery.SearchResultAdapter;
 import sg.togoparts.pro.json.GsonRequest;
 import sg.togoparts.pro.json.SearchResult;

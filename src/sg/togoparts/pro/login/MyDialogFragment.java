@@ -1,6 +1,6 @@
 package sg.togoparts.pro.login;
 
-import sg.togoparts.pro.R;
+import sg.togoparts.pro.free.R;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;

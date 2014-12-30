@@ -1,4 +1,4 @@
-package sg.togoparts.pro;
+package sg.togoparts.pro.free;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -7,6 +7,7 @@ import java.util.Map;
 
 import sg.togoparts.pro.app.Const;
 import sg.togoparts.pro.app.MyLocation;
+import sg.togoparts.pro.free.R;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;

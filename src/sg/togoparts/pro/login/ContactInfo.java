@@ -5,7 +5,7 @@ import com.google.analytics.tracking.android.GoogleAnalytics;
 import com.google.analytics.tracking.android.MapBuilder;
 import com.google.analytics.tracking.android.Tracker;
 
-import sg.togoparts.pro.R;
+import sg.togoparts.pro.free.R;
 import sg.togoparts.pro.app.Const;
 import android.content.Intent;
 import android.os.Bundle;

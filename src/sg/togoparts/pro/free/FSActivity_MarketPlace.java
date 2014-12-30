@@ -1,9 +1,10 @@
-package sg.togoparts.pro;
+package sg.togoparts.pro.free;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.KeyEvent;
+import sg.togoparts.pro.free.R;
 
 public class FSActivity_MarketPlace extends Activity_Main
 {

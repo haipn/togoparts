@@ -1,4 +1,4 @@
-package sg.togoparts.pro;
+package sg.togoparts.pro.free;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -12,6 +12,7 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
+import sg.togoparts.pro.free.R;
 
 import android.app.Activity;
 import android.content.Context;

@@ -1,4 +1,4 @@
-package sg.togoparts.pro;
+package sg.togoparts.pro.free;
 
 import java.util.ArrayList;
 
@@ -10,6 +10,7 @@ import sg.togoparts.pro.app.MyVolley;
 import sg.togoparts.pro.app.NewGridView;
 import sg.togoparts.pro.app.SMSDialog;
 import sg.togoparts.pro.app.SMSDialog.AlertPositiveListener;
+import sg.togoparts.pro.free.R;
 import sg.togoparts.pro.gallery.ImagePagerAdapter;
 import sg.togoparts.pro.json.BikeShop.Brand;
 import sg.togoparts.pro.json.ContactLog;

@@ -6,7 +6,7 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import sg.togoparts.pro.R;
+import sg.togoparts.pro.free.R;
 import sg.togoparts.pro.app.Const;
 import sg.togoparts.pro.app.MyVolley;
 import sg.togoparts.pro.json.BrandResult;

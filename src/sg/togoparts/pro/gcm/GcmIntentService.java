@@ -18,12 +18,12 @@ package sg.togoparts.pro.gcm;
 
 import java.io.InputStream;
 
-import sg.togoparts.pro.BikeShopDetail;
-import sg.togoparts.pro.DetailActivity;
-import sg.togoparts.pro.FilterActivity;
-import sg.togoparts.pro.R;
-import sg.togoparts.pro.SearchResultActivity;
-import sg.togoparts.pro.TabsActivityMain;
+import sg.togoparts.pro.free.BikeShopDetail;
+import sg.togoparts.pro.free.DetailActivity;
+import sg.togoparts.pro.free.FilterActivity;
+import sg.togoparts.pro.free.R;
+import sg.togoparts.pro.free.SearchResultActivity;
+import sg.togoparts.pro.free.TabsActivityMain;
 import sg.togoparts.pro.app.Const;
 import android.app.IntentService;
 import android.app.Notification;

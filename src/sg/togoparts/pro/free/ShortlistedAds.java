@@ -1,10 +1,11 @@
-package sg.togoparts.pro;
+package sg.togoparts.pro.free;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import sg.togoparts.pro.free.R;
 
 public class ShortlistedAds extends Fragment {
 	@Override

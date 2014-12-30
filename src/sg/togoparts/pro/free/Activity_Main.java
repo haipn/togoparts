@@ -1,4 +1,4 @@
-package sg.togoparts.pro;
+package sg.togoparts.pro.free;
 
 import android.app.TabActivity;
 import android.os.Bundle;
@@ -11,6 +11,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import sg.togoparts.pro.free.R;
 
 public class Activity_Main extends FragmentActivity implements HeaderView {
 	static final String TAG = "FSActivity_Home";

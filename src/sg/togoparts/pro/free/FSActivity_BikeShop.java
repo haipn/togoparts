@@ -1,4 +1,4 @@
-package sg.togoparts.pro;
+package sg.togoparts.pro.free;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -9,6 +9,7 @@ import sg.togoparts.pro.app.ErrorInternetDialog;
 import sg.togoparts.pro.app.MyLocation;
 import sg.togoparts.pro.app.MyLocation.LocationResult;
 import sg.togoparts.pro.app.MyVolley;
+import sg.togoparts.pro.free.R;
 import sg.togoparts.pro.gallery.BikeShopAdapter;
 import sg.togoparts.pro.json.BikeShop;
 import sg.togoparts.pro.json.GsonRequest;

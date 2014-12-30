@@ -1,7 +1,8 @@
-package sg.togoparts.pro;
+package sg.togoparts.pro.free;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import sg.togoparts.pro.free.R;
 
 public class Fragment_Main extends Fragment {
 	protected void addFragment(Fragment fragment, boolean addToBackStack,

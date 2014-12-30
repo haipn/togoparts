@@ -18,9 +18,9 @@ import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 
-import sg.togoparts.pro.DetailActivity;
-import sg.togoparts.pro.HeaderView;
-import sg.togoparts.pro.R;
+import sg.togoparts.pro.free.DetailActivity;
+import sg.togoparts.pro.free.HeaderView;
+import sg.togoparts.pro.free.R;
 import sg.togoparts.pro.app.Const;
 import sg.togoparts.pro.app.MyVolley;
 import sg.togoparts.pro.json.GsonRequest;

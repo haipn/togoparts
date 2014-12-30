@@ -3,8 +3,8 @@ package sg.togoparts.pro.gallery;
 import java.util.ArrayList;
 import java.util.List;
 
-import sg.togoparts.pro.DetailActivity;
-import sg.togoparts.pro.R;
+import sg.togoparts.pro.free.DetailActivity;
+import sg.togoparts.pro.free.R;
 import sg.togoparts.pro.app.Const;
 import sg.togoparts.pro.json.Category;
 import sg.togoparts.pro.json.Feature;

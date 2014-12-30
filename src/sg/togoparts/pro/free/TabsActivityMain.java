@@ -1,6 +1,7 @@
-package sg.togoparts.pro;
+package sg.togoparts.pro.free;
 
 import sg.togoparts.pro.app.Const;
+import sg.togoparts.pro.free.R;
 import sg.togoparts.pro.login.ChooseLogin;
 import sg.togoparts.pro.login.FSActivity_PostAd;
 import sg.togoparts.pro.login.FSActivity_Profile;

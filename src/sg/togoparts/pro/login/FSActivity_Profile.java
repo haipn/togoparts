@@ -1,7 +1,7 @@
 package sg.togoparts.pro.login;
 
-import sg.togoparts.pro.Activity_Main;
-import sg.togoparts.pro.R;
+import sg.togoparts.pro.free.Activity_Main;
+import sg.togoparts.pro.free.R;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;

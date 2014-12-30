@@ -2,7 +2,7 @@ package sg.togoparts.pro.gallery;
 
 import java.util.ArrayList;
 
-import sg.togoparts.pro.R;
+import sg.togoparts.pro.free.R;
 import sg.togoparts.pro.json.CategoryResult.Category;
 import android.content.Context;
 import android.view.LayoutInflater;

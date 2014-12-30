@@ -2,7 +2,7 @@ package sg.togoparts.pro.login;
 
 import java.util.ArrayList;
 
-import sg.togoparts.pro.R;
+import sg.togoparts.pro.free.R;
 import sg.togoparts.pro.json.SearchResult.AdsResult;
 import android.content.Context;
 import android.graphics.Bitmap;

@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import sg.togoparts.pro.DetailActivity;
-import sg.togoparts.pro.Fragment_Main;
-import sg.togoparts.pro.HeaderView;
-import sg.togoparts.pro.R;
+import sg.togoparts.pro.free.DetailActivity;
+import sg.togoparts.pro.free.Fragment_Main;
+import sg.togoparts.pro.free.HeaderView;
+import sg.togoparts.pro.free.R;
 import sg.togoparts.pro.app.Const;
 import sg.togoparts.pro.app.ErrorInternetDialog;
 import sg.togoparts.pro.app.MyVolley;
