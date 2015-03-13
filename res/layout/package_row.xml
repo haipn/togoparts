@@ -46,7 +46,7 @@
             android:visibility="visible" >
         </Button>
 
-        <sg.togoparts.pro.gallery.FontableTextView
+        <sg.togoparts.gallery.FontableTextView
             android:id="@+id/tvNoAction"
             android:layout_gravity="center"
             android:gravity="center"

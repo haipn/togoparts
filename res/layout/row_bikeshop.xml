@@ -11,7 +11,7 @@
         android:orientation="vertical"
         android:padding="4dp" >
 
-        <sg.togoparts.pro.gallery.FontableTextView
+        <sg.togoparts.gallery.FontableTextView
             android:id="@+id/tvTitle"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -38,7 +38,7 @@
                 android:orientation="vertical"
                 android:paddingRight="5dp" >
 
-                <sg.togoparts.pro.gallery.FontableTextView
+                <sg.togoparts.gallery.FontableTextView
                     android:id="@+id/tvAddress"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -51,7 +51,7 @@
                 <!-- android:layout_height="wrap_content" -->
                 <!-- android:text="FontableTextView" /> -->
 
-                <sg.togoparts.pro.gallery.FontableTextView
+                <sg.togoparts.gallery.FontableTextView
                     android:id="@+id/tvDistance"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -83,7 +83,7 @@
                 android:paddingLeft="6dp"
                 android:paddingRight="6dp" >
 
-                <sg.togoparts.pro.gallery.FontableTextView
+                <sg.togoparts.gallery.FontableTextView
                     android:id="@+id/tvOpenLabel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -91,7 +91,7 @@
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textColor="@android:color/white" />
 
-                <sg.togoparts.pro.gallery.FontableTextView
+                <sg.togoparts.gallery.FontableTextView
                     android:id="@+id/tvRemark"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -99,7 +99,7 @@
                     android:textColor="@android:color/white" />
             </LinearLayout>
 
-            <sg.togoparts.pro.gallery.FontableTextView
+            <sg.togoparts.gallery.FontableTextView
                 android:id="@+id/tvNewItem"
                 android:layout_width="wrap_content"
                 android:layout_height="fill_parent"
@@ -113,7 +113,7 @@
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textColor="@android:color/white" />
 
-            <sg.togoparts.pro.gallery.FontableTextView
+            <sg.togoparts.gallery.FontableTextView
                 android:id="@+id/tvPromos"
                 android:layout_width="wrap_content"
                 android:layout_height="fill_parent"

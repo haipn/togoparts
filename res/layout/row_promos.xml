@@ -22,7 +22,7 @@
             android:layout_height="fill_parent"
             android:orientation="vertical" >
 
-            <sg.togoparts.pro.gallery.FontableTextView
+            <sg.togoparts.gallery.FontableTextView
                 android:id="@+id/tvTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -30,14 +30,14 @@
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textColor="@color/orange" />
 
-            <sg.togoparts.pro.gallery.FontableTextView
+            <sg.togoparts.gallery.FontableTextView
                 android:id="@+id/tvShopName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="5dp"
                 android:text="TextView" />
 
-            <sg.togoparts.pro.gallery.FontableTextView
+            <sg.togoparts.gallery.FontableTextView
                 android:id="@+id/tvDatePost"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

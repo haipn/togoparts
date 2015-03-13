@@ -28,7 +28,7 @@
                 android:layout_margin="10dp"
                 android:orientation="vertical" >
 
-                <sg.togoparts.pro.gallery.FontableTextView
+                <sg.togoparts.gallery.FontableTextView
                     android:id="@+id/textView2"
                     style="@style/TextAppearance.Search.Black"
                     android:layout_width="wrap_content"
@@ -82,7 +82,7 @@
                         android:text="@string/sort_by_4" />
                 </RadioGroup>
 
-                <sg.togoparts.pro.gallery.FontableTextView
+                <sg.togoparts.gallery.FontableTextView
                     android:id="@+id/textView5"
                     style="@style/TextAppearance.Search.Black"
                     android:layout_width="wrap_content"
@@ -99,14 +99,14 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1" >
 
-                        <sg.togoparts.pro.gallery.FontableTextView
+                        <sg.togoparts.gallery.FontableTextView
                             style="@style/TextAppearance.Search.Orange"
                             android:layout_width="wrap_content"
                             android:layout_height="fill_parent"
                             android:gravity="center_vertical"
                             android:text="@string/search_from" />
 
-                        <sg.togoparts.pro.gallery.FontableEditText
+                        <sg.togoparts.gallery.FontableEditText
                             android:id="@+id/edtFrom"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
@@ -120,14 +120,14 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1" >
 
-                        <sg.togoparts.pro.gallery.FontableTextView
+                        <sg.togoparts.gallery.FontableTextView
                             style="@style/TextAppearance.Search.Orange"
                             android:layout_width="wrap_content"
                             android:layout_height="fill_parent"
                             android:gravity="center_vertical"
                             android:text="@string/search_to" />
 
-                        <sg.togoparts.pro.gallery.FontableEditText
+                        <sg.togoparts.gallery.FontableEditText
                             android:id="@+id/edtTo"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
@@ -137,7 +137,7 @@
                     </LinearLayout>
                 </LinearLayout>
 
-                <sg.togoparts.pro.gallery.FontableTextView
+                <sg.togoparts.gallery.FontableTextView
                     android:id="@+id/textView3"
                     style="@style/TextAppearance.Search.Black"
                     android:layout_width="wrap_content"
@@ -155,7 +155,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="2" />
 
-                    <sg.togoparts.pro.gallery.FontableTextView
+                    <sg.togoparts.gallery.FontableTextView
                         android:id="@+id/textView4"
                         style="@style/TextAppearance.Search.Orange"
                         android:layout_width="wrap_content"
@@ -163,7 +163,7 @@
                         android:layout_weight="0.5"
                         android:text="@string/or" />
 
-                    <sg.togoparts.pro.gallery.FontableEditText
+                    <sg.togoparts.gallery.FontableEditText
                         android:id="@+id/edtValue"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -178,7 +178,7 @@
                         android:layout_weight="1.5" />
                 </LinearLayout>
 
-                <sg.togoparts.pro.gallery.FontableTextView
+                <sg.togoparts.gallery.FontableTextView
                     android:id="@+id/textView8"
                     style="@style/TextAppearance.Search.Black"
                     android:layout_width="wrap_content"
@@ -190,7 +190,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
-                <sg.togoparts.pro.gallery.FontableTextView
+                <sg.togoparts.gallery.FontableTextView
                     android:id="@+id/textView6"
                     style="@style/TextAppearance.Search.Black"
                     android:layout_width="wrap_content"
@@ -204,7 +204,7 @@
 
                 
 
-                <sg.togoparts.pro.gallery.FontableTextView
+                <sg.togoparts.gallery.FontableTextView
                     style="@style/TextAppearance.Search.Black"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -215,13 +215,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
-                <sg.togoparts.pro.gallery.FontableTextView
+                <sg.togoparts.gallery.FontableTextView
                     style="@style/TextAppearance.Search.Black"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/search_posted_by" />
 
-                <sg.togoparts.pro.gallery.FontableEditText
+                <sg.togoparts.gallery.FontableEditText
                     android:id="@+id/edtPostedBy"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <sg.togoparts.pro.gallery.FontableTextView
+    <sg.togoparts.gallery.FontableTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/lightest_gray"
@@ -20,7 +20,7 @@
         android:layout_weight="1"
         android:orientation="vertical" >
 
-        <sg.togoparts.pro.gallery.FontableTextView
+        <sg.togoparts.gallery.FontableTextView
             android:id="@+id/textView1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -34,14 +34,14 @@
             android:layout_height="wrap_content"
             android:paddingTop="8dp" >
 
-            <sg.togoparts.pro.gallery.FontableTextView
+            <sg.togoparts.gallery.FontableTextView
                 android:id="@+id/textView2"
                 style="@android:style/TextAppearance.Medium"
                 android:layout_width="80dp"
                 android:layout_height="wrap_content"
                 android:text="@string/label_name" />
 
-            <sg.togoparts.pro.gallery.FontableTextView
+            <sg.togoparts.gallery.FontableTextView
                 android:id="@+id/tvName"
                 style="@android:style/TextAppearance.Medium"
                 android:layout_width="wrap_content"
@@ -54,14 +54,14 @@
             android:layout_height="wrap_content"
             android:paddingTop="8dp" >
 
-            <sg.togoparts.pro.gallery.FontableTextView
+            <sg.togoparts.gallery.FontableTextView
                 android:id="@+id/textView4"
                 style="@android:style/TextAppearance.Medium"
                 android:layout_width="80dp"
                 android:layout_height="wrap_content"
                 android:text="@string/label_email" />
 
-            <sg.togoparts.pro.gallery.FontableTextView
+            <sg.togoparts.gallery.FontableTextView
                 android:id="@+id/tvEmail"
                 style="@android:style/TextAppearance.Medium"
                 android:layout_width="wrap_content"
@@ -69,7 +69,7 @@
                 android:text="TextView" />
         </LinearLayout>
 
-        <sg.togoparts.pro.gallery.FontableTextView
+        <sg.togoparts.gallery.FontableTextView
             android:id="@+id/textView6"
             style="@android:style/TextAppearance.Medium"
             android:layout_width="match_parent"
@@ -87,7 +87,7 @@
             <requestFocus />
         </EditText>
 
-        <sg.togoparts.pro.gallery.FontableTextView
+        <sg.togoparts.gallery.FontableTextView
             android:id="@+id/textView7"
             style="@android:style/TextAppearance.Medium"
             android:layout_width="wrap_content"
@@ -105,7 +105,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" >
 
-            <sg.togoparts.pro.gallery.FontableButton
+            <sg.togoparts.gallery.FontableButton
                 android:id="@+id/btnRegister"
                 style="@android:style/TextAppearance.Medium"
                 android:layout_width="match_parent"
@@ -116,7 +116,7 @@
                 android:text="@string/button_register"
                 android:textColor="@android:color/white" />
 
-            <sg.togoparts.pro.gallery.FontableButton
+            <sg.togoparts.gallery.FontableButton
                 android:id="@+id/btnCancel"
                 style="@android:style/TextAppearance.Medium"
                 android:layout_width="match_parent"

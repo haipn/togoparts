@@ -18,7 +18,7 @@
         android:layout_weight="1"
         android:orientation="vertical" >
 
-        <sg.togoparts.pro.gallery.FontableTextView
+        <sg.togoparts.gallery.FontableTextView
             android:id="@+id/tvUser"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -28,7 +28,7 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@android:color/black" />
 
-        <sg.togoparts.pro.gallery.FontableTextView
+        <sg.togoparts.gallery.FontableTextView
             android:id="@+id/tvComment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -38,7 +38,7 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@color/gray" />
 
-        <sg.togoparts.pro.gallery.FontableTextView
+        <sg.togoparts.gallery.FontableTextView
             android:id="@+id/tvDate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

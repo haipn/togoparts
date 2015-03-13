@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="horizontal" >
 
-    <sg.togoparts.pro.gallery.FontableTextView
+    <sg.togoparts.gallery.FontableTextView
         android:id="@+id/textview"
         style="@android:style/TextAppearance.Medium"
         android:layout_width="0dp"

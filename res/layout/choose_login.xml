@@ -1,118 +1,114 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent" >
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:scaleType="fitStart"
-        android:src="@drawable/login_screen_pro" />
+<!-- <ImageView -->
+<!-- android:layout_width="wrap_content" -->
+<!-- android:layout_height="wrap_content" -->
+<!-- android:scaleType="fitStart" -->
+<!-- android:src="@drawable/login_screen_pro" /> -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical" >
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:gravity="center_horizontal"
-        android:orientation="vertical" >
+        android:orientation="vertical"
+        android:padding="16dp" >
 
-        <LinearLayout
+        <ImageView
+            android:id="@+id/imageView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="30dp"
+            android:layout_marginTop="30dp"
+            android:src="@drawable/logo_banner" />
+
+        <Button
+            android:id="@+id/btnLoginFb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/btn_fb"
+            android:drawableLeft="@drawable/fb_icon"
+            android:drawablePadding="1dp"
+            android:text="@string/label_login_fb"
+            android:textColor="@android:color/white" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="20dp"
+            android:text="OR"
+            android:textSize="30sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/textView1"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:gravity="center_horizontal"
-            android:orientation="vertical"
-            android:padding="16dp" >
+            android:layout_height="wrap_content"
+            android:text="@string/username" />
 
-            <ImageView
-                android:id="@+id/imageView1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="30dp"
-                android:layout_marginTop="30dp"
-                android:src="@drawable/logo_banner" />
+        <EditText
+            android:id="@+id/edtUsername"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
+            android:ems="10"
+            android:imeOptions="actionNext"
+            android:singleLine="true" >
 
-            <Button
-                android:id="@+id/btnLoginFb"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/btn_fb"
-                android:drawableLeft="@drawable/fb_icon"
-                android:drawablePadding="1dp"
-                android:text="@string/label_login_fb"
-                android:textColor="@android:color/white" />
+            <requestFocus />
+        </EditText>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
-                android:layout_marginTop="20dp"
-                android:text="OR"
-                android:textSize="30sp"
-                android:textStyle="bold" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/password" />
 
-            <TextView
-                android:id="@+id/textView1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/username" />
+        <EditText
+            android:id="@+id/edtPass"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
+            android:ems="10"
+            android:imeOptions="actionDone"
+            android:inputType="textPassword"
+            android:singleLine="true" />
 
-            <EditText
-                android:id="@+id/edtUsername"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:layout_marginTop="8dp"
-                android:ems="10"
-                android:imeOptions="actionNext"
-                android:singleLine="true" >
+        <Button
+            android:id="@+id/btnLogin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/btn_click"
+            android:text="@string/label_login"
+            android:textColor="@android:color/white"
+            android:textSize="20sp" />
 
-                <requestFocus />
-            </EditText>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:text="@string/label_forgot_password"
+            android:textSize="12sp" >
+        </TextView>
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/password" />
-
-            <EditText
-                android:id="@+id/edtPass"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:layout_marginTop="8dp"
-                android:ems="10"
-                android:imeOptions="actionDone"
-                android:inputType="textPassword"
-                android:singleLine="true" />
-
-            <Button
-                android:id="@+id/btnLogin"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/btn_click"
-                android:text="@string/label_login"
-                android:textColor="@android:color/white"
-                android:textSize="20sp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:paddingBottom="10dp"
-                android:paddingTop="10dp"
-                android:text="@string/label_forgot_password"
-                android:textSize="12sp" >
-            </TextView>
-
-            <Button
-                android:id="@+id/btnSkip"
-                android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                android:background="@drawable/btn_click"
-                android:text="@string/label_skip"
-                android:textColor="@android:color/white"
-                android:textSize="20sp" />
-        </LinearLayout>
+        <Button
+            android:id="@+id/btnSkip"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:background="@drawable/btn_click"
+            android:text="@string/label_skip"
+            android:textColor="@android:color/white"
+            android:textSize="20sp" />
     </LinearLayout>
 
-</FrameLayout>
+</LinearLayout>

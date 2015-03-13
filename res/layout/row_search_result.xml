@@ -15,7 +15,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" >
 
-            <sg.togoparts.pro.gallery.FontableTextView
+            <sg.togoparts.gallery.FontableTextView
                 android:id="@+id/tvTitle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -25,7 +25,7 @@
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textColor="@android:color/black" />
 
-            <sg.togoparts.pro.gallery.FontableTextView
+            <sg.togoparts.gallery.FontableTextView
                 android:id="@+id/tvPrice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -49,7 +49,7 @@
                 android:orientation="vertical"
                 android:paddingLeft="10dp" >
 
-                <sg.togoparts.pro.gallery.FontableTextView
+                <sg.togoparts.gallery.FontableTextView
                     android:id="@+id/tvViewCount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -59,7 +59,7 @@
                     android:gravity="center_vertical"
                     android:text="TextView" />
 
-                <sg.togoparts.pro.gallery.FontableTextView
+                <sg.togoparts.gallery.FontableTextView
                     android:id="@+id/tvMailCount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -69,7 +69,7 @@
                     android:gravity="center_vertical"
                     android:text="TextView" />
 
-                <sg.togoparts.pro.gallery.FontableTextView
+                <sg.togoparts.gallery.FontableTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="1dp"
@@ -79,7 +79,7 @@
                     android:text="TextView"
                     android:visibility="invisible" />
 
-                <sg.togoparts.pro.gallery.FontableTextView
+                <sg.togoparts.gallery.FontableTextView
                     android:id="@+id/tvNewItem"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -105,7 +105,7 @@
                     android:layout_weight="0.25"
                     android:gravity="center_vertical" >
 
-                    <sg.togoparts.pro.gallery.FontableTextView
+                    <sg.togoparts.gallery.FontableTextView
                         android:id="@+id/tvSpecial"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -115,7 +115,7 @@
                         android:paddingRight="10dp"
                         android:text="TextView" />
 
-                    <sg.togoparts.pro.gallery.FontableTextView
+                    <sg.togoparts.gallery.FontableTextView
                         android:id="@+id/tvFirm"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -132,7 +132,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0.25" >
 
-                    <sg.togoparts.pro.gallery.FontableTextView
+                    <sg.togoparts.gallery.FontableTextView
                         android:id="@+id/tvStatus"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -149,7 +149,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0.25" >
 
-                    <sg.togoparts.pro.gallery.FontableTextView
+                    <sg.togoparts.gallery.FontableTextView
                         android:id="@+id/tvDateAndPostedBy"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
