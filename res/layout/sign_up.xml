@@ -99,6 +99,19 @@
             android:id="@+id/spnCountry"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingTop="4dp" />        
+		<sg.togoparts.gallery.FontableTextView
+            style="@android:style/TextAppearance.Medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="4dp"
+            android:text="@string/dob" />
+		<sg.togoparts.gallery.FontableTextView
+		    style="@android:style/Widget.EditText"
+            android:id="@+id/tvDob"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
             android:paddingTop="4dp" />
 
         <LinearLayout

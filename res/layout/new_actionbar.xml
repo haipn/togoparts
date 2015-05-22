@@ -20,7 +20,7 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:src="@drawable/banner"
-        android:visibility="visible" />
+        android:visibility="gone" />
 
     <sg.togoparts.gallery.FontableTextView
         android:id="@+id/title"
