@@ -65,7 +65,7 @@ public class ChooseLogin extends FragmentActivity {
 	public static final String USERNAME = "username";
 	public static final String FACEBOOK_FIRST_LAST_NAME = "last first name";
 	private static final List<String> PERMISSIONS = Arrays
-			.asList("email");
+			.asList("email, public_profile");
 	// Request code for reauthorization requests.
 	private static final int REAUTH_ACTIVITY_CODE = 100;
 	public static String CLIENT_ID = "G101vptA69sVpvlr";
@@ -153,6 +153,7 @@ public class ChooseLogin extends FragmentActivity {
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		mSimpleFacebook.onActivityResult(this, requestCode, resultCode, data);
+		Log.d("haipn", "activity result:request code:" + requestCode + ", result code:" + resultCode);
 		mProgressDialog.dismiss();
 		if ((requestCode == 0 || requestCode == 1) && resultCode == RESULT_OK) {
 			// startActivity(new Intent(this, TabsActivityMain.class));
@@ -298,8 +299,7 @@ public class ChooseLogin extends FragmentActivity {
 			mProfileFb = profile;
 			mProgressDialog.dismiss();
 			if (profile.getEmail() == null || profile.getEmail().isEmpty()
-					|| profile.getEmail().equals("null")
-					) {
+					|| profile.getEmail().equals("null")) {
 				showAuthorize();
 			} else {
 				Const.writeAccessTokenFb(ChooseLogin.this, mSimpleFacebook

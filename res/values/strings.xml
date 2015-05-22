@@ -211,7 +211,7 @@
     <string name="external_storage_na_title">Attention</string>
     <string name="external_storage_na_message">Sdcard is missing or currently not mounted. Cannot continue.</string>
     <string name="title_fb_authorize">Details missing!</string>
-    <string name="message_fb_authorize">Email and birthday are required to proceed sign-up</string>
+    <string name="message_fb_authorize">Email is required to proceed sign-up</string>
     <string name="title_tcred">Insufficient TCredits</string>
     <string name="message_tcred">You do not have enough TCredits to post %s ad under this Section!</string>
     <string name="message_tcred_1">You do not have enough TCredits to post %s ad under the selected Category!</string>

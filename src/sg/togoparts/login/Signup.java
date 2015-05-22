@@ -208,7 +208,7 @@ public class Signup extends FragmentActivity {
 				createSignupSuccessListener(), createMyReqErrorListener()) {
 
 			protected Map<String, String> getParams() throws AuthFailureError {
-				SimpleDateFormat format = new SimpleDateFormat("yyyy-mm-dd");
+				SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 				Calendar c = Calendar.getInstance();
 				c.setTimeInMillis(mDate);
 				Date date = c.getTime();
