@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="sg.togoparts"
-    android:versionCode="7"
-    android:versionName="1.2.1" >
+    android:versionCode="8"
+    android:versionName="1.2.2" >
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -280,57 +280,39 @@
             android:value="04f94d8b75aa0b80" />
 
         <activity
-            android:name="com.aviary.android.feather.FeatherActivity"
+            android:name="com.aviary.android.feather.sdk.FeatherActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
+            android:finishOnTaskLaunch="true"
             android:hardwareAccelerated="true"
-            android:largeHeap="true"
-            android:process=":aviarysdk"
+            android:process=":standalone"
             android:screenOrientation="unspecified"
-            android:theme="@style/AviaryTheme" />
-        <activity
-            android:name="com.aviary.android.feather.AlertActivity"
-            android:launchMode="standard"
-            android:noHistory="true"
-            android:theme="@style/AviaryTheme.Dialog" >
-            <intent-filter>
-                <action android:name="aviary.intent.action.ALERT" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-
+            android:theme="@style/AviaryTheme.Dark"
+            android:uiOptions="splitActionBarWhenNarrow" />
+        <!-- CDS Content Service -->
         <!-- CDS Content Service -->
         <service
+            android:process=":aviarycds"
             android:name="com.aviary.android.feather.cds.AviaryCdsService"
-            android:exported="false"
-            android:process=":aviarycds" >
+            android:exported="false">
             <intent-filter>
-                <action android:name="aviary.intent.action.CDS_DOWNLOAD_START" />
-                <action android:name="aviary.intent.action.CDS_RESTORE_USER_ITEMS" />
+                <action android:name="aviary.intent.action.CDS_DOWNLOAD_START"/>
+                <action android:name="aviary.intent.action.CDS_RESTORE_USER_ITEMS"/>
             </intent-filter>
         </service>
 
+
         <!--
-        Cds Content Provider, 
-        NOTE that the "authorities" value MUST be formatted in this way:
-        android:authorities="{your.packagename}.AviaryCdsProvider"
-        -->
+            Cds Content Provider,
+            NOTE that the "authorities" value MUST be formatted in this way:
+            android:authorities="{your.packagename}.AviaryCdsProvider"
+         -->
         <provider
             android:name="com.aviary.android.feather.cds.AviaryCdsProvider"
             android:authorities="sg.togoparts.AviaryCdsProvider"
-            android:exported="false"
             android:process=":aviarycds"
+            android:exported="false"
             android:syncable="true" />
 
-        <!-- Required for the hi-res image processing -->
-        <!-- The "android:authorities" attribute must be unique, so please use your app's package path in this way: -->
-        <!-- android:authorities="{your.package.name}.HiResProvider" -->
-        <provider
-            android:name="com.aviary.android.feather.library.providers.FeatherContentProvider"
-            android:authorities="sg.togoparts.HiResProvider"
-            android:exported="false"
-            android:process=":standalone" >
-        </provider>
         <!-- CDS Download Receiver -->
         <receiver
             android:name="com.aviary.android.feather.cds.AviaryCdsReceiver"

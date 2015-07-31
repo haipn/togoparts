@@ -70,9 +70,9 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.Response.Listener;
 import com.android.volley.VolleyError;
-import com.aviary.android.feather.FeatherActivity;
+import com.aviary.android.feather.sdk.FeatherActivity;
 import com.aviary.android.feather.library.Constants;
-import com.aviary.android.feather.library.filters.FilterLoaderFactory;
+//import com.aviary.android.feather.library.filters.FilterLoaderFactory;
 import com.google.analytics.tracking.android.Fields;
 import com.google.analytics.tracking.android.GoogleAnalytics;
 import com.google.analytics.tracking.android.MapBuilder;
@@ -339,12 +339,17 @@ public class PostAdActivity extends FragmentActivity implements
 		// FilterLoaderFactory#Filters )
 		// you can omit this if you just want to display the default tools
 		newIntent.putExtra("tools-list", new String[] {
-				FilterLoaderFactory.Filters.ENHANCE.name(),
-				FilterLoaderFactory.Filters.CROP.name(),
-				FilterLoaderFactory.Filters.ADJUST.name(),
-				FilterLoaderFactory.Filters.BRIGHTNESS.name(),
-				FilterLoaderFactory.Filters.CONTRAST.name(),
-				FilterLoaderFactory.Filters.SHARPNESS.name() });
+				"EFFECTS",
+				"ENHANCE",
+				"CROP",
+				"ADJUST",
+				"BRIGHTNESS",
+				"CONTRAST",
+				"SHARPNESS",
+				"BLUR",
+				"SATURATION"
+				}
+				);
 		// === EXIT ALERT ===
 		// Optional
 		// Uou want to hide the exit alert dialog shown when back is pressed
@@ -373,11 +378,11 @@ public class PostAdActivity extends FragmentActivity implements
 		// the execution of Aviary we're saving the HI-RES image so we don't
 		// need a big
 		// image for the preview
-		final DisplayMetrics metrics = new DisplayMetrics();
-		getWindowManager().getDefaultDisplay().getMetrics(metrics);
-		int max_size = Math.max(metrics.widthPixels, metrics.heightPixels);
-		max_size = (int) ((float) max_size / 1.2f);
-		newIntent.putExtra(Constants.EXTRA_MAX_IMAGE_SIZE, max_size);
+//		final DisplayMetrics metrics = new DisplayMetrics();
+//		getWindowManager().getDefaultDisplay().getMetrics(metrics);
+//		int max_size = Math.max(metrics.widthPixels, metrics.heightPixels);
+//		max_size = (int) ((float) max_size / 1.2f);
+//		newIntent.putExtra(Constants.EXTRA_MAX_IMAGE_SIZE, max_size);
 
 		// === HI-RES ===
 		// You need to generate a new session id key to pass to Aviary feather
